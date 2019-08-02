@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "967271307736",
+    "firebase_url": "https://dragger-app-65.firebaseio.com",
+    "project_id": "dragger-app-65",
+    "storage_bucket": "dragger-app-65.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:967271307736:android:9bfc357de845e1b4",
+        "android_client_info": {
+          "package_name": "de.dthuesen.draggersurvey"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "967271307736-qevm0uvoarr2pav3ck0rk2e7kip5oonp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "de.dthuesen.draggersurvey",
+            "certificate_hash": "9e3b1b27915ff7a1bcfcc76ae7fd195d7eb8a32e"
+          }
+        },
+        {
+          "client_id": "967271307736-n6f7a8gvm8gav0434jqqh8ther8aukgo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCP7wynw8J8MzOYQv8CZSbJ3ddHuhH-vvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "967271307736-n6f7a8gvm8gav0434jqqh8ther8aukgo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "967271307736-fn8hsunnskrirl6tqfmpeg2pjscqfev1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "de.dthuesen.draggersurvey"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
