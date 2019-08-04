@@ -2,12 +2,15 @@ import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:dragger_survey/src/screens/home_screen.dart';
 
+import 'login_screen.dart';
+
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
   /// NEW CODE.
   @override
   void initState() {
@@ -17,6 +20,8 @@ class _SplashScreenState extends State<SplashScreen> {
     initData().then((value) {
       navigateToHomeScreen();
     });
+
+    super.initState();
   }
 
   @override
@@ -47,6 +52,10 @@ class _SplashScreenState extends State<SplashScreen> {
   void navigateToHomeScreen() {
     /// Push home screen and replace (close/exit) splash screen.
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoginScreen(),
+      ),
+    );
   }
 }

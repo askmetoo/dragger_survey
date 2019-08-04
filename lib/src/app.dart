@@ -1,3 +1,4 @@
+import 'package:dragger_survey/src/screens/dragger_screen.dart';
 import 'package:dragger_survey/src/screens/home_screen.dart';
 import 'package:dragger_survey/src/screens/splash_screen.dart';
 import 'package:dragger_survey/src/styles.dart';
@@ -7,7 +8,6 @@ import 'package:dragger_survey/src/blocs/fab_bloc.dart';
 import 'package:dragger_survey/src/screens/login_screen.dart';
 import 'package:dragger_survey/src/screens/profile_screen.dart';
 import 'package:dragger_survey/src/screens/scaffold_sreen.dart';
-import 'package:dragger_survey/src/screens/home_screen.dart';
 import 'package:dragger_survey/src/services/auth.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +22,15 @@ class App extends StatelessWidget {
         StreamProvider<FirebaseUser>.value(
           value: AuthService().user,
         ),
+        ChangeNotifierProvider<MatrixGranularityBloc>.value(
+          value: MatrixGranularityBloc(),
+        ),
+        ChangeNotifierProvider<DraggableItemBloc>.value(
+          value: DraggableItemBloc(),
+        ),
+        ChangeNotifierProvider<FabBloc>.value(
+          value: FabBloc(),
+        )
       ],
       child: MaterialApp(
         routes: {
@@ -29,6 +38,7 @@ class App extends StatelessWidget {
           '/login': (context) => LoginScreen(),
           '/profile': (context) => ProfileScreen(),
           '/scaffold': (context) => ScaffoldScreen(),
+          '/draggerboard': (context) => DraggerScreen(),
         },
         theme: ThemeData(
           fontFamily: 'Nunito',

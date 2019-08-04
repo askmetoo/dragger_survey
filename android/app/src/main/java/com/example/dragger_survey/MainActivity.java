@@ -1,4 +1,4 @@
-package de.dthuesen.dragger_survey;
+package com.example.dragger_survey;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

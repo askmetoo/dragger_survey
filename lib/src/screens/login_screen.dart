@@ -1,10 +1,6 @@
-import 'package:dragger_survey/src/services/services.dart';
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:dragger_survey/src/services/sign_in.dart';
 import 'package:dragger_survey/src/styles.dart';
-import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -12,81 +8,48 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  AuthService auth = AuthService();
-
-  @override
-  void initState() {
-    super.initState();
-    auth.getUser.then(
-      (user) {
-        if (user.displayName != null) {
-          Navigator.pushReplacementNamed(context, '/scaffold');
-        }
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.all(30),
-        decoration: BoxDecoration(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            FlutterLogo(
-              size: 150,
-            ),
-            Text(
-              'Login to Start',
-              style: Theme.of(context).textTheme.headline,
-              textAlign: TextAlign.center,
-            ),
-            Text('Your Tagline'),
-            LoginButton(
-              text: 'LOGIN WITH GOOGLE',
-              icon: FontAwesomeIcons.google,
-              color: Colors.black45,
-              loginMethod: auth.googleSignIn,
-            ),
-//            LoginButton(text: 'Continue as Guest', loginMethod: auth.anonLogin)
+        color: Styles.appBackground,
+        child: Center(child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image(image: AssetImage('assets/dragger-logo.png'),),
+            SizedBox(height: 50,),
+            _singInButton(),
           ],
-        ),
+        ),),
       ),
     );
   }
-}
 
-class LoginButton extends StatelessWidget {
-  final Color color;
-  final IconData icon;
-  final String text;
-  final Function loginMethod;
-
-  const LoginButton(
-      {Key key, this.text, this.icon, this.color, this.loginMethod})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 10),
-      child: FlatButton.icon(
-        padding: EdgeInsets.all(30),
-        icon: Icon(icon, color: Colors.white),
-        color: color,
-        onPressed: () async {
-          var user = await loginMethod();
-          if (user != null) {
-            Navigator.pushReplacementNamed(context, '/topics');
-          }
-        },
-        label: Expanded(
-          child: Text('$text', textAlign: TextAlign.center),
-        ),
-      ),
+  Widget _singInButton() {
+    return OutlineButton(
+      splashColor: Styles.secondaryColor,
+      onPressed: () async {
+        await Future.delayed(Duration(seconds: 1));
+        Navigator.pushReplacementNamed(context, '/draggerboard');
+      
+        // TODO: reactivate
+        // signInWithGoogle().whenComplete( () {
+        //   Navigator.pushReplacementNamed(context, '/profile');
+        // });
+      },
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+      highlightElevation: 0,
+      borderSide: BorderSide(color: Styles.secondaryColor),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text("Sign-In with Google", style: TextStyle(fontSize: 20, color: Styles.secondaryColor),)
+          ],
+        ),),
     );
   }
 }

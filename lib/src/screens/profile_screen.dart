@@ -4,6 +4,7 @@ import 'package:dragger_survey/src/services/services.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dragger_survey/src/services/auth.dart';
 
 class ProfileScreen extends StatelessWidget {
   final AuthService auth = AuthService();
@@ -11,7 +12,9 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     FirebaseUser user = Provider.of<FirebaseUser>(context);
 
-    if (user != null) {
+    // TODO: reactive if statement
+    // if (user != null) {
+      if(true) {
       return Scaffold(
         appBar: AppBar(
           backgroundColor: Styles.appBackground,
