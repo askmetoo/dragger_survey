@@ -1,4 +1,5 @@
 import 'package:dragger_survey/src/blocs/draggable_item_bloc.dart';
+import 'package:dragger_survey/src/blocs/prism_survey_bloc.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/dragger_board_button_row.dart';
 import 'package:dragger_survey/src/widgets/matrix_board.dart';
@@ -15,10 +16,12 @@ class _DraggerScreenState extends State<DraggerScreen> {
   Widget build(BuildContext context) {
     final DraggableItemBloc draggableBloc =
         Provider.of<DraggableItemBloc>(context);
+    final PrismSurveyBloc prismSurveyBloc =
+        Provider.of<PrismSurveyBloc>(context);
 
     return Scaffold(
       backgroundColor: Styles.appBackground,
-      appBar: AppBar(title: Text("Dragger Borad"),),
+      appBar: AppBar(title: Text("Dragger Board", style: Styles.cardTitleText,),),
           body: ListView(
         children: <Widget>[
           Stack(
@@ -30,7 +33,8 @@ class _DraggerScreenState extends State<DraggerScreen> {
                   Text(
                     // TODO //
                     "Hier Steht der Survey Name",
-                    style: TextStyle(fontSize: 24),
+                    style: Styles.detailsTitleText,
+                    // style: TextStyle(fontSize: 24),
                   ),
                   Stack(
                     children: [
@@ -39,8 +43,8 @@ class _DraggerScreenState extends State<DraggerScreen> {
                   ),
                   Text(
                       // TODO //
-                      // "Stone set to row  {prismSurveyBloc.rowIndex} and col  {prismSurveyBloc.colIndex}"),
-                  "Stone set to row ${draggableBloc.draggableItemPositon.dy} and col ${draggableBloc.draggableItemPositon.dx}"),
+                      "Stone set to row  ${prismSurveyBloc.rowIndex} and col  ${prismSurveyBloc.colIndex}"),
+                  // "Stone set to row ${draggableBloc.draggableItemPositon.dy} and col ${draggableBloc.draggableItemPositon.dx}"),
                   DraggerBoardButtonRow(),
                 ],
               ),

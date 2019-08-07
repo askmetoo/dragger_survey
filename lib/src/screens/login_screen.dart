@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
       splashColor: Styles.secondaryColor,
       onPressed: () async {
         await Future.delayed(Duration(seconds: 1));
-        Navigator.pushReplacementNamed(context, '/draggerboard');
+        Navigator.pushNamed(context, '/draggerboard');
       
         // TODO: reactivate
         // signInWithGoogle().whenComplete( () {

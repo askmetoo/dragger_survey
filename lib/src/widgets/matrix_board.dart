@@ -1,5 +1,6 @@
 import 'package:dragger_survey/src/blocs/draggable_item_bloc.dart';
 import 'package:dragger_survey/src/blocs/matrix_granularity_bloc.dart';
+import 'package:dragger_survey/src/blocs/prism_survey_bloc.dart';
 import 'package:dragger_survey/src/widgets/goal_itemr.dart';
 import 'package:flutter/material.dart';
 
@@ -65,6 +66,7 @@ Widget matrixBoard(BuildContext context) {
 
               final DraggableItemBloc draggableItemBloc =
                   Provider.of<DraggableItemBloc>(context);
+                  final PrismSurveyBloc prismSurveyBloc = Provider.of<PrismSurveyBloc>(context);
 
               return AspectRatio(
                   aspectRatio: aspectrationValue,
@@ -73,7 +75,8 @@ Widget matrixBoard(BuildContext context) {
                         index: index,
                         position: position,
                         grid: grid,
-                        bloc: draggableItemBloc),
+                        draggableItemBloc: draggableItemBloc,
+                        prismSurveyBloc: prismSurveyBloc),
                   ));
             },
           ),

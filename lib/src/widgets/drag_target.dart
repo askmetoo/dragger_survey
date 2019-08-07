@@ -1,3 +1,4 @@
+import 'package:dragger_survey/src/blocs/prism_survey_bloc.dart';
 import 'package:flutter/material.dart';
 import '../blocs/draggable_item_bloc.dart';
 
@@ -7,7 +8,8 @@ Widget dragTarget(
     double left,
     Offset position,
     List<List<List<int>>> grid,
-    DraggableItemBloc bloc}) {
+    DraggableItemBloc draggableItemBloc,
+    PrismSurveyBloc prismSurveyBloc}) {
   int rowIdx() => (index / grid.length).floor();
   int colIdx() => (index % grid.length);
 
@@ -24,7 +26,9 @@ Widget dragTarget(
     onAccept: (data) {
       print("On accept - row: ${rowIdx()}, col: ${colIdx()}");
       position = Offset(rowIdx().toDouble(), colIdx().toDouble());
-      bloc.setNewDraggableItemPositon(position: position);
+      draggableItemBloc.setNewDraggableItemPositon(position: position);
+      prismSurveyBloc.setRowIndex(rowIndex: rowIdx().toInt());
+      prismSurveyBloc.setColIndex(colIndex: colIdx().toInt());
     },
     onLeave: (data) {},
   );
