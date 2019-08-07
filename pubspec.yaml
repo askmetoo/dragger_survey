@@ -21,13 +21,16 @@ dependencies:
     sdk: flutter
   provider: ^3.0.0+1
 
-  firebase_core: ^0.4.0
+  firebase_core: ^0.4.0+1
+
 #  firebase_analytics: ^4.0.2
 
 #  cloud_firestore: ^0.12.9
 
   firebase_auth: ^0.14.0
   google_sign_in: ^4.0.6
+  firebase_firestore: ^0.12.7+1
+
 
   font_awesome_flutter: ^8.5.0
   rxdart: ^0.22.1
