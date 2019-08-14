@@ -14,88 +14,93 @@ class DraggerScreen extends StatefulWidget {
 class _DraggerScreenState extends State<DraggerScreen> {
   @override
   Widget build(BuildContext context) {
-    final DraggableItemBloc draggableBloc =
-        Provider.of<DraggableItemBloc>(context);
     final PrismSurveyBloc prismSurveyBloc =
         Provider.of<PrismSurveyBloc>(context);
 
-    return Scaffold(
-      backgroundColor: Styles.appBackground,
-      appBar: AppBar(title: Text("Dragger Board", style: Styles.cardTitleText,),),
-          body: ListView(
-        children: <Widget>[
-          Stack(
-            children: <Widget>[
-              Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    // TODO //
-                    "Hier Steht der Survey Name",
-                    style: Styles.detailsTitleText,
-                    // style: TextStyle(fontSize: 24),
-                  ),
-                  Stack(
-                    children: [
-                      matrixBoard(context),
-                    ],
-                  ),
-                  Text(
-                      // TODO //
-                      "Stone set to row  ${prismSurveyBloc.rowIndex} and col  ${prismSurveyBloc.colIndex}"),
-                  // "Stone set to row ${draggableBloc.draggableItemPositon.dy} and col ${draggableBloc.draggableItemPositon.dx}"),
-                  DraggerBoardButtonRow(),
-                ],
-              ),
-              Positioned.fill(
-                top: 45,
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Text(
-                    // TODO //
-                    "XName",
-                    // prismSurveySetBloc.xName,
-                    style: TextStyle(
-                        color: Colors.black54.withOpacity(.7),
-                        fontSize: 28,
-                        fontWeight: FontWeight.w900,
-                        shadows: [
-                          Shadow(
-                              blurRadius: 4,
-                              color: Colors.black12,
-                              offset: Offset(1, 1)),
-                        ]),
-                  ),
-                ),
-              ),
-              Positioned.fill(
-                left: 5,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: RotatedBox(
-                    quarterTurns: 3,
-                    child: Text(
-                      // TODO //
-                      "YName",
-                      // prismSurveySetBloc.yName,
-                      style: TextStyle(
-                          color: Colors.black54.withOpacity(.7),
-                          fontSize: 28,
-                          fontWeight: FontWeight.w900,
-                          shadows: [
-                            Shadow(
-                                blurRadius: 4,
-                                color: Colors.black12,
-                                offset: Offset(1, 1)),
-                          ]),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            buildBoard(context),
+            Text(
+                // TODO //
+                "Stone set to row  ${prismSurveyBloc.rowIndex} and col  ${prismSurveyBloc.colIndex}"),
+            DraggerBoardButtonRow(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildBoard(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        matrixBoard(context),
+        buildXLabel(),
+        buildYLabel(),
+      ],
+    );
+  }
+
+  Widget buildYLabel() {
+    return Container(
+      margin: EdgeInsets.only(left: 10, right: 10, bottom: 0, top: 0),
+      height: 384,
+      width: 388,
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: RotatedBox(
+          quarterTurns: 3,
+          child: Text(
+            // TODO: Dynamic yName
+            "YName auch etwas länger",
+            // prismSurveySetBloc.yName,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Colors.black54.withOpacity(.5),
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                letterSpacing: -.6,
+                shadows: [
+                  Shadow(
+                      blurRadius: 4,
+                      color: Colors.black12,
+                      offset: Offset(1, 1)),
+                ]),
           ),
-        ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildXLabel() {
+    return Container(
+      margin: EdgeInsets.only(left: 10, right: 10, bottom: 0, top: 0),
+      height: 398,
+      width: 354,
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Text(
+          // TODO: dynamic xName
+          "XName etwasg kurz",
+          // prismSurveySetBloc.xName,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Colors.black54.withOpacity(.5),
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              letterSpacing: -.6,
+              shadows: [
+                Shadow(
+                    blurRadius: 4,
+                    color: Colors.black12,
+                    offset: Offset(1, 1)),
+              ]),
+        ),
       ),
     );
   }

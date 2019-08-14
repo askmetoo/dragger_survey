@@ -1,5 +1,5 @@
 class PrismSurveySet {
-  String id;
+  String uid;
   DateTime created;
   DateTime edited;
   String name;
@@ -12,7 +12,7 @@ class PrismSurveySet {
   dynamic prismSurveys;
 
   PrismSurveySet({
-    this.id,
+    this.uid,
     this.created,
     this.edited,
     this.name,
@@ -27,16 +27,16 @@ class PrismSurveySet {
 
   factory PrismSurveySet.fromMap(Map data) {
     return PrismSurveySet(
-      id: data['id'] ?? '',
+      uid: data['uid'] ?? '',
       created: data['created'] ?? DateTime.now(),
       edited: data['edited'] ?? '',
       name: data['name'] ?? '',
       description: data['description'] ?? '',
       resolution: data['resolution'] ?? 5,
-      xName: data['xName'] ?? '',
-      xDescription: data['xDescription'] ?? '',
-      yName: data['yName'] ?? '',
-      yDescription: data['yDescription'] ?? '',
+      xName: data['x_name'] ?? '',
+      xDescription: data['x_description'] ?? '',
+      yName: data['y_name'] ?? '',
+      yDescription: data['y_description'] ?? '',
       prismSurveys: (data['prismSurveys'] as List ?? [])
           .map((value) => User.fromMap(value))
           .toList(),
@@ -45,7 +45,7 @@ class PrismSurveySet {
 }
 
 class PrismSurvey {
-  int id;
+  String uid;
   DateTime created;
   DateTime edited;
   String askedPerson;
@@ -54,7 +54,7 @@ class PrismSurvey {
   dynamic users;
 
   PrismSurvey({
-    this.id,
+    this.uid,
     this.created,
     this.edited,
     this.askedPerson,
@@ -65,7 +65,7 @@ class PrismSurvey {
 
   factory PrismSurvey.fromMap(Map data) {
     return PrismSurvey(
-      id: data["id"] ?? '',
+      uid: data["uid"] ?? '',
       created: data["created"] ?? DateTime.now(),
       edited: data["edited"] ?? '',
       askedPerson: data["asked_person"] ?? '',
@@ -79,7 +79,7 @@ class PrismSurvey {
 }
 
 class Team {
-  int id;
+  String uid;
   String created;
   String edited;
   String name;
@@ -88,7 +88,7 @@ class Team {
   dynamic prismSurveySets;
 
   Team({
-    this.id,
+    this.uid,
     this.created,
     this.edited,
     this.name,
@@ -99,7 +99,7 @@ class Team {
 
   factory Team.fromMap(Map data) {
     return Team(
-      id: data["id"] ?? '',
+      uid: data["uid"] ?? '',
       created: data["created"] ?? DateTime.now(),
       edited: data["edited"] ?? '',
       name: data["name"] ?? '',
@@ -115,7 +115,7 @@ class Team {
 }
 
 class User {
-  int id;
+  String uid;
   String created;
   String edited;
   String firstName;
@@ -123,15 +123,16 @@ class User {
   String username;
   String password;
   String email;
+  String displayName;
   String description;
   String company;
-  String avatarUrl;
+  String photoUrl;
   dynamic teams;
   dynamic prismSurveySets;
   dynamic prismSurveys;
 
   User({
-    this.id,
+    this.uid,
     this.created,
     this.edited,
     this.firstName,
@@ -139,9 +140,10 @@ class User {
     this.username,
     this.password,
     this.email,
+    this.displayName,
     this.description,
     this.company,
-    this.avatarUrl,
+    this.photoUrl,
     this.teams,
     this.prismSurveySets,
     this.prismSurveys,
@@ -149,7 +151,7 @@ class User {
 
   factory User.fromMap(Map data) {
     return User(
-      id: data["id"] ?? '',
+      uid: data["uid"] ?? '',
       created: data["created"] ?? DateTime.now(),
       edited: data["edited"] ?? '',
       firstName: data["first_name"] ?? '',
@@ -157,9 +159,10 @@ class User {
       username: data["username"] ?? '',
       password: data["password"] ?? '',
       email: data["email"] ?? '',
+      displayName: data["display_name"] ?? '',
       description: data["description"] ?? '',
       company: data["company"] ?? '',
-      avatarUrl: data["avatar_url"] ?? '',
+      photoUrl: data["photo_url"] ?? '',
       teams: (data["teams"] as List ?? [])
           .map((value) => Team.fromMap(value))
           .toList(),

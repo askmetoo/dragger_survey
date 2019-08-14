@@ -1,3 +1,3 @@
-export 'auth.dart';
-//export 'db.dart';
+export 'auth_service.dart';
+export 'db.dart';
 export 'models.dart';

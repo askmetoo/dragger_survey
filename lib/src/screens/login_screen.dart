@@ -1,55 +1,95 @@
-import 'package:dragger_survey/src/services/sign_in.dart';
+import 'package:dragger_survey/src/blocs/sing_in_bloc.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
+
+    print(signInBloc.signedInUser);
     return Scaffold(
       body: Container(
         color: Styles.appBackground,
-        child: Center(child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image(image: AssetImage('assets/dragger-logo.png'),),
-            SizedBox(height: 50,),
-            _singInButton(),
-          ],
-        ),),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image(
+                image: AssetImage('assets/dragger-logo.png'),
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              _getSignInButtons(context: context, bloc: signInBloc)
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  Widget _singInButton() {
+  Widget _getSignInButtons({BuildContext context, SignInBloc bloc}) {
+    print(
+        "=====> in _getSignInButtons - bloc.signedInUser: ${bloc.signedInUser}");
+    if (bloc.signedInUser == null) {
+      return _signInButton(context: context, bloc: bloc);
+    }
+    return _singOutButton(context: context, bloc: bloc);
+  }
+
+  Widget _signInButton({BuildContext context, SignInBloc bloc}) {
     return OutlineButton(
-      splashColor: Styles.secondaryColor,
+      splashColor: Styles.colorAecondary,
       onPressed: () async {
-        await Future.delayed(Duration(seconds: 1));
-        Navigator.pushNamed(context, '/draggerboard');
-      
-        // TODO: reactivate
-        // signInWithGoogle().whenComplete( () {
-        //   Navigator.pushReplacementNamed(context, '/profile');
-        // });
+        await bloc.signInWithGoogle();
+        print(
+            "----> In _signInButton - bloc.signedInUser: ${bloc.signedInUser}");
+        Navigator.pushNamed(context, '/home');
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,
-      borderSide: BorderSide(color: Styles.secondaryColor),
+      borderSide: BorderSide(color: Styles.colorAecondary),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("Sign-In with Google", style: TextStyle(fontSize: 20, color: Styles.secondaryColor),)
+            Text(
+              "Sign-In with Google",
+              style: TextStyle(fontSize: 20, color: Styles.colorAecondary),
+            )
           ],
-        ),),
+        ),
+      ),
+    );
+  }
+
+  Widget _singOutButton({BuildContext context, SignInBloc bloc}) {
+    return OutlineButton(
+      splashColor: Styles.colorAecondary,
+      onPressed: () async {
+        bloc.signOut();
+      },
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+      highlightElevation: 0,
+      borderSide: BorderSide(color: Styles.colorAecondary),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              "Sign-Out",
+              style: TextStyle(fontSize: 20, color: Styles.colorAecondary),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

@@ -1,104 +1,104 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dragger_survey/src/services/services.dart';
+import 'package:dragger_survey/src/services/models.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:async';
-import 'package:meta/meta.dart';
 
-abstract class AuthService {
-  Future<User> currentUser();
+class AuthService {
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final Firestore _db = Firestore.instance;
 
-  Future<User> signInAnonymously();
+  FirebaseAuth get auth => _auth;
 
-  Future<User> signInWithEmailAndPassword(String email, String password);
+  Future<FirebaseUser> get getUser => _auth.currentUser();
 
-  Future<User> createUserWithEmailAndPassword(String email, String password);
+  Stream<FirebaseUser> get user => _auth.onAuthStateChanged;
 
-  Future<void> sendPasswordResetEmail(String email);
+  Future<FirebaseUser> anonLogin() async {
+    final FirebaseUser user = await _auth.signInAnonymously() as FirebaseUser;
 
-  Future<User> signInWithEmailAndLink({String email, String link});
+    updateUserData(user);
 
-  Future<bool> isSignInWithEmailLink(String link);
+    return user;
+  }
 
-  Future<void> sendSignInWithEmailLink({
-    @required String email,
-    @required String url,
-    @required bool handleCodeInApp,
-    @required String iOSBundleId,
-    @required String androidPackageName,
-    @required bool androidInstallIfNotAvailable,
-    @required String androidMinimumVersion,
-  });
+  Future<FirebaseUser> googleSignIn() async {
+    try {
+      GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
+      GoogleSignInAuthentication googleAuth =
+          await googleSignInAccount.authentication;
 
-  Future<User> signInWithGoogle();
-  Future<User> signInWithFacebook();
-  Future<void> signOut();
-  Stream<User> get onAuthStateChanged;
-  void dispose();
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
+      assert(!user.isAnonymous);
+      print(
+          '--------> signInWithGoogle user.getIdToken(): ${user.getIdToken()}');
+      assert(await user.getIdToken() != null);
+
+      final FirebaseUser currentUser = await _auth.currentUser();
+      assert(user.uid == currentUser.uid);
+      print('--------> signInWithGoogle succeeded: $user');
+
+      //      updateUserData(user);
+      return user;
+    } catch (error) {
+      print("---------> Error during anonymous sign in $error");
+      return null;
+    }
+  }
+
+  Future<void> updateUserData(FirebaseUser user) {
+    DocumentReference reportRef = _db.collection('reports').document(user.uid);
+
+    return reportRef.setData(
+      {
+        'uid': user.uid,
+        'lastActivity': DateTime.now(),
+      },
+      merge: true,
+    );
+  }
+
+  Future<void> signOut() {
+    print('User sign out');
+    return _auth.signOut();
+  }
 }
 
-//// OLD VERSION ////
-//  final FirebaseAuth _auth = FirebaseAuth.instance;
-//  final Firestore _db = Firestore.instance;
-//  final GoogleSignIn _googleSignIn = GoogleSignIn();
+//// NEW BUT NOT WORKING WELL
+//abstract class AuthService {
+//  Future<User> currentUser();
 //
-//  Future<User> get getUser => _auth.currentUser();
+//  Future<User> signInAnonymously();
 //
-//  Stream<User> get user => _auth.onAuthStateChanged;
+//  Future<User> signInWithEmailAndPassword(String email, String password);
 //
-//  Future<User> anonLogin() async {
-//    final User user = await _auth.signInAnonymously() as User;
+//  Future<User> createUserWithEmailAndPassword(String email, String password);
 //
-//    updateUserData(user);
+//  Future<void> sendPasswordResetEmail(String email);
 //
-//    return user;
-//  }
+//  Future<User> signInWithEmailAndLink({String email, String link});
 //
-//  Future<User> googleSignIn() async {
-//    try {
-//      GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
-//      GoogleSignInAuthentication googleAuth =
-//          await googleSignInAccount.authentication;
+//  Future<bool> isSignInWithEmailLink(String link);
 //
-//      final AuthCredential credential = GoogleAuthProvider.getCredential(
-//        accessToken: googleAuth.accessToken,
-//        idToken: googleAuth.idToken,
-//      );
+//  Future<void> sendSignInWithEmailLink({
+//    @required String email,
+//    @required String url,
+//    @required bool handleCodeInApp,
+//    @required String iOSBundleId,
+//    @required String androidPackageName,
+//    @required bool androidInstallIfNotAvailable,
+//    @required String androidMinimumVersion,
+//  });
 //
-//      FirebaseUser user =
-//          await _auth.signInWithCredential(credential) as FirebaseUser;
-//
-////      assert(!user.isAnonymous);
-//      print(
-//          '--------> signInWithGoogle user.getIdToken(): ${user.getIdToken()}');
-//      assert(await user.getIdToken() != null);
-//
-//      final FirebaseUser currentUser = await _auth.currentUser();
-//      assert(user.uid == currentUser.uid);
-//      print('--------> signInWithGoogle succeeded: $user');
-//
-////      updateUserData(user);
-//      return user;
-//    } catch (error) {
-//      print("---------> Error during anonymous sign in $error");
-//      return null;
-//    }
-//  }
-//
-//  Future<void> updateUserData(FirebaseUser user) {
-//    DocumentReference reportRef = _db.collection('reports').document(user.uid);
-//
-//    return reportRef.setData(
-//      {
-//        'uid': user.uid,
-//        'lastActivity': DateTime.now(),
-//      },
-//      merge: true,
-//    );
-//  }
-//
-//  Future<void> signOut() {
-//    print('User sign out');
-//    return _auth.signOut();
-//  }
-// }
+//  Future<User> signInWithGoogle();
+//  Future<User> signInWithFacebook();
+//  Future<void> signOut();
+//  Stream<User> get onAuthStateChanged;
+//  void dispose();
+//}

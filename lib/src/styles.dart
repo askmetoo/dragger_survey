@@ -3,23 +3,43 @@ import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Styles {
-  static const headlineText = TextStyle(
+  static const textHeadline = TextStyle(
     color: Color.fromRGBO(0, 0, 0, 0.8),
     fontFamily: 'NotoSans',
     fontSize: 32,
     fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.w600
   );
-  static const attentionText = TextStyle(color: Color(0xffff0200));
-  static const attentionColor = Color(0xffff0200);
-  static const primaryColor = Color(0xff119da4);
-  static const secondaryColor = Color(0xfff7b71d);
-  static const TextColor = Color(0xff0e2431);
+  static const textSecondHeadline = TextStyle(
+    color: Color.fromRGBO(0, 0, 0, 0.8),
+    fontFamily: 'NotoSans',
+    fontSize: 20,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+  );
+  static const textListTitle = TextStyle(
+    color: Color.fromRGBO(0, 0, 0, 0.8),
+    fontFamily: 'NotoSans',
+    fontSize: 20,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+  );
+  static const textListContent = TextStyle(
+    color: Color.fromRGBO(0, 0, 0, 0.8),
+    fontFamily: 'NotoSans',
+    fontSize: 16,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+  );
+  static const colorAttention = Color(0xffff0200);
+  static const colorPrimary = Color(0xff119da4);
+  static const colorAecondary = Color(0xfff7b71d);
+  static const colorText = Color(0xff0e2431);
 
-  static const yellowGreenColor = Color(0xffffff7f);
-  static const lighterGreenColor = Color(0xffafa939);
-  static const greenColor = Color(0xff2b580c);
-  static const darkerGreenColor = Color(0xff2f4a36);
+  static const colorYellowGreen = Color(0xffffff7f);
+  static const colorLighterGreen = Color(0xffafa939);
+  static const colorGreen = Color(0xff2b580c);
+  static const colorDarkerGreen = Color(0xff2f4a36);
 
   static const orangeColorDonNotUse = Color(0xfff9b248);
   static const redColorDonNotUse = Color(0xfffc3a52);

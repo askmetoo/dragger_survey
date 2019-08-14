@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
                 );
               },
               child: Text('Push'),
-              color: Styles.lighterGreenColor,
+              color: Styles.colorLighterGreen,
             ),
 //            ),FlatButton(
 //              onPressed: () {

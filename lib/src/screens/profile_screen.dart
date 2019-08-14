@@ -4,7 +4,7 @@ import 'package:dragger_survey/src/services/services.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:dragger_survey/src/services/auth.dart';
+import 'package:dragger_survey/src/services/auth_service.dart';
 
 class ProfileScreen extends StatelessWidget {
   final AuthService auth = AuthService();
@@ -14,7 +14,7 @@ class ProfileScreen extends StatelessWidget {
 
     // TODO: reactive if statement
     // if (user != null) {
-      if(true) {
+    if (true) {
       return Scaffold(
         appBar: AppBar(
           backgroundColor: Styles.appBackground,
@@ -26,7 +26,7 @@ class ProfileScreen extends StatelessWidget {
             Navigator.of(context)
                 .pushNamedAndRemoveUntil('/', (route) => false);
           },
-          color: Styles.attentionColor,
+          color: Styles.colorAttention,
           child: Text("Logout"),
         ),
       );

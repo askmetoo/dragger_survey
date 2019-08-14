@@ -14,17 +14,17 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   AuthService auth = AuthService();
 
-  @override
-  void initState() {
-    super.initState();
-    auth.getUser.then(
-      (user) {
-        if (user?.displayName != null) {
-          Navigator.pushReplacementNamed(context, '/scaffold');
-        }
-      },
-    );
-  }
+//  @override
+//  void initState() {
+//    super.initState();
+//    auth.getUser.then(
+//      (user) {
+//        if (user?.displayName != null) {
+//          Navigator.pushReplacementNamed(context, '/scaffold');
+//        }
+//      },
+//    );
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,28 +32,28 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Container(
         padding: EdgeInsets.all(30),
         decoration: BoxDecoration(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            FlutterLogo(
-              size: 150,
-            ),
-            Text(
-              'Login to Start',
-              style: Theme.of(context).textTheme.headline,
-              textAlign: TextAlign.center,
-            ),
-            Text('Your Tagline'),
-            LoginButton(
-              text: 'LOGIN WITH GOOGLE',
-              icon: FontAwesomeIcons.google,
-              color: Colors.black45,
-              loginMethod: auth.googleSignIn,
-            ),
-//            LoginButton(text: 'Continue as Guest', loginMethod: auth.anonLogin)
-          ],
-        ),
+//        child: Column(
+//          crossAxisAlignment: CrossAxisAlignment.center,
+//          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//          children: [
+//            FlutterLogo(
+//              size: 150,
+//            ),
+//            Text(
+//              'Login to Start',
+//              style: Theme.of(context).textTheme.headline,
+//              textAlign: TextAlign.center,
+//            ),
+//            Text('Your Tagline'),
+//            LoginButton(
+//              text: 'LOGIN WITH GOOGLE',
+//              icon: FontAwesomeIcons.google,
+//              color: Colors.black45,
+//              loginMethod: auth.googleSignIn,
+//            ),
+////            LoginButton(text: 'Continue as Guest', loginMethod: auth.anonLogin)
+//          ],
+//        ),
       ),
     );
   }
