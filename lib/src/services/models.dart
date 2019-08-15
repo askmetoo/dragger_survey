@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class PrismSurveySet {
   String uid;
   DateTime created;
@@ -28,8 +30,8 @@ class PrismSurveySet {
   factory PrismSurveySet.fromMap(Map data) {
     return PrismSurveySet(
       uid: data['uid'] ?? '',
-      created: data['created'] ?? DateTime.now(),
-      edited: data['edited'] ?? '',
+      created: (data['created'] as Timestamp)?.toDate() ?? DateTime.now(),
+      edited: (data['edited'] as Timestamp)?.toDate() ?? null,
       name: data['name'] ?? '',
       description: data['description'] ?? '',
       resolution: data['resolution'] ?? 5,
@@ -38,8 +40,8 @@ class PrismSurveySet {
       yName: data['y_name'] ?? '',
       yDescription: data['y_description'] ?? '',
       prismSurveys: (data['prismSurveys'] as List ?? [])
-          .map((value) => User.fromMap(value))
-          .toList(),
+          // .map((value) => User.fromMap(value))
+          // .toList(),
     );
   }
 }

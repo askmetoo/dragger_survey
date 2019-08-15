@@ -34,6 +34,9 @@ class App extends StatelessWidget {
         ChangeNotifierProvider<PrismSurveyBloc>.value(
           value: PrismSurveyBloc(),
         ),
+        ChangeNotifierProvider<PrismSurveySetBloc>.value(
+          value: PrismSurveySetBloc(),
+        ),
         ChangeNotifierProvider<FabBloc>.value(
           value: FabBloc(),
         )
