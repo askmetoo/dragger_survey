@@ -36,6 +36,7 @@ dependencies:
   rxdart: ^0.22.1
 
   page_transition: "^1.1.4"
+  date_format:
 
 
 

@@ -34,10 +34,12 @@ class LoginScreen extends StatelessWidget {
   Widget _getSignInButtons({BuildContext context, SignInBloc bloc}) {
     print(
         "=====> in _getSignInButtons - bloc.signedInUser: ${bloc.signedInUser}");
-    if (bloc.signedInUser == null) {
-      return _signInButton(context: context, bloc: bloc);
-    }
+    if ( (bloc?.signedInUser) != null) {
+    print("-----> before _singOutButton - bloc.signedInUser: ${bloc.signedInUser}");
     return _singOutButton(context: context, bloc: bloc);
+    }
+    print("-----> before _signInButton - bloc.signedInUser: ${bloc.signedInUser}");
+    return _signInButton(context: context, bloc: bloc);
   }
 
   Widget _signInButton({BuildContext context, SignInBloc bloc}) {
@@ -71,7 +73,7 @@ class LoginScreen extends StatelessWidget {
   Widget _singOutButton({BuildContext context, SignInBloc bloc}) {
     return OutlineButton(
       splashColor: Styles.colorAecondary,
-      onPressed: () async {
+      onPressed: () {
         bloc.signOut();
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),

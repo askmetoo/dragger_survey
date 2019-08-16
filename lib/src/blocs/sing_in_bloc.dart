@@ -23,7 +23,11 @@ class SignInBloc extends ChangeNotifier {
 
   final StreamController<bool> _isLoadingController = StreamController<bool>();
   void _setIsLoading(bool isLoading) => _isLoadingController.add(isLoading);
-  void signOut() => AuthService().signOut();
+  void signOut() { 
+    AuthService().signOut();
+    signedInUser = null;
+    notifyListeners();
+  }
   void dispose() => _isLoadingController.close();
 
   /// CURRENTLY NOT WORKING ////

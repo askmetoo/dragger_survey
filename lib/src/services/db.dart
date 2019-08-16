@@ -42,6 +42,15 @@ class Collection<T> {
        .toList();
  }
 
+ Future<List<DocumentSnapshot>> getDocuments() async {
+   var snapshots = await ref.getDocuments();
+   return snapshots.documents;
+ }
+
+ Stream<QuerySnapshot> streamDocuments() {
+   return ref.snapshots();
+ }
+
  Stream<List<T>> streamData() {
    return ref
        .snapshots()
