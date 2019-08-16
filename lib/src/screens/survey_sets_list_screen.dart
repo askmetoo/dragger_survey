@@ -17,6 +17,17 @@ class SurveySetsListScreen extends StatelessWidget {
         title: Text("Survey Sets"),
       ),
       body: _buildSetsListView(surveySetsBloc, context),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Styles.colorSecondary,
+        child: Icon(
+          Icons.library_add,
+          color: Styles.colorDarkerGreen,
+        ),
+        tooltip: "Add new Survey Set",
+        onPressed: () {
+          print("Add new Survey Set button pressed");
+        },
+      ),
     );
   }
 
@@ -34,6 +45,8 @@ class SurveySetsListScreen extends StatelessWidget {
             return Center(
               child: CircularProgressIndicator(),
             );
+          case ConnectionState.active:
+          case ConnectionState.done:
           default:
             return ListView(
                 children: surveySetSnapshot.data.documents
@@ -44,7 +57,17 @@ class SurveySetsListScreen extends StatelessWidget {
                   style: Styles.textListTitle,
                 ),
                 subtitle: Text(
-                  "Created: ${ formatDate(snapshot['created'].toDate(), [dd, '. ', MM, ' ', yyyy, ', ', HH, ':', nn]) }",
+                  "Created: ${formatDate(snapshot['created'].toDate(), [
+                    dd,
+                    '. ',
+                    MM,
+                    ' ',
+                    yyyy,
+                    ', ',
+                    HH,
+                    ':',
+                    nn
+                  ])}",
                   style: Styles.textListContent,
                 ),
               );

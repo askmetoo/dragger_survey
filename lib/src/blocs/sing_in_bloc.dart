@@ -30,25 +30,4 @@ class SignInBloc extends ChangeNotifier {
   }
   void dispose() => _isLoadingController.close();
 
-  /// CURRENTLY NOT WORKING ////
-//  SignInBloc({@required this.auth});
-//  final AuthService auth;
-//
-//  final StreamController<bool> _isLoadingController = StreamController<bool>();
-//  Stream<bool> get isLoadingStream => _isLoadingController.stream;
-//
-//  _setIsLoading(bool isLoading) => _isLoadingController.add(isLoading);
-//
-//  Future<void> singInWithGoogle() async {
-//    try {
-//      _setIsLoading(true);
-//      return await auth.googleSignIn();
-//    } catch (e) {
-//      rethrow;
-//    } finally {
-//      _setIsLoading(false);
-//    }
-//  }
-//
-//  void dispose() => _isLoadingController.close();
 }

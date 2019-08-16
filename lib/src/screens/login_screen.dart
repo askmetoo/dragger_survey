@@ -8,7 +8,6 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
 
-    print(signInBloc.signedInUser);
     return Scaffold(
       body: Container(
         color: Styles.appBackground,
@@ -23,6 +22,7 @@ class LoginScreen extends StatelessWidget {
               SizedBox(
                 height: 50,
               ),
+              _backToSurveyListButton(context: context, bloc: signInBloc),
               _getSignInButtons(context: context, bloc: signInBloc)
             ],
           ),
@@ -32,53 +32,59 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _getSignInButtons({BuildContext context, SignInBloc bloc}) {
-    print(
-        "=====> in _getSignInButtons - bloc.signedInUser: ${bloc.signedInUser}");
-    if ( (bloc?.signedInUser) != null) {
-    print("-----> before _singOutButton - bloc.signedInUser: ${bloc.signedInUser}");
-    return _singOutButton(context: context, bloc: bloc);
+    if ((bloc?.signedInUser) != null) {
+      return _singOutButton(context: context, bloc: bloc);
     }
-    print("-----> before _signInButton - bloc.signedInUser: ${bloc.signedInUser}");
     return _signInButton(context: context, bloc: bloc);
   }
 
   Widget _signInButton({BuildContext context, SignInBloc bloc}) {
-    return OutlineButton(
-      splashColor: Styles.colorAecondary,
-      onPressed: () async {
-        await bloc.signInWithGoogle();
-        print(
-            "----> In _signInButton - bloc.signedInUser: ${bloc.signedInUser}");
-        Navigator.pushNamed(context, '/home');
-      },
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-      highlightElevation: 0,
-      borderSide: BorderSide(color: Styles.colorAecondary),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              "Sign-In with Google",
-              style: TextStyle(fontSize: 20, color: Styles.colorAecondary),
-            )
-          ],
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16.0),
+          child: Text(
+            "You are currently not signed-in.",
+            style: TextStyle(
+              color: Styles.colorSecondary,
+            ),
+          ),
         ),
-      ),
+        OutlineButton(
+          splashColor: Styles.colorSecondary,
+          onPressed: () async {
+            await bloc.signInWithGoogle();
+            Navigator.pushNamed(context, '/home');
+          },
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+          highlightElevation: 0,
+          borderSide: BorderSide(color: Styles.colorSecondary),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "Sign-In with Google",
+                  style: TextStyle(fontSize: 20, color: Styles.colorSecondary),
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
   Widget _singOutButton({BuildContext context, SignInBloc bloc}) {
-    return OutlineButton(
-      splashColor: Styles.colorAecondary,
+    return FlatButton(
+      splashColor: Styles.colorSecondary,
       onPressed: () {
         bloc.signOut();
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-      highlightElevation: 0,
-      borderSide: BorderSide(color: Styles.colorAecondary),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: Row(
@@ -87,7 +93,35 @@ class LoginScreen extends StatelessWidget {
           children: <Widget>[
             Text(
               "Sign-Out",
-              style: TextStyle(fontSize: 20, color: Styles.colorAecondary),
+              style: TextStyle(fontSize: 20, color: Styles.colorSecondary),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _backToSurveyListButton({BuildContext context, SignInBloc bloc}) {
+    if (bloc.signedInUser == null) {
+      return Container();
+    }
+    return OutlineButton(
+      splashColor: Styles.colorSecondary,
+      onPressed: () async {
+        Navigator.pushNamed(context, '/home');
+      },
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+      highlightElevation: 0,
+      borderSide: BorderSide(color: Styles.colorSecondary),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              "Back to Survey Sets List",
+              style: TextStyle(fontSize: 20, color: Styles.colorSecondary),
             )
           ],
         ),
