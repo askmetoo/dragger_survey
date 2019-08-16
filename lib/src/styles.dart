@@ -33,7 +33,7 @@ class Styles {
   );
   static const colorAttention = Color(0xffff0200);
   static const colorPrimary = Color(0xff119da4);
-  static const colorAecondary = Color(0xfff7b71d);
+  static const colorSecondary = Color(0xfff7b71d);
   static const colorText = Color(0xff0e2431);
 
   static const colorYellowGreen = Color(0xffffff7f);
