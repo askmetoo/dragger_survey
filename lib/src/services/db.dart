@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dragger_survey/src/services/models.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 import 'dart:async';
 import './globals.dart';
@@ -45,6 +47,32 @@ class Collection<T> {
  Future<List<DocumentSnapshot>> getDocuments() async {
    var snapshots = await ref.getDocuments();
    return snapshots.documents;
+ }
+
+ createDocumentWithValues({
+   @required name, 
+   description = "",
+   resolution = 5,
+   @required xName,
+   xDescription = "",
+   @required yName,
+   yDescription = "",
+   }) async {
+   return _db.collection(path).add({
+       "created": DateTime.now(),
+       "name": name,
+       "description": description,
+       "resolution": resolution,
+       "xName": xName,
+       "xDescription": xDescription,
+       "yName": yName,
+       "yDescription": yDescription,
+   });
+ }
+
+ createDocumentWithObject({path, object}) {
+   _db.collection(path).add(object);
+   print("3) ----> Form values have been sent to data base");
  }
 
  Stream<QuerySnapshot> streamDocuments() {
@@ -93,3 +121,5 @@ class UserData<T> {
    return ref.upsert(data);
  }
 }
+
+

@@ -10,7 +10,7 @@ class PrismSurveyBloc extends ChangeNotifier {
   String _askedPerson = 'Anonymous';
   int _yValue = 0;
   int _xValue = 0;
-  dynamic _users = {};
+  dynamic _users = [];
 
   PrismSurvey _currentPrismSurveyData = PrismSurvey();
 

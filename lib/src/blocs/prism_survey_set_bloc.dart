@@ -4,15 +4,14 @@ import 'package:flutter/material.dart';
 
 class PrismSurveySetBloc extends ChangeNotifier{
 
-  Future<List<PrismSurveySet>> get collectionPrismSurveySets {
+  bool _formIsEmpty = true;
 
-    print("OOOOO===> In PrismSurveySetBloc - get allPrismSurveySets");
+  Future<List<PrismSurveySet>> get collectionPrismSurveySets {
     return Collection<PrismSurveySet>(path: 'surveySets')
     .getData();  
   }
 
   Future<PrismSurveySet> get documentPrismSurveySets {
-    print("OOOOO===> In PrismSurveySetBloc - get allPrismSurveySets");
     return Document<PrismSurveySet>(path: 'surveySets')
     .getData();  
   }
@@ -22,11 +21,16 @@ class PrismSurveySetBloc extends ChangeNotifier{
   }
 
   Future<PrismSurveySet> getPrismSurveySetByUid({uid}) {
-    print("In PrismSurveySetBloc - getPrismSurveySetByUid - uid: $uid");
     return null;
   }
 
   Stream<QuerySnapshot> get streamPrismSurveySets {
     return Collection<PrismSurveySet>(path: 'surveySets').streamDocuments();
   }
+
+  addPrismSurveySetToDb({PrismSurveySet surveySet}) {
+    Collection().createDocumentWithObject(path: 'surveySet', object: surveySet );
+    print("2) ----> Form values have been sent to data base");
+  }
+
 }

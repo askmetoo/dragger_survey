@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/styles.dart';
+import 'package:dragger_survey/src/widgets/custom_show_dialog.dart';
+import 'package:dragger_survey/src/widgets/survey_set_form.dart';
 import 'package:flutter/material.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +28,25 @@ class SurveySetsListScreen extends StatelessWidget {
         tooltip: "Add new Survey Set",
         onPressed: () {
           print("Add new Survey Set button pressed");
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  elevation: 10,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(3),
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
+                  ),
+                  title: Text("New survey set"),
+                  backgroundColor: Styles.colorSecondary,
+                  contentTextStyle: TextStyle(color: Styles.colorText),
+                  content: SurveySetForm(),
+                );
+              });
         },
       ),
     );
