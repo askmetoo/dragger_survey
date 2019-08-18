@@ -122,7 +122,8 @@ class User {
   DateTime edited;
   String firstName;
   String lastName;
-  String username;
+  String createdByUser;
+  String lastEditedByUser;
   String password;
   String email;
   String displayName;
@@ -139,7 +140,8 @@ class User {
     this.edited,
     this.firstName,
     this.lastName,
-    this.username,
+    this.createdByUser,
+    this.lastEditedByUser,
     this.password,
     this.email,
     this.displayName,
@@ -158,7 +160,8 @@ class User {
       edited: data["edited"] ?? '',
       firstName: data["first_name"] ?? '',
       lastName: data["last_name"] ?? '',
-      username: data["username"] ?? '',
+      createdByUser: data["createdByUser"] ?? '',
+      lastEditedByUser: data["lastEditedByUser"] ?? '',
       password: data["password"] ?? '',
       email: data["email"] ?? '',
       displayName: data["display_name"] ?? '',

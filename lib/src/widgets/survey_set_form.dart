@@ -33,6 +33,11 @@ class _SurveySetFormState extends State<SurveySetForm> {
   // When edited
   DateTime _edited;
 
+  // Meta information
+  String _createdByUser;
+  String _lastEditedByUser;
+  String _team;
+
   @override
   Widget build(BuildContext context) {
     final PrismSurveySetBloc prismSurveySetBloc =
@@ -148,6 +153,10 @@ class _SurveySetFormState extends State<SurveySetForm> {
 
   Widget buildSubmitButton(
       {@required bloc, @required context, @required formKey}) {
+    
+    final SignInBloc signInBloc =
+        Provider.of<SignInBloc>(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: SizedBox(
@@ -160,7 +169,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
           textColor: Colors.white,
           onPressed: _formHasChanged
               ? () {
-                  _buttonOnPressed(formKey: formKey, bloc: bloc);
+                  _buttonOnPressed(formKey: formKey, surveySetBloc: bloc, signInBloc: signInBloc);
                   print("Submit button presssed");
                   Navigator.of(context).pop();
                 }
@@ -171,7 +180,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
     );
   }
 
-  void _sendFormValuesToBloc({@required PrismSurveySetBloc bloc}) {
+  void _sendFormValuesToBloc({@required PrismSurveySetBloc surveySetBloc, @required SignInBloc signInBloc}) {
     Map<String, dynamic> surveySet = {
       "created": _created,
       "name": _name,
@@ -181,6 +190,8 @@ class _SurveySetFormState extends State<SurveySetForm> {
       "xDescription": _xDescription,
       "yName": _yName,
       "yDescription": _yDescription,
+      "createdByUser": _createdByUser,
+      "lastEditedByUser": _lastEditedByUser,
     };
     print("===============================");
     print("Values sent to bloc:");
@@ -194,16 +205,17 @@ class _SurveySetFormState extends State<SurveySetForm> {
     print("_yDescription: $_yDescription");
     print("================================");
 
-    bloc.addPrismSurveySetToDb(surveySet: surveySet);
+    surveySetBloc.addPrismSurveySetToDb(surveySet: surveySet);
     print("2) ----> Form values have been sent to bloc");
   }
 
-  void _buttonOnPressed({formKey, @required bloc}) {
+  void _buttonOnPressed({formKey, @required surveySetBloc, @required SignInBloc signInBloc}) {
     if (formKey.currentState.validate()) {
       print("1a) ----> Form has been validated.");
+      _createdByUser = signInBloc.signedInUser.uid;
       formKey.currentState.save();
 
-      _sendFormValuesToBloc(bloc: bloc);
+      _sendFormValuesToBloc(surveySetBloc: surveySetBloc, signInBloc: signInBloc);
       print("1b) ----> Sending form values to bloc.");
 
       print("1c) ----> Sent data:");
