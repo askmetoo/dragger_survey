@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/services/services.dart';
+import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
@@ -52,12 +53,12 @@ class _SurveySetFormState extends State<SurveySetForm> {
           });
         }
       },
-      child: buildForm(
+      child: _buildForm(
           bloc: prismSurveySetBloc, context: context, formKey: _formKey),
     );
   }
 
-  Widget buildForm({@required bloc, @required context, @required formKey}) {
+  Widget _buildForm({@required bloc, @required context, @required formKey}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -142,7 +143,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
         ),
 
         
-        buildSubmitButton(
+        _buildFormButton(
           bloc: bloc,
           context: context,
           formKey: formKey,
@@ -151,7 +152,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
     );
   }
 
-  Widget buildSubmitButton(
+  Widget _buildFormButton(
       {@required bloc, @required context, @required formKey}) {
     
     final SignInBloc signInBloc =
@@ -159,25 +160,47 @@ class _SurveySetFormState extends State<SurveySetForm> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: SizedBox(
-        width: double.infinity,
-        child: RaisedButton(
-          disabledColor: Colors.orange.shade50,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          color: Colors.orange,
-          textColor: Colors.white,
-          onPressed: _formHasChanged
-              ? () {
-                  _buttonOnPressed(formKey: formKey, surveySetBloc: bloc, signInBloc: signInBloc);
-                  print("Submit button presssed");
-                  Navigator.of(context).pop();
-                }
-              : null,
-          child: Text('Submit'),
-        ),
+      child: Column(
+        children: <Widget>[
+          _buildSubmitButton(formKey, bloc, signInBloc, context),
+          _buildCancelButton(context)
+        ],
       ),
     );
+  }
+
+  SizedBox _buildSubmitButton(formKey, bloc, SignInBloc signInBloc, context) {
+    return SizedBox(
+          width: double.infinity,
+          child: FlatButton(
+            disabledColor: Colors.orange.shade50.withOpacity(0.4),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            color: Colors.orange,
+            textColor: Colors.white,
+            onPressed: _formHasChanged
+                ? () {
+                    _buttonOnPressed(formKey: formKey, surveySetBloc: bloc, signInBloc: signInBloc);
+                    print("Submit button presssed");
+                    Navigator.of(context).pop();
+                  }
+                : null,
+            child: Text('Submit'),
+          ),
+        );
+  }
+  SizedBox _buildCancelButton(context) {
+    return SizedBox(
+          width: double.infinity,
+          child: FlatButton(
+            textColor: Styles.colorPrimary,
+            onPressed: () {
+                    print("Cacel button presssed");
+                    Navigator.of(context).pop();
+                  },
+            child: Text('Cancel'),
+          ),
+        );
   }
 
   void _sendFormValuesToBloc({@required PrismSurveySetBloc surveySetBloc, @required SignInBloc signInBloc}) {
@@ -203,6 +226,8 @@ class _SurveySetFormState extends State<SurveySetForm> {
     print("_xDescription: $_xDescription");
     print("_yName: $_yName");
     print("_yDescription: $_yDescription");
+    print("_createdByUser: $_createdByUser");
+    print("_lastEditedByUser: $_lastEditedByUser");
     print("================================");
 
     surveySetBloc.addPrismSurveySetToDb(surveySet: surveySet);
@@ -228,6 +253,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
       print("_xDescription: $_xDescription");
       print("_xDescription: $_xDescription");
       print("_yDescription: $_yDescription");
+      print("_createdByUser: $_createdByUser");
     }
   }
 }
