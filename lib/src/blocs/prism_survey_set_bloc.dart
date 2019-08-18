@@ -28,8 +28,9 @@ class PrismSurveySetBloc extends ChangeNotifier{
     return Collection<PrismSurveySet>(path: 'surveySets').streamDocuments();
   }
 
-  addPrismSurveySetToDb({PrismSurveySet surveySet}) {
-    Collection().createDocumentWithObject(path: 'surveySet', object: surveySet );
+  addPrismSurveySetToDb({Map<String, dynamic> surveySet}) {
+    Collection(path: "surveySets").createDocumentWithObject(object: surveySet);
+    // Collection().createDocumentWithObject(documentPath: "surveySet", object: surveySet );
     print("2) ----> Form values have been sent to data base");
   }
 

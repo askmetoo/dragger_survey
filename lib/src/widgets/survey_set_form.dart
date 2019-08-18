@@ -18,7 +18,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
   String _id;
 
   // required
-  String _created = DateTime.now().toUtc().toIso8601String();
+  DateTime _created = DateTime.now().toUtc();
   String _name;
   int _resolution;
   String _xName;
@@ -47,72 +47,107 @@ class _SurveySetFormState extends State<SurveySetForm> {
           });
         }
       },
-      child: buildForm(bloc: prismSurveySetBloc),
+      child: buildForm(
+          bloc: prismSurveySetBloc, context: context, formKey: _formKey),
     );
   }
 
-  Widget buildForm({@required bloc}) {
+  Widget buildForm({@required bloc, @required context, @required formKey}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        buildTextFormField(
-          attribute: _name,
-          labelText: "Survey Name",
-          hintText: "Please provide a meaningful name",
-          validatorFunction: (value) {
+        TextFormField(
+          textInputAction: TextInputAction.next,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            labelText: "Survey Name",
+            hintText: "Please provide a meaningful name",
+          ),
+          // initialValue: attribute,
+          validator: (value) {
             if (value.isEmpty) {
               return 'Please enter a name';
             }
             return null;
           },
+          onSaved: (value) => _name = value,
         ),
-        buildTextFormField(
-          attribute: _description,
-          labelText: "Survey set description",
-          hintText: "The description of the prism survey",
-          validatorFunction: (value) {},
+        TextFormField(
+          textInputAction: TextInputAction.next,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            labelText: "Survey set description",
+            hintText: "The description of the prism survey",
+          ),
+          // initialValue: attribute,
+          onSaved: (value) => _description = value,
         ),
         SelectGranularity(),
-        buildTextFormField(
-          attribute: _xName,
-          labelText: "Label for x-axis",
-          hintText: "Should be easy to understand.",
-          validatorFunction: (value) {
+        TextFormField(
+          textInputAction: TextInputAction.next,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            labelText: "Label for x-axis",
+            hintText: "Should be easy to understand",
+          ),
+          // initialValue: attribute,
+          validator: (value) {
             if (value.isEmpty) {
-              return 'Please enter an x-axis name';
+              return 'Please enter a label';
             }
             return null;
           },
+          onSaved: (value) => _xName = value,
         ),
-        buildTextFormField(
-          attribute: _xDescription,
-          labelText: "X-axis desciption",
-          hintText: "What does the x-axis stand for?",
-          validatorFunction: (value) {},
+        TextFormField(
+          textInputAction: TextInputAction.next,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            labelText: "X-axis desciption",
+            hintText: "What does the x-axis stand for",
+          ),
+          // initialValue: attribute,
+          onSaved: (value) => _xDescription = value,
         ),
-        buildTextFormField(
-          attribute: _yName,
-          labelText: "Label for y-axis",
-          hintText: "Should be easy to understand.",
-          validatorFunction: (value) {
+        TextFormField(
+          textInputAction: TextInputAction.next,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            labelText: "Label for y-axis",
+            hintText: "Should be easy to understand",
+          ),
+          // initialValue: attribute,
+          validator: (value) {
             if (value.isEmpty) {
-              return 'Please enter an y-axis name';
+              return 'Please enter a label';
             }
             return null;
           },
+          onSaved: (value) => _yName = value,
         ),
-        buildTextFormField(
-          attribute: _yDescription,
-          labelText: "Y-axis desciption",
-          hintText: "What does the y-axis stand for?",
-          validatorFunction: (value) {},
+        TextFormField(
+          textInputAction: TextInputAction.next,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            labelText: "Y-axis desciption",
+            hintText: "What does the y-axis stand for",
+          ),
+          // initialValue: attribute,
+          onSaved: (value) => _yDescription = value,
         ),
-        buildSubmitButton(bloc: bloc),
+
+        
+        buildSubmitButton(
+          bloc: bloc,
+          context: context,
+          formKey: formKey,
+        ),
       ],
     );
   }
 
-  Widget buildSubmitButton({@required bloc}) {
+  Widget buildSubmitButton(
+      {@required bloc, @required context, @required formKey}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: SizedBox(
@@ -125,8 +160,9 @@ class _SurveySetFormState extends State<SurveySetForm> {
           textColor: Colors.white,
           onPressed: _formHasChanged
               ? () {
-                  _buttonOnPressed(formKey: _formKey, bloc: bloc);
-                  Navigator.pop(context);
+                  _buttonOnPressed(formKey: formKey, bloc: bloc);
+                  print("Submit button presssed");
+                  Navigator.of(context).pop();
                 }
               : null,
           child: Text('Submit'),
@@ -135,64 +171,51 @@ class _SurveySetFormState extends State<SurveySetForm> {
     );
   }
 
-  TextFormField buildTextFormField({
-    @required attribute,
-    @required String labelText,
-    String hintText,
-    validatorFunction
-  }) {
-    return TextFormField(
-      textInputAction: TextInputAction.next,
-      keyboardType: TextInputType.text,
-      decoration: InputDecoration(
-        labelText: labelText,
-        hintText: hintText ?? '',
-      ),
-      initialValue: attribute,
-      validator: validatorFunction,
-      onSaved: (value) {
-        setState(() {
-          attribute = value;
-        });
-      },
-    );
+  void _sendFormValuesToBloc({@required PrismSurveySetBloc bloc}) {
+    Map<String, dynamic> surveySet = {
+      "created": _created,
+      "name": _name,
+      "description": _description,
+      "resolution": _resolution,
+      "xName": _xName,
+      "xDescription": _xDescription,
+      "yName": _yName,
+      "yDescription": _yDescription,
+    };
+    print("===============================");
+    print("Values sent to bloc:");
+    print("_created: $_created");
+    print("_name: $_name");
+    print("_description: $_description");
+    print("_resolution: $_resolution");
+    print("_xName: $_xName");
+    print("_xDescription: $_xDescription");
+    print("_yName: $_yName");
+    print("_yDescription: $_yDescription");
+    print("================================");
+
+    bloc.addPrismSurveySetToDb(surveySet: surveySet);
+    print("2) ----> Form values have been sent to bloc");
   }
 
-  void _sendFormValuesToBloc({@required bloc}) {
-      PrismSurveySet surveySet = PrismSurveySet(
-        created: _created,
-        name: _name,
-        description: _description,
-        resolution: _resolution,
-        xName: _xName,
-        xDescription: _xDescription,
-        yName: _yName,
-        yDescription: _yDescription,
-      );
-
-      bloc.addPrismSurveySetToDb(surveySet: surveySet);
-      print("2) ----> Form values have been sent to bloc");
-    }
-    
   void _buttonOnPressed({formKey, @required bloc}) {
-      if (formKey.currentState.validate()) {
-        print("1a) ----> Form has been validated.");
-        formKey.currentState.save();
+    if (formKey.currentState.validate()) {
+      print("1a) ----> Form has been validated.");
+      formKey.currentState.save();
 
-        _sendFormValuesToBloc(bloc: bloc);
-        print("1b) ----> Sending form values to bloc.");
+      _sendFormValuesToBloc(bloc: bloc);
+      print("1b) ----> Sending form values to bloc.");
 
-        print("1c) ----> Sent data:");
-        print("_created: $_created");
-        print("_name: $_name");
-        print("_description: $_description");
-        print("_resolution: $_resolution");
-        print("_xName: $_xName");
-        print("_yName: $_yName");
-        print("_xDescription: $_xDescription");
-        print("_xDescription: $_xDescription");
-        print("_yDescription: $_yDescription");
-      }
+      print("1c) ----> Sent data:");
+      print("_created: $_created");
+      print("_name: $_name");
+      print("_description: $_description");
+      print("_resolution: $_resolution");
+      print("_xName: $_xName");
+      print("_yName: $_yName");
+      print("_xDescription: $_xDescription");
+      print("_xDescription: $_xDescription");
+      print("_yDescription: $_yDescription");
     }
-  
+  }
 }

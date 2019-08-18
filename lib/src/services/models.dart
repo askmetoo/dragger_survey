@@ -118,8 +118,8 @@ class Team {
 
 class User {
   String uid;
-  String created;
-  String edited;
+  DateTime created;
+  DateTime edited;
   String firstName;
   String lastName;
   String username;

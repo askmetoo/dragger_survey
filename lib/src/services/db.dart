@@ -70,9 +70,26 @@ class Collection<T> {
    });
  }
 
- createDocumentWithObject({path, object}) {
-   _db.collection(path).add(object);
+ createDocumentWithObject({object}) async {
+   try {
+     debugPrint("----> In TRY of createDocumentWithObject");
+     ref.add(object as Map<String, dynamic>);
+     debugPrint("----> In TRY of createDocumentWithObject - after calling collection");
+   } catch (error) {
+     print("!!! ----> In db.dart - ERROR at createDocumentWithObject: $error");
+   }
    print("3) ----> Form values have been sent to data base");
+
+
+
+  //  try { 
+  //    debugPrint("----> In TRY of createDocumentWithObject");
+  //    _db.collection(documentPath).add(object);
+  //    debugPrint("----> In TRY of createDocumentWithObject - after calling collection");
+  //  } catch (error) {
+  //    print("!!! ----> In db.dart - ERROR at createDocumentWithObject: $error");
+  //  }
+  //  print("3) ----> Form values have been sent to data base");
  }
 
  Stream<QuerySnapshot> streamDocuments() {
