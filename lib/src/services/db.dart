@@ -49,6 +49,10 @@ class Collection<T> {
    return snapshots.documents;
  }
 
+ Future<DocumentSnapshot> getDocument(id) async {
+   return await ref.document('$id').get();
+ }
+
  createDocumentWithValues({
    @required name, 
    description = "",

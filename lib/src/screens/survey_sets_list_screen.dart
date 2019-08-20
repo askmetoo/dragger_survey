@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dragger_survey/src/screens/survey_set_details_screen.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/survey_set_form.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class SurveySetsListScreen extends StatelessWidget {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
 
     return Scaffold(
-      backgroundColor: Styles.appBackground,
+      backgroundColor: Styles.drg_colorAppBackground,
       appBar: AppBar(
         title: Text("Survey Sets"),
       ),
@@ -24,10 +25,10 @@ class SurveySetsListScreen extends StatelessWidget {
         context: context,
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Styles.colorSecondary,
+        backgroundColor: Styles.drg_colorSecondary,
         child: Icon(
           Icons.library_add,
-          color: Styles.colorDarkerGreen,
+          color: Styles.drg_colorDarkerGreen,
         ),
         tooltip: "Add new Survey Set",
         onPressed: () {
@@ -46,8 +47,8 @@ class SurveySetsListScreen extends StatelessWidget {
                     ),
                   ),
                   title: Text("New survey set"),
-                  backgroundColor: Styles.colorSecondary,
-                  contentTextStyle: TextStyle(color: Styles.colorText),
+                  backgroundColor: Styles.drg_colorSecondary,
+                  contentTextStyle: TextStyle(color: Styles.drg_colorText),
                   content: SurveySetForm(),
                 );
               });
@@ -84,9 +85,12 @@ class SurveySetsListScreen extends StatelessWidget {
                 direction: DismissDirection.endToStart,
                 onDismissed: (direction) => print('------>>> Item ${snapshot?.data['name']} is dismissed'),
                 child: ListTile(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/surveysetscaffold', arguments: {"id": "${snapshot?.documentID}"});
+                  },
                   title: Text(
                     "Name: ${snapshot['name']}, id: ${snapshot.documentID}",
-                    style: Styles.textListTitle,
+                    style: Styles.drg_textListTitle,
                   ),
                   subtitle: Text(
                     "Created: ${formatDate(snapshot['created'].toDate(), [
@@ -100,7 +104,7 @@ class SurveySetsListScreen extends StatelessWidget {
                       ':',
                       nn
                     ])} by ${signInBloc.signedInUser?.displayName}",
-                    style: Styles.textListContent,
+                    style: Styles.drg_textListContent,
                   ),
                 ),
               );

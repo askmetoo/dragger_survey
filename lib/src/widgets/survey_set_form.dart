@@ -7,11 +7,19 @@ import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/widgets/select_granularity.dart';
 
 class SurveySetForm extends StatefulWidget {
+  // For FocusScope in initState
+  // final BuildContext context;
+
+  // SurveySetForm({this.context});
+
   @override
   _SurveySetFormState createState() => _SurveySetFormState();
 }
 
 class _SurveySetFormState extends State<SurveySetForm> {
+  
+  // BuildContext context;
+
   final _formKey = GlobalKey<FormState>();
   bool _formHasChanged = false;
 
@@ -21,7 +29,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
   // required
   DateTime _created = DateTime.now().toUtc();
   String _name;
-  int _resolution;
+  int _resolution = 7;
   String _xName;
   String _yName;
 
@@ -39,12 +47,50 @@ class _SurveySetFormState extends State<SurveySetForm> {
   String _lastEditedByUser;
   String _team;
 
+  FocusNode firstFocus;
+  FocusNode secondFocus;
+  FocusNode thirdFocus;
+  FocusNode fourthFocus;
+  FocusNode fifthFocus;
+  FocusNode sixthFocus;
+  
+
+  @override
+  void initState() {
+    super.initState();
+    firstFocus = FocusNode();
+    secondFocus = FocusNode();
+    thirdFocus = FocusNode();
+    fourthFocus = FocusNode();
+    fifthFocus = FocusNode();
+    sixthFocus = FocusNode();
+    // (() => FocusScope.of(context).requestFocus(_firstFocus))();
+    // focus = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    // Clean up the focus node when the Form is disposed.
+    firstFocus.dispose();
+    secondFocus.dispose();
+    thirdFocus.dispose();
+    fourthFocus.dispose();
+    fifthFocus.dispose();
+    sixthFocus.dispose();
+
+    super.dispose();
+  }
+  // _SurveySetFormState({context});
+
   @override
   Widget build(BuildContext context) {
     final PrismSurveySetBloc prismSurveySetBloc =
         Provider.of<PrismSurveySetBloc>(context);
+    
+    // FocusScope.of(context).requestFocus(firstFocus);
 
     return Form(
+
       key: _formKey,
       onChanged: () {
         if (_formKey.currentState.validate()) {
@@ -59,14 +105,23 @@ class _SurveySetFormState extends State<SurveySetForm> {
   }
 
   Widget _buildForm({@required bloc, @required context, @required formKey}) {
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        SelectGranularity(),
         TextFormField(
+          autofocus: true,
+          focusNode: firstFocus,
+          onEditingComplete: () =>
+                      FocusScope.of(context).requestFocus(secondFocus),
           textInputAction: TextInputAction.next,
           keyboardType: TextInputType.text,
+          style: Styles.drg_textFieldContent,
           decoration: InputDecoration(
+            labelStyle: TextStyle(color: Styles.drg_colorPrimary, fontSize: Styles.drg_fontSizeFloatingLabel),
             labelText: "Survey Name",
+            hintStyle: TextStyle(fontSize: Styles.drg_fontSizeHintText),
             hintText: "Please provide a meaningful name",
           ),
           // initialValue: attribute,
@@ -79,20 +134,28 @@ class _SurveySetFormState extends State<SurveySetForm> {
           onSaved: (value) => _name = value,
         ),
         TextFormField(
+          focusNode: secondFocus,
+          onEditingComplete: () =>
+                      FocusScope.of(context).requestFocus(thirdFocus),
           textInputAction: TextInputAction.next,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
+            labelStyle: TextStyle(color: Styles.drg_colorPrimary),
             labelText: "Survey set description",
             hintText: "The description of the prism survey",
           ),
           // initialValue: attribute,
           onSaved: (value) => _description = value,
         ),
-        SelectGranularity(),
+        
         TextFormField(
+          focusNode: thirdFocus,
+          onEditingComplete: () =>
+                      FocusScope.of(context).requestFocus(fourthFocus),
           textInputAction: TextInputAction.next,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
+            labelStyle: TextStyle(color: Styles.drg_colorPrimary),
             labelText: "Label for x-axis",
             hintText: "Should be easy to understand",
           ),
@@ -106,9 +169,13 @@ class _SurveySetFormState extends State<SurveySetForm> {
           onSaved: (value) => _xName = value,
         ),
         TextFormField(
+          focusNode: fourthFocus,
+          onEditingComplete: () =>
+                      FocusScope.of(context).requestFocus(fifthFocus),
           textInputAction: TextInputAction.next,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
+            labelStyle: TextStyle(color: Styles.drg_colorPrimary),
             labelText: "X-axis desciption",
             hintText: "What does the x-axis stand for",
           ),
@@ -116,9 +183,13 @@ class _SurveySetFormState extends State<SurveySetForm> {
           onSaved: (value) => _xDescription = value,
         ),
         TextFormField(
+          focusNode: fifthFocus,
+          onEditingComplete: () =>
+                      FocusScope.of(context).requestFocus(sixthFocus),
           textInputAction: TextInputAction.next,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
+            labelStyle: TextStyle(color: Styles.drg_colorPrimary),
             labelText: "Label for y-axis",
             hintText: "Should be easy to understand",
           ),
@@ -132,9 +203,13 @@ class _SurveySetFormState extends State<SurveySetForm> {
           onSaved: (value) => _yName = value,
         ),
         TextFormField(
+          focusNode: sixthFocus,
+          // onEditingComplete: () =>
+          //             FocusScope.of(context).requestFocus(_firstFocus),
           textInputAction: TextInputAction.next,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
+            labelStyle: TextStyle(color: Styles.drg_colorPrimary),
             labelText: "Y-axis desciption",
             hintText: "What does the y-axis stand for",
           ),
@@ -193,7 +268,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
     return SizedBox(
           width: double.infinity,
           child: FlatButton(
-            textColor: Styles.colorPrimary,
+            textColor: Styles.drg_colorPrimary,
             onPressed: () {
                     print("Cacel button presssed");
                     Navigator.of(context).pop();
@@ -204,11 +279,14 @@ class _SurveySetFormState extends State<SurveySetForm> {
   }
 
   void _sendFormValuesToBloc({@required PrismSurveySetBloc surveySetBloc, @required SignInBloc signInBloc}) {
+    final MatrixGranularityBloc granularityBloc =
+        Provider.of<MatrixGranularityBloc>(context);
+    
     Map<String, dynamic> surveySet = {
       "created": _created,
       "name": _name,
       "description": _description,
-      "resolution": _resolution,
+      "resolution": granularityBloc.matrixGranularity,
       "xName": _xName,
       "xDescription": _xDescription,
       "yName": _yName,

@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
                 );
               },
               child: Text('Push'),
-              color: Styles.colorLighterGreen,
+              color: Styles.drg_colorLighterGreen,
             ),
 //            ),FlatButton(
 //              onPressed: () {
@@ -42,7 +42,7 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      backgroundColor: Styles.appBackground,
+      backgroundColor: Styles.drg_colorAppBackground,
     );
   }
 }

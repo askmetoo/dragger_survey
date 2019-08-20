@@ -9,15 +9,22 @@ class SelectGranularity extends StatelessWidget {
     final MatrixGranularityBloc granularityBloc =
         Provider.of<MatrixGranularityBloc>(context);
 
+    final _textStyle = TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      color: Styles.drg_colorText,
+    );
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text("Choose matrix resolution", style: Styles.detailsCategoryText),
+        Text("Select granularyty for survey", style: Styles.drg_selectButton),
         Container(
           width: 16,
         ),
         DropdownButton(
+          style: _textStyle,
           value: granularityBloc.matrixGranularity,
           onChanged: (int newValue) {
             granularityBloc.setNewGranularity(granularity: newValue);

@@ -59,10 +59,19 @@ class App extends StatelessWidget {
                 type: PageTransitionType.fade,
               );
               break;
-            case '/surveysetscaffold':
+            case '/surveysetdetails':
+              var _id = settings.arguments;
               return PageTransition(
                 duration: Duration(milliseconds: 400),
-                child: SurveySetScaffoldScreen(),
+                type: PageTransitionType.fade,
+                child: SurveySetDetailsScreen(id: _id,),
+              );
+              break;
+            case '/surveysetscaffold':
+              var _id = settings.arguments;
+              return PageTransition(
+                duration: Duration(milliseconds: 400),
+                child: SurveySetScaffoldScreen(argument: _id,),
                 type: PageTransitionType.fade,
               );
               break;
@@ -87,13 +96,7 @@ class App extends StatelessWidget {
                 type: PageTransitionType.fade,
               );
               break;
-            case '/surveysetdetails':
-              return PageTransition(
-                duration: Duration(milliseconds: 400),
-                child: SurveySetDetailsScreen(),
-                type: PageTransitionType.fade,
-              );
-              break;
+            
             case '/draggerboard':
               return PageTransition(
                 duration: Duration(milliseconds: 400),
@@ -120,15 +123,22 @@ class App extends StatelessWidget {
         },
         theme: ThemeData(
           fontFamily: 'Nunito',
-          bottomAppBarTheme: BottomAppBarTheme(color: Styles.colorGreen),
+          bottomAppBarTheme: BottomAppBarTheme(color: Styles.drg_colorGreen),
           accentColor: Colors.orangeAccent[300],
           primaryColor: Colors.orange.shade700,
           textTheme: TextTheme(
-            body1: TextStyle(fontSize: 18),
+            body1: TextStyle(fontSize: 18, color: Styles.drg_colorText),
             body2: TextStyle(fontSize: 16),
             button: TextStyle(letterSpacing: 1.5, fontWeight: FontWeight.bold),
             headline: TextStyle(fontWeight: FontWeight.bold),
-            subhead: TextStyle(color: Colors.grey),
+            subhead: TextStyle(color: Styles.drg_colorText),
+            overline: TextStyle(color: Styles.drg_colorText),
+            subtitle: TextStyle(color: Styles.drg_colorText),
+            caption: TextStyle(color: Styles.drg_colorText),
+            display1: TextStyle(color: Styles.drg_colorText),
+            display2: TextStyle(color: Styles.drg_colorText),
+            display3: TextStyle(color: Styles.drg_colorText),
+            display4: TextStyle(color: Styles.drg_colorText),
           ),
           buttonTheme: ButtonThemeData(),
         ),

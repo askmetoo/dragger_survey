@@ -10,7 +10,7 @@ class LoginScreen extends StatelessWidget {
 
     return Scaffold(
       body: Container(
-        color: Styles.appBackground,
+        color: Styles.drg_colorAppBackground,
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.max,
@@ -46,12 +46,12 @@ class LoginScreen extends StatelessWidget {
           child: Text(
             "You are currently not signed-in.",
             style: TextStyle(
-              color: Styles.colorSecondary,
+              color: Styles.drg_colorSecondary,
             ),
           ),
         ),
         OutlineButton(
-          splashColor: Styles.colorSecondary,
+          splashColor: Styles.drg_colorSecondary,
           onPressed: () async {
             await bloc.signInWithGoogle();
             Navigator.pushNamed(context, '/home');
@@ -59,7 +59,7 @@ class LoginScreen extends StatelessWidget {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
           highlightElevation: 0,
-          borderSide: BorderSide(color: Styles.colorSecondary),
+          borderSide: BorderSide(color: Styles.drg_colorSecondary),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
             child: Row(
@@ -68,7 +68,7 @@ class LoginScreen extends StatelessWidget {
               children: <Widget>[
                 Text(
                   "Sign-In with Google",
-                  style: TextStyle(fontSize: 20, color: Styles.colorSecondary),
+                  style: TextStyle(fontSize: 20, color: Styles.drg_colorSecondary),
                 )
               ],
             ),
@@ -80,7 +80,7 @@ class LoginScreen extends StatelessWidget {
 
   Widget _singOutButton({BuildContext context, SignInBloc bloc}) {
     return FlatButton(
-      splashColor: Styles.colorSecondary,
+      splashColor: Styles.drg_colorSecondary,
       onPressed: () {
         bloc.signOut();
       },
@@ -93,7 +93,7 @@ class LoginScreen extends StatelessWidget {
           children: <Widget>[
             Text(
               "Sign-Out",
-              style: TextStyle(fontSize: 20, color: Styles.colorSecondary),
+              style: TextStyle(fontSize: 20, color: Styles.drg_colorSecondary),
             )
           ],
         ),
@@ -106,13 +106,13 @@ class LoginScreen extends StatelessWidget {
       return Container();
     }
     return OutlineButton(
-      splashColor: Styles.colorSecondary,
+      splashColor: Styles.drg_colorSecondary,
       onPressed: () async {
         Navigator.pushNamed(context, '/home');
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,
-      borderSide: BorderSide(color: Styles.colorSecondary),
+      borderSide: BorderSide(color: Styles.drg_colorSecondary),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: Row(
@@ -121,7 +121,7 @@ class LoginScreen extends StatelessWidget {
           children: <Widget>[
             Text(
               "Back to Survey Sets List",
-              style: TextStyle(fontSize: 20, color: Styles.colorSecondary),
+              style: TextStyle(fontSize: 20, color: Styles.drg_colorSecondary),
             )
           ],
         ),
