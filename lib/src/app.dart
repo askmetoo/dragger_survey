@@ -5,6 +5,7 @@ import 'package:dragger_survey/src/screens/survey_set_scaffold_screen.dart';
 import 'package:dragger_survey/src/screens/survey_sets_list_screen.dart';
 import 'package:dragger_survey/src/screens/login_screen.dart';
 import 'package:dragger_survey/src/screens/profile_screen.dart';
+import 'package:dragger_survey/src/screens/teams_screen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -36,6 +37,9 @@ class App extends StatelessWidget {
         ),
         ChangeNotifierProvider<PrismSurveySetBloc>.value(
           value: PrismSurveySetBloc(),
+        ),
+        ChangeNotifierProvider<TeamBloc>.value(
+          value: TeamBloc(),
         ),
         ChangeNotifierProvider<FabBloc>.value(
           value: FabBloc(),
@@ -75,10 +79,10 @@ class App extends StatelessWidget {
                 type: PageTransitionType.fade,
               );
               break;
-            case '/home':
+            case '/teams':
               return PageTransition(
                 duration: Duration(milliseconds: 400),
-                child: SurveySetsListScreen(),
+                child: TeamsScreen(),
                 type: PageTransitionType.fade,
               );
               break;

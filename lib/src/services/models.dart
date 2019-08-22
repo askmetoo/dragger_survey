@@ -81,18 +81,22 @@ class PrismSurvey {
 }
 
 class Team {
-  String uid;
+  String id;
   String created;
   String edited;
+  String createdByUser;
+  String lastEditedByUser;
   String name;
   String description;
   dynamic users;
   dynamic prismSurveySets;
 
   Team({
-    this.uid,
+    this.id,
     this.created,
     this.edited,
+    this.createdByUser,
+    this.lastEditedByUser,
     this.name,
     this.description,
     this.users,
@@ -101,10 +105,12 @@ class Team {
 
   factory Team.fromMap(Map data) {
     return Team(
-      uid: data["uid"] ?? '',
+      id: data["id"] ?? '',
       created: data["created"] ?? DateTime.now(),
       edited: data["edited"] ?? '',
       name: data["name"] ?? '',
+      createdByUser: data["createdByUser"] ?? '',
+      lastEditedByUser: data["lastEditedByUser"] ?? '',
       description: data["description"] ?? '',
       users: (data["users"] as List ?? [])
           .map((value) => User.fromMap(value))

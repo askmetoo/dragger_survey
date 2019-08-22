@@ -1,5 +1,7 @@
+import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/blocs/draggable_item_bloc.dart';
 import 'package:dragger_survey/src/blocs/prism_survey_bloc.dart';
+import 'package:dragger_survey/src/screens/splash_screen.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/dragger_board_button_row.dart';
 import 'package:dragger_survey/src/widgets/matrix_board.dart';
@@ -16,6 +18,12 @@ class _DraggerScreenState extends State<DraggerScreen> {
   Widget build(BuildContext context) {
     final PrismSurveyBloc prismSurveyBloc =
         Provider.of<PrismSurveyBloc>(context);
+    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
+    
+    if (signInBloc.signedInUser == null) {
+      print("User is not signed in!");
+      return SplashScreen();
+    }
 
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,

@@ -23,7 +23,7 @@ class LoginScreen extends StatelessWidget {
                 height: 50,
               ),
               _backToSurveyListButton(context: context, bloc: signInBloc),
-              _getSignInButtons(context: context, bloc: signInBloc)
+              _getSignInButtons(context: context, bloc: signInBloc),
             ],
           ),
         ),
@@ -54,7 +54,7 @@ class LoginScreen extends StatelessWidget {
           splashColor: Styles.drg_colorSecondary,
           onPressed: () async {
             await bloc.signInWithGoogle();
-            Navigator.pushNamed(context, '/home');
+            Navigator.pushNamed(context, '/teams');
           },
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
@@ -108,7 +108,7 @@ class LoginScreen extends StatelessWidget {
     return OutlineButton(
       splashColor: Styles.drg_colorSecondary,
       onPressed: () async {
-        Navigator.pushNamed(context, '/home');
+        Navigator.pushNamed(context, '/surveysetslist');
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,

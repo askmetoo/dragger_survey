@@ -23,6 +23,7 @@ class PrismSurveySetBloc extends ChangeNotifier{
   Future<DocumentSnapshot> getPrismSurveySetById({id}) {
     return Collection<PrismSurveySet>(path: 'surveySets').getDocument(id);
   }
+  
   Future<PrismSurveySet> getPrismSurveySetByUser({userId}) {
     return null;
   }
@@ -33,7 +34,6 @@ class PrismSurveySetBloc extends ChangeNotifier{
 
   addPrismSurveySetToDb({Map<String, dynamic> surveySet}) {
     Collection(path: "surveySets").createDocumentWithObject(object: surveySet);
-    // Collection().createDocumentWithObject(documentPath: "surveySet", object: surveySet );
     print("2) ----> Form values have been sent to data base");
   }
 

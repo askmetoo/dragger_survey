@@ -83,17 +83,16 @@ class Collection<T> {
      print("!!! ----> In db.dart - ERROR at createDocumentWithObject: $error");
    }
    print("3) ----> Form values have been sent to data base");
+ }
 
-
-
-  //  try { 
-  //    debugPrint("----> In TRY of createDocumentWithObject");
-  //    _db.collection(documentPath).add(object);
-  //    debugPrint("----> In TRY of createDocumentWithObject - after calling collection");
-  //  } catch (error) {
-  //    print("!!! ----> In db.dart - ERROR at createDocumentWithObject: $error");
-  //  }
-  //  print("3) ----> Form values have been sent to data base");
+ updateDocumentWithObject({object, id}) async {
+   try {
+     ref.document( '$id').updateData(object);
+   } catch (error) {
+     print('Error occured while updating data: $error');
+   } finally {
+     print("End of Update");
+   }
  }
 
  Stream<QuerySnapshot> streamDocuments() {
@@ -105,6 +104,10 @@ class Collection<T> {
        .snapshots()
        .map((list) => list.documents.map((doc) => Global.models[T] as T));
  }
+
+  deleteById(id) {
+    ref.document('$id').delete();
+  }
 }
 
 class UserData<T> {

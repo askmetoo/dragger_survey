@@ -1,4 +1,5 @@
 import 'package:dragger_survey/src/blocs/blocs.dart';
+import 'package:dragger_survey/src/screens/splash_screen.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +14,13 @@ class SurveySetDetailsScreen extends StatelessWidget {
         Provider.of<PrismSurveySetBloc>(context);
 
     String _id = id;
-    print("ooooooo---> _id: $_id");
+
+    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
+
+    if (signInBloc.signedInUser == null) {
+      print("User is not signed in!");
+      return SplashScreen();
+    }
 
     return FutureBuilder(
         future: surveySetsBloc.getPrismSurveySetById(id: _id),
@@ -36,17 +43,17 @@ class SurveySetDetailsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        "${snapshot.data['name']}",
+                        "Survey name: ${snapshot.data['name']}",
                         style: TextStyle(
                             fontSize: Styles.drg_fontSizeMediumHeadline),
                       ),
                       Text(
-                        "${snapshot.data['description']}",
+                        "Survey description: ${snapshot.data['description']}",
                         style:
                             TextStyle(fontSize: Styles.drg_fontSizesubHeadline)
                       ),
                       Text(
-                        "Granularity: ${snapshot.data['resolution']}",
+                        "Granularity: ${snapshot.data['resolution']} \nUser ID: ${snapshot.data['createdByUser']} \nUser name: ${signInBloc.signedInUser.displayName} //TODO!",
                         style:
                             TextStyle(fontSize: Styles.drg_fontSizeCopyText),
                       ),

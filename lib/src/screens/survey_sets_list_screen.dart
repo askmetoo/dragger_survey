@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dragger_survey/src/screens/survey_set_details_screen.dart';
+import 'package:dragger_survey/src/screens/splash_screen.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/survey_set_form.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +13,11 @@ class SurveySetsListScreen extends StatelessWidget {
     final PrismSurveySetBloc surveySetsBloc =
         Provider.of<PrismSurveySetBloc>(context);
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
+
+    if (signInBloc.signedInUser == null) {
+      print("User is not signed in!");
+      return SplashScreen();
+    }
 
     return Scaffold(
       backgroundColor: Styles.drg_colorAppBackground,
@@ -66,7 +71,11 @@ class SurveySetsListScreen extends StatelessWidget {
       builder: (BuildContext context,
           AsyncSnapshot<QuerySnapshot> surveySetSnapshot) {
         if (surveySetSnapshot.hasError) {
-          return Text("Loading Set has erroro: ${surveySetSnapshot.error}");
+          return Center(
+            child: Container(
+              child: Text("Loading Set has erroro: ${surveySetSnapshot.error}"),
+            ),
+          );
         }
 
         switch (surveySetSnapshot.connectionState) {
@@ -78,37 +87,40 @@ class SurveySetsListScreen extends StatelessWidget {
           case ConnectionState.done:
           default:
             return ListView(
+                scrollDirection: Axis.vertical,
                 children: surveySetSnapshot.data.documents
                     .map((DocumentSnapshot snapshot) {
-              return Dismissible(
-                key: ValueKey(snapshot.data.hashCode),
-                direction: DismissDirection.endToStart,
-                onDismissed: (direction) => print('------>>> Item ${snapshot?.data['name']} is dismissed'),
-                child: ListTile(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/surveysetscaffold', arguments: {"id": "${snapshot?.documentID}"});
-                  },
-                  title: Text(
-                    "Name: ${snapshot['name']}, id: ${snapshot.documentID}",
-                    style: Styles.drg_textListTitle,
-                  ),
-                  subtitle: Text(
-                    "Created: ${formatDate(snapshot['created'].toDate(), [
-                      dd,
-                      '. ',
-                      MM,
-                      ' ',
-                      yyyy,
-                      ', ',
-                      HH,
-                      ':',
-                      nn
-                    ])} by ${signInBloc.signedInUser?.displayName}",
-                    style: Styles.drg_textListContent,
-                  ),
-                ),
-              );
-            }).toList());
+                  return Dismissible(
+                    key: ValueKey(snapshot.data.hashCode),
+                    direction: DismissDirection.endToStart,
+                    onDismissed: (direction) => print(
+                        '------>>> Item ${snapshot?.data['name']} is dismissed'),
+                    child: ListTile(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/surveysetscaffold',
+                            arguments: {"id": "${snapshot?.documentID}"});
+                      },
+                      title: Text(
+                        "Name: ${snapshot['name']}, id: ${snapshot.documentID}",
+                        style: Styles.drg_textListTitle,
+                      ),
+                      subtitle: Text(
+                        "Created: ${formatDate(snapshot['created'].toDate(), [
+                          dd,
+                          '. ',
+                          MM,
+                          ' ',
+                          yyyy,
+                          ', ',
+                          HH,
+                          ':',
+                          nn
+                        ])} by ${signInBloc.signedInUser?.displayName}",
+                        style: Styles.drg_textListContent,
+                      ),
+                    ),
+                  );
+                }).toList());
         }
       },
     );
