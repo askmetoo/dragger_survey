@@ -69,16 +69,27 @@ class SurveySetsListScreen extends StatelessWidget {
   Widget _buildSetsListView(
       {PrismSurveySetBloc surveySetsBloc,
       SignInBloc signInBloc,
-      BuildContext context, 
+      BuildContext context,
       @required String id}) {
     return StreamBuilder<QuerySnapshot>(
-      stream: surveySetsBloc.getPrismSurveySetQuery(fieldName: 'createdByTeam', fieldValue: teamId).asStream(),
+      stream: surveySetsBloc
+          .getPrismSurveySetQuery(
+              fieldName: 'createdByTeam', fieldValue: teamId)
+          .asStream(),
       builder: (BuildContext context,
           AsyncSnapshot<QuerySnapshot> surveySetSnapshot) {
         if (surveySetSnapshot.hasError) {
           return Center(
             child: Container(
               child: Text("Loading Set has erroro: ${surveySetSnapshot.error}"),
+            ),
+          );
+        }
+
+        if (surveySetSnapshot.data.documents.length <= 1) {
+          return Center(
+            child: Container(
+              child: Text("This Team has no Survey Sets"),
             ),
           );
         }
@@ -102,7 +113,8 @@ class SurveySetsListScreen extends StatelessWidget {
                         '------>>> Item ${snapshot?.data['name']} is dismissed'),
                     child: ListTile(
                       onTap: () {
-                        print("Before Navigator in ListTile of Teams - teamId: ${snapshot?.documentID}");
+                        print(
+                            "Before Navigator in ListTile of Teams - teamId: ${snapshot?.documentID}");
                         Navigator.pushNamed(context, '/surveysetscaffold',
                             arguments: {"id": "${snapshot?.documentID}"});
                       },

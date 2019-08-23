@@ -34,14 +34,14 @@ class TeamsScreen extends StatelessWidget {
           Icons.library_add,
           color: Styles.drg_colorDarkerGreen,
         ),
-        tooltip: "Add new Team",
+        tooltip: "Create new Team",
         onPressed: () {
           print("Add new Team button pressed");
           showDialog(
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text("Add new Team"),
+                  title: Text("Create new Team"),
                   content: TeamForm(),
                   elevation: 10,
                   shape: RoundedRectangleBorder(
@@ -127,7 +127,8 @@ class TeamsScreen extends StatelessWidget {
                         },
                       ),
                       onTap: () {
-                        print("Before Navigator in ListTile of Teams - id: ${snapshot?.documentID}");
+                        print(
+                            "Before Navigator in ListTile of Teams - id: ${snapshot?.documentID}");
                         Navigator.pushNamed(context, '/surveysetslist',
                             arguments: "${snapshot?.documentID}");
                       },
@@ -146,17 +147,17 @@ class TeamsScreen extends StatelessWidget {
                           HH,
                           ':',
                           nn
-                        ])} \nLast edited: ${ snapshot['edited']!= null ? formatDate(snapshot['edited'].toDate(), [
-                          dd,
-                          '. ',
-                          MM,
-                          ' ',
-                          yyyy,
-                          ', ',
-                          HH,
-                          ':',
-                          nn
-                        ]) : ''} \nby ${signInBloc.signedInUser?.displayName}",
+                        ])} \nLast edited: ${snapshot['edited'] != null ? formatDate(snapshot['edited'].toDate(), [
+                            dd,
+                            '. ',
+                            MM,
+                            ' ',
+                            yyyy,
+                            ', ',
+                            HH,
+                            ':',
+                            nn
+                          ]) : ''} \nby ${signInBloc.signedInUser?.displayName}",
                         style: Styles.drg_textListContent,
                       ),
                     ),

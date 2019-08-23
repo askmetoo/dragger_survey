@@ -17,7 +17,6 @@ class SurveySetForm extends StatefulWidget {
 }
 
 class _SurveySetFormState extends State<SurveySetForm> {
-  
   // BuildContext context;
 
   final _formKey = GlobalKey<FormState>();
@@ -53,7 +52,6 @@ class _SurveySetFormState extends State<SurveySetForm> {
   FocusNode fourthFocus;
   FocusNode fifthFocus;
   FocusNode sixthFocus;
-  
 
   @override
   void initState() {
@@ -86,11 +84,10 @@ class _SurveySetFormState extends State<SurveySetForm> {
   Widget build(BuildContext context) {
     final PrismSurveySetBloc prismSurveySetBloc =
         Provider.of<PrismSurveySetBloc>(context);
-    
+
     // FocusScope.of(context).requestFocus(firstFocus);
 
     return Form(
-
       key: _formKey,
       onChanged: () {
         if (_formKey.currentState.validate()) {
@@ -105,133 +102,135 @@ class _SurveySetFormState extends State<SurveySetForm> {
   }
 
   Widget _buildForm({@required bloc, @required context, @required formKey}) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SelectGranularity(),
+          TextFormField(
+            autofocus: true,
+            focusNode: firstFocus,
+            onEditingComplete: () =>
+                FocusScope.of(context).requestFocus(secondFocus),
+            textInputAction: TextInputAction.next,
+            keyboardType: TextInputType.text,
+            style: Styles.drg_textFieldContent,
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        SelectGranularity(),
-        TextFormField(
-          autofocus: true,
-          focusNode: firstFocus,
-          onEditingComplete: () =>
-                      FocusScope.of(context).requestFocus(secondFocus),
-          textInputAction: TextInputAction.next,
-          keyboardType: TextInputType.text,
-          style: Styles.drg_textFieldContent,
-          decoration: InputDecoration(
-            labelStyle: TextStyle(color: Styles.drg_colorPrimary, fontSize: Styles.drg_fontSizeFloatingLabel),
-            labelText: "Survey Name",
-            hintStyle: TextStyle(fontSize: Styles.drg_fontSizeHintText),
-            hintText: "Please provide a meaningful name",
+            decoration: InputDecoration(
+              labelStyle: TextStyle(
+                  color: Styles.drg_colorPrimary,
+                  fontSize: Styles.drg_fontSizeFloatingLabel),
+              labelText: "Survey Name",
+              hintStyle: TextStyle(fontSize: Styles.drg_fontSizeHintText),
+              hintText: "A meaningful name",
+            ),
+            // initialValue: attribute,
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'Please enter a name';
+              }
+              return null;
+            },
+            onSaved: (value) => _name = value,
           ),
-          // initialValue: attribute,
-          validator: (value) {
-            if (value.isEmpty) {
-              return 'Please enter a name';
-            }
-            return null;
-          },
-          onSaved: (value) => _name = value,
-        ),
-        TextFormField(
-          focusNode: secondFocus,
-          onEditingComplete: () =>
-                      FocusScope.of(context).requestFocus(thirdFocus),
-          textInputAction: TextInputAction.next,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            labelStyle: TextStyle(color: Styles.drg_colorPrimary),
-            labelText: "Survey set description",
-            hintText: "The description of the prism survey",
+          TextFormField(
+            minLines: 1,
+            maxLines: 4,
+            maxLength: 180,
+            focusNode: secondFocus,
+            onEditingComplete: () =>
+                FocusScope.of(context).requestFocus(thirdFocus),
+            textInputAction: TextInputAction.next,
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+              labelStyle: TextStyle(color: Styles.drg_colorPrimary),
+              labelText: "Survey set description",
+              hintText: "The description of the prism survey",
+            ),
+            // initialValue: attribute,
+            onSaved: (value) => _description = value,
           ),
-          // initialValue: attribute,
-          onSaved: (value) => _description = value,
-        ),
-        
-        TextFormField(
-          focusNode: thirdFocus,
-          onEditingComplete: () =>
-                      FocusScope.of(context).requestFocus(fourthFocus),
-          textInputAction: TextInputAction.next,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            labelStyle: TextStyle(color: Styles.drg_colorPrimary),
-            labelText: "Label for x-axis",
-            hintText: "Should be easy to understand",
+          TextFormField(
+            focusNode: thirdFocus,
+            onEditingComplete: () =>
+                FocusScope.of(context).requestFocus(fourthFocus),
+            textInputAction: TextInputAction.next,
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+              labelStyle: TextStyle(color: Styles.drg_colorPrimary),
+              labelText: "Label for x-axis",
+              hintText: "Should be easy to understand",
+            ),
+            // initialValue: attribute,
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'Please enter a label';
+              }
+              return null;
+            },
+            onSaved: (value) => _xName = value,
           ),
-          // initialValue: attribute,
-          validator: (value) {
-            if (value.isEmpty) {
-              return 'Please enter a label';
-            }
-            return null;
-          },
-          onSaved: (value) => _xName = value,
-        ),
-        TextFormField(
-          focusNode: fourthFocus,
-          onEditingComplete: () =>
-                      FocusScope.of(context).requestFocus(fifthFocus),
-          textInputAction: TextInputAction.next,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            labelStyle: TextStyle(color: Styles.drg_colorPrimary),
-            labelText: "X-axis desciption",
-            hintText: "What does the x-axis stand for",
+          TextFormField(
+            focusNode: fourthFocus,
+            onEditingComplete: () =>
+                FocusScope.of(context).requestFocus(fifthFocus),
+            textInputAction: TextInputAction.next,
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+              labelStyle: TextStyle(color: Styles.drg_colorPrimary),
+              labelText: "X-axis desciption",
+              hintText: "What does the x-axis stand for",
+            ),
+            // initialValue: attribute,
+            onSaved: (value) => _xDescription = value,
           ),
-          // initialValue: attribute,
-          onSaved: (value) => _xDescription = value,
-        ),
-        TextFormField(
-          focusNode: fifthFocus,
-          onEditingComplete: () =>
-                      FocusScope.of(context).requestFocus(sixthFocus),
-          textInputAction: TextInputAction.next,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            labelStyle: TextStyle(color: Styles.drg_colorPrimary),
-            labelText: "Label for y-axis",
-            hintText: "Should be easy to understand",
+          TextFormField(
+            focusNode: fifthFocus,
+            onEditingComplete: () =>
+                FocusScope.of(context).requestFocus(sixthFocus),
+            textInputAction: TextInputAction.next,
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+              labelStyle: TextStyle(color: Styles.drg_colorPrimary),
+              labelText: "Label for y-axis",
+              hintText: "Should be easy to understand",
+            ),
+            // initialValue: attribute,
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'Please enter a label';
+              }
+              return null;
+            },
+            onSaved: (value) => _yName = value,
           ),
-          // initialValue: attribute,
-          validator: (value) {
-            if (value.isEmpty) {
-              return 'Please enter a label';
-            }
-            return null;
-          },
-          onSaved: (value) => _yName = value,
-        ),
-        TextFormField(
-          focusNode: sixthFocus,
-          // onEditingComplete: () =>
-          //             FocusScope.of(context).requestFocus(_firstFocus),
-          textInputAction: TextInputAction.next,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            labelStyle: TextStyle(color: Styles.drg_colorPrimary),
-            labelText: "Y-axis desciption",
-            hintText: "What does the y-axis stand for",
+          TextFormField(
+            focusNode: sixthFocus,
+            // onEditingComplete: () =>
+            //             FocusScope.of(context).requestFocus(_firstFocus),
+            textInputAction: TextInputAction.next,
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+              labelStyle: TextStyle(color: Styles.drg_colorPrimary),
+              labelText: "Y-axis desciption",
+              hintText: "What does the y-axis stand for",
+            ),
+            // initialValue: attribute,
+            onSaved: (value) => _yDescription = value,
           ),
-          // initialValue: attribute,
-          onSaved: (value) => _yDescription = value,
-        ),
-
-        
-        _buildFormButton(
-          bloc: bloc,
-          context: context,
-          formKey: formKey,
-        ),
-      ],
+          _buildFormButton(
+            bloc: bloc,
+            context: context,
+            formKey: formKey,
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildFormButton(
       {@required bloc, @required context, @required formKey}) {
-    
-    final SignInBloc signInBloc =
-        Provider.of<SignInBloc>(context);
+    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -246,42 +245,47 @@ class _SurveySetFormState extends State<SurveySetForm> {
 
   SizedBox _buildSubmitButton(formKey, bloc, SignInBloc signInBloc, context) {
     return SizedBox(
-          width: double.infinity,
-          child: FlatButton(
-            disabledColor: Colors.orange.shade50.withOpacity(0.4),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            color: Colors.orange,
-            textColor: Colors.white,
-            onPressed: _formHasChanged
-                ? () {
-                    _buttonOnPressed(formKey: formKey, surveySetBloc: bloc, signInBloc: signInBloc);
-                    print("Submit button presssed");
-                    Navigator.of(context).pop();
-                  }
-                : null,
-            child: Text('Submit'),
-          ),
-        );
-  }
-  SizedBox _buildCancelButton(context) {
-    return SizedBox(
-          width: double.infinity,
-          child: FlatButton(
-            textColor: Styles.drg_colorPrimary,
-            onPressed: () {
-                    print("Cacel button presssed");
-                    Navigator.of(context).pop();
-                  },
-            child: Text('Cancel'),
-          ),
-        );
+      width: double.infinity,
+      child: FlatButton(
+        disabledColor: Colors.orange.shade50.withOpacity(0.4),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        color: Colors.orange,
+        textColor: Colors.white,
+        onPressed: _formHasChanged
+            ? () {
+                _buttonOnPressed(
+                    formKey: formKey,
+                    surveySetBloc: bloc,
+                    signInBloc: signInBloc);
+                print("Submit button presssed");
+                Navigator.of(context).pop();
+              }
+            : null,
+        child: Text('Submit'),
+      ),
+    );
   }
 
-  void _sendFormValuesToBloc({@required PrismSurveySetBloc surveySetBloc, @required SignInBloc signInBloc}) {
+  SizedBox _buildCancelButton(context) {
+    return SizedBox(
+      width: double.infinity,
+      child: FlatButton(
+        textColor: Styles.drg_colorPrimary,
+        onPressed: () {
+          print("Cacel button presssed");
+          Navigator.of(context).pop();
+        },
+        child: Text('Cancel'),
+      ),
+    );
+  }
+
+  void _sendFormValuesToBloc(
+      {@required PrismSurveySetBloc surveySetBloc,
+      @required SignInBloc signInBloc}) {
     final MatrixGranularityBloc granularityBloc =
         Provider.of<MatrixGranularityBloc>(context);
-    
+
     Map<String, dynamic> surveySet = {
       "created": _created,
       "name": _name,
@@ -312,13 +316,15 @@ class _SurveySetFormState extends State<SurveySetForm> {
     print("2) ----> Form values have been sent to bloc");
   }
 
-  void _buttonOnPressed({formKey, @required surveySetBloc, @required SignInBloc signInBloc}) {
+  void _buttonOnPressed(
+      {formKey, @required surveySetBloc, @required SignInBloc signInBloc}) {
     if (formKey.currentState.validate()) {
       print("1a) ----> Form has been validated.");
       _createdByUser = signInBloc.signedInUser.uid;
       formKey.currentState.save();
 
-      _sendFormValuesToBloc(surveySetBloc: surveySetBloc, signInBloc: signInBloc);
+      _sendFormValuesToBloc(
+          surveySetBloc: surveySetBloc, signInBloc: signInBloc);
       print("1b) ----> Sending form values to bloc.");
 
       print("1c) ----> Sent data:");

@@ -1,22 +1,23 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Styles {
   static const drg_fontSizeCopyText = 16.0;
+  static const drg_fontSizeFieldContentText = 14.0;
   static const drg_fontSizeBigHeadline = 32.0;
   static const drg_fontSizeMediumHeadline = 22.0;
   static const drg_fontSizesubHeadline = 20.0;
-  static const drg_fontSizeFloatingLabel = 16.0;
-  static const drg_fontSizeHintText = 16.0;
+  static const drg_fontSizeFloatingLabel = 14.0;
+  static const drg_fontSizeHintText = 14.0;
 
   static const drg_textHeadline = TextStyle(
-    color: Color.fromRGBO(0, 0, 0, 0.8),
-    fontFamily: 'NotoSans',
-    fontSize: Styles.drg_fontSizeBigHeadline,
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w600
-  );
+      color: Color.fromRGBO(0, 0, 0, 0.8),
+      fontFamily: 'NotoSans',
+      fontSize: Styles.drg_fontSizeBigHeadline,
+      fontStyle: FontStyle.normal,
+      fontWeight: FontWeight.w600);
   static const drg_textSecondHeadline = TextStyle(
     color: Color.fromRGBO(0, 0, 0, 0.8),
     fontFamily: 'NotoSans',
@@ -46,11 +47,10 @@ class Styles {
     fontWeight: FontWeight.w400,
   );
   static const drg_textFieldContent = TextStyle(
-      fontSize: Styles.drg_fontSizeCopyText,
-      fontWeight: FontWeight.w400,
-      color: Styles.drg_colorDarkerGreen,
-      
-    );
+    fontSize: Styles.drg_fontSizeFieldContentText,
+    fontWeight: FontWeight.w400,
+    color: Styles.drg_colorDarkerGreen,
+  );
   static const drg_colorAttention = Color(0xffff0200);
   static const drg_colorPrimary = Color(0xff119da4);
   static const drg_colorSecondary = Color(0xfff7b71d);
@@ -67,6 +67,4 @@ class Styles {
   static const drg_colorAppBackground = Color(0xffc66400);
 
   static const drg_scaffoldBackground = Color(0xfff0f0f0);
-
-  
 }

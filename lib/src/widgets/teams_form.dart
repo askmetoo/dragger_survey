@@ -123,7 +123,9 @@ class _TeamFormState extends State<TeamForm> {
               children: <Widget>[
                 SelectGranularity(),
                 TextFormField(
-                  initialValue: !bloc.updatingTeamData ? null : '${snapshot?.data['name']}',
+                  initialValue: !bloc.updatingTeamData
+                      ? null
+                      : '${snapshot?.data['name']}',
                   autofocus: true,
                   focusNode: firstFocus,
                   onEditingComplete: () =>
@@ -148,7 +150,13 @@ class _TeamFormState extends State<TeamForm> {
                   onSaved: (value) => _name = value,
                 ),
                 TextFormField(
-                  initialValue: !bloc.updatingTeamData ? null : '${snapshot?.data['description']}',
+                  // expands: true,
+                  minLines: 2,
+                  maxLines: 9,
+                  maxLength: 200,
+                  initialValue: !bloc.updatingTeamData
+                      ? null
+                      : '${snapshot?.data['description']}',
                   focusNode: secondFocus,
                   onEditingComplete: () =>
                       FocusScope.of(context).requestFocus(thirdFocus),
@@ -228,7 +236,7 @@ class _TeamFormState extends State<TeamForm> {
 
   void _sendFormValuesToBloc(
       {@required TeamBloc teamBloc, @required SignInBloc signInBloc}) {
-        Map<String, dynamic> team;
+    Map<String, dynamic> team;
     if (teamBloc.updatingTeamData) {
       team = {
         "edited": _edited,
@@ -257,7 +265,7 @@ class _TeamFormState extends State<TeamForm> {
     print("_users: $_users");
     print("================================");
 
-    if(teamBloc.updatingTeamData) {
+    if (teamBloc.updatingTeamData) {
       teamBloc.updateTeamById(object: team, id: teamBloc.currentTeamId);
     } else {
       teamBloc.addTeamToDb(team: team);
@@ -269,7 +277,7 @@ class _TeamFormState extends State<TeamForm> {
       {formKey, @required TeamBloc teamBloc, @required SignInBloc signInBloc}) {
     if (formKey.currentState.validate()) {
       print("1a team) ----> Form has been validated.");
-      if(!(teamBloc.updatingTeamData)) {
+      if (!(teamBloc.updatingTeamData)) {
         _createdByUser = signInBloc.signedInUser.uid;
         _users.add(signInBloc.signedInUser.uid);
       } else {

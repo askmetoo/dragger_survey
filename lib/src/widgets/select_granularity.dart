@@ -19,7 +19,7 @@ class SelectGranularity extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text("Select granularyty for survey", style: Styles.drg_selectButton),
+        Text("Select granularity ", style: Styles.drg_selectButton),
         Container(
           width: 16,
         ),
