@@ -8,6 +8,9 @@ import 'package:provider/provider.dart';
 import 'package:date_format/date_format.dart';
 
 class SurveySetsListScreen extends StatelessWidget {
+  final String teamId;
+  SurveySetsListScreen({Key key, this.teamId}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final PrismSurveySetBloc surveySetsBloc =
@@ -28,6 +31,7 @@ class SurveySetsListScreen extends StatelessWidget {
         surveySetsBloc: surveySetsBloc,
         signInBloc: signInBloc,
         context: context,
+        id: teamId,
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Styles.drg_colorSecondary,
@@ -65,9 +69,10 @@ class SurveySetsListScreen extends StatelessWidget {
   Widget _buildSetsListView(
       {PrismSurveySetBloc surveySetsBloc,
       SignInBloc signInBloc,
-      BuildContext context}) {
+      BuildContext context, 
+      @required String id}) {
     return StreamBuilder<QuerySnapshot>(
-      stream: surveySetsBloc.streamPrismSurveySets,
+      stream: surveySetsBloc.getPrismSurveySetQuery(fieldName: 'createdByTeam', fieldValue: teamId).asStream(),
       builder: (BuildContext context,
           AsyncSnapshot<QuerySnapshot> surveySetSnapshot) {
         if (surveySetSnapshot.hasError) {
@@ -97,6 +102,7 @@ class SurveySetsListScreen extends StatelessWidget {
                         '------>>> Item ${snapshot?.data['name']} is dismissed'),
                     child: ListTile(
                       onTap: () {
+                        print("Before Navigator in ListTile of Teams - teamId: ${snapshot?.documentID}");
                         Navigator.pushNamed(context, '/surveysetscaffold',
                             arguments: {"id": "${snapshot?.documentID}"});
                       },

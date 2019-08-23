@@ -20,6 +20,10 @@ class PrismSurveySetBloc extends ChangeNotifier{
     return Collection<PrismSurveySet>(path: 'surveySets').getDocuments();
   }
 
+  Future<QuerySnapshot> getPrismSurveySetQuery({String fieldName, String fieldValue}) {
+    return Collection<PrismSurveySet>(path: 'surveySets').getDocumentsByQuery(fieldName: fieldName, fieldValue: fieldValue);
+  }
+
   Future<DocumentSnapshot> getPrismSurveySetById({id}) {
     return Collection<PrismSurveySet>(path: 'surveySets').getDocument(id);
   }

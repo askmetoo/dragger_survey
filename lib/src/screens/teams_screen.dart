@@ -127,8 +127,9 @@ class TeamsScreen extends StatelessWidget {
                         },
                       ),
                       onTap: () {
+                        print("Before Navigator in ListTile of Teams - id: ${snapshot?.documentID}");
                         Navigator.pushNamed(context, '/surveysetslist',
-                            arguments: {"id": "${snapshot?.documentID}"});
+                            arguments: "${snapshot?.documentID}");
                       },
                       title: Text(
                         "${snapshot['name']}",

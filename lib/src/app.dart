@@ -20,9 +20,6 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        // Provider<FirebaseAuthService>(
-        //   builder: (_) => FirebaseAuthService(),
-        // ),
         ChangeNotifierProvider<SignInBloc>.value(
           value: SignInBloc(),
         ),
@@ -57,9 +54,10 @@ class App extends StatelessWidget {
               );
               break;
             case '/surveysetslist':
+              var _teamId = settings.arguments;
               return PageTransition(
                 duration: Duration(milliseconds: 400),
-                child: SurveySetsListScreen(),
+                child: SurveySetsListScreen(teamId: _teamId),
                 type: PageTransitionType.fade,
               );
               break;

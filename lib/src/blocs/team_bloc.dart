@@ -11,7 +11,11 @@ class TeamBloc extends ChangeNotifier {
   String currentTeamId;
 
   Stream<QuerySnapshot> get streamTeams {
-    return Collection<PrismSurveySet>(path: 'teams').streamDocuments();
+    return Collection<Team>(path: 'teams').streamDocuments();
+  }
+
+  Future<QuerySnapshot> getTeamsQuery({String fieldName, String fieldValue}) {
+    return Collection<Team>(path: 'teams').getDocumentsByQuery(fieldName: fieldName, fieldValue: fieldValue);
   }
 
   addTeamToDb({Map<String, dynamic> team}) {
