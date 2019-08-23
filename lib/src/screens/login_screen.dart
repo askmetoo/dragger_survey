@@ -108,7 +108,7 @@ class LoginScreen extends StatelessWidget {
     return OutlineButton(
       splashColor: Styles.drg_colorSecondary,
       onPressed: () async {
-        Navigator.pushNamed(context, '/surveysetslist');
+        Navigator.pushNamed(context, '/teams');
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,
@@ -120,7 +120,7 @@ class LoginScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              "Back to Survey Sets List",
+              "Back to my Teams List",
               style: TextStyle(fontSize: 20, color: Styles.drg_colorSecondary),
             )
           ],
