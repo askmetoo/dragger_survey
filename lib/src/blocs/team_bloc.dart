@@ -3,7 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/services/services.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 class TeamBloc extends ChangeNotifier {
 
