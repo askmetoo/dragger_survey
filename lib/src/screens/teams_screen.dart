@@ -37,6 +37,7 @@ class TeamsScreen extends StatelessWidget {
         tooltip: "Create new Team",
         onPressed: () {
           print("Add new Team button pressed");
+          teamsBloc.updatingTeamData = false;
           showDialog(
               context: context,
               builder: (BuildContext context) {

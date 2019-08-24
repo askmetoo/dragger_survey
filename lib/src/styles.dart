@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Styles {
   static const drg_fontSizeCopyText = 16.0;
-  static const drg_fontSizeFieldContentText = 14.0;
+  static const drg_fontSizeFieldContentText = 16.0;
   static const drg_fontSizeBigHeadline = 32.0;
   static const drg_fontSizeMediumHeadline = 22.0;
   static const drg_fontSizesubHeadline = 20.0;

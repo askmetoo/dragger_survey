@@ -112,7 +112,6 @@ class _TeamFormState extends State<TeamForm> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
-          case ConnectionState.none:
             return Text("ConnectionState.none");
             break;
           case ConnectionState.waiting:
@@ -123,9 +122,7 @@ class _TeamFormState extends State<TeamForm> {
               children: <Widget>[
                 SelectGranularity(),
                 TextFormField(
-                  initialValue: !bloc.updatingTeamData
-                      ? null
-                      : '${snapshot?.data['name']}',
+                  initialValue: bloc.updatingTeamData ? '${snapshot?.data['name']}' : '',
                   autofocus: true,
                   focusNode: firstFocus,
                   onEditingComplete: () =>
@@ -154,9 +151,8 @@ class _TeamFormState extends State<TeamForm> {
                   minLines: 2,
                   maxLines: 9,
                   maxLength: 200,
-                  initialValue: !bloc.updatingTeamData
-                      ? null
-                      : '${snapshot?.data['description']}',
+                  initialValue: bloc.updatingTeamData
+                      ? '${snapshot?.data['description']}' : '',
                   focusNode: secondFocus,
                   onEditingComplete: () =>
                       FocusScope.of(context).requestFocus(thirdFocus),
@@ -181,6 +177,24 @@ class _TeamFormState extends State<TeamForm> {
         return Text("Nothing here");
       },
     );
+  }
+
+  String getInitialValue(TeamBloc bloc, AsyncSnapshot snapshot) {
+    print("----------========>>> snapshot ::: $snapshot");
+    print("----------========>>> snapshot?.data ::: ${snapshot?.data}");
+    // print("----------========>>> snapshot?.data['name'] ::: ${snapshot?.data['name']}");
+    // print("----------========>>> snapshot?.data['description'] ::: ${snapshot?.data['description']}");
+    if (!bloc.updatingTeamData) {
+      return '';
+    }
+    return snapshot?.data['name'];
+    // print("----------========>>> snapshot?.data['desciption'] ::: ${snapshot?.data['name']}");
+    // if(bloc.updatingTeamData == null) {
+    //   return '';
+    // } else if (snapshot?.data['name'] == null) {
+    //   return '';
+    // }
+    // return '${snapshot?.data['name']}';
   }
 
   Widget _buildFormButton(
