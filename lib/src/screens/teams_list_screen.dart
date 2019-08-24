@@ -7,7 +7,7 @@ import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:provider/provider.dart';
 import 'package:date_format/date_format.dart';
 
-class TeamsScreen extends StatelessWidget {
+class TeamsListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TeamBloc teamsBloc = Provider.of<TeamBloc>(context);
@@ -101,6 +101,7 @@ class TeamsScreen extends StatelessWidget {
                         key: Key(snapshot?.documentID),
                         icon: Icon(Icons.edit),
                         onPressed: () {
+                          teamBloc.currentTeamId = snapshot?.documentID;
                           print("Edit button pressed in teams");
                           showDialog(
                             context: context,
@@ -128,6 +129,7 @@ class TeamsScreen extends StatelessWidget {
                         },
                       ),
                       onTap: () {
+                        teamBloc.currentTeamId = snapshot?.documentID;
                         print(
                             "Before Navigator in ListTile of Teams - id: ${snapshot?.documentID}");
                         Navigator.pushNamed(context, '/surveysetslist',
