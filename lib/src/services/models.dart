@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PrismSurveySet {
   String id;
@@ -35,13 +34,11 @@ class PrismSurveySet {
       name: data['name'] ?? '',
       description: data['description'] ?? '',
       resolution: data['resolution'] ?? 5,
-      xName: data['x_name'] ?? '',
-      xDescription: data['x_description'] ?? '',
-      yName: data['y_name'] ?? '',
-      yDescription: data['y_description'] ?? '',
+      xName: data['xName'] ?? '',
+      xDescription: data['xDescription'] ?? '',
+      yName: data['yName'] ?? '',
+      yDescription: data['yDescription'] ?? '',
       prismSurveys: (data['prismSurveys'] as List ?? [])
-          // .map((value) => User.fromMap(value))
-          // .toList(),
     );
   }
 }
@@ -70,9 +67,9 @@ class PrismSurvey {
       uid: data["uid"] ?? '',
       created: data["created"] ?? DateTime.now(),
       edited: data["edited"] ?? '',
-      askedPerson: data["asked_person"] ?? '',
-      yValue: data["y_value"] ?? 0,
-      xValue: data["x_value"] ?? 0,
+      askedPerson: data["askedPerson"] ?? '',
+      yValue: data["yValue"] ?? 0,
+      xValue: data["xValue"] ?? 0,
       users: (data["users"] as List ?? [])
           .map((value) => User.fromMap(value))
           .toList(),
@@ -115,7 +112,7 @@ class Team {
       users: (data["users"] as List ?? [])
           .map((value) => User.fromMap(value))
           .toList(),
-      prismSurveySets: (data["prism_survey_sets"] as List ?? [])
+      prismSurveySets: (data["prismSurveySets"] as List ?? [])
           .map((value) => PrismSurveySet.fromMap(value))
           .toList(),
     );
@@ -136,6 +133,7 @@ class User {
   String description;
   String company;
   String photoUrl;
+  DateTime originCreationTime;
   dynamic teams;
   dynamic prismSurveySets;
   dynamic prismSurveys;
@@ -157,6 +155,7 @@ class User {
     this.teams,
     this.prismSurveySets,
     this.prismSurveys,
+    this.originCreationTime
   });
 
   factory User.fromMap(Map data) {
@@ -164,23 +163,24 @@ class User {
       uid: data["uid"] ?? '',
       created: data["created"] ?? DateTime.now(),
       edited: data["edited"] ?? '',
-      firstName: data["first_name"] ?? '',
-      lastName: data["last_name"] ?? '',
+      firstName: data["firstName"] ?? '',
+      lastName: data["lastName"] ?? '',
       createdByUser: data["createdByUser"] ?? '',
       lastEditedByUser: data["lastEditedByUser"] ?? '',
       password: data["password"] ?? '',
       email: data["email"] ?? '',
-      displayName: data["display_name"] ?? '',
+      displayName: data["displayName"] ?? '',
       description: data["description"] ?? '',
       company: data["company"] ?? '',
-      photoUrl: data["photo_url"] ?? '',
+      photoUrl: data["photoUrl"] ?? '',
+      originCreationTime: data["originCreationTime"] ?? '',
       teams: (data["teams"] as List ?? [])
           .map((value) => Team.fromMap(value))
           .toList(),
-      prismSurveySets: (data["prism_survey_sets"] as List ?? [])
+      prismSurveySets: (data["prismCurveySets"] as List ?? [])
           .map((value) => PrismSurveySet.fromMap(value))
           .toList(),
-      prismSurveys: (data["prism_surveys"] as List ?? [])
+      prismSurveys: (data["prismSurveys"] as List ?? [])
           .map((value) => PrismSurvey.fromMap(value))
           .toList(),
     );
