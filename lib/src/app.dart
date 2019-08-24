@@ -1,3 +1,4 @@
+import 'package:dragger_survey/src/blocs/user_bloc.dart';
 import 'package:dragger_survey/src/screens/dragger_screen.dart';
 import 'package:dragger_survey/src/screens/splash_screen.dart';
 import 'package:dragger_survey/src/screens/survey_set_details_screen.dart';
@@ -37,6 +38,9 @@ class App extends StatelessWidget {
         ),
         ChangeNotifierProvider<TeamBloc>.value(
           value: TeamBloc(),
+        ),
+        ChangeNotifierProvider<UserBloc>.value(
+          value: UserBloc(),
         ),
         ChangeNotifierProvider<FabBloc>.value(
           value: FabBloc(),
