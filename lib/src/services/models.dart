@@ -133,6 +133,8 @@ class User {
   String description;
   String company;
   String photoUrl;
+  String providersUID; // ID of User prvided by Auth Provider (e.g. Google SignIn)
+  String providerId;
   DateTime originCreationTime;
   dynamic teams;
   dynamic prismSurveySets;
@@ -152,6 +154,8 @@ class User {
     this.description,
     this.company,
     this.photoUrl,
+    this.providersUID,
+    this.providerId,
     this.teams,
     this.prismSurveySets,
     this.prismSurveys,
@@ -173,6 +177,8 @@ class User {
       description: data["description"] ?? '',
       company: data["company"] ?? '',
       photoUrl: data["photoUrl"] ?? '',
+      providersUID: data["providersUID"] ?? '',
+      providerId: data["providerId"] ?? '',
       originCreationTime: data["originCreationTime"] ?? '',
       teams: (data["teams"] as List ?? [])
           .map((value) => Team.fromMap(value))

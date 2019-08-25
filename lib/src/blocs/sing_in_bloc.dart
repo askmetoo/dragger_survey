@@ -2,12 +2,12 @@ import 'dart:async';
 import 'package:dragger_survey/src/services/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:dragger_survey/src/services/auth_service.dart';
 
 class SignInBloc extends ChangeNotifier {
   bool _isLoading = true;
   FirebaseUser signedInUser;
   final auth = AuthService().auth;
+  String signedInUserProvidersUID = '';
 
   Future<FirebaseUser> signInWithGoogle() async {
     final AuthService auth = AuthService();

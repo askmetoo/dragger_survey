@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dragger_survey/src/services/models.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
@@ -60,6 +59,7 @@ class Collection<T> {
   Future<DocumentSnapshot> getDocument(id) async {
     return await ref.document('$id').get();
   }
+  
 
   createDocumentWithValues({
     @required name,

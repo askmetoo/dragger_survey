@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dragger_survey/src/blocs/user_bloc.dart';
 import 'package:dragger_survey/src/screens/splash_screen.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/teams_form.dart';
@@ -12,6 +13,45 @@ class TeamsListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final TeamBloc teamsBloc = Provider.of<TeamBloc>(context);
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
+    final UserBloc userBloc = Provider.of<UserBloc>(context);
+
+    String _signedInUserPhotoUrl;
+
+    // _getCurrentUserProvidersUID () async {
+    //   String _signedInUser = signInBloc.signedInUser.uid;
+    //   print("USER UID (in teams list) after Google SignIn: $_signedInUser (in SignInBloc)");
+    //   var _currentUserList = await userBloc.getUsersQuery(fieldName: 'providersUID', fieldValue: _signedInUser);
+    //   String uid = _currentUserList.documents[0]['providersUID'];
+    //   return uid.toString();
+    // }
+    // _getCurrentUserProvidersUID();
+
+    // print(
+    //     "Current User Provider's UID: ${signInBloc.signedInUserProvidersUID}");
+    // dynamic _currentSignedInUserPhotoUrl = '';
+
+    _getPhotoUrlofCurrentUser() async {
+      try {
+        _signedInUserPhotoUrl = signInBloc.signedInUser.photoUrl;
+        print("SignedIn User's photo URL: $_signedInUserPhotoUrl");
+        // await userBloc.getUserById(id: signInBloc.signedInUserProvidersUID)
+        //     .then((value) {
+        //       List _data;
+        //       if(value.data != null) {
+        //         _data = value.data.keys.toList();
+        //         _data.forEach((_data) => print("Value of TRY: $_data"));
+        //       }
+        //       print("Value of TRY: is empty");
+        // });
+        // _currentSignedInUserPhotoUrl = await _currentSignedInUser.data[0];
+        // print("_currentSignedInUserPhotoUrl : $_currentSignedInUserPhotoUrl");
+      } catch (err) {
+        print("ERROR in _getPhotoUrlofCurrentUser of TeamsList.dart: $err");
+      }
+    }
+
+    _getPhotoUrlofCurrentUser();
+    // print("_currentSignedInUserPhotoUrl: $_currentSignedInUserPhotoUrl");
 
     if (signInBloc.signedInUser == null) {
       print("User is not signed in!");
@@ -20,7 +60,51 @@ class TeamsListScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Styles.drg_colorAppBackground,
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.all(0),
+          children: <Widget>[
+            DrawerHeader(
+              child: Text('Drawer Header'),
+              decoration: BoxDecoration(
+                color: Styles.drg_colorSecondary,
+              ),
+            ),
+            ListTile(
+              title: Text('Item 1'),
+              onTap: () {
+                // WHAT TO DO?
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
+        leading: Builder(
+          builder: (BuildContext context) {
+            return GestureDetector(
+              onTap: () {
+                Scaffold.of(context).openDrawer();
+              },
+              child: Container(
+                padding: EdgeInsets.all(8),
+                child: CircleAvatar(
+                  backgroundImage: NetworkImage(_signedInUserPhotoUrl),
+                ),
+              ),
+            );
+          },
+        ),
+
+        // leading: IconButton(
+        //   icon: CircleAvatar(
+        //     backgroundImage: NetworkImage(_signedInUserPhotoUrl),
+        //   ),
+        //   onPressed: () {
+
+        //   },
+        // ),
         title: Text("Your Teams"),
       ),
       body: _buildSetsListView(

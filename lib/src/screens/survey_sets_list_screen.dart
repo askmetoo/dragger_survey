@@ -16,6 +16,7 @@ class SurveySetsListScreen extends StatelessWidget {
     final PrismSurveySetBloc surveySetsBloc =
         Provider.of<PrismSurveySetBloc>(context);
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
+    final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
 
     if (signInBloc.signedInUser == null) {
       print("User is not signed in!");
@@ -30,6 +31,7 @@ class SurveySetsListScreen extends StatelessWidget {
       body: _buildSetsListView(
         surveySetsBloc: surveySetsBloc,
         signInBloc: signInBloc,
+        teamBloc: teamBloc,
         context: context,
         id: teamId,
       ),
@@ -42,6 +44,8 @@ class SurveySetsListScreen extends StatelessWidget {
         tooltip: "Add new Survey Set",
         onPressed: () {
           print("Add new Survey Set button pressed");
+          print("----------=======> Current Team id: $teamId");
+          print("----------=======> Current Team: ${teamBloc.currentTeamId}");
           showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -69,6 +73,7 @@ class SurveySetsListScreen extends StatelessWidget {
   Widget _buildSetsListView(
       {PrismSurveySetBloc surveySetsBloc,
       SignInBloc signInBloc,
+      TeamBloc teamBloc,
       BuildContext context,
       @required String id}) {
     return StreamBuilder<QuerySnapshot>(
@@ -86,13 +91,7 @@ class SurveySetsListScreen extends StatelessWidget {
           );
         }
 
-        if (surveySetSnapshot.data.documents.length <= 1) {
-          return Center(
-            child: Container(
-              child: Text("This Team has no Survey Sets"),
-            ),
-          );
-        }
+        
 
         switch (surveySetSnapshot.connectionState) {
           case ConnectionState.waiting:
@@ -102,6 +101,15 @@ class SurveySetsListScreen extends StatelessWidget {
           case ConnectionState.active:
           case ConnectionState.done:
           default:
+
+            if (surveySetSnapshot.data.documents.length <= 0 || surveySetSnapshot == null) {
+              return Center(
+                child: Container(
+                  child: Text("This Team has no Survey Sets"),
+                ),
+              );
+            }
+
             return ListView(
                 scrollDirection: Axis.vertical,
                 children: surveySetSnapshot.data.documents
@@ -143,32 +151,4 @@ class SurveySetsListScreen extends StatelessWidget {
       },
     );
   }
-
-  // _confirmDismissed() async {
-  //   print('Confirm item dismissed');
-  //   return await showDialog(
-  //       builder: (BuildContext context) {
-  //         return AlertDialog(
-  //           title: Text("Are yout sure you want to delete this item?"),
-  //           actions: <Widget>[
-  //             FlatButton(
-  //               child: Text('Confirm'),
-  //               onPressed: () {
-  //                 Navigator.pop(context);
-  //               },
-  //             ),
-  //             FlatButton(
-  //               child: Text('Cancel'),
-  //               onPressed: () {
-  //                 Navigator.pop(context);
-  //               },
-  //             ),
-  //           ],
-  //         );
-  //       });
-  // }
-
-  // _onDismissed(DocumentSnapshot snapshot) {
-  //   print('Item ${snapshot?.data['name']} is dismissed');
-  // }
 }

@@ -36,8 +36,8 @@ class AuthService {
 
       FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
       assert(!user.isAnonymous);
-      print(
-          '--------> signInWithGoogle user.getIdToken(): ${user.getIdToken()}');
+      // print(
+      //     '--------> signInWithGoogle user.getIdToken(): ${user.getIdToken()}');
       assert(await user.getIdToken() != null);
 
       final FirebaseUser currentUser = await _auth.currentUser();

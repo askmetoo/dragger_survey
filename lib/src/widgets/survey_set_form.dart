@@ -7,11 +7,6 @@ import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/widgets/select_granularity.dart';
 
 class SurveySetForm extends StatefulWidget {
-  // For FocusScope in initState
-  // final BuildContext context;
-
-  // SurveySetForm({this.context});
-
   @override
   _SurveySetFormState createState() => _SurveySetFormState();
 }
@@ -44,7 +39,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
   // Meta information
   String _createdByUser;
   String _lastEditedByUser;
-  String _team;
+  String _createdByTeam;
 
   FocusNode firstFocus;
   FocusNode secondFocus;
@@ -84,8 +79,9 @@ class _SurveySetFormState extends State<SurveySetForm> {
   Widget build(BuildContext context) {
     final PrismSurveySetBloc prismSurveySetBloc =
         Provider.of<PrismSurveySetBloc>(context);
-
-    // FocusScope.of(context).requestFocus(firstFocus);
+    final TeamBloc teamBloc =
+        Provider.of<TeamBloc>(context);
+    _createdByTeam = teamBloc.currentTeamId;
 
     return Form(
       key: _formKey,
@@ -296,6 +292,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
       "yName": _yName,
       "yDescription": _yDescription,
       "createdByUser": _createdByUser,
+      "createdByTeam": _createdByTeam,
       "lastEditedByUser": _lastEditedByUser,
     };
     print("===============================");
@@ -309,6 +306,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
     print("_yName: $_yName");
     print("_yDescription: $_yDescription");
     print("_createdByUser: $_createdByUser");
+    print("_createdByTeam: $_createdByTeam");
     print("_lastEditedByUser: $_lastEditedByUser");
     print("================================");
 
@@ -338,6 +336,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
       print("_xDescription: $_xDescription");
       print("_yDescription: $_yDescription");
       print("_createdByUser: $_createdByUser");
+      print("_createdByTeam: $_createdByTeam");
     }
   }
 }
