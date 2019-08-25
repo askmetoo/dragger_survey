@@ -2,5 +2,6 @@
     "workbench.colorTheme": "Super One Dark",
     "font-switcher.enableLivePreview": true,
     "font-switcher.fontFamily": "Consolas, DejaVu Sans Mono, monospace, Menlo, Monaco",
-    "workbench.fontAliasing": "antialiased"
+    "workbench.fontAliasing": "antialiased",
+    "workbench.iconTheme": "material-icon-theme"
 }
