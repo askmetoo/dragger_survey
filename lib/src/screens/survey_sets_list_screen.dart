@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/screens/splash_screen.dart';
 import 'package:dragger_survey/src/styles.dart';
-import 'package:dragger_survey/src/widgets/survey_set_form.dart';
+import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +25,11 @@ class SurveySetsListScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Styles.drg_colorAppBackground,
+      endDrawer: UserDrawer(),
       appBar: AppBar(
+        actions: <Widget>[
+          SigendInUserCircleAvatar(),
+        ],
         title: Text("Survey Sets"),
       ),
       body: _buildSetsListView(

@@ -20,9 +20,11 @@ class TeamsListScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Styles.drg_colorAppBackground,
-      drawer: UserDrawer(),
+      endDrawer: UserDrawer(),
       appBar: AppBar(
-        leading: SigendInUserCircleAvatar(),
+        actions: <Widget>[
+          SigendInUserCircleAvatar(),
+        ],
         title: Text("Your Teams"),
       ),
       body: _buildSetsListView(

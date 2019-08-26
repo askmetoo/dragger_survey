@@ -1,5 +1,8 @@
+import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/styles.dart';
+import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class UserDrawer extends StatelessWidget {
   const UserDrawer({
@@ -8,12 +11,19 @@ class UserDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.all(0),
         children: <Widget>[
           DrawerHeader(
-            child: Text('Drawer Header'),
+            child: Column(
+              children: <Widget>[
+                SigendInUserCircleAvatar(),
+                Text('${signInBloc.signedInUser.displayName}'),
+                _buildSignoutButton(signInBloc),
+              ],
+            ),
             decoration: BoxDecoration(
               color: Styles.drg_colorSecondary,
             ),
@@ -29,5 +39,30 @@ class UserDrawer extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  FlatButton _buildSignoutButton(SignInBloc signInBloc) {
+    return FlatButton(
+                splashColor: Styles.drg_colorSecondary,
+                onPressed: () {
+                  signInBloc.signOut();
+                },
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(40)),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "Sign-Out",
+                        style: TextStyle(
+                            fontSize: 16, color: Styles.drg_colorDarkerGreen),
+                      )
+                    ],
+                  ),
+                ),
+              );
   }
 }

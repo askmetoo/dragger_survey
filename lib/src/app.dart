@@ -1,18 +1,10 @@
-import 'package:dragger_survey/src/blocs/user_bloc.dart';
-import 'package:dragger_survey/src/screens/dragger_screen.dart';
-import 'package:dragger_survey/src/screens/splash_screen.dart';
-import 'package:dragger_survey/src/screens/survey_set_details_screen.dart';
-import 'package:dragger_survey/src/screens/survey_set_scaffold_screen.dart';
-import 'package:dragger_survey/src/screens/survey_sets_list_screen.dart';
-import 'package:dragger_survey/src/screens/login_screen.dart';
-import 'package:dragger_survey/src/screens/profile_screen.dart';
-import 'package:dragger_survey/src/screens/teams_list_screen.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:dragger_survey/src/styles.dart';
-import 'blocs/blocs.dart';
+import 'package:dragger_survey/src/shared/shared.dart';
+import 'package:dragger_survey/src/blocs/blocs.dart';
+
+import 'screens/screens.dart';
 
 class App extends StatelessWidget {
   final navigatorKey = GlobalKey<NavigatorState>();
@@ -48,85 +40,13 @@ class App extends StatelessWidget {
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,
-        onGenerateRoute: (settings) {
-          switch (settings.name) {
-            case '/draggerboard':
-              return PageTransition(
-                duration: Duration(milliseconds: 400),
-                child: DraggerScreen(),
-                type: PageTransitionType.downToUp,
-              );
-              break;
-            case '/surveysetslist':
-              var _teamId = settings.arguments;
-              return PageTransition(
-                duration: Duration(milliseconds: 400),
-                child: SurveySetsListScreen(teamId: _teamId),
-                type: PageTransitionType.fade,
-              );
-              break;
-            case '/surveysetdetails':
-              var _id = settings.arguments;
-              return PageTransition(
-                duration: Duration(milliseconds: 400),
-                type: PageTransitionType.fade,
-                child: SurveySetDetailsScreen(id: _id,),
-              );
-              break;
-            case '/surveysetscaffold':
-              var _id = settings.arguments;
-              return PageTransition(
-                duration: Duration(milliseconds: 400),
-                child: SurveySetScaffoldScreen(argument: _id,),
-                type: PageTransitionType.fade,
-              );
-              break;
-            case '/teams':
-              return PageTransition(
-                duration: Duration(milliseconds: 400),
-                child: TeamsListScreen(),
-                type: PageTransitionType.fade,
-              );
-              break;
-            case '/login':
-              return PageTransition(
-                duration: Duration(milliseconds: 400),
-                child: LoginScreen(),
-                type: PageTransitionType.fade,
-              );
-              break;
-            case '/profile':
-              return PageTransition(
-                duration: Duration(milliseconds: 400),
-                child: ProfileScreen(),
-                type: PageTransitionType.fade,
-              );
-              break;
-            
-            case '/draggerboard':
-              return PageTransition(
-                duration: Duration(milliseconds: 400),
-                child: DraggerScreen(),
-                type: PageTransitionType.fade,
-              );
-              break;
-            case '/surveysethowtoscreen':
-              return PageTransition(
-                duration: Duration(milliseconds: 400),
-                child: DraggerScreen(),
-                type: PageTransitionType.fade,
-              );
-              break;
-            default:
-              return null;
-          }
-        },
-        routes: {
-          '/home': (context) => SurveySetsListScreen(),
-          '/login': (context) => LoginScreen(),
-          '/profile': (context) => ProfileScreen(),
-          '/draggerboard': (context) => DraggerScreen(),
-        },
+        onGenerateRoute: RouteGenerator.generateRoute,
+        // routes: {
+        //   '/home': (context) => SurveySetsListScreen(),
+        //   '/login': (context) => LoginScreen(),
+        //   '/profile': (context) => ProfileScreen(),
+        //   '/draggerboard': (context) => DraggerScreen(),
+        // },
         theme: ThemeData(
           fontFamily: 'Nunito',
           bottomAppBarTheme: BottomAppBarTheme(color: Styles.drg_colorGreen),

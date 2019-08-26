@@ -10,7 +10,7 @@ class SigendInUserCircleAvatar extends StatelessWidget {
       builder: (BuildContext context) {
         return GestureDetector(
           onTap: () {
-            Scaffold.of(context).openDrawer();
+            Scaffold.of(context).openEndDrawer();
           },
           child: Container(
             padding: EdgeInsets.all(8),
