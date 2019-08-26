@@ -32,12 +32,38 @@ class SurveySetsListScreen extends StatelessWidget {
         ],
         title: Text("Survey Sets"),
       ),
-      body: _buildSetsListView(
-        surveySetsBloc: surveySetsBloc,
-        signInBloc: signInBloc,
-        teamBloc: teamBloc,
-        context: context,
-        id: teamId,
+      body: Column(
+        children: <Widget>[
+          DropdownButton(
+            onChanged: (value) {
+              print("onChanged");
+            },
+            hint: Text("Select Team"),
+            items: [
+              DropdownMenuItem(
+                value: "1",
+                child: Text(
+                  "First",
+                ),
+              ),
+              DropdownMenuItem(
+                value: "2",
+                child: Text(
+                  "Second",
+                ),
+              ),
+            ],
+          ),
+          Expanded(
+            child: _buildSetsListView(
+              surveySetsBloc: surveySetsBloc,
+              signInBloc: signInBloc,
+              teamBloc: teamBloc,
+              context: context,
+              id: teamId,
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Styles.drg_colorSecondary,
@@ -95,8 +121,6 @@ class SurveySetsListScreen extends StatelessWidget {
           );
         }
 
-        
-
         switch (surveySetSnapshot.connectionState) {
           case ConnectionState.waiting:
             return Center(
@@ -105,8 +129,8 @@ class SurveySetsListScreen extends StatelessWidget {
           case ConnectionState.active:
           case ConnectionState.done:
           default:
-
-            if (surveySetSnapshot.data.documents.length <= 0 || surveySetSnapshot == null) {
+            if (surveySetSnapshot.data.documents.length <= 0 ||
+                surveySetSnapshot == null) {
               return Center(
                 child: Container(
                   child: Text("This Team has no Survey Sets"),
