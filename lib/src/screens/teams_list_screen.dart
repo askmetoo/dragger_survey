@@ -31,7 +31,7 @@ class TeamsListScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Styles.drg_colorSecondary,
         child: Icon(
-          Icons.library_add,
+          Icons.people,
           color: Styles.drg_colorDarkerGreen,
         ),
         tooltip: "Create new Team",

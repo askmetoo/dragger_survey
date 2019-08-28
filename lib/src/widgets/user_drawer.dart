@@ -12,6 +12,9 @@ class UserDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
+    if (signInBloc.signedInUser == null) {
+      return Container();
+    }
     return Drawer(
       child: ListView(
         padding: EdgeInsets.all(0),
@@ -29,10 +32,20 @@ class UserDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: Text('Item 1'),
+            title: Text('Manage Teams'),
             onTap: () {
               // WHAT TO DO?
               Navigator.pop(context);
+              Navigator.pushNamed(context, '/teams');
+              // Navigate to where?
+            },
+          ),
+          ListTile(
+            title: Text('Logout'),
+            onTap: () {
+              // WHAT TO DO?
+              Navigator.pop(context);
+              signInBloc.signOut();
               // Navigate to where?
             },
           ),

@@ -236,6 +236,13 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
           case ConnectionState.active:
           case ConnectionState.done:
           default:
+            if (_selectedTeamId == '') {
+              return Center(
+                child: Container(
+                  child: Text("Currently no team selected, \nplease choose a team to list \n all it's survey sets.", textAlign: TextAlign.center,),
+                ),
+              );
+            }
             if (surveySetSnapshot.data.documents.length <= 0 ||
                 surveySetSnapshot == null) {
               return Center(

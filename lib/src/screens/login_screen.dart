@@ -86,8 +86,8 @@ class LoginScreen extends StatelessWidget {
                 print("${returnedUser?.documents[0]['email']}");
                 print("${returnedUser?.documents[0]['photoUrl']}");
                 print("${returnedUser?.documents[0]['providerId']}"); 
-                print("ROUTING to first screen '/teams");
-                Navigator.pushNamed(context, '/teams');
+                print("ROUTING to first screen '/surveysetslist");
+                Navigator.pushNamed(context, '/surveysetslist');
               } catch (err) {
                 print("ERROR in 'login_screen.dart' with adding User to DB: $err");
               }
@@ -96,8 +96,8 @@ class LoginScreen extends StatelessWidget {
               print("RETURNED USER's display name and providersUID: ");
               print("${returnedUser?.documents[0]['displayName']}");
               print("${returnedUser?.documents[0]['providersUID']}");
-              print("ROUTING to first screen '/teams");
-              Navigator.pushNamed(context, '/teams');
+              print("ROUTING to first screen '/surveysetslist");
+              Navigator.pushNamed(context, '/surveysetslist');
             } else {
               print("DUNNO what to do!!!");
             }
@@ -154,7 +154,8 @@ class LoginScreen extends StatelessWidget {
     return OutlineButton(
       splashColor: Styles.drg_colorSecondary,
       onPressed: () async {
-        Navigator.pushNamed(context, '/teams');
+        Navigator.pushNamed(context, '/surveysetslist');
+        // Navigator.pushNamed(context, '/teams');
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,
@@ -166,7 +167,7 @@ class LoginScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              "Back to my Teams List",
+              "Back to my Survey Sets List",
               style: TextStyle(fontSize: 20, color: Styles.drg_colorSecondary),
             )
           ],
