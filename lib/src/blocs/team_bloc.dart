@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 class TeamBloc extends ChangeNotifier {
 
   bool updatingTeamData = false;
-  String currentTeamId;
+  String currentTeamId = '';
 
   Stream<QuerySnapshot> get streamTeams {
     return Collection<Team>(path: 'teams').streamDocuments();
@@ -16,6 +16,10 @@ class TeamBloc extends ChangeNotifier {
 
   Future<QuerySnapshot> getTeamsQuery({String fieldName, String fieldValue}) {
     return Collection<Team>(path: 'teams').getDocumentsByQuery(fieldName: fieldName, fieldValue: fieldValue);
+  }
+
+  Future<QuerySnapshot> getTeamsQueryByArray({String fieldName, String arrayValue}) {
+    return Collection<Team>(path: 'teams').getDocumentsByQueryArray(fieldName: fieldName, arrayValue: arrayValue);
   }
 
   addTeamToDb({Map<String, dynamic> team}) {

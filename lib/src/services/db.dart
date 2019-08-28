@@ -56,6 +56,14 @@ class Collection<T> {
     return snapshots.getDocuments();
   }
 
+  Future<QuerySnapshot> getDocumentsByQueryArray({
+    String fieldName, 
+    String arrayValue
+    }) async {
+    var snapshots = ref.where(fieldName, arrayContains: arrayValue);
+    return snapshots.getDocuments();
+  }
+
   Future<DocumentSnapshot> getDocument(id) async {
     return await ref.document('$id').get();
   }

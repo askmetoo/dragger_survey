@@ -265,7 +265,7 @@ class _TeamFormState extends State<TeamForm> {
         "description": _description,
         "createdByUser": _createdByUser,
         "lastEditedByUser": _lastEditedByUser,
-        "_users": _users,
+        "users": _users,
       };
     }
     print("===============================");

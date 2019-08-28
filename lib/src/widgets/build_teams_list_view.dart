@@ -3,13 +3,24 @@ import 'package:date_format/date_format.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../styles.dart';
 
 Widget buildTeamsListView(
-      {TeamBloc teamBloc, SignInBloc signInBloc, BuildContext context}) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: teamBloc.streamTeams,
+      {BuildContext context}) {
+    
+    String currentUser = '';
+    
+    final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
+    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
+
+    currentUser = signInBloc.signedInUser.uid.toString();
+
+    print("In build_teams_list_view - before currently selected Team: ${teamBloc.currentTeamId}");
+    
+    return FutureBuilder<QuerySnapshot>(
+      future: teamBloc.getTeamsQueryByArray(fieldName: 'users', arrayValue: currentUser),
       builder: (BuildContext context,
           AsyncSnapshot<QuerySnapshot> teamsListSnapshot) {
         if (teamsListSnapshot.hasError) {
@@ -74,7 +85,7 @@ Widget buildTeamsListView(
                         },
                       ),
                       onTap: () {
-                        teamBloc.currentTeamId = snapshot?.documentID;
+                        // teamBloc.currentTeamId = snapshot?.documentID;
                         print(
                             "Before Navigator in ListTile of Teams - id: ${snapshot?.documentID}");
                         Navigator.pushNamed(context, '/surveysetslist',

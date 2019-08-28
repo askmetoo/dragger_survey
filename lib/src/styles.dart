@@ -55,6 +55,8 @@ class Styles {
   static const drg_colorPrimary = Color(0xff119da4);
   static const drg_colorSecondary = Color(0xfff7b71d);
   static const drg_colorText = Color(0xff0e2431);
+  static const drg_colorTextMedium = Color(0xff465761);
+  static const drg_colorTextLighter = Color(0xff78838a);
 
   static const drg_colorYellowGreen = Color(0xffffff7f);
   static const drg_colorLighterGreen = Color(0xffafa939);

@@ -7,14 +7,23 @@ import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:provider/provider.dart';
 import 'package:date_format/date_format.dart';
 
-class SurveySetsListScreen extends StatelessWidget {
+class SurveySetsListScreen extends StatefulWidget {
   final String teamId;
   SurveySetsListScreen({Key key, this.teamId}) : super(key: key);
 
   @override
+  _SurveySetsListScreenState createState() => _SurveySetsListScreenState();
+}
+
+class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
+  String _selectedTeamId = '';
+  String _selectedTeamName = '';
+  String _selectedTeamDescription = '';
+  String currentUser = '';
+
+  @override
   Widget build(BuildContext context) {
-    final PrismSurveySetBloc surveySetsBloc =
-        Provider.of<PrismSurveySetBloc>(context);
+    Provider.of<PrismSurveySetBloc>(context);
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
 
@@ -34,33 +43,11 @@ class SurveySetsListScreen extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          DropdownButton(
-            onChanged: (value) {
-              print("onChanged");
-            },
-            hint: Text("Select Team"),
-            items: [
-              DropdownMenuItem(
-                value: "1",
-                child: Text(
-                  "First",
-                ),
-              ),
-              DropdownMenuItem(
-                value: "2",
-                child: Text(
-                  "Second",
-                ),
-              ),
-            ],
-          ),
+          _buildTeamsDropdownButton(context: context),
           Expanded(
-            child: _buildSetsListView(
-              surveySetsBloc: surveySetsBloc,
-              signInBloc: signInBloc,
-              teamBloc: teamBloc,
+            child: _buildSurveySetsListView(
               context: context,
-              id: teamId,
+              id: widget.teamId,
             ),
           ),
         ],
@@ -74,7 +61,7 @@ class SurveySetsListScreen extends StatelessWidget {
         tooltip: "Add new Survey Set",
         onPressed: () {
           print("Add new Survey Set button pressed");
-          print("----------=======> Current Team id: $teamId");
+          print("----------=======> Current Team id: ${widget.teamId}");
           print("----------=======> Current Team: ${teamBloc.currentTeamId}");
           showDialog(
               context: context,
@@ -100,16 +87,136 @@ class SurveySetsListScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSetsListView(
-      {PrismSurveySetBloc surveySetsBloc,
-      SignInBloc signInBloc,
-      TeamBloc teamBloc,
-      BuildContext context,
-      @required String id}) {
+  Widget _buildTeamsDropdownButton({@required context}) {
+    final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
+    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
+    currentUser = signInBloc.signedInUser.uid.toString();
+
+    return FutureBuilder(
+        future: teamBloc.getTeamsQueryByArray(
+            fieldName: 'users', arrayValue: currentUser),
+        builder: (BuildContext context,
+            AsyncSnapshot<QuerySnapshot> teamsListSnapshot) {
+          if (teamsListSnapshot.hasError) {
+            return Center(
+              child: Container(
+                child:
+                    Text("Loading Set has error: ${teamsListSnapshot.error}"),
+              ),
+            );
+          }
+
+          switch (teamsListSnapshot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+            case ConnectionState.active:
+              return Center(
+                child: Container(
+                  child: Text("You currently have no teams"),
+                ),
+              );
+
+            case ConnectionState.done:
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                child: Container(
+                  child: SizedBox(
+                    height: 60,
+                    child: DropdownButton(
+                        isExpanded: true,
+                        onChanged: (value) {
+                          teamBloc.currentTeamId = value;
+                          setState(() {
+                            _selectedTeamId = value;
+                          });
+                          teamBloc
+                              .getTeamById(id: _selectedTeamId)
+                              .then((value) {
+                            setState(() {
+                              _selectedTeamName = value.data['name'];
+                              _selectedTeamDescription =
+                                  value.data['description'];
+                            });
+                          });
+                          print("Selected Team Name: $_selectedTeamName");
+                        },
+                        hint: _selectedTeamId == ''
+                            ? Text(
+                                "Please Select a Team",
+                                style: TextStyle(color: Styles.drg_colorText),
+                              )
+                            : RichText(
+                                text: TextSpan(
+                                  text: "Team: ",
+                                  style: TextStyle(
+                                      color: Styles.drg_colorText,
+                                      fontSize: 22),
+                                  children: [
+                                    TextSpan(
+                                      text: "$_selectedTeamName",
+                                      style: TextStyle(
+                                          color: Styles.drg_colorText,
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    TextSpan(
+                                      text: _selectedTeamDescription != '' ? "\n$_selectedTeamDescription" : "\nTeam has no description",
+                                      style: TextStyle(
+                                          color: Styles.drg_colorText,
+                                          fontSize: 14, 
+                                        ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                        disabledHint: Text("${teamBloc.currentTeamId}"),
+                        // disabledHint: Text("You don't have any Team"),
+                        items: teamsListSnapshot.data.documents
+                            .map<DropdownMenuItem>((team) {
+                          return DropdownMenuItem(
+                            value: team.documentID,
+                            // child: Text(
+                            //     "${team['name']} \n${team['description']}"),
+                            child: RichText(
+                              text: TextSpan(
+                                text: "${team['name']}\n",
+                                style: TextStyle(
+                                  color: Styles.drg_colorText,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: team['description'] != '' ? "${team['description']}" : 'Team has no description',
+                                    style: TextStyle(
+                                      color: Styles.drg_colorTextLighter,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }).toList()),
+                  ),
+                ),
+              );
+          }
+          return Text('No Dropdown Button available');
+        });
+  }
+
+  Widget _buildSurveySetsListView({BuildContext context, @required String id}) {
+    final PrismSurveySetBloc surveySetsBloc =
+        Provider.of<PrismSurveySetBloc>(context);
+    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
+
     return StreamBuilder<QuerySnapshot>(
       stream: surveySetsBloc
           .getPrismSurveySetQuery(
-              fieldName: 'createdByTeam', fieldValue: teamId)
+              fieldName: 'createdByTeam', fieldValue: _selectedTeamId)
+          // fieldName: 'createdByTeam', fieldValue: widget.teamId)
           .asStream(),
       builder: (BuildContext context,
           AsyncSnapshot<QuerySnapshot> surveySetSnapshot) {
