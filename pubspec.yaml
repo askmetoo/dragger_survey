@@ -37,6 +37,8 @@ dependencies:
 
   page_transition: "^1.1.4"
   date_format:
+  connectivity: 0.4.3+7
+
 
 
 

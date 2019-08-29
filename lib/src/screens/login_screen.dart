@@ -1,11 +1,10 @@
-import 'package:dragger_survey/src/blocs/sing_in_bloc.dart';
-import 'package:dragger_survey/src/blocs/user_bloc.dart';
+import 'package:dragger_survey/src/blocs/blocs.dart';
+import 'package:dragger_survey/src/enums/connectivity_status.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
@@ -26,6 +25,7 @@ class LoginScreen extends StatelessWidget {
               ),
               _backToSurveyListButton(context: context, bloc: signInBloc),
               _getSignInButtons(context: context, bloc: signInBloc),
+              _getConnectionStatusText(context: context),
             ],
           ),
         ),
@@ -34,6 +34,7 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _getSignInButtons({BuildContext context, SignInBloc bloc}) {
+    print("In _getSignInButtons - bloc?.signedInUser: ${bloc?.signedInUser}");
     if ((bloc?.signedInUser) != null) {
       return _singOutButton(context: context, bloc: bloc);
     }
@@ -59,13 +60,22 @@ class LoginScreen extends StatelessWidget {
           splashColor: Styles.drg_colorSecondary,
           onPressed: () async {
             await bloc.signInWithGoogle();
-            _signedInUser = bloc.signedInUser.uid;
-            print("USER UID after Google SignIn: $_signedInUser (in SignInBloc)");
-            var returnedUser = await userBloc.getUsersQuery(fieldName: 'providersUID', fieldValue: bloc.signedInUser.uid);
+            try {
+              _signedInUser = bloc.signedInUser?.uid;
+            } catch (err) {
+              print("ERROR after await bloc.signInWithGoogle() - error: $err");
+            } finally {
+              print(
+                  "USER UID after Google SignIn: $_signedInUser (in SignInBloc)");
+            }
+            var returnedUser = await userBloc.getUsersQuery(
+                fieldName: 'providersUID', fieldValue: bloc.signedInUser.uid);
+            // fieldName: 'providersUID', fieldValue: bloc.signedInUser.uid);
             var returnedUserUID = returnedUser?.documents[0]['providersUID'];
             bloc.signedInUserProvidersUID = returnedUserUID;
-            
-            if (returnedUser.documents.isEmpty || _signedInUser != returnedUser?.documents[0]['providersUID']) {
+
+            if (returnedUser.documents.isEmpty ||
+                _signedInUser != returnedUser?.documents[0]['providersUID']) {
               print("USER not id DB");
               try {
                 Map<String, dynamic> newUser = {
@@ -73,25 +83,29 @@ class LoginScreen extends StatelessWidget {
                   "displayName": bloc.signedInUser.displayName,
                   "email": bloc.signedInUser.email,
                   "photoUrl": bloc.signedInUser.photoUrl,
-                  "providerId": bloc.signedInUser.providerId,                  
+                  "providerId": bloc.signedInUser.providerId,
                 };
                 userBloc.addUserToDb(user: newUser);
                 print("SUCCESS in 'login_screen.dart' with adding User to DB");
                 print("------------------------------------------------------");
                 print("Added data:");
-                var returnedUser = await userBloc.getUsersQuery(fieldName: 'providersUID', fieldValue: bloc.signedInUser.uid);
+                var returnedUser = await userBloc.getUsersQuery(
+                    fieldName: 'providersUID',
+                    fieldValue: bloc.signedInUser.uid);
                 print("RETURNED USER after adding to DB:");
                 print("${returnedUser?.documents[0]['providersUID']}");
                 print("${returnedUser?.documents[0]['displayName']}");
                 print("${returnedUser?.documents[0]['email']}");
                 print("${returnedUser?.documents[0]['photoUrl']}");
-                print("${returnedUser?.documents[0]['providerId']}"); 
+                print("${returnedUser?.documents[0]['providerId']}");
                 print("ROUTING to first screen '/surveysetslist");
                 Navigator.pushNamed(context, '/surveysetslist');
               } catch (err) {
-                print("ERROR in 'login_screen.dart' with adding User to DB: $err");
+                print(
+                    "ERROR in 'login_screen.dart' with adding User to DB: $err");
               }
-            } else if (returnedUser.documents.isNotEmpty || _signedInUser == returnedUser?.documents[0]['providersUID']) {
+            } else if (returnedUser.documents.isNotEmpty ||
+                _signedInUser == returnedUser?.documents[0]['providersUID']) {
               print("USER found id DB");
               print("RETURNED USER's display name and providersUID: ");
               print("${returnedUser?.documents[0]['displayName']}");
@@ -114,7 +128,8 @@ class LoginScreen extends StatelessWidget {
               children: <Widget>[
                 Text(
                   "Sign-In with Google",
-                  style: TextStyle(fontSize: 20, color: Styles.drg_colorSecondary),
+                  style:
+                      TextStyle(fontSize: 20, color: Styles.drg_colorSecondary),
                 )
               ],
             ),
@@ -174,5 +189,20 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Text _getConnectionStatusText({BuildContext context}) {
+    final connectionStatus = Provider.of<ConnectivityStatus>(context);
+
+    print("connectionStatus: $connectionStatus");
+
+    if (connectionStatus == ConnectivityStatus.WiFi) {
+      return Text("You're connected via WiFi.");
+    } else if (connectionStatus == ConnectivityStatus.Cellular) {
+      return Text("You're connected via Mobile Network.");
+    } else if (connectionStatus == ConnectivityStatus.Offline) {
+      return Text("Your connection is offline.");
+    }
+    return Text("Don't know more about the connection");
   }
 }

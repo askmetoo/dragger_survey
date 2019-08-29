@@ -56,26 +56,25 @@ class UserDrawer extends StatelessWidget {
 
   FlatButton _buildSignoutButton(SignInBloc signInBloc) {
     return FlatButton(
-                splashColor: Styles.drg_colorSecondary,
-                onPressed: () {
-                  signInBloc.signOut();
-                },
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40)),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "Sign-Out",
-                        style: TextStyle(
-                            fontSize: 16, color: Styles.drg_colorDarkerGreen),
-                      )
-                    ],
-                  ),
-                ),
-              );
+      splashColor: Styles.drg_colorSecondary,
+      onPressed: () {
+        signInBloc.signOut();
+      },
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              "Sign-Out",
+              style:
+                  TextStyle(fontSize: 16, color: Styles.drg_colorDarkerGreen),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -1,3 +1,5 @@
+import 'package:dragger_survey/src/enums/connectivity_status.dart';
+import 'package:dragger_survey/src/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dragger_survey/src/styles.dart';
@@ -13,6 +15,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        StreamProvider<ConnectivityStatus>(
+          builder: (context) => ConnectivityService().connectionStatusController.stream,
+        ),
         ChangeNotifierProvider<SignInBloc>.value(
           value: SignInBloc(),
         ),

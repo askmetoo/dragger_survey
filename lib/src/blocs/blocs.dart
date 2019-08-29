@@ -1,3 +1,4 @@
+export 'connectivity_bloc.dart';
 export 'draggable_item_bloc.dart';
 export 'fab_bloc.dart';
 export 'matrix_granularity_bloc.dart';

@@ -17,8 +17,10 @@ class SignInBloc extends ChangeNotifier {
     } catch (error) {
       print("Error while signing-in: $error");
     } finally {
+      print("In SignInBloc - after auth.googleSignIn() - signedInUser: $signedInUser");
       _setIsLoading(false);
     }
+    return null;
   }
 
   final StreamController<bool> _isLoadingController = StreamController<bool>();

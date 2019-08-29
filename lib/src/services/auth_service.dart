@@ -36,13 +36,14 @@ class AuthService {
 
       FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
       assert(!user.isAnonymous);
-      // print(
-      //     '--------> signInWithGoogle user.getIdToken(): ${user.getIdToken()}');
+      print('--------> In auth_service - signInWithGoogle user.uid: ${user.uid}');
       assert(await user.getIdToken() != null);
 
       final FirebaseUser currentUser = await _auth.currentUser();
+      print('--------> In auth_service - await _auth.currentUser() currentUser: $currentUser');
+      print('--------> In auth_service - await _auth.currentUser() currentUser.uid: ${currentUser.uid}');
       assert(user.uid == currentUser.uid);
-      print('--------> signInWithGoogle succeeded: $user');
+      print('--------> In auth_service - signInWithGoogle succeeded: $user');
 
       //      updateUserData(user);
       return user;
