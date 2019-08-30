@@ -5,7 +5,7 @@ import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';
 
 class SurveySetScaffoldScreen extends StatefulWidget {
-  Map<String, dynamic> argument;
+  final Map<String, dynamic> argument;
   SurveySetScaffoldScreen({Key key, this.argument}) : super(key: key);
   @override
   _SurveySetScaffoldScreenState createState() =>
@@ -15,13 +15,12 @@ class SurveySetScaffoldScreen extends StatefulWidget {
 class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
   int _selectedIndex = 0;
   Map<String, dynamic> arg;
-  
+
   _SurveySetScaffoldScreenState(this.arg);
   var _titleOptions = ["Survey Set Details", "Survey Title", "How-To Dragger"];
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Styles.drg_colorAppBackground,
       appBar: AppBar(
@@ -54,17 +53,18 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
 
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
-  
+
   List<Widget> _widgetOptions({args}) {
     return <Widget>[
-      SurveySetDetailsScreen(id: args['id'],),
+      SurveySetDetailsScreen(
+        id: args['id'],
+      ),
       DraggerScreen(),
       SurveySetHowToScreen()
     ];

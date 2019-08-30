@@ -11,7 +11,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  /// NEW CODE.
   @override
   void initState() {
     super.initState();
@@ -40,24 +39,21 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  /// NEW CODE.
-  /// We can do long run task here.
-  /// In this example, we just simply delay 3 seconds, nothing complicated.
   Future initData() async {
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(milliseconds: 100));
   }
 
-  /// NEW CODE.
-  /// Navigate to Home screen.
   void navigateToHomeScreen() {
     /// Push home screen and replace (close/exit) splash screen.
-    Navigator.pushReplacement(
-        context,
-        PageTransition(
-          curve: Curves.easeIn,
-          duration: Duration(milliseconds: 400),
-          type: PageTransitionType.fade,
-          child: LoginScreen(),
-        ));
+    Navigator.pushNamed(context, '/login');
+    // Navigator.pushReplacement(
+    //   context,
+    //   PageTransition(
+    //     curve: Curves.easeIn,
+    //     duration: Duration(milliseconds: 400),
+    //     type: PageTransitionType.fade,
+    //     child: LoginScreen(),
+    //   ),
+    // );
   }
 }

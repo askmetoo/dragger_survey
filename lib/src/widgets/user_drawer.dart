@@ -1,7 +1,10 @@
 import 'package:dragger_survey/src/blocs/blocs.dart';
+import 'package:dragger_survey/src/screens/screens.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class UserDrawer extends StatelessWidget {
@@ -12,46 +15,72 @@ class UserDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
-    if (signInBloc.signedInUser == null) {
-      return Container();
+    if (signInBloc.currentUser == null) {
+      Navigator.pushReplacement(
+          context,
+          PageTransition(
+            curve: Curves.easeIn,
+            duration: Duration(milliseconds: 200),
+            type: PageTransitionType.fade,
+            child: SplashScreen(),
+          ));
     }
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.all(0),
-        children: <Widget>[
-          DrawerHeader(
-            child: Column(
+    return FutureBuilder<FirebaseUser>(
+        future: signInBloc.currentUser,
+        builder: (context, snapshot) {
+          if (snapshot.data == null) {
+            return Text("No snapshot data");
+          } else if (snapshot.data.displayName.isEmpty) {
+            return Text("No logged-in user");
+          } else if (signInBloc.currentUserUID.isEmpty) {
+            return Text(
+                "No currentUserUID: ${signInBloc.currentUserUID.isEmpty}");
+          }
+          return Drawer(
+            child: ListView(
+              padding: EdgeInsets.all(0),
               children: <Widget>[
-                SigendInUserCircleAvatar(),
-                Text('${signInBloc.signedInUser.displayName}'),
-                _buildSignoutButton(signInBloc),
+                DrawerHeader(
+                  child: Column(
+                    children: <Widget>[
+                      SigendInUserCircleAvatar(),
+                      Text('${snapshot.data.displayName}'),
+                      _buildSignoutButton(signInBloc),
+                    ],
+                  ),
+                  decoration: BoxDecoration(
+                    color: Styles.drg_colorSecondary,
+                  ),
+                ),
+                ListTile(
+                  title: Text('Manage Teams'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, '/teams');
+                    // Navigate to where?
+                  },
+                ),
+                ListTile(
+                  title: Text('Logout'),
+                  onTap: () {
+                    // Navigator.pop(context);
+
+                    Navigator.pushReplacement(
+                      context,
+                      PageTransition(
+                        curve: Curves.easeIn,
+                        duration: Duration(milliseconds: 200),
+                        type: PageTransitionType.fade,
+                        child: SplashScreen(),
+                      ),
+                    );
+                    signInBloc.signOut();
+                  },
+                ),
               ],
             ),
-            decoration: BoxDecoration(
-              color: Styles.drg_colorSecondary,
-            ),
-          ),
-          ListTile(
-            title: Text('Manage Teams'),
-            onTap: () {
-              // WHAT TO DO?
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/teams');
-              // Navigate to where?
-            },
-          ),
-          ListTile(
-            title: Text('Logout'),
-            onTap: () {
-              // WHAT TO DO?
-              Navigator.pop(context);
-              signInBloc.signOut();
-              // Navigate to where?
-            },
-          ),
-        ],
-      ),
-    );
+          );
+        });
   }
 
   FlatButton _buildSignoutButton(SignInBloc signInBloc) {

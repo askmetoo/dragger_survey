@@ -19,8 +19,8 @@ class _DraggerScreenState extends State<DraggerScreen> {
     final PrismSurveyBloc prismSurveyBloc =
         Provider.of<PrismSurveyBloc>(context);
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
-    
-    if (signInBloc.signedInUser == null) {
+
+    if (signInBloc.currentUserUID == null) {
       print("User is not signed in!");
       return SplashScreen();
     }
@@ -104,9 +104,7 @@ class _DraggerScreenState extends State<DraggerScreen> {
               letterSpacing: -.6,
               shadows: [
                 Shadow(
-                    blurRadius: 4,
-                    color: Colors.black12,
-                    offset: Offset(1, 1)),
+                    blurRadius: 4, color: Colors.black12, offset: Offset(1, 1)),
               ]),
         ),
       ),

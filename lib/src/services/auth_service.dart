@@ -9,11 +9,16 @@ class AuthService {
   final Firestore _db = Firestore.instance;
   FirebaseUser _currentUser;
 
-  FirebaseUser get currentUser {
-    _auth.currentUser().then( (value) => _currentUser = value);
+  Future<FirebaseUser> get currentUser async {
+    await _auth.currentUser().then((value) {
+      // print(
+      //     "------------- >1) In auth_service - get currentUser .then() value: $value");
+      _currentUser = value;
+    });
+    // print("------------- >2) In auth_service - get currentUser: $_currentUser");
     return _currentUser;
-  } 
-  
+  }
+
   FirebaseAuth get auth => _auth;
 
   Future<FirebaseUser> get getUser => _auth.currentUser();
@@ -29,7 +34,8 @@ class AuthService {
   }
 
   Future<FirebaseUser> googleSignIn() async {
-    print('--------> In auth_service, before interactive sign-in process - await _auth.currentUser() currentUser: $_currentUser');
+    // print(
+    //     '--------> In auth_service, before interactive sign-in process - await _auth.currentUser() currentUser: $_currentUser');
     _currentUser = await _auth.currentUser();
     try {
       GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
@@ -43,19 +49,22 @@ class AuthService {
 
       FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
       assert(!user.isAnonymous);
-      print('--------> In auth_service - signInWithGoogle user.uid: ${user.uid}');
+      // print(
+      //     '--------> In auth_service - signInWithGoogle user.uid: ${user.uid}');
       assert(await user.getIdToken() != null);
 
       _currentUser = await _auth.currentUser();
-      print('--------> In auth_service - await _auth.currentUser() currentUser: $_currentUser');
-      print('--------> In auth_service - await _auth.currentUser() currentUser.uid: ${_currentUser.uid}');
+      // print(
+      //     '--------> In auth_service - await _auth.currentUser() currentUser: $_currentUser');
+      // print(
+      //     '--------> In auth_service - await _auth.currentUser() currentUser.uid: ${_currentUser.uid}');
       assert(user.uid == _currentUser.uid);
-      print('--------> In auth_service - signInWithGoogle succeeded: $user');
+      // print('--------> In auth_service - signInWithGoogle succeeded: $user');
 
       //      updateUserData(user);
       return user;
     } catch (error) {
-      print("---------> Error during anonymous sign in $error");
+      // print("---------> Error during anonymous sign in $error");
       return null;
     }
   }

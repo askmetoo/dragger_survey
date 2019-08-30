@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/screens/splash_screen.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:date_format/date_format.dart';
 
@@ -27,70 +29,94 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
 
-    if (signInBloc.signedInUser == null) {
-      print("User is not signed in!");
-      return SplashScreen();
-    }
+    // if (signInBloc.signedInUserProvidersUID.isEmpty ||
+    //     signInBloc.signedInUserProvidersUID == '') {
+    //   print("User is not signed in!");
+    //   return SplashScreen();
+    // }
 
-    return Scaffold(
-      backgroundColor: Styles.drg_colorAppBackground,
-      endDrawer: UserDrawer(),
-      appBar: AppBar(
-        actions: <Widget>[
-          SigendInUserCircleAvatar(),
-        ],
-        title: Text("Survey Sets"),
-      ),
-      body: Column(
-        children: <Widget>[
-          _buildTeamsDropdownButton(context: context),
-          Expanded(
-            child: _buildSurveySetsListView(
-              context: context,
-              id: widget.teamId,
+    return FutureBuilder<FirebaseUser>(
+        future: signInBloc.currentUser,
+        builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
+          print(
+              "-----> In survey_sets_list_screen - signInBloc.currentUserUID: ${signInBloc.currentUserUID}");
+          print(
+              "-----> In survey_sets_list_screen - snapshot.data.uid: ${snapshot.data?.uid}");
+          if (snapshot.data == null || snapshot.data.uid == null) {
+            print("User is not signed in!");
+            return SplashScreen();
+            // Navigator.pushReplacement(
+            //   context,
+            //   PageTransition(
+            //     curve: Curves.easeIn,
+            //     duration: Duration(milliseconds: 200),
+            //     type: PageTransitionType.fade,
+            //     child: SplashScreen(),
+            //   ),
+            // );
+          }
+          return Scaffold(
+            backgroundColor: Styles.drg_colorAppBackground,
+            endDrawer: UserDrawer(),
+            appBar: AppBar(
+              actions: <Widget>[
+                SigendInUserCircleAvatar(),
+              ],
+              title: Text("Survey Sets"),
             ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Styles.drg_colorSecondary,
-        child: Icon(
-          Icons.library_add,
-          color: Styles.drg_colorDarkerGreen,
-        ),
-        tooltip: "Add new Survey Set",
-        onPressed: () {
-          print("Add new Survey Set button pressed");
-          print("----------=======> Current Team id: ${widget.teamId}");
-          print("----------=======> Current Team: ${teamBloc.currentTeamId}");
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  elevation: 10,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(3),
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
+            body: Column(
+              children: <Widget>[
+                _buildTeamsDropdownButton(context: context),
+                Expanded(
+                  child: _buildSurveySetsListView(
+                    context: context,
+                    id: widget.teamId,
                   ),
-                  title: Text("New survey set"),
-                  backgroundColor: Styles.drg_colorSecondary,
-                  contentTextStyle: TextStyle(color: Styles.drg_colorText),
-                  content: SurveySetForm(),
-                );
-              });
-        },
-      ),
-    );
+                ),
+              ],
+            ),
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: Styles.drg_colorSecondary,
+              child: Icon(
+                Icons.library_add,
+                color: Styles.drg_colorDarkerGreen,
+              ),
+              tooltip: "Add new Survey Set",
+              onPressed: () {
+                print("Add new Survey Set button pressed");
+                print("----------=======> Current Team id: ${widget.teamId}");
+                print(
+                    "----------=======> Current Team: ${teamBloc.currentTeamId}");
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        elevation: 10,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(3),
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20),
+                          ),
+                        ),
+                        title: Text("New survey set"),
+                        backgroundColor: Styles.drg_colorSecondary,
+                        contentTextStyle:
+                            TextStyle(color: Styles.drg_colorText),
+                        content: SurveySetForm(),
+                      );
+                    });
+              },
+            ),
+          );
+        });
   }
 
   Widget _buildTeamsDropdownButton({@required context}) {
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
-    currentUser = signInBloc.signedInUser.uid.toString();
+    currentUser = signInBloc.currentUserUID;
 
     return FutureBuilder(
         future: teamBloc.getTeamsQueryByArray(
@@ -161,11 +187,13 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                                           fontWeight: FontWeight.w600),
                                     ),
                                     TextSpan(
-                                      text: _selectedTeamDescription != '' ? "\n$_selectedTeamDescription" : "\nTeam has no description",
+                                      text: _selectedTeamDescription != ''
+                                          ? "\n$_selectedTeamDescription"
+                                          : "\nTeam has no description",
                                       style: TextStyle(
-                                          color: Styles.drg_colorText,
-                                          fontSize: 14, 
-                                        ),
+                                        color: Styles.drg_colorText,
+                                        fontSize: 14,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -188,7 +216,9 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                                 ),
                                 children: [
                                   TextSpan(
-                                    text: team['description'] != '' ? "${team['description']}" : 'Team has no description',
+                                    text: team['description'] != ''
+                                        ? "${team['description']}"
+                                        : 'Team has no description',
                                     style: TextStyle(
                                       color: Styles.drg_colorTextLighter,
                                       fontSize: 12,
@@ -239,7 +269,10 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
             if (_selectedTeamId == '') {
               return Center(
                 child: Container(
-                  child: Text("Currently no team selected, \nplease choose a team to list \n all it's survey sets.", textAlign: TextAlign.center,),
+                  child: Text(
+                    "Currently no team selected, \nplease choose a team to list \n all it's survey sets.",
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               );
             }
