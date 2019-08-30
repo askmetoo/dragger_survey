@@ -36,8 +36,18 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _getSignInButtons({BuildContext context, SignInBloc bloc}) {
+    String _currentUserId;
+    bloc.currentUser
+        .then((value) => _currentUserId = value == null ? null : value.uid);
     print("In _getSignInButtons - bloc?.signedInUser: ${bloc?.signedInUser}");
-    if ((bloc?.signedInUser) != null) {
+    print("In _getSignInButtons - bloc?.currentUser: $_currentUserId");
+    // if(bloc.signedInUser != null) {
+    //   _signedInUser = bloc.signedInUser?.uid;
+    // } else {
+    //   bloc.currentUser.then((value) => _signedInUser = value.uid);
+    //   print("In _signInButton - value of _signedInUser $_signedInUser");
+    // }
+    if ((bloc?.signedInUser) != null || _currentUserId != null) {
       return _singOutButton(context: context, bloc: bloc);
     }
     return _signInButton(context: context, bloc: bloc);
@@ -165,32 +175,39 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _backToSurveyListButton({BuildContext context, SignInBloc bloc}) {
-    if (bloc.signedInUser == null) {
-      return Container();
-    }
-    return OutlineButton(
-      splashColor: Styles.drg_colorSecondary,
-      onPressed: () async {
-        Navigator.pushNamed(context, '/surveysetslist');
-        // Navigator.pushNamed(context, '/teams');
-      },
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-      highlightElevation: 0,
-      borderSide: BorderSide(color: Styles.drg_colorSecondary),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              "Back to my Survey Sets List",
-              style: TextStyle(fontSize: 20, color: Styles.drg_colorSecondary),
-            )
-          ],
+    String _currentUserId;
+    bloc.currentUser
+        .then((value) => _currentUserId = value == null ? null : value.uid);
+
+    if ((bloc?.signedInUser) == null || _currentUserId == null) {
+      return null;
+    } else if ((_currentUserId.isNotEmpty) || (bloc?.signedInUser) != null) {
+      return OutlineButton(
+        splashColor: Styles.drg_colorSecondary,
+        onPressed: () async {
+          Navigator.pushNamed(context, '/surveysetslist');
+          // Navigator.pushNamed(context, '/teams');
+        },
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+        highlightElevation: 0,
+        borderSide: BorderSide(color: Styles.drg_colorSecondary),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                "Back to my Survey Sets List",
+                style:
+                    TextStyle(fontSize: 20, color: Styles.drg_colorSecondary),
+              )
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
+    return null;
   }
 
   Text _getConnectionStatusText({BuildContext context}) {
@@ -217,7 +234,7 @@ class LoginScreen extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
           if (snapshot.hasData) {
             return Text(
-              '_currentUser in auth_service: ${snapshot.data.uid}',
+              '_currentUser in auth_service: ${snapshot.data.uid} \nsignedInUser: ${signInBloc.signedInUser != null ? signInBloc.signedInUser?.uid : 'no UID available'}',
             );
           }
           return Text('No snapshot data');
