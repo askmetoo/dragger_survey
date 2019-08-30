@@ -1,6 +1,7 @@
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/enums/connectivity_status.dart';
 import 'package:dragger_survey/src/styles.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +27,7 @@ class LoginScreen extends StatelessWidget {
               _backToSurveyListButton(context: context, bloc: signInBloc),
               _getSignInButtons(context: context, bloc: signInBloc),
               _getConnectionStatusText(context: context),
+              _getCurrentUserStatus(context: context),
             ],
           ),
         ),
@@ -204,5 +206,23 @@ class LoginScreen extends StatelessWidget {
       return Text("Your connection is offline.");
     }
     return Text("Don't know more about the connection");
+  }
+
+  Widget _getCurrentUserStatus({BuildContext context}) {
+    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
+
+    return Container(
+      child: FutureBuilder(
+        future: signInBloc.currentUser,
+        builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
+          if (snapshot.hasData) {
+            return Text(
+              '_currentUser in auth_service: ${snapshot.data.uid}',
+            );
+          }
+          return Text('No snapshot data');
+        },
+      ),
+    );
   }
 }

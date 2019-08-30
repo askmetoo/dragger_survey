@@ -8,6 +8,12 @@ class SignInBloc extends ChangeNotifier {
   FirebaseUser signedInUser;
   final auth = AuthService().auth;
   String signedInUserProvidersUID = '';
+  Future<FirebaseUser> _currentUser;
+
+  Future<FirebaseUser> get currentUser {
+    _currentUser = AuthService().getUser;
+    return _currentUser;
+  }
 
   Future<FirebaseUser> signInWithGoogle() async {
     final AuthService auth = AuthService();

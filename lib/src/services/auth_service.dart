@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dragger_survey/src/services/models.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:async';
@@ -8,7 +7,13 @@ class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Firestore _db = Firestore.instance;
+  FirebaseUser _currentUser;
 
+  FirebaseUser get currentUser {
+    _auth.currentUser().then( (value) => _currentUser = value);
+    return _currentUser;
+  } 
+  
   FirebaseAuth get auth => _auth;
 
   Future<FirebaseUser> get getUser => _auth.currentUser();
@@ -24,6 +29,8 @@ class AuthService {
   }
 
   Future<FirebaseUser> googleSignIn() async {
+    print('--------> In auth_service, before interactive sign-in process - await _auth.currentUser() currentUser: $_currentUser');
+    _currentUser = await _auth.currentUser();
     try {
       GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
       GoogleSignInAuthentication googleAuth =
@@ -39,10 +46,10 @@ class AuthService {
       print('--------> In auth_service - signInWithGoogle user.uid: ${user.uid}');
       assert(await user.getIdToken() != null);
 
-      final FirebaseUser currentUser = await _auth.currentUser();
-      print('--------> In auth_service - await _auth.currentUser() currentUser: $currentUser');
-      print('--------> In auth_service - await _auth.currentUser() currentUser.uid: ${currentUser.uid}');
-      assert(user.uid == currentUser.uid);
+      _currentUser = await _auth.currentUser();
+      print('--------> In auth_service - await _auth.currentUser() currentUser: $_currentUser');
+      print('--------> In auth_service - await _auth.currentUser() currentUser.uid: ${_currentUser.uid}');
+      assert(user.uid == _currentUser.uid);
       print('--------> In auth_service - signInWithGoogle succeeded: $user');
 
       //      updateUserData(user);
