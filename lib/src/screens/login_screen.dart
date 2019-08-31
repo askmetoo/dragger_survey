@@ -70,23 +70,13 @@ class LoginScreen extends StatelessWidget {
                 OutlineButton(
                   splashColor: Styles.drg_colorSecondary,
                   onPressed: () async {
-                    await bloc.signInWithGoogle();
-                    try {
-                      _signedInUser = bloc.signedInUserProvidersUID;
-                      print(
-                          "1) USER UID after Google SignIn: $_signedInUser (in SignInBloc)");
-                    } catch (err) {
-                      print(
-                          "ERROR after await bloc.signInWithGoogle() - error: $err");
-                    } finally {
-                      print(
-                          "2) USER UID after Google SignIn: $_signedInUser (in SignInBloc)");
-                    }
+                    await bloc.signInWithGoogle()
+                    .catchError((error) => print(
+                          "ERROR after await bloc.signInWithGoogle() - error: $error"));
+                    
                     var returnedUser = await userBloc.getUsersQuery(
                         fieldName: 'providersUID',
                         fieldValue: bloc.signedInUserProvidersUID);
-                    // fieldName: 'providersUID', fieldValue: bloc.signedInUser.uid);
-                    // var returnedUserUID = returnedUser?.documents[0]['providersUID'];
 
                     if (returnedUser.documents.isEmpty ||
                         _signedInUser !=
@@ -133,7 +123,7 @@ class LoginScreen extends StatelessWidget {
                           "ROUTING EXISTING USER to first screen '/surveysetslist");
                       Navigator.pushNamed(context, '/surveysetslist');
                     } else {
-                      print("DUNNO what to do!!!");
+                      print("In login_screen it's xmas time!!!");
                     }
                   },
                   shape: RoundedRectangleBorder(

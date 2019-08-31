@@ -198,8 +198,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                                   ],
                                 ),
                               ),
-                        disabledHint: Text("${teamBloc.currentTeamId}"),
-                        // disabledHint: Text("You don't have any Team"),
+                        disabledHint: teamBloc.currentTeamId != null ? Text("${teamBloc.currentTeamId}") : Text("You don't have any Team"),
                         items: teamsListSnapshot.data.documents
                             .map<DropdownMenuItem>((team) {
                           return DropdownMenuItem(
