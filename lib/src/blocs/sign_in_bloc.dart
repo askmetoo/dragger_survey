@@ -9,7 +9,7 @@ class SignInBloc extends ChangeNotifier {
 
   Future<FirebaseUser> get currentUser async {
     FirebaseUser _user = (await authService.getCurrentUser());
-    log("In SignInBloc getting currentUser: $_user, UID: ${_user.uid}");
+    log("In SignInBloc getting currentUser: $_user, UID: ${_user?.uid}");
     return _user;
   }
 
@@ -24,5 +24,4 @@ class SignInBloc extends ChangeNotifier {
     log("In SignInBloc getting currentUser: $_user, UID: ${_user.uid}");
     return _user;
   }
-
 }
