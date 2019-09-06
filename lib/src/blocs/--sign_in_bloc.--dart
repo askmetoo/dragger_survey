@@ -1,0 +1,82 @@
+import 'dart:async';
+import 'dart:developer';
+import 'package:dragger_survey/src/services/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
+class SignInBloc extends ChangeNotifier {
+  AuthService authService = AuthService();
+  FirebaseAuth auth = AuthService().auth;
+  FirebaseUser signedInUser;
+  FirebaseUser _currentUser;
+  String _currentUserUID;
+
+  FirebaseUser get currentUser {
+    FirebaseUser _localCurrentUser;
+    String _localCurrentUserUID;
+
+    authService.getCurrentUser.then((value) {
+      log("In sign_in_bloc get currentUser in authService.getCurrentUser value: $value");
+      _localCurrentUser = value;
+      _localCurrentUserUID = value.uid;
+    }).whenComplete( () {
+      _currentUser = _localCurrentUser;
+      // _currentUserUID = _localCurrentUser.uid;
+      log("---> In sign_in_bloc get currentUser .whenComplete value of _currentUser: $_currentUser");
+      log("---> In sign_in_bloc get currentUser .whenComplete value of _currentUserUID: $_currentUserUID");
+    }).catchError(
+        (e) => log('ERROR in sign_in_bloc while get currentUser: $e'));
+
+    // _currentUser = _localCurrentUser;
+    _currentUserUID = _localCurrentUserUID;
+    log("99 In sign_in_bloc get currentUser value of _localCurrentUser: $_currentUser");
+    log("99 In sign_in_bloc get currentUser value of _localCurrentUser: $_currentUserUID");
+    return _currentUser;
+  }
+
+  String get currentUserUID {
+    if (_currentUser != null && _currentUser.uid != null) {
+      _currentUserUID = _currentUser.uid;
+      return _currentUserUID;
+    }
+    return null;
+  }
+
+  Future<FirebaseUser> signInWithGoogle() async {
+    // final AuthService auth = AuthService();
+    FirebaseUser _localCurrentUser;
+    _setCurrentUserData() {
+      log("---> In sign_in_bloc signInWithGpoogle() _setCurrentUserData() value of _currentUser a: $_currentUser");
+      log("---> In sign_in_bloc signInWithGpoogle() _setCurrentUserData() value of _currentUserUID a: $_currentUserUID");
+      log("---> In sign_in_bloc signInWithGpoogle() _setCurrentUserData() value of _localCurrentUser: ${_localCurrentUser.uid}");
+      _currentUser = authService.currentUser;
+      _currentUserUID = _localCurrentUser.uid;
+      log("---> In sign_in_bloc signInWithGpoogle() _setCurrentUserData() value of _currentUser b: $_currentUser");
+      log("---> In sign_in_bloc signInWithGpoogle() _setCurrentUserData() value of _currentUserUID b: $_currentUserUID");
+    }
+
+    authService
+        .googleSignIn()
+        .then((value) => _localCurrentUser = value)
+        .then((value) =>
+            log("---> In sign_in_bloc signInWithGpoogle() value: $value"))
+        .then((value) => log(
+            "---> In sign_in_bloc signInWithGpoogle() value of _localCurrentUser: $_localCurrentUser"))
+        .whenComplete(_setCurrentUserData)
+        .catchError((e) => log("ERROR in sign_in_bloc signInWithGoogle: $e"));
+
+    return _localCurrentUser;
+  }
+
+  final StreamController<bool> _isLoadingController = StreamController<bool>();
+
+  void signOut() {
+    log("----------> In sign_in_bloc signOut() value of auth: $auth");
+    auth.signOut();
+    // AuthService().signOut();
+    signedInUser = null;
+    notifyListeners();
+  }
+
+  void dispose() => _isLoadingController.close();
+}

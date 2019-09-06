@@ -1,5 +1,9 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/enums/connectivity_status.dart';
+import 'package:dragger_survey/src/shared/shared.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +12,8 @@ import 'package:provider/provider.dart';
 class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
+    FirebaseUser _user = Provider.of<FirebaseUser>(context);
+    bool loggedIn = _user != null;
 
     return Scaffold(
       body: Container(
@@ -24,10 +29,11 @@ class LoginScreen extends StatelessWidget {
               SizedBox(
                 height: 50,
               ),
-              _openSurveyListButton(context: context, bloc: signInBloc),
-              _getSignInButtons(context: context, bloc: signInBloc),
+              loggedIn
+                  ? _openSurveyListButton(context: context)
+                  : _getSignInButtons(context: context),
+              loggedIn ? _singOutButton(context: context) : Container(),
               _getConnectionStatusText(context: context),
-              // _getCurrentUserStatus(context: context),
             ],
           ),
         ),
@@ -35,27 +41,21 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget _getSignInButtons({BuildContext context, SignInBloc bloc}) {
-    // String _currentUserId;
-
-    return FutureBuilder(
-        future: bloc.currentUser,
-        builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
-          if (snapshot.data == null) {
-            return _signInButton(context: context, bloc: bloc);
-          }
-          return _singOutButton(context: context, bloc: bloc);
-        });
-  }
-
-  Widget _signInButton({BuildContext context, SignInBloc bloc}) {
+  Widget _signInButton({BuildContext context}) {
+    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
     final UserBloc userBloc = Provider.of<UserBloc>(context);
-    String _signedInUser = '';
+    FirebaseUser _user = Provider.of<FirebaseUser>(context);
+    bool loggedIn = _user != null;
 
     return FutureBuilder<FirebaseUser>(
-        future: bloc.currentUser,
-        builder: (context, snapshot) {
-          if (snapshot.data == null || snapshot.data.uid.isEmpty) {
+        future: signInBloc.currentUser,
+        builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting)
+            CircularProgressIndicator();
+          if (snapshot.connectionState == ConnectionState.active)
+            CircularProgressIndicator();
+
+          if (snapshot.connectionState == ConnectionState.done) {
             return Column(
               children: <Widget>[
                 Padding(
@@ -70,35 +70,42 @@ class LoginScreen extends StatelessWidget {
                 OutlineButton(
                   splashColor: Styles.drg_colorSecondary,
                   onPressed: () async {
-                    await bloc.signInWithGoogle()
-                    .catchError((error) => print(
-                          "ERROR after await bloc.signInWithGoogle() - error: $error"));
-                    
-                    var returnedUser = await userBloc.getUsersQuery(
-                        fieldName: 'providersUID',
-                        fieldValue: bloc.signedInUserProvidersUID);
+                    signInBloc.signInWithGoogle().catchError((error) => debugPrint(
+                        "ERROR in login_screen _signInButton() after signInBloc.signInWithGoogle() - error: $error"));
+
+                    QuerySnapshot returnedUser = await userBloc
+                        .getUsersQuery(
+                            fieldName: 'providersUID',
+                            fieldValue: snapshot.data?.uid)
+                        .catchError((error) => log(
+                            "ERROR in login_screen with getUsersQuery: $error"));
+                    // fieldValue: bloc.signedInUserProvidersUID);
 
                     if (returnedUser.documents.isEmpty ||
-                        _signedInUser !=
+                        snapshot.data?.uid !=
                             returnedUser?.documents[0]['providersUID']) {
                       print("USER not id DB");
                       try {
                         Map<String, dynamic> newUser = {
-                          "providersUID": bloc.signedInUserProvidersUID,
-                          "displayName": bloc.signedInUser.displayName,
-                          "email": bloc.signedInUser.email,
-                          "photoUrl": bloc.signedInUser.photoUrl,
-                          "providerId": bloc.signedInUser.providerId,
+                          "providersUID": snapshot.data?.uid,
+                          "displayName": snapshot.data?.displayName,
+                          "email": snapshot.data?.email,
+                          "photoUrl": snapshot.data?.photoUrl,
+                          "providerId": snapshot.data?.providerId,
                         };
                         userBloc.addUserToDb(user: newUser);
                         print(
-                            "SUCCESS in 'login_screen.dart' with adding User to DB");
+                            "SUCCESS in 'login_screen' with adding User to DB");
                         print(
                             "------------------------------------------------------");
                         print("Added data:");
-                        var returnedUser = await userBloc.getUsersQuery(
-                            fieldName: 'providersUID',
-                            fieldValue: bloc.signedInUserProvidersUID);
+                        var returnedUser = await userBloc
+                            .getUsersQuery(
+                                fieldName: 'providersUID',
+                                fieldValue: snapshot.data?.uid)
+                            .catchError((error) => print(
+                                "ERROR In login_screen getUsersQuery: $error"));
+                        // fieldValue: bloc.signedInUserProvidersUID).catchError((error) => print("ERROR In login_screen getUsersQuery: $error"));
                         print("RETURNED USER after adding to DB:");
                         print("${returnedUser?.documents[0]['providersUID']}");
                         print("${returnedUser?.documents[0]['displayName']}");
@@ -107,13 +114,15 @@ class LoginScreen extends StatelessWidget {
                         print("${returnedUser?.documents[0]['providerId']}");
                         print(
                             "ROUTING NEW USER to first screen '/surveysetslist");
-                        Navigator.pushNamed(context, '/surveysetslist');
+                        Navigator.pushNamed(context, '/surveysetslist')
+                            .catchError((err) => print(
+                                "ERROR In 'login_screen' routing to pushedNamed: $err"));
                       } catch (err) {
                         print(
-                            "ERROR in 'login_screen.dart' with adding User to DB: $err");
+                            "ERROR in 'login_screen' with adding User to DB: $err");
                       }
                     } else if (returnedUser.documents.isNotEmpty ||
-                        _signedInUser ==
+                        snapshot.data?.uid ==
                             returnedUser?.documents[0]['providersUID']) {
                       print("USER found id DB");
                       print("RETURNED USER's display name and providersUID: ");
@@ -123,7 +132,7 @@ class LoginScreen extends StatelessWidget {
                           "ROUTING EXISTING USER to first screen '/surveysetslist");
                       Navigator.pushNamed(context, '/surveysetslist');
                     } else {
-                      print("In login_screen it's xmas time!!!");
+                      print("In 'login_screen' it's xmas time!!!");
                     }
                   },
                   shape: RoundedRectangleBorder(
@@ -152,11 +161,13 @@ class LoginScreen extends StatelessWidget {
         });
   }
 
-  Widget _singOutButton({BuildContext context, SignInBloc bloc}) {
+  Widget _singOutButton({BuildContext context}) {
+    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
+
     return FlatButton(
       splashColor: Styles.drg_colorSecondary,
       onPressed: () {
-        bloc.signOut();
+        signInBloc.logoutUser();
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       child: Padding(
@@ -175,19 +186,45 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget _openSurveyListButton({BuildContext context, SignInBloc bloc}) {
+  Widget _getSignInButtons({BuildContext context}) {
+    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
+
     return FutureBuilder<FirebaseUser>(
-        future: bloc.currentUser,
-        builder: (context, snapshot) {
-          if (snapshot.data == null) {
-            return Text("No snapshot data");
-          } else if (snapshot.data.uid == null) {
-            return Text(
-                "No signedInUser (${bloc?.signedInUser}) or _currentUserId (${bloc.signedInUserProvidersUID})?");
+        future: signInBloc.currentUser,
+        builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
+          if (snapshot.connectionState == ConnectionState.none ||
+              snapshot.connectionState == ConnectionState.waiting ||
+              snapshot.connectionState == ConnectionState.active) {
+            return CircularProgressIndicator();
           }
-          if (snapshot.data.uid != null) {
-            print(
-                "-----> 1) In _openSurveyListButton - bloc.currentUserUID: ${bloc.currentUserUID}");
+
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.data?.uid == null) {
+              log("-------------> In login_screen _getSignInButton() FutureBuilder value of snapshot.data.uid: ${snapshot.data?.uid}");
+              return _signInButton(context: context);
+            }
+            return _singOutButton(context: context);
+          }
+
+          return Container();
+        });
+  }
+
+  Widget _openSurveyListButton({BuildContext context}) {
+    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
+
+    return FutureBuilder<FirebaseUser>(
+        future: signInBloc.currentUser,
+        builder:
+            (BuildContext context, AsyncSnapshot<FirebaseUser> signInSnapshot) {
+          if (signInSnapshot.connectionState == ConnectionState.none ||
+              signInSnapshot.connectionState == ConnectionState.waiting ||
+              signInSnapshot.connectionState == ConnectionState.active) {
+            // return Text("Active state");
+            return CircularProgressIndicator();
+          }
+
+          if (signInSnapshot.connectionState == ConnectionState.done) {
             return OutlineButton(
               splashColor: Styles.drg_colorSecondary,
               onPressed: () async {
@@ -212,8 +249,9 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
             );
+            // break;
           }
-          return Text("To be done.");
+          return Container();
         });
   }
 
@@ -230,28 +268,5 @@ class LoginScreen extends StatelessWidget {
       return Text("Your connection is offline.");
     }
     return Text("Don't know more about the connection");
-  }
-
-  Widget _getCurrentUserStatus({BuildContext context}) {
-    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
-
-    return Container(
-      child: FutureBuilder(
-        future: signInBloc.currentUser,
-        builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
-          if (snapshot.hasData) {
-            signInBloc.setCurrentUser(snapshot.data);
-            signInBloc.setCurrentUserUID(snapshot.data.uid);
-            print(
-              '1) In login_screen.dart _getCurrentUserStatus _currentUser in future signInBloc.currentUser.uid: ${snapshot.data.uid} \n2) signedInUserProvidersUID: ${signInBloc.signedInUserProvidersUID}',
-            );
-            return Text(
-              '1) In login_screen.dart _getCurrentUserStatus _currentUser in future signInBloc.currentUser.uid: ${snapshot.data.uid} \n2) signedInUserProvidersUID: ${signInBloc.signedInUserProvidersUID}',
-            );
-          }
-          return Text('No snapshot data');
-        },
-      ),
-    );
   }
 }

@@ -1,10 +1,9 @@
 import 'package:dragger_survey/src/blocs/blocs.dart';
-import 'package:dragger_survey/src/blocs/draggable_item_bloc.dart';
 import 'package:dragger_survey/src/blocs/prism_survey_bloc.dart';
 import 'package:dragger_survey/src/screens/splash_screen.dart';
-import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/dragger_board_button_row.dart';
 import 'package:dragger_survey/src/widgets/matrix_board.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,28 +19,49 @@ class _DraggerScreenState extends State<DraggerScreen> {
         Provider.of<PrismSurveyBloc>(context);
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
 
-    if (signInBloc.currentUserUID == null) {
+    if ((signInBloc.currentUser) == null) {
       print("User is not signed in!");
       return SplashScreen();
     }
 
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            buildBoard(context),
-            Text(
-                // TODO //
-                "Stone set to row  ${prismSurveyBloc.rowIndex} and col  ${prismSurveyBloc.colIndex}"),
-            DraggerBoardButtonRow(),
-          ],
-        ),
-      ),
-    );
+    return FutureBuilder<FirebaseUser>(
+        future: signInBloc.currentUser,
+        builder: (BuildContext context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none :
+              print("User is not signed in or ConnectionState is NONE!");
+              return SplashScreen();
+              break;
+            case ConnectionState.waiting :
+              print("ConnectionState is WAITING!");
+              return Text("Waiting");
+              break;
+            case ConnectionState.active :
+              print("ConnectionState is ACTIVE!");
+              return Text("Active");
+              break;
+            case ConnectionState.done :
+              return SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      buildBoard(context),
+                      Text(
+                          // TODO //
+                          "Stone set to row  ${prismSurveyBloc.rowIndex} and col  ${prismSurveyBloc.colIndex}"),
+                      DraggerBoardButtonRow(),
+                    ],
+                  ),
+                ),
+              );
+              break;
+          }
+          return Container();
+        });
   }
 
   Widget buildBoard(BuildContext context) {

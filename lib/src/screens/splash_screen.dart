@@ -1,9 +1,5 @@
 import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:dragger_survey/src/screens/home_screen.dart';
-import 'package:page_transition/page_transition.dart';
-
-import 'login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -46,14 +42,5 @@ class _SplashScreenState extends State<SplashScreen> {
   void navigateToHomeScreen() {
     /// Push home screen and replace (close/exit) splash screen.
     Navigator.pushNamed(context, '/login');
-    // Navigator.pushReplacement(
-    //   context,
-    //   PageTransition(
-    //     curve: Curves.easeIn,
-    //     duration: Duration(milliseconds: 400),
-    //     type: PageTransitionType.fade,
-    //     child: LoginScreen(),
-    //   ),
-    // );
   }
 }

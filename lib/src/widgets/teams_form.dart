@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/styles.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
@@ -72,12 +75,9 @@ class _TeamFormState extends State<TeamForm> {
 
     super.dispose();
   }
-  // _SurveySetFormState({context});
 
   @override
   Widget build(BuildContext context) {
-    final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
-
     return Form(
       key: _formKey,
       onChanged: () {
@@ -87,28 +87,25 @@ class _TeamFormState extends State<TeamForm> {
           });
         }
       },
-      child: _buildForm(
-          bloc: teamBloc, context: context, formKey: _formKey, documentId: id),
+      child: _buildForm(context: context, formKey: _formKey, documentId: id),
     );
   }
 
-  Widget _buildForm(
-      {@required TeamBloc bloc,
-      @required context,
-      @required formKey,
-      documentId}) {
+  Widget _buildForm({@required context, @required formKey, documentId}) {
+    final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
+
     if (documentId != null) {
-      bloc.updatingTeamData = true;
-      bloc.currentTeamId = documentId;
+      teamBloc.updatingTeamData = true;
+      teamBloc.currentTeamId = documentId;
     } else {
-      bloc.updatingTeamData = false;
+      teamBloc.updatingTeamData = false;
     }
-    print('Teams form -  updatingTeamData: ${bloc.updatingTeamData}');
-    print('Selected team id: $documentId');
-    print('Selected team: ');
+    log('In Teams form - updatingTeamData: ${teamBloc.updatingTeamData}');
+    log('In Teams form - Selected team id: $documentId');
+    log('In Teams form - Selected team: ');
 
     return FutureBuilder(
-      future: bloc.getTeamById(id: documentId),
+      future: teamBloc.getTeamById(id: documentId),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
@@ -122,7 +119,9 @@ class _TeamFormState extends State<TeamForm> {
               children: <Widget>[
                 SelectGranularity(),
                 TextFormField(
-                  initialValue: bloc.updatingTeamData ? '${snapshot?.data['name']}' : '',
+                  initialValue: teamBloc.updatingTeamData
+                      ? '${snapshot?.data['name']}'
+                      : '',
                   autofocus: true,
                   focusNode: firstFocus,
                   onEditingComplete: () =>
@@ -151,8 +150,9 @@ class _TeamFormState extends State<TeamForm> {
                   minLines: 2,
                   maxLines: 9,
                   maxLength: 200,
-                  initialValue: bloc.updatingTeamData
-                      ? '${snapshot?.data['description']}' : '',
+                  initialValue: teamBloc.updatingTeamData
+                      ? '${snapshot?.data['description']}'
+                      : '',
                   focusNode: secondFocus,
                   onEditingComplete: () =>
                       FocusScope.of(context).requestFocus(thirdFocus),
@@ -167,7 +167,7 @@ class _TeamFormState extends State<TeamForm> {
                   onSaved: (value) => _description = value,
                 ),
                 _buildFormButton(
-                  bloc: bloc,
+                  bloc: teamBloc,
                   context: context,
                   formKey: formKey,
                 ),
@@ -199,21 +199,20 @@ class _TeamFormState extends State<TeamForm> {
 
   Widget _buildFormButton(
       {@required bloc, @required context, @required formKey}) {
-    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
-
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
         children: <Widget>[
-          _buildSubmitButton(formKey, bloc, signInBloc, context),
+          _buildSubmitButton(formKey, context),
           _buildCancelButton(context)
         ],
       ),
     );
   }
 
-  SizedBox _buildSubmitButton(
-      formKey, TeamBloc bloc, SignInBloc signInBloc, context) {
+  SizedBox _buildSubmitButton(formKey, context) {
+    final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
+
     return SizedBox(
       width: double.infinity,
       child: FlatButton(
@@ -223,13 +222,12 @@ class _TeamFormState extends State<TeamForm> {
         textColor: Colors.white,
         onPressed: _formHasChanged
             ? () {
-                _buttonOnPressed(
-                    formKey: formKey, teamBloc: bloc, signInBloc: signInBloc);
+                _buttonOnPressed(context: context, formKey: formKey);
                 print("Submit button presssed");
                 Navigator.of(context).pop();
               }
             : null,
-        child: bloc.updatingTeamData ? Text('Update') : Text('Submit'),
+        child: teamBloc.updatingTeamData ? Text('Update') : Text('Submit'),
       ),
     );
   }
@@ -248,8 +246,9 @@ class _TeamFormState extends State<TeamForm> {
     );
   }
 
-  void _sendFormValuesToBloc(
-      {@required TeamBloc teamBloc, @required SignInBloc signInBloc}) {
+  void _sendFormValuesToBloc({@required BuildContext context}) {
+    final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
+
     Map<String, dynamic> team;
     if (teamBloc.updatingTeamData) {
       team = {
@@ -287,28 +286,46 @@ class _TeamFormState extends State<TeamForm> {
     print("2 team) ----> Form values have been sent to bloc");
   }
 
-  void _buttonOnPressed(
-      {formKey, @required TeamBloc teamBloc, @required SignInBloc signInBloc}) {
-    if (formKey.currentState.validate()) {
-      print("1a team) ----> Form has been validated.");
-      if (!(teamBloc.updatingTeamData)) {
-        _createdByUser = signInBloc.signedInUser.uid;
-        _users.add(signInBloc.signedInUser.uid);
-      } else {
-        _lastEditedByUser = signInBloc.signedInUser.uid;
-      }
-      formKey.currentState.save();
+  void _buttonOnPressed({formKey, @required BuildContext context}) {
+    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
+    final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
 
-      _sendFormValuesToBloc(teamBloc: teamBloc, signInBloc: signInBloc);
-      print("1b team) ----> Sending form values to bloc.");
+    FutureBuilder<FirebaseUser>(
+      future: signInBloc.currentUser,
+      builder:
+          (BuildContext context, AsyncSnapshot<FirebaseUser> signInSnapshot) {
+        switch (signInSnapshot.connectionState) {
+          case ConnectionState.none:
+          case ConnectionState.waiting:
+          case ConnectionState.active:
+          case ConnectionState.done:
+            if (formKey.currentState.validate()) {
+              print("1a team) ----> Form has been validated.");
+              if (!(teamBloc.updatingTeamData)) {
+                _createdByUser = signInSnapshot.data.uid;
+                _users.add(signInSnapshot.data.uid);
+              } else {
+                _lastEditedByUser = signInSnapshot.data.uid;
+              }
+              formKey.currentState.save();
 
-      print("1c) ----> Sent data:");
-      print("_created: $_created");
-      print("_name: $_name");
-      print("_description: $_description");
-      print("_createdByUser: $_createdByUser");
-      print("_lastEditedByUser: $_lastEditedByUser");
-      print("_users: $_users");
-    }
+              _sendFormValuesToBloc(context: context);
+              print("1b team) ----> Sending form values to bloc.");
+
+              print("1c) ----> Sent data:");
+              print("_created: $_created");
+              print("_name: $_name");
+              print("_description: $_description");
+              print("_createdByUser: $_createdByUser");
+              print("_lastEditedByUser: $_lastEditedByUser");
+              print("_users: $_users");
+            }
+
+            break;
+        }
+
+        return Container();
+      },
+    );
   }
 }

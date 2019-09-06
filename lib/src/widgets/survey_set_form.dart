@@ -1,6 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dragger_survey/src/services/services.dart';
 import 'package:dragger_survey/src/styles.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
@@ -12,7 +11,6 @@ class SurveySetForm extends StatefulWidget {
 }
 
 class _SurveySetFormState extends State<SurveySetForm> {
-  // BuildContext context;
 
   final _formKey = GlobalKey<FormState>();
   bool _formHasChanged = false;
@@ -57,8 +55,6 @@ class _SurveySetFormState extends State<SurveySetForm> {
     fourthFocus = FocusNode();
     fifthFocus = FocusNode();
     sixthFocus = FocusNode();
-    // (() => FocusScope.of(context).requestFocus(_firstFocus))();
-    // focus = FocusNode();
   }
 
   @override
@@ -73,14 +69,10 @@ class _SurveySetFormState extends State<SurveySetForm> {
 
     super.dispose();
   }
-  // _SurveySetFormState({context});
 
   @override
   Widget build(BuildContext context) {
-    final PrismSurveySetBloc prismSurveySetBloc =
-        Provider.of<PrismSurveySetBloc>(context);
-    final TeamBloc teamBloc =
-        Provider.of<TeamBloc>(context);
+    final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
     _createdByTeam = teamBloc.currentTeamId;
 
     return Form(
@@ -92,12 +84,11 @@ class _SurveySetFormState extends State<SurveySetForm> {
           });
         }
       },
-      child: _buildForm(
-          bloc: prismSurveySetBloc, context: context, formKey: _formKey),
+      child: _buildForm(context: context, formKey: _formKey),
     );
   }
 
-  Widget _buildForm({@required bloc, @required context, @required formKey}) {
+  Widget _buildForm({@required context, @required formKey}) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -191,7 +182,6 @@ class _SurveySetFormState extends State<SurveySetForm> {
               labelText: "Label for y-axis",
               hintText: "Should be easy to understand",
             ),
-            // initialValue: attribute,
             validator: (value) {
               if (value.isEmpty) {
                 return 'Please enter a label';
@@ -202,8 +192,6 @@ class _SurveySetFormState extends State<SurveySetForm> {
           ),
           TextFormField(
             focusNode: sixthFocus,
-            // onEditingComplete: () =>
-            //             FocusScope.of(context).requestFocus(_firstFocus),
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
@@ -211,11 +199,9 @@ class _SurveySetFormState extends State<SurveySetForm> {
               labelText: "Y-axis desciption",
               hintText: "What does the y-axis stand for",
             ),
-            // initialValue: attribute,
             onSaved: (value) => _yDescription = value,
           ),
           _buildFormButton(
-            bloc: bloc,
             context: context,
             formKey: formKey,
           ),
@@ -224,22 +210,26 @@ class _SurveySetFormState extends State<SurveySetForm> {
     );
   }
 
-  Widget _buildFormButton(
-      {@required bloc, @required context, @required formKey}) {
-    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
-
+  Widget _buildFormButton({@required context, @required formKey}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
         children: <Widget>[
-          _buildSubmitButton(formKey, bloc, signInBloc, context),
+          _buildSubmitButton(formKey, context),
           _buildCancelButton(context)
         ],
       ),
     );
   }
 
-  SizedBox _buildSubmitButton(formKey, bloc, SignInBloc signInBloc, context) {
+  SizedBox _buildSubmitButton(
+    formKey,
+    prismSurveySetBloc,
+  ) {
+    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
+    final PrismSurveySetBloc prismSurveySetBloc =
+        Provider.of<PrismSurveySetBloc>(context);
+
     return SizedBox(
       width: double.infinity,
       child: FlatButton(
@@ -250,9 +240,8 @@ class _SurveySetFormState extends State<SurveySetForm> {
         onPressed: _formHasChanged
             ? () {
                 _buttonOnPressed(
-                    formKey: formKey,
-                    surveySetBloc: bloc,
-                    signInBloc: signInBloc);
+                  formKey: formKey,
+                );
                 print("Submit button presssed");
                 Navigator.of(context).pop();
               }
@@ -276,9 +265,9 @@ class _SurveySetFormState extends State<SurveySetForm> {
     );
   }
 
-  void _sendFormValuesToBloc(
-      {@required PrismSurveySetBloc surveySetBloc,
-      @required SignInBloc signInBloc}) {
+  void _sendFormValuesToBloc() {
+    final PrismSurveySetBloc prismSurveySetBloc =
+        Provider.of<PrismSurveySetBloc>(context);
     final MatrixGranularityBloc granularityBloc =
         Provider.of<MatrixGranularityBloc>(context);
 
@@ -310,33 +299,50 @@ class _SurveySetFormState extends State<SurveySetForm> {
     print("_lastEditedByUser: $_lastEditedByUser");
     print("================================");
 
-    surveySetBloc.addPrismSurveySetToDb(surveySet: surveySet);
+    prismSurveySetBloc.addPrismSurveySetToDb(surveySet: surveySet);
     print("2) ----> Form values have been sent to bloc");
   }
 
-  void _buttonOnPressed(
-      {formKey, @required surveySetBloc, @required SignInBloc signInBloc}) {
+  void _buttonOnPressed({formKey}) {
+    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
+    final PrismSurveySetBloc prismSurveySetBloc =
+        Provider.of<PrismSurveySetBloc>(context);
+
     if (formKey.currentState.validate()) {
       print("1a) ----> Form has been validated.");
-      _createdByUser = signInBloc.signedInUser.uid;
+
+      FutureBuilder<FirebaseUser>(
+        future: signInBloc.currentUser,
+        builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+            case ConnectionState.active:
+            case ConnectionState.done:
+              _createdByUser = snapshot.data.uid;
+              _sendFormValuesToBloc();
+              print("1b) ----> Sending form values to bloc.");
+
+              print("1c) ----> Sent data:");
+              print("_created: $_created");
+              print("_name: $_name");
+              print("_description: $_description");
+              print("_resolution: $_resolution");
+              print("_xName: $_xName");
+              print("_yName: $_yName");
+              print("_xDescription: $_xDescription");
+              print("_xDescription: $_xDescription");
+              print("_yDescription: $_yDescription");
+              print("_createdByUser: $_createdByUser");
+              print("_createdByTeam: $_createdByTeam");
+
+              break;
+          }
+
+          return Container();
+        },
+      );
       formKey.currentState.save();
-
-      _sendFormValuesToBloc(
-          surveySetBloc: surveySetBloc, signInBloc: signInBloc);
-      print("1b) ----> Sending form values to bloc.");
-
-      print("1c) ----> Sent data:");
-      print("_created: $_created");
-      print("_name: $_name");
-      print("_description: $_description");
-      print("_resolution: $_resolution");
-      print("_xName: $_xName");
-      print("_yName: $_yName");
-      print("_xDescription: $_xDescription");
-      print("_xDescription: $_xDescription");
-      print("_yDescription: $_yDescription");
-      print("_createdByUser: $_createdByUser");
-      print("_createdByTeam: $_createdByTeam");
     }
   }
 }
