@@ -107,7 +107,7 @@ class UserDrawer extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              "Sign-Out",
+              "Logout",
               style:
                   TextStyle(fontSize: 16, color: Styles.drg_colorDarkerGreen),
             )

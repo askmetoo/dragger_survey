@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/screens/splash_screen.dart';
+import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +44,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
 
               return FutureBuilder<DocumentSnapshot>(
                   future: surveySetsBloc.getPrismSurveySetById(id: signInSnapshot.data.uid),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                     switch (snapshot.connectionState) {
                       case ConnectionState.none:
                         return Text("ConnectionState.none");
@@ -78,7 +79,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
                                         fontSize:
                                             Styles.drg_fontSizesubHeadline)),
                                 Text(
-                                  "Granularity: ${snapshot.data['resolution']} \nUser ID: ${snapshot.data['createdByUser']} \nUser displayName: ${signInSnapshot.data.displayName} //TODO!",
+                                  "Granularity: ${snapshot.data['resolution']} \nCreated by User ID: ${snapshot.data['createdByUser']} \nUser displayName: ${signInSnapshot.data.displayName}",
                                   style: TextStyle(
                                       fontSize: Styles.drg_fontSizeCopyText),
                                 ),

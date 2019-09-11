@@ -96,7 +96,7 @@ class _TeamFormState extends State<TeamForm> {
 
     if (documentId != null) {
       teamBloc.updatingTeamData = true;
-      teamBloc.currentTeamId = documentId;
+      teamBloc.currentSelectedTeamId = documentId;
     } else {
       teamBloc.updatingTeamData = false;
     }
@@ -279,7 +279,7 @@ class _TeamFormState extends State<TeamForm> {
     print("================================");
 
     if (teamBloc.updatingTeamData) {
-      teamBloc.updateTeamById(object: team, id: teamBloc.currentTeamId);
+      teamBloc.updateTeamById(object: team, id: teamBloc.currentSelectedTeamId);
     } else {
       teamBloc.addTeamToDb(team: team);
     }

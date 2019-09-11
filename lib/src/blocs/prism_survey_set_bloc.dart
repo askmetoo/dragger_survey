@@ -13,7 +13,7 @@ class PrismSurveySetBloc extends ChangeNotifier{
 
   Future<PrismSurveySet> get documentPrismSurveySets {
     return Document<PrismSurveySet>(path: 'surveySets')
-    .getData();  
+    .getData();
   }
 
   Future get prismSurveySetsDocuments {

@@ -13,15 +13,12 @@ class SigendInUserCircleAvatar extends StatelessWidget {
     return FutureBuilder<FirebaseUser>(
       future: signInBloc.currentUser,
       builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
+        if (snapshot.connectionState == ConnectionState.none ||
+            snapshot.connectionState == ConnectionState.waiting ||
+            snapshot.connectionState == ConnectionState.active) {
+          log("In SignInUserCircleAvatar - ${snapshot.connectionState}");
 
-        switch (snapshot.connectionState) {
-          
-          case ConnectionState.none:
-          case ConnectionState.waiting:
-            log("In SignInUserCircleAvatar - ConnectionState.none or waiting");
-            break;
-          case ConnectionState.active:
-          case ConnectionState.done:
+          if (snapshot.connectionState == ConnectionState.done) {
             return GestureDetector(
                 onTap: () {
                   Scaffold.of(context).openEndDrawer();
@@ -30,15 +27,16 @@ class SigendInUserCircleAvatar extends StatelessWidget {
                   padding: EdgeInsets.all(8),
                   child: CircleAvatar(
                     backgroundColor: Styles.drg_colorDarkerGreen,
-                    backgroundImage: snapshot.data.uid != null
+                    backgroundImage: snapshot.data?.uid != null
                         ? NetworkImage(snapshot.data.photoUrl)
                         : null,
                   ),
                 ));
-            break;
+          }
+          return Container();
         }
         return Container();
-      }
+      },
     );
   }
 }

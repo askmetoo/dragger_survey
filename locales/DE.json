@@ -1,0 +1,10 @@
+{
+  "main": {
+    "sample": "Beispiel",
+    "save": "Speichern"
+  },
+  "user_drawer": {
+    "Manage Teams": "Teams bearbeiten",
+    "Logout": "Ausloggen"
+  }
+}

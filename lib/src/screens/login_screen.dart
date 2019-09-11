@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/enums/connectivity_status.dart';
-import 'package:dragger_survey/src/shared/shared.dart';
+import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -70,20 +70,23 @@ class LoginScreen extends StatelessWidget {
                 OutlineButton(
                   splashColor: Styles.drg_colorSecondary,
                   onPressed: () async {
-                    signInBloc.signInWithGoogle().catchError((error) => debugPrint(
-                        "ERROR in login_screen _signInButton() after signInBloc.signInWithGoogle() - error: $error"));
+                    signInBloc.signInWithGoogle().catchError(
+                          (error) => debugPrint(
+                              "ERROR in login_screen _signInButton() after signInBloc.signInWithGoogle() - error: $error"),
+                        );
 
                     QuerySnapshot returnedUser = await userBloc
                         .getUsersQuery(
                             fieldName: 'providersUID',
                             fieldValue: snapshot.data?.uid)
-                        .catchError((error) => log(
-                            "ERROR in login_screen with getUsersQuery: $error"));
-                    // fieldValue: bloc.signedInUserProvidersUID);
+                        .catchError(
+                          (error) => log(
+                              "ERROR in login_screen with getUsersQuery: $error"),
+                        );
 
-                    if (returnedUser.documents.isEmpty ||
+                    if (returnedUser == null ||
                         snapshot.data?.uid !=
-                            returnedUser?.documents[0]['providersUID']) {
+                            returnedUser.documents[0]['providersUID']) {
                       print("USER not id DB");
                       try {
                         Map<String, dynamic> newUser = {
@@ -107,11 +110,11 @@ class LoginScreen extends StatelessWidget {
                                 "ERROR In login_screen getUsersQuery: $error"));
                         // fieldValue: bloc.signedInUserProvidersUID).catchError((error) => print("ERROR In login_screen getUsersQuery: $error"));
                         print("RETURNED USER after adding to DB:");
-                        print("${returnedUser?.documents[0]['providersUID']}");
-                        print("${returnedUser?.documents[0]['displayName']}");
-                        print("${returnedUser?.documents[0]['email']}");
-                        print("${returnedUser?.documents[0]['photoUrl']}");
-                        print("${returnedUser?.documents[0]['providerId']}");
+                        print("${returnedUser.documents[0]['providersUID']}");
+                        print("${returnedUser.documents[0]['displayName']}");
+                        print("${returnedUser.documents[0]['email']}");
+                        print("${returnedUser.documents[0]['photoUrl']}");
+                        print("${returnedUser.documents[0]['providerId']}");
                         print(
                             "ROUTING NEW USER to first screen '/surveysetslist");
                         Navigator.pushNamed(context, '/surveysetslist')
@@ -121,13 +124,13 @@ class LoginScreen extends StatelessWidget {
                         print(
                             "ERROR in 'login_screen' with adding User to DB: $err");
                       }
-                    } else if (returnedUser.documents.isNotEmpty ||
+                    } else if (returnedUser.documents.first.data.isNotEmpty ||
                         snapshot.data?.uid ==
-                            returnedUser?.documents[0]['providersUID']) {
+                            returnedUser.documents[0]['providersUID']) {
                       print("USER found id DB");
                       print("RETURNED USER's display name and providersUID: ");
-                      print("${returnedUser?.documents[0]['displayName']}");
-                      print("${returnedUser?.documents[0]['providersUID']}");
+                      print("${returnedUser.documents[0]['displayName']}");
+                      print("${returnedUser.documents[0]['providersUID']}");
                       print(
                           "ROUTING EXISTING USER to first screen '/surveysetslist");
                       Navigator.pushNamed(context, '/surveysetslist');
@@ -200,7 +203,6 @@ class LoginScreen extends StatelessWidget {
 
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.data?.uid == null) {
-              log("-------------> In login_screen _getSignInButton() FutureBuilder value of snapshot.data.uid: ${snapshot.data?.uid}");
               return _signInButton(context: context);
             }
             return _singOutButton(context: context);
@@ -260,12 +262,13 @@ class LoginScreen extends StatelessWidget {
 
     print("connectionStatus: $connectionStatus");
 
-    if (connectionStatus == ConnectivityStatus.WiFi) {
-      return Text("You're connected via WiFi.");
-    } else if (connectionStatus == ConnectivityStatus.Cellular) {
-      return Text("You're connected via Mobile Network.");
-    } else if (connectionStatus == ConnectivityStatus.Offline) {
-      return Text("Your connection is offline.");
+    if (connectionStatus == ConnectivityStatus.WiFi ||
+        connectionStatus == ConnectivityStatus.Cellular ||
+        connectionStatus == ConnectivityStatus.Offline) {
+      return Text(
+        "You are connected via ${connectionStatus.toString().split('.')[1]}",
+        style: TextStyle(fontSize: 20, color: Styles.drg_colorSecondaryDeepDark),
+      );
     }
     return Text("Don't know more about the connection");
   }

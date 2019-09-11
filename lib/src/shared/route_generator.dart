@@ -12,7 +12,7 @@ class RouteGenerator {
               return PageTransition(
                 duration: Duration(milliseconds: 200),
                 child: DraggerScreen(),
-                type: PageTransitionType.downToUp,
+                type: PageTransitionType.fade,
               );
               break;
             case '/surveysetslist':
@@ -60,7 +60,6 @@ class RouteGenerator {
                 type: PageTransitionType.fade,
               );
               break;
-            
             case '/draggerboard':
               return PageTransition(
                 duration: Duration(milliseconds: 200),
@@ -80,7 +79,7 @@ class RouteGenerator {
               return PageTransition(
                 duration: Duration(microseconds: 200),
                 child: ErrorScreen(),
-                type: PageTransitionType.downToUp,
+                type: PageTransitionType.fade,
               );
           }
 

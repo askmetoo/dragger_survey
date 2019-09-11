@@ -17,20 +17,12 @@ class TeamsListScreen extends StatelessWidget {
     return FutureBuilder<FirebaseUser>(
       future: signInBloc.currentUser,
       builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
-
-        switch(snapshot.connectionState) {
-          case ConnectionState.none:
-            log("In SurveySetListsScreen _buildSurveySetsListView - ConnectionState is NONE!");
-            break;
-          case ConnectionState.waiting:
-            log("In SurveySetListsScreen _buildSurveySetsListView - ConnectionState.none ore waiting");
-            break;
-          case ConnectionState.active:
-            log("In SurveySetListsScreen _buildSurveySetsListView - ConnectionState is ACTIVE!");
-            break;
-          case ConnectionState.done:
-
-            if(snapshot.data.uid == null) {
+        if (snapshot.connectionState == ConnectionState.none ||
+            snapshot.connectionState == ConnectionState.waiting ||
+            snapshot.connectionState == ConnectionState.active) {
+          log("In SurveySetListsScreen _buildSurveySetsListView - ${snapshot.connectionState}");
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.data.uid == null) {
               log("In teams_list_screen - User is not signed in! - forward to SplashScreen()");
               return SplashScreen();
             }
@@ -72,18 +64,18 @@ class TeamsListScreen extends StatelessWidget {
                             ),
                           ),
                           backgroundColor: Styles.drg_colorSecondary,
-                          contentTextStyle: TextStyle(color: Styles.drg_colorText),
+                          contentTextStyle:
+                              TextStyle(color: Styles.drg_colorText),
                         );
                       });
                 },
               ),
             );
-            
-            break;
+          }
+          return Container();
         }
-        return null;
-
-      }
+        return Container();
+      },
     );
   }
 }

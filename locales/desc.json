@@ -1,0 +1,10 @@
+{
+  "main": {
+    "sample": "This is sample description",
+    "save": "Use to save document"
+  },
+  "user_drawer": {
+    "Manage Teams": "Manage Teams",
+    "Logout": "Logout"
+  }
+}

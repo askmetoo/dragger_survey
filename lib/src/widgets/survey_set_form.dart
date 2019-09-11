@@ -72,8 +72,8 @@ class _SurveySetFormState extends State<SurveySetForm> {
 
   @override
   Widget build(BuildContext context) {
-    final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
-    _createdByTeam = teamBloc.currentTeamId;
+    // final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
+    // _createdByTeam = teamBloc.currentSelectedTeam;
 
     return Form(
       key: _formKey,
@@ -201,7 +201,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
             ),
             onSaved: (value) => _yDescription = value,
           ),
-          _buildFormButton(
+          _buildFormButtons(
             context: context,
             formKey: formKey,
           ),
@@ -210,7 +210,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
     );
   }
 
-  Widget _buildFormButton({@required context, @required formKey}) {
+  Widget _buildFormButtons({@required context, @required formKey}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(

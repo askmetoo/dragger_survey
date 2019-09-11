@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dragger_survey/src/services/models.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
@@ -38,36 +41,37 @@ class Collection<T> {
 
   Future<List<T>> getData() async {
     var snapshots = await ref.getDocuments();
-    return snapshots.documents
-        .map((doc) => Global.models[T](doc.data) as T)
+    return snapshots
+        .documents
+        .map((doc) => Global.models[T].fromFirestore(doc.data) as T)
         .toList();
   }
 
-  Future<List<DocumentSnapshot>> getDocuments() async {
+  Future<List<T>> getDocuments() async {
     var snapshots = await ref.getDocuments();
-    return snapshots.documents;
+    return snapshots
+            .documents
+            .map((doc) => Global.models[T].fromFirestore(doc.data) as T);
   }
 
   Future<QuerySnapshot> getDocumentsByQuery({
     String fieldName, 
     String fieldValue
     }) async {
-    var snapshots = ref.where(fieldName, isEqualTo: fieldValue);
-    return snapshots.getDocuments();
+    return ref.where(fieldName, isEqualTo: fieldValue).getDocuments();
   }
 
+
   Future<QuerySnapshot> getDocumentsByQueryArray({
-    String fieldName, 
+    String fieldName,
     String arrayValue
-    }) async {
-    var snapshots = ref.where(fieldName, arrayContains: arrayValue);
-    return snapshots.getDocuments();
+    }) {
+    return ref.where(fieldName, arrayContains: arrayValue).getDocuments();
   }
 
   Future<DocumentSnapshot> getDocument(id) async {
     return await ref.document('$id').get();
   }
-  
 
   createDocumentWithValues({
     @required name,

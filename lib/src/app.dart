@@ -48,12 +48,6 @@ class App extends StatelessWidget {
       child: MaterialApp(
         navigatorKey: navigatorKey,
         onGenerateRoute: RouteGenerator.generateRoute,
-        // routes: {
-        //   '/home': (context) => SurveySetsListScreen(),
-        //   '/login': (context) => LoginScreen(),
-        //   '/profile': (context) => ProfileScreen(),
-        //   '/draggerboard': (context) => DraggerScreen(),
-        // },
         theme: ThemeData(
           fontFamily: 'Nunito',
           bottomAppBarTheme: BottomAppBarTheme(color: Styles.drg_colorGreen),

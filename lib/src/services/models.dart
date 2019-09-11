@@ -1,8 +1,12 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class PrismSurveySet {
   String id;
   String created;
-  String edited;
+  String createdByTeam;
+  String createdByUser;
+  String lastEditedByUser;
   String name;
   String description;
   int resolution;
@@ -15,7 +19,9 @@ class PrismSurveySet {
   PrismSurveySet({
     this.id,
     this.created,
-    this.edited,
+    this.createdByTeam,
+    this.createdByUser,
+    this.lastEditedByUser,
     this.name,
     this.description,
     this.resolution,
@@ -26,25 +32,30 @@ class PrismSurveySet {
     this.prismSurveys,
   });
 
-  factory PrismSurveySet.fromMap(Map data) {
+  factory PrismSurveySet.fromFirestore(DocumentSnapshot doc) {
+
+    doc = doc ?? { };
+
     return PrismSurveySet(
-      id: data['id'] ?? '',
-      created: (data['created']) ?? DateTime.now().toLocal(),
-      edited: (data['edited']) ?? DateTime.now().toLocal(),
-      name: data['name'] ?? '',
-      description: data['description'] ?? '',
-      resolution: data['resolution'] ?? 5,
-      xName: data['xName'] ?? '',
-      xDescription: data['xDescription'] ?? '',
-      yName: data['yName'] ?? '',
-      yDescription: data['yDescription'] ?? '',
-      prismSurveys: (data['prismSurveys'] as List ?? [])
+      id: doc.documentID,
+      created: (doc['created']) ?? DateTime.now().toLocal(),
+      name: doc['name'] ?? '',
+      lastEditedByUser: (doc['lastEditedByUser']) ?? DateTime.now().toLocal(),
+      createdByTeam: doc['createdByTeam'] ?? '',
+      createdByUser: doc['createdByUser'] ?? '',
+      description: doc['description'] ?? '',
+      resolution: doc['resolution'] ?? 5,
+      xName: doc['xName'] ?? '',
+      xDescription: doc['xDescription'] ?? '',
+      yName: doc['yName'] ?? '',
+      yDescription: doc['yDescription'] ?? '',
+      prismSurveys: (doc['prismSurveys'] as List ?? [])
     );
   }
 }
 
 class PrismSurvey {
-  String uid;
+  String id;
   DateTime created;
   DateTime edited;
   String askedPerson;
@@ -53,7 +64,7 @@ class PrismSurvey {
   dynamic users;
 
   PrismSurvey({
-    this.uid,
+    this.id,
     this.created,
     this.edited,
     this.askedPerson,
@@ -62,16 +73,19 @@ class PrismSurvey {
     this.users,
   });
 
-  factory PrismSurvey.fromMap(Map data) {
+  factory PrismSurvey.fromFirestore(DocumentSnapshot doc) {
+
+    doc = doc ?? { };
+
     return PrismSurvey(
-      uid: data["uid"] ?? '',
-      created: data["created"] ?? DateTime.now(),
-      edited: data["edited"] ?? '',
-      askedPerson: data["askedPerson"] ?? '',
-      yValue: data["yValue"] ?? 0,
-      xValue: data["xValue"] ?? 0,
-      users: (data["users"] as List ?? [])
-          .map((value) => User.fromMap(value))
+      id: doc.documentID,
+      created: doc["created"] ?? DateTime.now(),
+      edited: doc["edited"] ?? '',
+      askedPerson: doc["askedPerson"] ?? '',
+      yValue: doc["yValue"] ?? 0,
+      xValue: doc["xValue"] ?? 0,
+      users: (doc["users"] as List ?? [])
+          .map((value) => User.fromFirestore(value))
           .toList(),
     );
   }
@@ -100,20 +114,22 @@ class Team {
     this.prismSurveySets,
   });
 
-  factory Team.fromMap(Map data) {
+  factory Team.fromFirestore(DocumentSnapshot doc) {
+    // doc = doc ?? { };
+    print("In Models Team.fromFirestore");
     return Team(
-      id: data["id"] ?? '',
-      created: data["created"] ?? DateTime.now(),
-      edited: data["edited"] ?? '',
-      name: data["name"] ?? '',
-      createdByUser: data["createdByUser"] ?? '',
-      lastEditedByUser: data["lastEditedByUser"] ?? '',
-      description: data["description"] ?? '',
-      users: (data["users"] as List ?? [])
-          .map((value) => User.fromMap(value))
+      id: doc["id"] ?? '',
+      created: doc["created"] ?? DateTime.now(),
+      edited: doc["edited"] ?? '',
+      name: doc["name"] ?? '',
+      createdByUser: doc["createdByUser"] ?? '',
+      lastEditedByUser: doc["lastEditedByUser"] ?? '',
+      description: doc["description"] ?? '',
+      users: (doc["users"] as List ?? [])
+          .map((value) => User.fromFirestore(value))
           .toList(),
-      prismSurveySets: (data["prismSurveySets"] as List ?? [])
-          .map((value) => PrismSurveySet.fromMap(value))
+      prismSurveySets: (doc["prismSurveySets"] as List ?? [])
+          .map((value) => PrismSurveySet.fromFirestore(value))
           .toList(),
     );
   }
@@ -133,7 +149,7 @@ class User {
   String description;
   String company;
   String photoUrl;
-  String providersUID; // ID of User prvided by Auth Provider (e.g. Google SignIn)
+  String providersUID; // UID of User prvided by Auth Provider (e.g. Google SignIn)
   String providerId;
   DateTime originCreationTime;
   dynamic teams;
@@ -162,32 +178,33 @@ class User {
     this.originCreationTime
   });
 
-  factory User.fromMap(Map data) {
+  factory User.fromFirestore(DocumentSnapshot doc) {
+    doc = doc ?? { };
     return User(
-      uid: data["uid"] ?? '',
-      created: data["created"] ?? DateTime.now(),
-      edited: data["edited"] ?? '',
-      firstName: data["firstName"] ?? '',
-      lastName: data["lastName"] ?? '',
-      createdByUser: data["createdByUser"] ?? '',
-      lastEditedByUser: data["lastEditedByUser"] ?? '',
-      password: data["password"] ?? '',
-      email: data["email"] ?? '',
-      displayName: data["displayName"] ?? '',
-      description: data["description"] ?? '',
-      company: data["company"] ?? '',
-      photoUrl: data["photoUrl"] ?? '',
-      providersUID: data["providersUID"] ?? '',
-      providerId: data["providerId"] ?? '',
-      originCreationTime: data["originCreationTime"] ?? '',
-      teams: (data["teams"] as List ?? [])
-          .map((value) => Team.fromMap(value))
+      uid: doc["uid"] ?? '',
+      created: doc["created"] ?? DateTime.now(),
+      edited: doc["edited"] ?? '',
+      firstName: doc["firstName"] ?? '',
+      lastName: doc["lastName"] ?? '',
+      createdByUser: doc["createdByUser"] ?? '',
+      lastEditedByUser: doc["lastEditedByUser"] ?? '',
+      password: doc["password"] ?? '',
+      email: doc["email"] ?? '',
+      displayName: doc["displayName"] ?? '',
+      description: doc["description"] ?? '',
+      company: doc["company"] ?? '',
+      photoUrl: doc["photoUrl"] ?? '',
+      providersUID: doc["providersUID"] ?? '',
+      providerId: doc["providerId"] ?? '',
+      originCreationTime: doc["originCreationTime"] ?? '',
+      teams: (doc["teams"] as List ?? [])
+          .map((value) => Team.fromFirestore(value))
           .toList(),
-      prismSurveySets: (data["prismCurveySets"] as List ?? [])
-          .map((value) => PrismSurveySet.fromMap(value))
+      prismSurveySets: (doc["prismCurveySets"] as List ?? [])
+          .map((value) => PrismSurveySet.fromFirestore(value))
           .toList(),
-      prismSurveys: (data["prismSurveys"] as List ?? [])
-          .map((value) => PrismSurvey.fromMap(value))
+      prismSurveys: (doc["prismSurveys"] as List ?? [])
+          .map((value) => PrismSurvey.fromFirestore(value))
           .toList(),
     );
   }

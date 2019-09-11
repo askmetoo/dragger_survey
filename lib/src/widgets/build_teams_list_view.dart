@@ -17,52 +17,42 @@ Widget buildTeamsListView({BuildContext context}) {
   return FutureBuilder<FirebaseUser>(
     future: signInBloc.currentUser,
     builder: (context, signInSnapshot) {
+
       return FutureBuilder<QuerySnapshot>(
-        future: teamBloc.getTeamsQueryByArray(
-            fieldName: 'users', arrayValue: signInSnapshot.data.uid),
+        future: teamBloc
+                    .getTeamsQueryByArray(
+                  fieldName: 'users',
+                  arrayValue: signInSnapshot?.data?.uid,
+                ),
         builder:
             (BuildContext context, AsyncSnapshot<QuerySnapshot> teamsListSnapshot) {
-          if (teamsListSnapshot.hasError) {
-            return Center(
-              child: Container(
-                child: Text("Loading Set has error: ${teamsListSnapshot.error}"),
-              ),
-            );
-          }
 
-          switch (teamsListSnapshot.connectionState) {
-            case ConnectionState.none:
-              log("In build_teams_list_view.dart - ConnectionState is NONE!");
-              break;
-            case ConnectionState.waiting:
-              log("In build_teams_list_view.dart - ConnectionState is WAITING!");
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            case ConnectionState.active:
-              log("In build_teams_list_view.dart - ConnectionState is ACTIVE!");
-              break;
-            case ConnectionState.done:
-            default:
+            if (
+              teamsListSnapshot.connectionState == ConnectionState.none ||
+              teamsListSnapshot.connectionState == ConnectionState.waiting ||
+              teamsListSnapshot.connectionState == ConnectionState.active
+              ) log("In build_teams_list_view.dart - teamsListSnapshot: ${teamsListSnapshot.connectionState}");
+
+            if (teamsListSnapshot.connectionState == ConnectionState.done) {
               return ListView(
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
                   children: teamsListSnapshot.data.documents
-                      .map((DocumentSnapshot snapshot) {
+                      .map((singleTeamSnapshot) {
                     return Dismissible(
-                      key: ValueKey(snapshot.data.hashCode),
+                      key: ValueKey(singleTeamSnapshot.hashCode),
                       direction: DismissDirection.endToStart,
                       onDismissed: (direction) {
                         print(
-                            '------>>> Item ${snapshot?.data['name']}, ${snapshot?.documentID} is dismissed');
-                        teamBloc.deleteTeamById(id: snapshot.documentID);
+                            '------>>> Item ${singleTeamSnapshot['name']}, ${singleTeamSnapshot['id']} is dismissed');
+                        teamBloc.deleteTeamById(id: singleTeamSnapshot['id']);
                       },
                       child: ListTile(
                         trailing: IconButton(
-                          key: Key(snapshot?.documentID),
+                          key: Key(singleTeamSnapshot['id']),
                           icon: Icon(Icons.edit),
-                          onPressed: () {
-                            teamBloc.currentTeamId = snapshot?.documentID;
+                          onPressed: () async {
+                            teamBloc.currentSelectedTeamId = singleTeamSnapshot['id'] as Future<String>;
                             print("Edit button pressed in teams");
                             showDialog(
                               context: context,
@@ -70,7 +60,7 @@ Widget buildTeamsListView({BuildContext context}) {
                                 return AlertDialog(
                                   title: Text("Edit Team"),
                                   content: TeamForm(
-                                    id: snapshot?.documentID,
+                                    id: singleTeamSnapshot['id'],
                                   ),
                                   elevation: 10,
                                   shape: RoundedRectangleBorder(
@@ -92,16 +82,18 @@ Widget buildTeamsListView({BuildContext context}) {
                         onTap: () {
                           // teamBloc.currentTeamId = snapshot?.documentID;
                           print(
-                              "Before Navigator in ListTile of Teams - id: ${snapshot?.documentID}");
+                              "Before Navigator in ListTile of Teams - id: ${singleTeamSnapshot['id']}");
                           Navigator.pushNamed(context, '/surveysetslist',
-                              arguments: "${snapshot?.documentID}");
+                              arguments: "${singleTeamSnapshot['id']}");
                         },
                         title: Text(
-                          "${snapshot['name']}",
+                          "${singleTeamSnapshot['name']}",
                           style: Styles.drg_textListTitle,
                         ),
                         subtitle: Text(
-                          "id: ${snapshot.documentID} \nCreated: ${formatDate(snapshot['created'].toDate(), [
+                          """id: ${singleTeamSnapshot['id']} 
+                          \nCreated: ${formatDate( singleTeamSnapshot['created'].toDate(),
+                          [
                             dd,
                             '. ',
                             MM,
@@ -111,7 +103,7 @@ Widget buildTeamsListView({BuildContext context}) {
                             HH,
                             ':',
                             nn
-                          ])} \nLast edited: ${snapshot['edited'] != null ? formatDate(snapshot['edited'].toDate(), [
+                          ])} \nLast edited: ${singleTeamSnapshot['edited'] != null ? formatDate( singleTeamSnapshot['edited'].toDate(), [
                               dd,
                               '. ',
                               MM,
@@ -121,13 +113,14 @@ Widget buildTeamsListView({BuildContext context}) {
                               HH,
                               ':',
                               nn
-                            ]) : ''} \nby ${signInSnapshot.data.displayName}",
+                            ]) : ''} \nby ${signInSnapshot.data.displayName}""",
                           style: Styles.drg_textListContent,
                         ),
                       ),
                     );
                   }).toList());
           }
+          return Text("In build_teams_list_view.dart - teamsListSnapshot: ${teamsListSnapshot.connectionState}");
         },
       );
     }
