@@ -1,46 +1,13 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/enums/connectivity_status.dart';
-import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    FirebaseUser _user = Provider.of<FirebaseUser>(context);
-    bool loggedIn = _user != null;
-
-    return Scaffold(
-      body: Container(
-        color: Styles.drg_colorAppBackground,
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image(
-                image: AssetImage('assets/dragger-logo.png'),
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              loggedIn
-                  ? _openSurveyListButton(context: context)
-                  : _getSignInButtons(context: context),
-              loggedIn ? _singOutButton(context: context) : Container(),
-              _getConnectionStatusText(context: context),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _signInButton({BuildContext context}) {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
     final UserBloc userBloc = Provider.of<UserBloc>(context);
@@ -271,5 +238,36 @@ class LoginScreen extends StatelessWidget {
       );
     }
     return Text("Don't know more about the connection");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    FirebaseUser _user = Provider.of<FirebaseUser>(context);
+    bool loggedIn = _user != null;
+
+    return Scaffold(
+      body: Container(
+        color: Styles.drg_colorAppBackground,
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image(
+                image: AssetImage('assets/dragger-logo.png'),
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              loggedIn
+                  ? _openSurveyListButton(context: context)
+                  : _getSignInButtons(context: context),
+              loggedIn ? _singOutButton(context: context) : Container(),
+              _getConnectionStatusText(context: context),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

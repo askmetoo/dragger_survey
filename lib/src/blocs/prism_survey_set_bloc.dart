@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 
 class PrismSurveySetBloc extends ChangeNotifier{
 
-  bool _formIsEmpty = true;
-
   Future<List<PrismSurveySet>> get collectionPrismSurveySets {
     return Collection<PrismSurveySet>(path: 'surveySets')
     .getData();  

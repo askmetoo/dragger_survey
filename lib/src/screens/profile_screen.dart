@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/shared/loader.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +15,13 @@ class ProfileScreen extends StatelessWidget {
     FirebaseUser user = Provider.of<FirebaseUser>(context);
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
 
-    // TODO: reactive if statement
-    // if (user != null) {
-    if (true) {
+    bool loggedIn = user != null;
+    if (!loggedIn) {
+      log("In ProfileScreen - User is not signed in! user: $user");
+    }
+
+    if (loggedIn) {
+      log("In ProfileScreen - User is signed in! user: $user");
       return Scaffold(
         appBar: AppBar(
           backgroundColor: Styles.drg_colorAppBackground,
