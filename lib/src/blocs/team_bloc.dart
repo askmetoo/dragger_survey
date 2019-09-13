@@ -1,26 +1,25 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/services/services.dart';
 import 'package:flutter/material.dart';
 
 class TeamBloc extends ChangeNotifier {
-
   bool updatingTeamData = false;
 
   DocumentSnapshot currentSelectedTeam;
   Future<String> currentSelectedTeamId;
 
-  DocumentSnapshot getCurrentSelectedTeam () => currentSelectedTeam;
-  Future<String> getCurrentSelectedTeamId () => currentSelectedTeamId;
+  DocumentSnapshot getCurrentSelectedTeam() => currentSelectedTeam;
+  Future<String> getCurrentSelectedTeamId() => currentSelectedTeamId;
 
   setCurrentSelectedTeam(selectedTeam) async {
     currentSelectedTeam = selectedTeam;
+    notifyListeners();
   }
 
   setCurrentSelectedTeamId(Future<String> selectedTeamId) {
     currentSelectedTeamId = selectedTeamId;
+    notifyListeners();
   }
 
   Stream<QuerySnapshot> get streamTeams {
@@ -28,19 +27,24 @@ class TeamBloc extends ChangeNotifier {
   }
 
   Future<QuerySnapshot> getTeamsQuery({String fieldName, String fieldValue}) {
-    return Collection<Team>(path: 'teams').getDocumentsByQuery(fieldName: fieldName, fieldValue: fieldValue);
+    return Collection<Team>(path: 'teams')
+        .getDocumentsByQuery(fieldName: fieldName, fieldValue: fieldValue);
   }
 
-  Future<QuerySnapshot> getTeamsQueryByArray({String fieldName, String arrayValue}) async {
-    return await Collection<Team>(path: 'teams').getDocumentsByQueryArray(fieldName: fieldName, arrayValue: arrayValue);
+  Future<QuerySnapshot> getTeamsQueryByArray(
+      {String fieldName, String arrayValue}) async {
+    return await Collection<Team>(path: 'teams')
+        .getDocumentsByQueryArray(fieldName: fieldName, arrayValue: arrayValue);
   }
 
   addTeamToDb({Map<String, dynamic> team}) {
     Collection(path: "teams").createDocumentWithObject(object: team);
+    notifyListeners();
   }
 
   updateTeamById({object, id}) {
     Collection(path: 'teams').updateDocumentWithObject(object: object, id: id);
+    notifyListeners();
   }
 
   Future<DocumentSnapshot> getTeamById({id}) {
@@ -49,6 +53,6 @@ class TeamBloc extends ChangeNotifier {
 
   deleteTeamById({id}) {
     Collection<Team>(path: 'teams').deleteById(id);
+    notifyListeners();
   }
-
 }

@@ -22,8 +22,9 @@ class TeamsListScreen extends StatelessWidget {
             snapshot.connectionState == ConnectionState.active) {
           log("In SurveySetListsScreen _buildSurveySetsListView - ${snapshot.connectionState}");
           if (snapshot.connectionState == ConnectionState.done) {
-            
-            if(!snapshot.hasData) CircularProgressIndicator();
+            if (!snapshot.hasData) {
+              return CircularProgressIndicator();
+            }
 
             if (snapshot.data.uid == null) {
               log("In teams_list_screen - User is not signed in! - forward to SplashScreen()");

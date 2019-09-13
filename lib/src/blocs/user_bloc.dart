@@ -18,7 +18,7 @@ class UserBloc extends ChangeNotifier {
 
   addUserToDb({Map<String, dynamic> user}) {
     Collection(path: "users").createDocumentWithObject(object: user);
-    print("2) ----> User values have been sent to data base");
+    updateList
   }
 
   updateUserById({object, id}) {

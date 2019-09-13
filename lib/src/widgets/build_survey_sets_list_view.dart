@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/enums/connectivity_status.dart';
-import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,88 +25,78 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
 
-    return FutureBuilder<DocumentSnapshot>(
-        future: Future.value(teamBloc.currentSelectedTeam) ,
-        builder: (context, AsyncSnapshot<DocumentSnapshot> selectedTeamSnapshot) {
-          if (selectedTeamSnapshot.connectionState == ConnectionState.none ||
-              selectedTeamSnapshot.connectionState == ConnectionState.waiting ||
-              selectedTeamSnapshot.connectionState == ConnectionState.active) {
-            return Text("BuildSurveySetsListView - documentID: ${selectedTeamSnapshot?.data?.documentID}");
+    log("In BuildSurveySetsListView - teamBloc?.currentSelectedTeam?.documentID: ${teamBloc?.currentSelectedTeam?.documentID}");
+
+    return FutureBuilder<QuerySnapshot>(
+      future: surveySetsBloc
+          .getPrismSurveySetQuery(
+              fieldName: 'createdByTeam',
+              fieldValue: teamBloc?.currentSelectedTeam?.documentID)
+          .catchError((err) => log(
+              "ERROR in BuildSurveySetsListView getPrismSurveySetQuery: $err")),
+      builder: (BuildContext context,
+          AsyncSnapshot<QuerySnapshot> surveySetSnapshot) {
+        final connectionStatus = Provider.of<ConnectivityStatus>(context);
+
+        if (surveySetSnapshot.connectionState == ConnectionState.done) {
+          if (!surveySetSnapshot.hasData) {
+            return CircularProgressIndicator();
           }
-          if (selectedTeamSnapshot.connectionState == ConnectionState.done) {
 
-            if(!selectedTeamSnapshot.hasData) CircularProgressIndicator();
+          log("In BuildSurveySetsListView - surveySetSnapshot length: ${surveySetSnapshot.data.documents.length}");
 
-            return FutureBuilder<QuerySnapshot>(
-              future: surveySetsBloc.getPrismSurveySetQuery(
-                  fieldName: 'createdByTeam',
-                  fieldValue: _currentTeamID).catchError((err) => log("ERROR in BuildSurveySetsListView getPrismSurveySetQuery: $err")),
-              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> surveySetSnapshot) {
-                final connectionStatus = Provider.of<ConnectivityStatus>(context);
-
-                if (
-                  surveySetSnapshot.connectionState == ConnectionState.none ||
-                  surveySetSnapshot.connectionState == ConnectionState.waiting ||
-                  surveySetSnapshot.connectionState == ConnectionState.active
-                ) log("In BuildSurveySetsListView surveySetSnapshot ConntectionState: ${surveySetSnapshot.connectionState}");
-
-                if (surveySetSnapshot.connectionState == ConnectionState.done) {
-
-                  if(!surveySetSnapshot.hasData) CircularProgressIndicator();
-                  
-                  if (connectionStatus == ConnectivityStatus.Offline) {
-                    return Text(
-                      "You are currently ${connectionStatus.toString().split('.')[1]}",
-                      style: TextStyle(fontSize: 20, color: Styles.drg_colorSecondaryDeepDark),
-                    );
-                  }
-
-                  return ListView(
-                      scrollDirection: Axis.vertical,
-                      children: surveySetSnapshot.data.documents.map(
-                        (DocumentSnapshot surveySetDokumentSnapshot) {
-                          return Dismissible(
-                            key: ValueKey(
-                                surveySetDokumentSnapshot.hashCode),
-                            direction: DismissDirection.endToStart,
-                            onDismissed: (direction) => print(
-                                '------>>> Item ${surveySetDokumentSnapshot['name']} is dismissed'),
-                            child: ListTile(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, '/surveysetscaffold', arguments: {
-                                  "id":
-                                      "${surveySetDokumentSnapshot['id']}"
-                                });
-                              },
-                              title: Text(
-                                "Name: ${surveySetDokumentSnapshot['name']}, id: ${surveySetDokumentSnapshot['id']}",
-                                style: Styles.drg_textListTitle,
-                              ),
-                              subtitle: Text(
-                                "Created: ${formatDate( surveySetDokumentSnapshot['created'].toDate(), [
-                                  dd,
-                                  '. ',
-                                  MM,
-                                  ' ',
-                                  yyyy,
-                                  ', ',
-                                  HH,
-                                  ':',
-                                  nn
-                                ])} by ${signInBloc.currentUser}",
-                                style: Styles.drg_textListContent,
-                              ),
-                            ),
-                          );
-                        },
-                      ).toList());
-                }
-                return Container();
-              },
+          if (connectionStatus == ConnectivityStatus.Offline) {
+            return Text(
+              "You are currently ${connectionStatus.toString().split('.')[1]}",
+              style: TextStyle(
+                  fontSize: 20, color: Styles.drg_colorSecondaryDeepDark),
             );
           }
-          return Container();
-        });
+
+          return ListView(
+              scrollDirection: Axis.vertical,
+              children: surveySetSnapshot.data.documents.map(
+                (DocumentSnapshot surveySetDokumentSnapshot) {
+                  return Dismissible(
+                    key: ValueKey(surveySetDokumentSnapshot.hashCode),
+                    direction: DismissDirection.endToStart,
+                    onDismissed: (direction) => print(
+                        '------>>> Item ${surveySetDokumentSnapshot['name']} is dismissed'),
+                    child: ListTile(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/surveysetscaffold',
+                            arguments: {
+                              "id": "${surveySetDokumentSnapshot['id']}"
+                            });
+                      },
+                      title: Text(
+                        "Name: ${surveySetDokumentSnapshot['name']}, id: ${surveySetDokumentSnapshot['id']}",
+                        style: Styles.drg_textListTitle,
+                      ),
+                      subtitle: Text(
+                        "Created: ${formatDate(surveySetDokumentSnapshot['created'].toDate(), [
+                          dd,
+                          '. ',
+                          MM,
+                          ' ',
+                          yyyy,
+                          ', ',
+                          HH,
+                          ':',
+                          nn
+                        ])} by ${signInBloc.currentUser}",
+                        style: Styles.drg_textListContent,
+                      ),
+                    ),
+                  );
+                },
+              ).toList());
+        }
+        return Container();
+      },
+    );
   }
+//           return Container();
+//         });
+//   }
 }
