@@ -34,6 +34,10 @@ Widget buildTeamsListView({BuildContext context}) {
               ) log("In build_teams_list_view.dart - teamsListSnapshot: ${teamsListSnapshot.connectionState}");
 
             if (teamsListSnapshot.connectionState == ConnectionState.done) {
+
+              if(!teamsListSnapshot.hasData) CircularProgressIndicator();
+              if(!signInSnapshot.hasData) CircularProgressIndicator();
+              
               return ListView(
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,

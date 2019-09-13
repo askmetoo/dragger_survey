@@ -17,12 +17,16 @@ class LoginScreen extends StatelessWidget {
     return FutureBuilder<FirebaseUser>(
         future: signInBloc.currentUser,
         builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting)
-            CircularProgressIndicator();
-          if (snapshot.connectionState == ConnectionState.active)
-            CircularProgressIndicator();
+          if (
+            snapshot.connectionState == ConnectionState.none ||
+            snapshot.connectionState == ConnectionState.waiting ||
+            snapshot.connectionState == ConnectionState.active
+            ) CircularProgressIndicator();
 
           if (snapshot.connectionState == ConnectionState.done) {
+            if (!snapshot.hasData) {
+              CircularProgressIndicator();
+            }
             return Column(
               children: <Widget>[
                 Padding(
@@ -64,7 +68,7 @@ class LoginScreen extends StatelessWidget {
                           "providerId": snapshot.data?.providerId,
                         };
                         userBloc.addUserToDb(user: newUser);
-                        print(
+                        log(
                             "SUCCESS in 'login_screen' with adding User to DB");
                         print(
                             "------------------------------------------------------");
@@ -91,10 +95,11 @@ class LoginScreen extends StatelessWidget {
                         print(
                             "ERROR in 'login_screen' with adding User to DB: $err");
                       }
-                    } else if (returnedUser.documents.first.data.isNotEmpty ||
+                    } else if (loggedIn || returnedUser.documents.first.data.isNotEmpty ||
                         snapshot.data?.uid ==
-                            returnedUser.documents[0]['providersUID']) {
-                      print("USER found id DB");
+                            returnedUser.documents[0]['providersUID']
+                            ) {
+                      log("USER found id DB");
                       print("RETURNED USER's display name and providersUID: ");
                       print("${returnedUser.documents[0]['displayName']}");
                       print("${returnedUser.documents[0]['providersUID']}");
@@ -164,11 +169,13 @@ class LoginScreen extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
           if (snapshot.connectionState == ConnectionState.none ||
               snapshot.connectionState == ConnectionState.waiting ||
-              snapshot.connectionState == ConnectionState.active) {
-            return CircularProgressIndicator();
-          }
+              snapshot.connectionState == ConnectionState.active
+              ) CircularProgressIndicator();
 
           if (snapshot.connectionState == ConnectionState.done) {
+            // if(!snapshot.hasData) {
+            //   return CircularProgressIndicator();
+            // }
             if (snapshot.data?.uid == null) {
               return _signInButton(context: context);
             }
@@ -194,6 +201,9 @@ class LoginScreen extends StatelessWidget {
           }
 
           if (signInSnapshot.connectionState == ConnectionState.done) {
+            if(!signInSnapshot.hasData) {
+              return CircularProgressIndicator();
+            }
             return OutlineButton(
               splashColor: Styles.drg_colorSecondary,
               onPressed: () async {

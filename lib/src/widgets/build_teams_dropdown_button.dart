@@ -16,7 +16,7 @@ class BuildTeamsDropdownButton extends StatefulWidget {
 class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
   String _selectedTeamId = '';
   String _selectedTeamName = '';
-  Team _selectedTeam;
+  DocumentSnapshot _selectedTeam;
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +36,7 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
 
           if (signInSnapshot.connectionState == ConnectionState.done) {
 
-            log("In BuildTeamsDropdownButton (1) value of _selectedTeamId: $_selectedTeamId");
-            log("In BuildTeamsDropdownButton (1) value of _selectedTeamId.isEmpty: ${_selectedTeamId == null || _selectedTeamId.isEmpty}");
-            log("In BuildTeamsDropdownButton (1) value of _selectedTeamName: $_selectedTeamName");
+            if(!signInSnapshot.hasData) CircularProgressIndicator();
 
             return FutureBuilder<QuerySnapshot>(
                 future: teamBloc.getTeamsQueryByArray(
@@ -49,19 +47,12 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                   if (teamsListSnapshot.connectionState == ConnectionState.none ||
                       teamsListSnapshot.connectionState == ConnectionState.waiting ||
                       teamsListSnapshot.connectionState == ConnectionState.active) {
-                    log(
-                        "In BuildTeamsDropdownButton teamsListSnapshot: ${teamsListSnapshot.connectionState}");
                     return CircularProgressIndicator();
                   }
 
                   if (teamsListSnapshot.connectionState ==
                       ConnectionState.done) {
-                    log(
-                        "In BuildTeamsDropdownButton teamsListSnapshot: ${teamsListSnapshot.connectionState}");
-                    log("In BuildTeamsDropdownButton (3) value of _selectedTeamId: $_selectedTeamId");
-                    log("In BuildTeamsDropdownButton (3) value of _selectedTeamId.isEmpty: ${_selectedTeamId == null || _selectedTeamId.isEmpty}");
-                    log("In BuildTeamsDropdownButton (3) value of _selectedTeamName: $_selectedTeamName");
-                    
+                    if(!teamsListSnapshot.hasData) CircularProgressIndicator();
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 4),
@@ -71,10 +62,6 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                           child: DropdownButton(
                               isExpanded: true,
                               onChanged: (value) {
-                                log("In BuildTeamsDropdownButton - ConnectionState.done value: $value");
-                                log("In BuildTeamsDropdownButton (4) value of _selectedTeamId: $_selectedTeamId");
-                                log("In BuildTeamsDropdownButton (4) value of _selectedTeamId.isEmpty: ${_selectedTeamId == null || _selectedTeamId.isEmpty}");
-                                log("In BuildTeamsDropdownButton (4) value of _selectedTeamName: $_selectedTeamName");
                                 setState(() {
                                   _selectedTeamId = value;
                                 });
@@ -83,13 +70,9 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                     .then((returnValue) {
                                   teamBloc.setCurrentSelectedTeam(returnValue);
                                   setState(() {
-                                    _selectedTeam = returnValue.data as Team;
+                                    _selectedTeam = returnValue;
                                   });
                                 });
-                                log("In BuildTeamsDropdownButton - ConnectionState.done value: $value");
-                                log("In BuildTeamsDropdownButton (5) value of _selectedTeamId: $_selectedTeamId");
-                                log("In BuildTeamsDropdownButton (5) value of _selectedTeamId.isEmpty: ${_selectedTeamId == null || _selectedTeamId.isEmpty}");
-                                log("In BuildTeamsDropdownButton (5) value of _selectedTeamName: $_selectedTeamName");
                               },
                               hint: _selectedTeamId == null || _selectedTeamId.isEmpty || _selectedTeamId == ''
                                   ? Text(
@@ -105,16 +88,16 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                             fontSize: 22),
                                         children: [
                                           TextSpan(
-                                            text: "${_selectedTeam.name}",
+                                            text: "${_selectedTeam.data['name']}",
                                             style: TextStyle(
                                                 color: Styles.drg_colorText,
                                                 fontSize: 22,
                                                 fontWeight: FontWeight.w600),
                                           ),
                                           TextSpan(
-                                            text: _selectedTeam.description !=
+                                            text: _selectedTeam.data['description'] !=
                                                     ''
-                                                ? "\n${_selectedTeam.description}"
+                                                ? "\n${_selectedTeam.data['description']}"
                                                 : "\nTeam has no description",
                                             style: TextStyle(
                                               color: Styles.drg_colorText,

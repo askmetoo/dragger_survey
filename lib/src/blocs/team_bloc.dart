@@ -9,14 +9,14 @@ class TeamBloc extends ChangeNotifier {
 
   bool updatingTeamData = false;
 
-  Future<DocumentSnapshot> currentSelectedTeam;
+  DocumentSnapshot currentSelectedTeam;
   Future<String> currentSelectedTeamId;
 
-  Future<DocumentSnapshot> getCurrentSelectedTeam () => currentSelectedTeam;
+  DocumentSnapshot getCurrentSelectedTeam () => currentSelectedTeam;
   Future<String> getCurrentSelectedTeamId () => currentSelectedTeamId;
 
-  setCurrentSelectedTeam(selectedTeam) async{
-    currentSelectedTeam = Future.value(selectedTeam);
+  setCurrentSelectedTeam(selectedTeam) async {
+    currentSelectedTeam = selectedTeam;
   }
 
   setCurrentSelectedTeamId(Future<String> selectedTeamId) {

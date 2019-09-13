@@ -27,17 +27,17 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
 
     return FutureBuilder<DocumentSnapshot>(
-        future: teamBloc.currentSelectedTeam,
+        future: Future.value(teamBloc.currentSelectedTeam) ,
         builder: (context, AsyncSnapshot<DocumentSnapshot> selectedTeamSnapshot) {
           if (selectedTeamSnapshot.connectionState == ConnectionState.none ||
               selectedTeamSnapshot.connectionState == ConnectionState.waiting ||
               selectedTeamSnapshot.connectionState == ConnectionState.active) {
-            print("In BuildSurveySetsListView - selectedTeamSnapshot.connectionState: ${selectedTeamSnapshot.connectionState}");
             return Text("BuildSurveySetsListView - documentID: ${selectedTeamSnapshot?.data?.documentID}");
           }
           if (selectedTeamSnapshot.connectionState == ConnectionState.done) {
-            print("In BuildSurveySetsListView - selectedTeamSnapshot.connectionState: ${selectedTeamSnapshot.connectionState}");
-            print("In BuildSurveySetsListView before FutureBuilder getPrismSurveySetQuery - _currentTeamID: $_currentTeamID");
+
+            if(!selectedTeamSnapshot.hasData) CircularProgressIndicator();
+
             return FutureBuilder<QuerySnapshot>(
               future: surveySetsBloc.getPrismSurveySetQuery(
                   fieldName: 'createdByTeam',
@@ -52,6 +52,8 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                 ) log("In BuildSurveySetsListView surveySetSnapshot ConntectionState: ${surveySetSnapshot.connectionState}");
 
                 if (surveySetSnapshot.connectionState == ConnectionState.done) {
+
+                  if(!surveySetSnapshot.hasData) CircularProgressIndicator();
                   
                   if (connectionStatus == ConnectivityStatus.Offline) {
                     return Text(
@@ -60,10 +62,6 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                     );
                   }
 
-                  log("In BuildSurveySetsListView - future surveySetsBloc ConnectionState.done");
-                  log("In BuildSurveySetsListView - future current teamId: ${selectedTeamSnapshot?.data['id']}");
-                  log("In BuildSurveySetsListView - future surveySetSnapshot ${selectedTeamSnapshot?.data}");
-                  log("In BuildSurveySetsListView - future surveySetSnapshot ${selectedTeamSnapshot?.data['created']}");
                   return ListView(
                       scrollDirection: Axis.vertical,
                       children: surveySetSnapshot.data.documents.map(
@@ -87,7 +85,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                                 style: Styles.drg_textListTitle,
                               ),
                               subtitle: Text(
-                                "Created: ${formatDate( DateTime.parse(surveySetDokumentSnapshot['created']) , [
+                                "Created: ${formatDate( surveySetDokumentSnapshot['created'].toDate(), [
                                   dd,
                                   '. ',
                                   MM,

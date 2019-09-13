@@ -24,7 +24,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
   Widget build(BuildContext context) {
     Provider.of<PrismSurveySetBloc>(context);
 
-    var user = Provider.of<FirebaseUser>(context);
+    FirebaseUser user = Provider.of<FirebaseUser>(context);
     bool loggedIn = user != null;
     if (!loggedIn) {
       log("In SurveySetsListScreen - User is not signed in!");
