@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,13 +9,8 @@ class SigendInUserCircleAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
     return FutureBuilder<FirebaseUser>(
-      future: signInBloc.currentUser,
-      builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
-        if (snapshot.connectionState == ConnectionState.none ||
-            snapshot.connectionState == ConnectionState.waiting ||
-            snapshot.connectionState == ConnectionState.active) {
-          log("In SignInUserCircleAvatar - ${snapshot.connectionState}");
-
+        future: signInBloc.currentUser,
+        builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return GestureDetector(
                 onTap: () {
@@ -34,9 +27,6 @@ class SigendInUserCircleAvatar extends StatelessWidget {
                 ));
           }
           return Container();
-        }
-        return Container();
-      },
-    );
+        });
   }
 }

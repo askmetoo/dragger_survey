@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
-import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +25,7 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
         future: teamBloc
             .getTeamsQueryByArray(
               fieldName: 'users',
-              arrayValue: _user.uid,
+              arrayValue: _user?.uid,
             )
             .catchError((err) => log(
                 "ERROR in BuildTeamsDropdownButton getTeamsQueryByArray: $err")),
@@ -64,10 +63,12 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                               style: TextStyle(color: Styles.drg_colorText),
                             )
                           : RichText(
+                              overflow: TextOverflow.clip,
+                              maxLines: 1,
                               text: TextSpan(
                                 text: "Team: ",
                                 style: TextStyle(
-                                    color: Styles.drg_colorText, fontSize: 22),
+                                    color: Styles.drg_colorText, fontSize: 20),
                                 children: [
                                   TextSpan(
                                     text: "${_selectedTeam.data['name']}",
@@ -113,7 +114,7 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                       ? "${team['description']}"
                                       : 'Team has no description',
                                   style: TextStyle(
-                                    color: Styles.drg_colorTextLighter,
+                                    color: Styles.drg_colorSecondaryDeepDark,
                                     fontSize: 12,
                                   ),
                                 ),
