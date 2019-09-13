@@ -27,7 +27,9 @@ class SurveySetDetailsScreen extends StatelessWidget {
               signInSnapshot.connectionState ==
                   ConnectionState.active) if (signInSnapshot.connectionState ==
               ConnectionState.done) {
-            if (!signInSnapshot.hasData) CircularProgressIndicator();
+            if (!signInSnapshot.hasData) {
+              return CircularProgressIndicator();
+            }
 
             if (signInSnapshot.data.uid == null) {
               return SplashScreen();

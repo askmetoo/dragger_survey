@@ -14,140 +14,119 @@ class BuildTeamsDropdownButton extends StatefulWidget {
 }
 
 class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
-  String _selectedTeamId = '';
-  String _selectedTeamName = '';
+  String _selectedTeamId;
   DocumentSnapshot _selectedTeam;
 
   @override
   Widget build(BuildContext context) {
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
-    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
     FirebaseUser _user = Provider.of<FirebaseUser>(context);
 
-    return FutureBuilder<FirebaseUser>(
-        future: signInBloc.currentUser,
-        builder:
-            (BuildContext context, AsyncSnapshot<FirebaseUser> signInSnapshot) {
-          if (signInSnapshot.connectionState == ConnectionState.none ||
-              signInSnapshot.connectionState == ConnectionState.waiting ||
-              signInSnapshot.connectionState == ConnectionState.active) {
-            CircularProgressIndicator();
-          }
+    return FutureBuilder<QuerySnapshot>(
+        future: teamBloc
+            .getTeamsQueryByArray(
+              fieldName: 'users',
+              arrayValue: _user.uid,
+            )
+            .catchError((err) => log(
+                "ERROR in BuildTeamsDropdownButton getTeamsQueryByArray: $err")),
+        builder: (BuildContext context,
+            AsyncSnapshot<QuerySnapshot> teamsListSnapshot) {
+          if (teamsListSnapshot.connectionState == ConnectionState.done) {
+            if (!teamsListSnapshot.hasData) {
+              return CircularProgressIndicator();
+            }
 
-          if (signInSnapshot.connectionState == ConnectionState.done) {
-
-            if(!signInSnapshot.hasData) CircularProgressIndicator();
-
-            return FutureBuilder<QuerySnapshot>(
-                future: teamBloc.getTeamsQueryByArray(
-                  fieldName: 'users',
-                  arrayValue: _user?.uid,
-                ).catchError((err) => log("ERROR in BuildTeamsDropdownButton getTeamsQueryByArray: $err")),
-                builder: (BuildContext context, teamsListSnapshot) {
-                  if (teamsListSnapshot.connectionState == ConnectionState.none ||
-                      teamsListSnapshot.connectionState == ConnectionState.waiting ||
-                      teamsListSnapshot.connectionState == ConnectionState.active) {
-                    return CircularProgressIndicator();
-                  }
-
-                  if (teamsListSnapshot.connectionState ==
-                      ConnectionState.done) {
-                    if(!teamsListSnapshot.hasData) CircularProgressIndicator();
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 4),
-                      child: Container(
-                        child: SizedBox(
-                          height: 60,
-                          child: DropdownButton(
-                              isExpanded: true,
-                              onChanged: (value) {
-                                setState(() {
-                                  _selectedTeamId = value;
-                                });
-                                teamBloc
-                                    .getTeamById(id: value)
-                                    .then((returnValue) {
-                                  teamBloc.setCurrentSelectedTeam(returnValue);
-                                  setState(() {
-                                    _selectedTeam = returnValue;
-                                  });
-                                });
-                              },
-                              hint: _selectedTeamId == null || _selectedTeamId.isEmpty || _selectedTeamId == ''
-                                  ? Text(
-                                      "Please Select a Team",
-                                      style: TextStyle(
-                                          color: Styles.drg_colorText),
-                                    )
-                                  : RichText(
-                                      text: TextSpan(
-                                        text: "Team: ",
-                                        style: TextStyle(
-                                            color: Styles.drg_colorText,
-                                            fontSize: 22),
-                                        children: [
-                                          TextSpan(
-                                            text: "${_selectedTeam.data['name']}",
-                                            style: TextStyle(
-                                                color: Styles.drg_colorText,
-                                                fontSize: 22,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          TextSpan(
-                                            text: _selectedTeam.data['description'] !=
-                                                    ''
-                                                ? "\n${_selectedTeam.data['description']}"
-                                                : "\nTeam has no description",
-                                            style: TextStyle(
-                                              color: Styles.drg_colorText,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              child: Container(
+                child: SizedBox(
+                  height: 60,
+                  child: DropdownButton(
+                      isExpanded: true,
+                      value: _selectedTeamId,
+                      onChanged: (value) {
+                        log("----> DropdownButton pressed - value: $value");
+                        setState(() {
+                          _selectedTeamId = value;
+                        });
+                        teamBloc.getTeamById(id: value).then((returnValue) {
+                          teamBloc.setCurrentSelectedTeam(returnValue);
+                          setState(() {
+                            _selectedTeam = returnValue;
+                          });
+                        });
+                      },
+                      // hint: Text("Hint text"),
+                      hint: _selectedTeamId == null
+                          ? Text(
+                              "Please Select a Team",
+                              style: TextStyle(color: Styles.drg_colorText),
+                            )
+                          : RichText(
+                              text: TextSpan(
+                                text: "Team: ",
+                                style: TextStyle(
+                                    color: Styles.drg_colorText, fontSize: 22),
+                                children: [
+                                  TextSpan(
+                                    text: "${_selectedTeam.data['name']}",
+                                    style: TextStyle(
+                                        color: Styles.drg_colorText,
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  TextSpan(
+                                    text: _selectedTeam.data['description'] !=
+                                            ''
+                                        ? "\n${_selectedTeam.data['description']}"
+                                        : "\nTeam has no description",
+                                    style: TextStyle(
+                                      color: Styles.drg_colorText,
+                                      fontSize: 14,
                                     ),
-                              // disabledHint: _selectedTeam?.id != null
-                              //     ? Text("${_selectedTeam?.id}")
-                              //     : Text("You don't have any Team"),
-                              items: !teamsListSnapshot.hasData
-                                  ? null
-                                  : teamsListSnapshot.data.documents
-                                      .map<DropdownMenuItem>((team) {
-                                      return DropdownMenuItem(
-                                        value: team['id'],
-                                        child: RichText(
-                                          text: TextSpan(
-                                            text: "${team['name']}\n",
-                                            style: TextStyle(
-                                              color: Styles.drg_colorText,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                            children: [
-                                              TextSpan(
-                                                text: team['description'] != ''
-                                                    ? "${team['description']}"
-                                                    : 'Team has no description',
-                                                style: TextStyle(
-                                                  color: Styles
-                                                      .drg_colorTextLighter,
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    }).toList()),
-                        ),
-                      ),
-                    );
-                  }
-                  return Container();
-                });
+                                  ),
+                                ],
+                              ),
+                            ),
+                      // disabledHint:
+                      //     teamsListSnapshot.data.documents.isNotEmpty &&
+                      //             teamsListSnapshot.data.documents.length > 0
+                      //         ? Text("Please select a team")
+                      //         : Text("You don't have any Team"),
+                      items: teamsListSnapshot.data.documents
+                          .map<DropdownMenuItem>((team) {
+                        return DropdownMenuItem(
+                          value: team.documentID,
+                          // value: team['id'].toString(),
+                          child: RichText(
+                            text: TextSpan(
+                              text: "${team['name']}\n",
+                              style: TextStyle(
+                                color: Styles.drg_colorText,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: team['description'] != ''
+                                      ? "${team['description']}"
+                                      : 'Team has no description',
+                                  style: TextStyle(
+                                    color: Styles.drg_colorTextLighter,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }).toList()),
+                ),
+              ),
+            );
           }
-          return Text('No Dropdown Button available');
+          return Container();
         });
   }
 }
