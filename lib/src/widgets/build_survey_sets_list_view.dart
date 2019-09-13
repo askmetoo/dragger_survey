@@ -16,17 +16,16 @@ class BuildSurveySetsListView extends StatefulWidget {
 }
 
 class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
-  String _currentTeamID;
-
   @override
   Widget build(BuildContext context) {
     final PrismSurveySetBloc surveySetsBloc =
         Provider.of<PrismSurveySetBloc>(context);
-    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
-
-    log("In BuildSurveySetsListView - teamBloc?.currentSelectedTeam?.documentID: ${teamBloc?.currentSelectedTeam?.documentID}");
-
+    if (teamBloc?.currentSelectedTeam?.documentID == null) {
+      return Center(
+        child: Text("Please select a team"),
+      );
+    }
     return FutureBuilder<QuerySnapshot>(
       future: surveySetsBloc
           .getPrismSurveySetQuery(
@@ -43,8 +42,6 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
             return CircularProgressIndicator();
           }
 
-          log("In BuildSurveySetsListView - surveySetSnapshot length: ${surveySetSnapshot.data.documents.length}");
-
           if (connectionStatus == ConnectivityStatus.Offline) {
             return Text(
               "You are currently ${connectionStatus.toString().split('.')[1]}",
@@ -52,17 +49,25 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                   fontSize: 20, color: Styles.drg_colorSecondaryDeepDark),
             );
           }
+          if (surveySetSnapshot.data.documents.isEmpty) {
+            return Center(
+              child: Text(
+                "Currently no available survey sets. \n\nPlease select another team \nor create a set",
+                textAlign: TextAlign.center,
+              ),
+            );
+          }
 
           return ListView(
-              scrollDirection: Axis.vertical,
-              children: surveySetSnapshot.data.documents.map(
-                (DocumentSnapshot surveySetDokumentSnapshot) {
-                  return Dismissible(
-                    key: ValueKey(surveySetDokumentSnapshot.hashCode),
-                    direction: DismissDirection.endToStart,
-                    onDismissed: (direction) => print(
-                        '------>>> Item ${surveySetDokumentSnapshot['name']} is dismissed'),
-                    child: ListTile(
+            scrollDirection: Axis.vertical,
+            children: surveySetSnapshot.data.documents.map(
+              (DocumentSnapshot surveySetDokumentSnapshot) {
+                return Dismissible(
+                  key: ValueKey(surveySetDokumentSnapshot.hashCode),
+                  direction: DismissDirection.endToStart,
+                  onDismissed: (direction) => print(
+                      '------>>> Item ${surveySetDokumentSnapshot['name']} is dismissed'),
+                  child: ListTile(
                       onTap: () {
                         Navigator.pushNamed(context, '/surveysetscaffold',
                             arguments: {
@@ -70,11 +75,11 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                             });
                       },
                       title: Text(
-                        "Name: ${surveySetDokumentSnapshot['name']}, id: ${surveySetDokumentSnapshot['id']}",
+                        "Name: ${surveySetDokumentSnapshot.data['name']}",
                         style: Styles.drg_textListTitle,
                       ),
                       subtitle: Text(
-                        "Created: ${formatDate(surveySetDokumentSnapshot['created'].toDate(), [
+                        "id: ${surveySetDokumentSnapshot.documentID} \nCreated: ${formatDate(surveySetDokumentSnapshot['created'].toDate(), [
                           dd,
                           '. ',
                           MM,
@@ -84,13 +89,13 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                           HH,
                           ':',
                           nn
-                        ])} by ${signInBloc.currentUser}",
+                        ])}",
                         style: Styles.drg_textListContent,
-                      ),
-                    ),
-                  );
-                },
-              ).toList());
+                      )),
+                );
+              },
+            ).toList(),
+          );
         }
         return Container();
       },

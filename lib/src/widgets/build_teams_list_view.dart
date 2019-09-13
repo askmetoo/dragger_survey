@@ -15,29 +15,19 @@ Widget buildTeamsListView({BuildContext context}) {
   final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
 
   return FutureBuilder<FirebaseUser>(
-    future: signInBloc.currentUser,
-    builder: (context, signInSnapshot) {
-
-      return FutureBuilder<QuerySnapshot>(
-        future: teamBloc
-                    .getTeamsQueryByArray(
-                  fieldName: 'users',
-                  arrayValue: signInSnapshot?.data?.uid,
-                ),
-        builder:
-            (BuildContext context, AsyncSnapshot<QuerySnapshot> teamsListSnapshot) {
-
-            if (
-              teamsListSnapshot.connectionState == ConnectionState.none ||
-              teamsListSnapshot.connectionState == ConnectionState.waiting ||
-              teamsListSnapshot.connectionState == ConnectionState.active
-              ) log("In build_teams_list_view.dart - teamsListSnapshot: ${teamsListSnapshot.connectionState}");
-
+      future: signInBloc.currentUser,
+      builder: (context, signInSnapshot) {
+        return FutureBuilder<QuerySnapshot>(
+          future: teamBloc.getTeamsQueryByArray(
+            fieldName: 'users',
+            arrayValue: signInSnapshot?.data?.uid,
+          ),
+          builder: (BuildContext context,
+              AsyncSnapshot<QuerySnapshot> teamsListSnapshot) {
             if (teamsListSnapshot.connectionState == ConnectionState.done) {
+              if (!teamsListSnapshot.hasData) CircularProgressIndicator();
+              if (!signInSnapshot.hasData) CircularProgressIndicator();
 
-              if(!teamsListSnapshot.hasData) CircularProgressIndicator();
-              if(!signInSnapshot.hasData) CircularProgressIndicator();
-              
               return ListView(
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
@@ -52,11 +42,16 @@ Widget buildTeamsListView({BuildContext context}) {
                         teamBloc.deleteTeamById(id: singleTeamSnapshot['id']);
                       },
                       child: ListTile(
+                        isThreeLine: false,
+                        dense: true,
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         trailing: IconButton(
                           key: Key(singleTeamSnapshot['id']),
                           icon: Icon(Icons.edit),
                           onPressed: () async {
-                            teamBloc.currentSelectedTeamId = singleTeamSnapshot['id'] as Future<String>;
+                            teamBloc.currentSelectedTeamId =
+                                singleTeamSnapshot['id'] as Future<String>;
                             print("Edit button pressed in teams");
                             showDialog(
                               context: context,
@@ -84,9 +79,6 @@ Widget buildTeamsListView({BuildContext context}) {
                           },
                         ),
                         onTap: () {
-                          // teamBloc.currentTeamId = snapshot?.documentID;
-                          print(
-                              "Before Navigator in ListTile of Teams - id: ${singleTeamSnapshot['id']}");
                           Navigator.pushNamed(context, '/surveysetslist',
                               arguments: "${singleTeamSnapshot['id']}");
                         },
@@ -95,9 +87,7 @@ Widget buildTeamsListView({BuildContext context}) {
                           style: Styles.drg_textListTitle,
                         ),
                         subtitle: Text(
-                          """id: ${singleTeamSnapshot['id']} 
-                          \nCreated: ${formatDate( singleTeamSnapshot['created'].toDate(),
-                          [
+                          """id: ${singleTeamSnapshot['id']} \nCreated: ${formatDate(singleTeamSnapshot['created'].toDate(), [
                             dd,
                             '. ',
                             MM,
@@ -107,7 +97,7 @@ Widget buildTeamsListView({BuildContext context}) {
                             HH,
                             ':',
                             nn
-                          ])} \nLast edited: ${singleTeamSnapshot['edited'] != null ? formatDate( singleTeamSnapshot['edited'].toDate(), [
+                          ])} \nLast edited: ${singleTeamSnapshot['edited'] != null ? formatDate(singleTeamSnapshot['edited'].toDate(), [
                               dd,
                               '. ',
                               MM,
@@ -123,10 +113,10 @@ Widget buildTeamsListView({BuildContext context}) {
                       ),
                     );
                   }).toList());
-          }
-          return Text("In build_teams_list_view.dart - teamsListSnapshot: ${teamsListSnapshot.connectionState}");
-        },
-      );
-    }
-  );
+            }
+            return Text(
+                "In build_teams_list_view.dart - teamsListSnapshot: ${teamsListSnapshot.connectionState}");
+          },
+        );
+      });
 }

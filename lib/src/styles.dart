@@ -4,11 +4,11 @@ import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Styles {
-  static const drg_fontSizeCopyText = 16.0;
+  static const drg_fontSizeCopyText = 14.0;
   static const drg_fontSizeFieldContentText = 16.0;
-  static const drg_fontSizeBigHeadline = 32.0;
-  static const drg_fontSizeMediumHeadline = 22.0;
-  static const drg_fontSizesubHeadline = 20.0;
+  static const drg_fontSizeBigHeadline = 30.0;
+  static const drg_fontSizeMediumHeadline = 19.0;
+  static const drg_fontSizesubHeadline = 16.0;
   static const drg_fontSizeFloatingLabel = 14.0;
   static const drg_fontSizeHintText = 14.0;
 
@@ -52,7 +52,8 @@ class Styles {
     color: Styles.drg_colorDarkerGreen,
   );
   static const drg_colorAttention = Color(0xffff0200);
-  static const drg_colorPrimary = Color(0xff119da4);
+  static const drg_colorContrast = Color(0xff119da4);
+  static const drg_colorPrimary = Color(0xffc66400);
   static const drg_colorSecondary = Color(0xfff7b71d);
   static const drg_colorSecondaryDeepDark = Color(0xff583c00);
   static const drg_colorText = Color(0xff0e2431);
@@ -67,7 +68,7 @@ class Styles {
   static const orangeColorDonNotUse = Color(0xfff9b248);
   static const redColorDonNotUse = Color(0xfffc3a52);
 
-  static const drg_colorAppBackground = Color(0xffc66400);
+  static const drg_colorAppBackground = drg_colorPrimary;
 
   static const drg_scaffoldBackground = Color(0xfff0f0f0);
 }

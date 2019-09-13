@@ -8,19 +8,18 @@ class SignInBloc extends ChangeNotifier {
 
   Future<FirebaseUser> get currentUser async {
     FirebaseUser _user = (await authService.getCurrentUser());
-    print("In SignInBloc getting currentUser: $_user, UID: ${_user?.uid}");
     return _user;
   }
 
   Future logoutUser() async {
     var _result = (await authService.lougout());
-    print("In SignInBloc logoutuser: $_result");
+    notifyListeners();
     return _result;
   }
 
   Future<FirebaseUser> signInWithGoogle() async {
     FirebaseUser _user = (await authService.signInWithGoogle());
-    print("In SignInBloc getting currentUser: $_user, UID: ${_user.uid}");
+    notifyListeners();
     return _user;
   }
 }

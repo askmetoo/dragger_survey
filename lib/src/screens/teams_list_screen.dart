@@ -15,12 +15,8 @@ class TeamsListScreen extends StatelessWidget {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
 
     return FutureBuilder<FirebaseUser>(
-      future: signInBloc.currentUser,
-      builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
-        if (snapshot.connectionState == ConnectionState.none ||
-            snapshot.connectionState == ConnectionState.waiting ||
-            snapshot.connectionState == ConnectionState.active) {
-          log("In SurveySetListsScreen _buildSurveySetsListView - ${snapshot.connectionState}");
+        future: signInBloc.currentUser,
+        builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (!snapshot.hasData) {
               return CircularProgressIndicator();
@@ -77,9 +73,6 @@ class TeamsListScreen extends StatelessWidget {
             );
           }
           return Container();
-        }
-        return Container();
-      },
-    );
+        });
   }
 }
