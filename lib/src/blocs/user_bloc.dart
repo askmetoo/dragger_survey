@@ -4,7 +4,6 @@ import 'package:dragger_survey/src/services/services.dart';
 import 'package:flutter/material.dart';
 
 class UserBloc extends ChangeNotifier {
-
   bool updatingUserData = false;
   String currentUserId;
 
@@ -13,16 +12,18 @@ class UserBloc extends ChangeNotifier {
   }
 
   Future<QuerySnapshot> getUsersQuery({String fieldName, String fieldValue}) {
-    return Collection<User>(path: 'users').getDocumentsByQuery(fieldName: fieldName, fieldValue: fieldValue);
+    return Collection<User>(path: 'users')
+        .getDocumentsByQuery(fieldName: fieldName, fieldValue: fieldValue);
   }
 
   addUserToDb({Map<String, dynamic> user}) {
     Collection(path: "users").createDocumentWithObject(object: user);
-    updateList
+    notifyListeners();
   }
 
   updateUserById({object, id}) {
     Collection(path: 'users').updateDocumentWithObject(object: object, id: id);
+    notifyListeners();
   }
 
   Future<DocumentSnapshot> getUserById({id}) {
@@ -31,6 +32,6 @@ class UserBloc extends ChangeNotifier {
 
   deleteUserById({id}) {
     Collection<Team>(path: 'users').deleteById(id);
+    notifyListeners();
   }
-
 }

@@ -6,10 +6,12 @@ class DraggableItemBloc extends ChangeNotifier {
 
   void initState() {
     _draggableItemPosition = _initialPosition;
+    notifyListeners();
   }
 
   DraggableItemBloc() {
     _draggableItemPosition = _initialPosition;
+    notifyListeners();
   }
 
   Offset get draggableItemPositon {
@@ -32,10 +34,7 @@ class DraggableItemBloc extends ChangeNotifier {
   }
 
   resetDraggableItemPositon() {
-    print("In resetDraggableItemPositon");
     _draggableItemPosition = _initialPosition;
-    print(
-        "In resetDraggableItemPositon - _draggableItemPosition: $_draggableItemPosition");
     notifyListeners();
   }
 }

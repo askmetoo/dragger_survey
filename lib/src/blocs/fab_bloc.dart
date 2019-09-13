@@ -6,10 +6,12 @@ class FabBloc extends ChangeNotifier {
 
   set fabToVisible(_) {
     _fabVisible = true;
+    notifyListeners();
   }
 
   set fabToInVisible(_) {
     _fabVisible = false;
+    notifyListeners();
   }
 
   get fabVisibilty {
