@@ -65,8 +65,10 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                 return Dismissible(
                   key: ValueKey(surveySetDokumentSnapshot.hashCode),
                   direction: DismissDirection.endToStart,
-                  onDismissed: (direction) => print(
-                      '------>>> Item ${surveySetDokumentSnapshot['name']} is dismissed'),
+                  onDismissed: (direction)  {
+                    print('----> Item ${surveySetDokumentSnapshot['name']} is dismissed');
+                    surveySetsBloc.deletePrismSurveySetById(id: surveySetDokumentSnapshot.documentID);
+                    },
                   child: ListTile(
                       onTap: () {
                         Navigator.pushNamed(context, '/surveysetscaffold',

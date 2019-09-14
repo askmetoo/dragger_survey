@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/services/services.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,11 @@ class PrismSurveySetBloc extends ChangeNotifier {
 
   Future<DocumentSnapshot> getPrismSurveySetById({id}) {
     return Collection<PrismSurveySet>(path: 'surveySets').getDocument(id);
+  }
+  Future<DocumentSnapshot> deletePrismSurveySetById({id}) {
+    var returnValue = Collection<PrismSurveySet>(path: 'surveySets').deleteById(id);
+    notifyListeners();
+    return returnValue;
   }
 
   Future<PrismSurveySet> getPrismSurveySetByUser({userId}) {
