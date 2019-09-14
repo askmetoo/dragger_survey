@@ -77,11 +77,11 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                             });
                       },
                       title: Text(
-                        "Name: ${surveySetDokumentSnapshot.data['name']}",
+                        "${surveySetDokumentSnapshot.data['name']}",
                         style: Styles.drg_textListTitle,
                       ),
                       subtitle: Text(
-                        "id: ${surveySetDokumentSnapshot.documentID} \nCreated: ${formatDate(surveySetDokumentSnapshot['created'].toDate(), [
+                        "By Team: ${surveySetDokumentSnapshot.data['createdByTeamName']} \nCreated: ${formatDate(surveySetDokumentSnapshot['created'].toDate(), [
                           dd,
                           '. ',
                           MM,
