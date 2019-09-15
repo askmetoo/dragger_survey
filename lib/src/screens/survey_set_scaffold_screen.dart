@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dragger_survey/src/screens/dragger_screen.dart';
 import 'package:dragger_survey/src/screens/survey_set_details_screen.dart';
 import 'package:dragger_survey/src/screens/survey_set_how_to_screen.dart';
@@ -19,11 +17,10 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
   Map<String, dynamic> arg;
 
   _SurveySetScaffoldScreenState(this.arg);
-  var _titleOptions = ["Survey Set Details", "Survey Title", "How-To Dragger"];
+  List<String> _titleOptions = ["Survey Set Details", "Survey Title", "How-To Dragger"];
 
   @override
   Widget build(BuildContext context) {
-    log("In SurveySetScaffoldScreen build - arg.keys: ${arg['id']}");
     return Scaffold(
       backgroundColor: Styles.drg_colorAppBackground,
       appBar: AppBar(

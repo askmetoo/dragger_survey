@@ -77,7 +77,6 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                     },
                   child: ListTile(
                       onTap: () {
-                        log("In BuildSurveySetsListView ListTile arguments['id'] = ${surveySetDokumentSnapshot.documentID}");
                         Navigator.pushNamed(context, '/surveysetscaffold',
                             arguments: {
                               "id": "${surveySetDokumentSnapshot.documentID}"
