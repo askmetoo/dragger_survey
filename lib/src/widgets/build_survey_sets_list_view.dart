@@ -62,6 +62,12 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
             scrollDirection: Axis.vertical,
             children: surveySetSnapshot.data.documents.map(
               (DocumentSnapshot surveySetDokumentSnapshot) {
+                if (!(surveySetSnapshot.connectionState == ConnectionState.done)) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (!surveySetDokumentSnapshot.exists) {
+                  Text("surveySetDokumentSnapshot does not exist");
+                }
                 return Dismissible(
                   key: ValueKey(surveySetDokumentSnapshot.hashCode),
                   direction: DismissDirection.endToStart,
@@ -71,9 +77,10 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                     },
                   child: ListTile(
                       onTap: () {
+                        log("In BuildSurveySetsListView ListTile arguments['id'] = ${surveySetDokumentSnapshot.documentID}");
                         Navigator.pushNamed(context, '/surveysetscaffold',
                             arguments: {
-                              "id": "${surveySetDokumentSnapshot['id']}"
+                              "id": "${surveySetDokumentSnapshot.documentID}"
                             });
                       },
                       title: Text(
@@ -103,7 +110,4 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
       },
     );
   }
-//           return Container();
-//         });
-//   }
 }

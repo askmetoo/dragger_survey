@@ -28,14 +28,14 @@ class RouteGenerator {
               return PageTransition(
                 duration: Duration(milliseconds: 200),
                 type: PageTransitionType.fade,
-                child: SurveySetDetailsScreen(id: _id,),
+                child: SurveySetDetailsScreen(surveyId: _id,),
               );
               break;
             case '/surveysetscaffold':
               var _id = settings.arguments;
               return PageTransition(
                 duration: Duration(milliseconds: 200),
-                child: SurveySetScaffoldScreen(argument: _id,),
+                child: SurveySetScaffoldScreen(arguments: _id,),
                 type: PageTransitionType.fade,
               );
               break;

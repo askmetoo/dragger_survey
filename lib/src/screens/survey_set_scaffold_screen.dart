@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dragger_survey/src/screens/dragger_screen.dart';
 import 'package:dragger_survey/src/screens/survey_set_details_screen.dart';
 import 'package:dragger_survey/src/screens/survey_set_how_to_screen.dart';
@@ -5,11 +7,11 @@ import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';
 
 class SurveySetScaffoldScreen extends StatefulWidget {
-  final Map<String, dynamic> argument;
-  SurveySetScaffoldScreen({Key key, this.argument}) : super(key: key);
+  final Map<String, dynamic> arguments;
+  SurveySetScaffoldScreen({Key key, this.arguments}) : super(key: key);
   @override
   _SurveySetScaffoldScreenState createState() =>
-      _SurveySetScaffoldScreenState(argument);
+      _SurveySetScaffoldScreenState(arguments);
 }
 
 class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
@@ -21,6 +23,7 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log("In SurveySetScaffoldScreen build - arg.keys: ${arg['id']}");
     return Scaffold(
       backgroundColor: Styles.drg_colorAppBackground,
       appBar: AppBar(
@@ -63,7 +66,7 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
   List<Widget> _widgetOptions({args}) {
     return <Widget>[
       SurveySetDetailsScreen(
-        id: args['id'],
+        surveyId: args['id'],
       ),
       DraggerScreen(),
       SurveySetHowToScreen()
