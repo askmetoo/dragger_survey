@@ -63,7 +63,7 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
   List<Widget> _widgetOptions({args}) {
     return <Widget>[
       SurveySetDetailsScreen(
-        surveyId: args['id'],
+        surveySetId: args['id'],
       ),
       DraggerScreen(),
       SurveySetHowToScreen()

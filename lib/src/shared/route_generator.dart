@@ -28,7 +28,7 @@ class RouteGenerator {
               return PageTransition(
                 duration: Duration(milliseconds: 200),
                 type: PageTransitionType.fade,
-                child: SurveySetDetailsScreen(surveyId: _id,),
+                child: SurveySetDetailsScreen(surveySetId: _id,),
               );
               break;
             case '/surveysetscaffold':

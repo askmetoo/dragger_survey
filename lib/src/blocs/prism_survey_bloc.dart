@@ -1,5 +1,9 @@
 
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/services/models.dart';
+import 'package:dragger_survey/src/services/services.dart';
 import 'package:flutter/material.dart';
 
 
@@ -150,6 +154,17 @@ class PrismSurveyBloc extends ChangeNotifier {
 
   PrismSurvey getCurrentPrismSurvey() {
     return _currentPrismSurveyData;
+  }
+
+  Future<DocumentSnapshot> getPrismSurveyById({@required id}){
+    Future<DocumentSnapshot> snapshot = Collection<PrismSurvey>(path: 'surveys')
+      .getDocument(id)
+      .catchError((err) {
+        log("ERROR in PrismSurveyBloc getPrismSurveyById - error: $err");
+        return null;
+      });
+      
+      return snapshot;
   }
 
 }
