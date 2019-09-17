@@ -8,15 +8,22 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class DraggerScreen extends StatefulWidget {
+  final String surveySetId;
+  DraggerScreen({Key key, @required this.surveySetId}) : super(key: key);
+
   @override
   _DraggerScreenState createState() => _DraggerScreenState();
 }
 
 class _DraggerScreenState extends State<DraggerScreen> {
+  final String surveySetId;
+  _DraggerScreenState({Key key, this.surveySetId});
   @override
   Widget build(BuildContext context) {
     final PrismSurveyBloc prismSurveyBloc =
         Provider.of<PrismSurveyBloc>(context);
+    final PrismSurveySetBloc prismSurveySetBloc =
+        Provider.of<PrismSurveySetBloc>(context);
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
 
     if ((signInBloc.currentUser) == null) {
@@ -27,20 +34,8 @@ class _DraggerScreenState extends State<DraggerScreen> {
     return FutureBuilder<FirebaseUser>(
         future: signInBloc.currentUser,
         builder: (BuildContext context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.none :
-              print("User is not signed in or ConnectionState is NONE!");
-              return SplashScreen();
-              break;
-            case ConnectionState.waiting :
-              print("ConnectionState is WAITING!");
-              return Text("Waiting");
-              break;
-            case ConnectionState.active :
-              print("ConnectionState is ACTIVE!");
-              return Text("Active");
-              break;
-            case ConnectionState.done :
+            if (snapshot.connectionState == ConnectionState.done) {
+
               return SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Padding(
@@ -51,14 +46,14 @@ class _DraggerScreenState extends State<DraggerScreen> {
                     children: <Widget>[
                       buildBoard(context),
                       Text(
-                          // TODO //
-                          "Stone set to row  ${prismSurveyBloc.rowIndex} and col  ${prismSurveyBloc.colIndex}"),
+                          """Stone is dragged \n{
+                            //TODO!!!
+                            }  ${prismSurveyBloc.rowIndex} and col  ${prismSurveyBloc.colIndex}"""),
                       DraggerBoardButtonRow(),
                     ],
                   ),
                 ),
               );
-              break;
           }
           return Container();
         });

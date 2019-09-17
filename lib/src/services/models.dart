@@ -56,6 +56,7 @@ class PrismSurveySet {
 
 class PrismSurvey {
   String id;
+  int counter;
   DateTime created;
   DateTime edited;
   String askedPerson;
@@ -65,6 +66,7 @@ class PrismSurvey {
 
   PrismSurvey({
     this.id,
+    this.counter,
     this.created,
     this.edited,
     this.askedPerson,
@@ -79,6 +81,7 @@ class PrismSurvey {
 
     return PrismSurvey(
       id: doc.documentID,
+      counter: doc["counter"],
       created: doc["created"] ?? DateTime.now(),
       edited: doc["edited"] ?? '',
       askedPerson: doc["askedPerson"] ?? '',

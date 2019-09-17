@@ -67,6 +67,13 @@ class UserDrawer extends StatelessWidget {
                       },
                     ),
                     ListTile(
+                      title: Text('How-To'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, '/howto');
+                      },
+                    ),
+                    ListTile(
                       title: Text('Logout'),
                       onTap: () {
 
