@@ -1,23 +1,24 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
-import 'package:dragger_survey/src/blocs/prism_survey_bloc.dart';
-import 'package:dragger_survey/src/screens/splash_screen.dart';
-import 'package:dragger_survey/src/widgets/dragger_board_button_row.dart';
-import 'package:dragger_survey/src/widgets/matrix_board.dart';
+import 'package:dragger_survey/src/screens/screens.dart';
+import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class DraggerScreen extends StatefulWidget {
-  final String surveySetId;
-  DraggerScreen({Key key, @required this.surveySetId}) : super(key: key);
-
   @override
   _DraggerScreenState createState() => _DraggerScreenState();
 }
 
 class _DraggerScreenState extends State<DraggerScreen> {
-  final String surveySetId;
-  _DraggerScreenState({Key key, this.surveySetId});
+  DocumentSnapshot _currentSurveySet;
+  String _xName;
+  String _yName;
+  _DraggerScreenState();
+
   @override
   Widget build(BuildContext context) {
     final PrismSurveyBloc prismSurveyBloc =
@@ -26,50 +27,90 @@ class _DraggerScreenState extends State<DraggerScreen> {
         Provider.of<PrismSurveySetBloc>(context);
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
 
-    if ((signInBloc.currentUser) == null) {
+    getCurrentSurveySet() {
+      _currentSurveySet = prismSurveySetBloc?.currentPrismSurveySet;
+      try {
+        _xName = _currentSurveySet?.data['xName'];
+        _yName = _currentSurveySet?.data['yName'];
+      } catch (e) {
+        log("ERROR in DraggerScreen getCurrentSurveySet(): $e");
+        _xName = '';
+        _yName = '';
+      }
+    }
+
+    if (signInBloc.currentUser == null) {
       print("User is not signed in!");
       return SplashScreen();
+    } else {
+      getCurrentSurveySet();
+    }
+
+    if (prismSurveySetBloc.currentPrismSurveySet == null) {
+      log("In Dragger Screen prismSurveySetBloc.currentPrismSurveySet == null: ${prismSurveySetBloc.currentPrismSurveySet == null}");
     }
 
     return FutureBuilder<FirebaseUser>(
         future: signInBloc.currentUser,
         builder: (BuildContext context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-
-              return SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      buildBoard(context),
-                      Text(
-                          """Stone is dragged \n{
-                            //TODO!!!
-                            }  ${prismSurveyBloc.rowIndex} and col  ${prismSurveyBloc.colIndex}"""),
-                      DraggerBoardButtonRow(),
-                    ],
-                  ),
+          if (snapshot.connectionState == ConnectionState.done) {
+            return SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    BuildBoard(xLabel: _xName, yLabel: _yName),
+                    Text(
+                        """Stone is dragged to \n$_xName: ${prismSurveyBloc.rowIndex} \n$_xName:  ${prismSurveyBloc.colIndex}"""),
+                    DraggerBoardButtonRow(),
+                  ],
                 ),
-              );
+              ),
+            );
           }
           return Container();
         });
   }
+}
 
-  Widget buildBoard(BuildContext context) {
+class BuildBoard extends StatelessWidget {
+  final String xLabel;
+  final String yLabel;
+  BuildBoard({this.xLabel, this.yLabel});
+  @override
+  Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        matrixBoard(context),
-        buildXLabel(),
-        buildYLabel(),
+        MatrixBoard(),
+        BuildXLabel(),
+        BuildYLabel(),
       ],
     );
   }
+}
 
-  Widget buildYLabel() {
+class BuildXLabel extends StatefulWidget {
+  @override
+  _BuildXLabelState createState() => _BuildXLabelState();
+}
+
+class _BuildXLabelState extends State<BuildXLabel> {
+  String xLabel = '';
+
+  @override
+  Widget build(BuildContext context) {
+    final PrismSurveySetBloc prismSurveySetBloc =
+        Provider.of<PrismSurveySetBloc>(context);
+
+    try {
+      xLabel = prismSurveySetBloc.currentPrismSurveySet?.data['yLabel'];
+    } catch (e) {
+      log("ERROR inDraggerScreen BuildXLabel: $e");
+    }
+
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10, bottom: 0, top: 0),
       height: 384,
@@ -79,9 +120,7 @@ class _DraggerScreenState extends State<DraggerScreen> {
         child: RotatedBox(
           quarterTurns: 3,
           child: Text(
-            // TODO: Dynamic yName
-            "YName auch etwas länger",
-            // prismSurveySetBloc.yName,
+            "$xLabel",
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: Colors.black54.withOpacity(.5),
@@ -99,28 +138,48 @@ class _DraggerScreenState extends State<DraggerScreen> {
       ),
     );
   }
+}
 
-  Widget buildXLabel() {
+class BuildYLabel extends StatefulWidget {
+  @override
+  _BuildYLabelState createState() => _BuildYLabelState();
+}
+
+class _BuildYLabelState extends State<BuildYLabel> {
+  String yLabel = '';
+
+  @override
+  Widget build(BuildContext context) {
+    final PrismSurveySetBloc prismSurveySetBloc =
+        Provider.of<PrismSurveySetBloc>(context);
+    try {
+      yLabel = prismSurveySetBloc.currentPrismSurveySet?.data['yLabel'];
+    } catch (e) {
+      log("ERROR inDraggerScreen BuildYLabel: $e");
+    }
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10, bottom: 0, top: 0),
-      height: 398,
-      width: 354,
+      height: 384,
+      width: 388,
       child: Align(
-        alignment: Alignment.bottomCenter,
-        child: Text(
-          // TODO: dynamic xName
-          "XName etwasg kurz",
-          // prismSurveySetBloc.xName,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              color: Colors.black54.withOpacity(.5),
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              letterSpacing: -.6,
-              shadows: [
-                Shadow(
-                    blurRadius: 4, color: Colors.black12, offset: Offset(1, 1)),
-              ]),
+        alignment: Alignment.centerRight,
+        child: RotatedBox(
+          quarterTurns: 3,
+          child: Text(
+            "$yLabel",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Colors.black54.withOpacity(.5),
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                letterSpacing: -.6,
+                shadows: [
+                  Shadow(
+                      blurRadius: 4,
+                      color: Colors.black12,
+                      offset: Offset(1, 1)),
+                ]),
+          ),
         ),
       ),
     );

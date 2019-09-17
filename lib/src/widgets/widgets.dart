@@ -4,7 +4,7 @@ export 'drag_target.dart';
 export 'draggable_item.dart';
 export 'dragger_board_button_row.dart';
 export 'dragger_board_form.dart';
-export 'goal_itemr.dart';
+export 'goal_item.dart';
 export 'matrix_board.dart';
 export 'select_granularity.dart';
 export 'signed_in_user_circle_avatar.dart';

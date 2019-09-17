@@ -30,27 +30,26 @@ class UserDrawer extends StatelessWidget {
     }
 
     return FutureBuilder<FirebaseUser>(
-      future: signInBloc.currentUser,
-      builder: (BuildContext context, AsyncSnapshot<FirebaseUser> signInSnapshot) {
-
-        switch(signInSnapshot.connectionState) {
-          
-          case ConnectionState.none:
-            log("In UserDrawer ConnectionState.none");
-            break;
-          case ConnectionState.waiting:
-            log("In UserDrawer ConnectionState.waiting");
-            break;
-          case ConnectionState.active:
-          case ConnectionState.done:
-            return Drawer(
+        future: signInBloc.currentUser,
+        builder:
+            (BuildContext context, AsyncSnapshot<FirebaseUser> signInSnapshot) {
+          switch (signInSnapshot.connectionState) {
+            case ConnectionState.none:
+              log("In UserDrawer ConnectionState.none");
+              break;
+            case ConnectionState.waiting:
+              log("In UserDrawer ConnectionState.waiting");
+              break;
+            case ConnectionState.active:
+            case ConnectionState.done:
+              return Drawer(
                 child: ListView(
                   padding: EdgeInsets.all(0),
                   children: <Widget>[
                     DrawerHeader(
                       child: Column(
                         children: <Widget>[
-                          SigendInUserCircleAvatar(),
+                          SignedInUserCircleAvatar(),
                           Text('${signInSnapshot.data.displayName}'),
                           _buildSignoutButton(signInBloc),
                         ],
@@ -76,7 +75,6 @@ class UserDrawer extends StatelessWidget {
                     ListTile(
                       title: Text('Logout'),
                       onTap: () {
-
                         Navigator.pushReplacement(
                           context,
                           PageTransition(
@@ -92,12 +90,10 @@ class UserDrawer extends StatelessWidget {
                   ],
                 ),
               );
-            break;
-        }
-        return Container();
-        
-      }
-    );
+              break;
+          }
+          return Container();
+        });
   }
 
   FlatButton _buildSignoutButton(SignInBloc signInBloc) {

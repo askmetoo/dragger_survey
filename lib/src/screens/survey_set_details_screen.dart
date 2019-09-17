@@ -55,50 +55,77 @@ class SurveySetDetailsScreen extends StatelessWidget {
   buildSurveyList(
       {BuildContext context,
       AsyncSnapshot<DocumentSnapshot> surveySetsSnapshot}) {
-    final PrismSurveyBloc surveyBloc =
-        Provider.of<PrismSurveyBloc>(context);
+    final PrismSurveyBloc surveyBloc = Provider.of<PrismSurveyBloc>(context);
 
-    return Expanded(
-      child: ListView.builder(
-        itemCount: surveySetsSnapshot.data.data['surveys'].length,
-        scrollDirection: Axis.vertical,
-        itemBuilder: (BuildContext context, int index){
-          // return Text('Test item $index');
-          return Dismissible(
-            key: ValueKey(index),
-            direction: DismissDirection.endToStart,
-            onDismissed: (direction) {},
-            child: ListTile(
-              onTap: () {},
-              title: FutureBuilder<Object>(
-                future: surveyBloc.getPrismSurveyById(id: surveySetsSnapshot.data.data['surveys'][index]),
-                builder: (context, AsyncSnapshot surveySnapshot) {
-                  if (!(surveySnapshot.connectionState == ConnectionState.done)) {
-                    return CircularProgressIndicator();
-                  }
-                  if (!surveySnapshot.hasData ) {
-                    return Text("No data in survey");
-                  }
+    List<dynamic> surveysArray;
 
-                  try {
-                     if (surveySnapshot.data['created'] != null) {
-                       String formattedDate = formatDate(surveySnapshot?.data['created'].toDate(), [
-                         'dd', '.', 'mm', '.', 'yyyy', ', ', 'HH', ':', 'nn', ':','ss'
-                        ]);
-                       log("Date type: ${formattedDate.runtimeType}");
-                       return Text("Survey created: $formattedDate h \nid: ${surveySetsSnapshot.data.data['surveys'][index]}");
-                     }
-                  } catch (e) {
-                    return Container();
-                  }
-                  return Container();
-                }
-              ),
-            ),
-          );
-        },
-      )
-    );
+    if (surveySetsSnapshot.connectionState == ConnectionState.done) {
+      if (!surveySetsSnapshot.hasData) {
+        return CircularProgressIndicator();
+      }
+
+      try {
+        surveysArray = surveySetsSnapshot?.data?.data['surveys'];
+      } catch (e) {
+        log("ERROR in SurveySetDetailsScreen try surveysArray: $e");
+        surveysArray = [];
+      }
+
+      return surveysArray?.length == 0 || surveysArray == null
+          ? Text('>>> No surveys yet <<<')
+          : Expanded(
+              child: ListView.builder(
+              itemCount: surveySetsSnapshot?.data?.data['surveys']?.length,
+              scrollDirection: Axis.vertical,
+              itemBuilder: (BuildContext context, int index) {
+                return Dismissible(
+                  key: ValueKey(index),
+                  direction: DismissDirection.endToStart,
+                  onDismissed: (direction) {},
+                  child: ListTile(
+                    onTap: () {},
+                    title: FutureBuilder<Object>(
+                        future: surveyBloc.getPrismSurveyById(
+                            id: surveysArray[index]),
+                        builder: (context, AsyncSnapshot surveySnapshot) {
+                          if (!(surveySnapshot.connectionState ==
+                              ConnectionState.done)) {
+                            return CircularProgressIndicator();
+                          }
+                          if (!surveySnapshot.hasData) {
+                            return Text("No data in survey");
+                          }
+
+                          try {
+                            if (surveySnapshot.data['created'] != null) {
+                              String formattedDate = formatDate(
+                                  surveySnapshot?.data['created'].toDate(), [
+                                'dd',
+                                '.',
+                                'mm',
+                                '.',
+                                'yyyy',
+                                ', ',
+                                'HH',
+                                ':',
+                                'nn',
+                                ':',
+                                'ss'
+                              ]);
+                              log("Date type: ${formattedDate.runtimeType}");
+                              return Text(
+                                  "Survey created: $formattedDate h \nid: ${surveySetsSnapshot.data.data['surveys'][index]}");
+                            }
+                          } catch (e) {
+                            return Container();
+                          }
+                          return Container();
+                        }),
+                  ),
+                );
+              },
+            ));
+    }
   }
 
   aaabuildSurveyList(

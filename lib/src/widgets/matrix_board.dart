@@ -1,53 +1,91 @@
-import 'package:dragger_survey/src/blocs/draggable_item_bloc.dart';
-import 'package:dragger_survey/src/blocs/matrix_granularity_bloc.dart';
-import 'package:dragger_survey/src/blocs/prism_survey_bloc.dart';
-import 'package:dragger_survey/src/widgets/goal_itemr.dart';
+import 'package:dragger_survey/src/blocs/blocs.dart';
+import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
-import 'draggable_item.dart';
-import 'drag_target.dart';
 
-Widget matrixBoard(BuildContext context) {
-  final double aspectratioValue = .94;
-  final MatrixGranularityBloc granularitybloc =
-      Provider.of<MatrixGranularityBloc>(context);
-
-  final DraggableItemBloc draggableBloc =
-      Provider.of<DraggableItemBloc>(context);
-
-  final grid = List<List<List<int>>>.generate(
-    granularitybloc.matrixGranularity,
-    (column) {
-      return List<List<int>>.generate(
-          granularitybloc.matrixGranularity, (row) => [column, row].toList());
-    },
-  );
-
-  final gridLength = grid.length;
-
-  Offset position = draggableBloc.draggableItemPositon;
-
-  return Stack(
-    children: <Widget>[
-      buildMatrixBoard(
-          gridLength: gridLength,
-          aspectratioValue: aspectratioValue,
-          grid: grid,
-          position: position),
-      buildGoalItem(),
-      DraggableItem(),
-    ],
-  );
+class MatrixBoard extends StatefulWidget {
+  @override
+  _MatrixBoardState createState() => _MatrixBoardState();
 }
 
-Widget buildMatrixBoard({
-  int gridLength,
-  double aspectratioValue,
-  Offset position,
-  List<List<List<int>>> grid}) {
+class _MatrixBoardState extends State<MatrixBoard> {
+  final double aspectratioValue = .94;
+  int gridLength;
+  @override
+  Widget build(BuildContext context) {
+    final MatrixGranularityBloc granularitybloc =
+        Provider.of<MatrixGranularityBloc>(context);
+
+    final DraggableItemBloc draggableBloc =
+        Provider.of<DraggableItemBloc>(context);
+
+    final grid = List<List<List<int>>>.generate(
+      granularitybloc.matrixGranularity,
+      (column) {
+        return List<List<int>>.generate(
+            granularitybloc.matrixGranularity, (row) => [column, row].toList());
+      },
+    );
+    Offset position = draggableBloc.draggableItemPositon;
+    setState(() {
+      gridLength = grid.length;
+    });
+
+    return Stack(
+      children: <Widget>[
+        buildMatrixBoard(
+            gridLength: gridLength,
+            aspectratioValue: aspectratioValue,
+            grid: grid,
+            position: position),
+        buildGoalItem(),
+        DraggableItem(),
+      ],
+    );
+  }
+}
+
+// Widget matrixBoard(BuildContext context) {
+//   final double aspectratioValue = .94;
+//   final MatrixGranularityBloc granularitybloc =
+//       Provider.of<MatrixGranularityBloc>(context);
+
+//   final DraggableItemBloc draggableBloc =
+//       Provider.of<DraggableItemBloc>(context);
+
+//   final grid = List<List<List<int>>>.generate(
+//     granularitybloc.matrixGranularity,
+//     (column) {
+//       return List<List<int>>.generate(
+//           granularitybloc.matrixGranularity, (row) => [column, row].toList());
+//     },
+//   );
+
+//   final gridLength = grid.length;
+
+//   Offset position = draggableBloc.draggableItemPositon;
+
+//   return Stack(
+//     children: <Widget>[
+//       buildMatrixBoard(
+//           gridLength: gridLength,
+//           aspectratioValue: aspectratioValue,
+//           grid: grid,
+//           position: position),
+//       buildGoalItem(),
+//       DraggableItem(),
+//     ],
+//   );
+// }
+
+Widget buildMatrixBoard(
+    {int gridLength,
+    double aspectratioValue,
+    Offset position,
+    List<List<List<int>>> grid}) {
   return SizedBox(
-    width:420,
+    width: 420,
     height: 420,
     child: Container(
       decoration: BoxDecoration(

@@ -16,8 +16,6 @@ class SurveySetsListScreen extends StatefulWidget {
 }
 
 class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
-  // String currentUser = '';
-
   @override
   Widget build(BuildContext context) {
     Provider.of<PrismSurveySetBloc>(context);
@@ -33,7 +31,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
       endDrawer: UserDrawer(),
       appBar: AppBar(
         actions: <Widget>[
-          SigendInUserCircleAvatar(),
+          SignedInUserCircleAvatar(),
         ],
         title: Text("Survey Sets"),
       ),

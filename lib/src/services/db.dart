@@ -41,36 +41,34 @@ class Collection<T> {
 
   Future<List<T>> getData() async {
     var snapshots = await ref.getDocuments();
-    return snapshots
-        .documents
+    return snapshots.documents
         .map((doc) => Global.models[T].fromFirestore(doc.data) as T)
         .toList();
   }
 
   Future<List<T>> getDocuments() async {
     var snapshots = await ref.getDocuments();
-    return snapshots
-            .documents
-            .map((doc) => Global.models[T].fromFirestore(doc.data) as T);
+    return snapshots.documents
+        .map((doc) => Global.models[T].fromFirestore(doc.data) as T);
   }
 
-  Future<QuerySnapshot> getDocumentsByQuery({
-    String fieldName, 
-    String fieldValue
-    }) async {
+  Future<QuerySnapshot> getDocumentsByQuery(
+      {String fieldName, String fieldValue}) async {
     return ref.where(fieldName, isEqualTo: fieldValue).getDocuments();
   }
 
-
-  Future<QuerySnapshot> getDocumentsByQueryArray({
-    String fieldName,
-    String arrayValue
-    }) {
+  Future<QuerySnapshot> getDocumentsByQueryArray(
+      {String fieldName, String arrayValue}) {
     return ref.where(fieldName, arrayContains: arrayValue).getDocuments();
   }
 
   Future<DocumentSnapshot> getDocument(id) async {
-    return await ref.document('$id').get();
+    try {
+      return await ref.document('$id').get();
+    } catch (e) {
+      log("ERROR in DB.dart - getDocument(id) - error: $e");
+      return null;
+    }
   }
 
   createDocumentWithValues({

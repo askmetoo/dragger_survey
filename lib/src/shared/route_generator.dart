@@ -7,7 +7,7 @@ class RouteGenerator {
     switch (settings.name) {
       case '/draggerboard':
         return PageTransition(
-          duration: Duration(milliseconds: 200),
+          duration: Duration(milliseconds: 0),
           child: DraggerScreen(),
           type: PageTransitionType.fade,
         );
@@ -68,18 +68,9 @@ class RouteGenerator {
           type: PageTransitionType.fade,
         );
         break;
-      case '/draggerboard':
-        return PageTransition(
-          duration: Duration(milliseconds: 200),
-          child: DraggerScreen(
-            surveySetId: settings.arguments,
-          ),
-          type: PageTransitionType.fade,
-        );
-        break;
       case '/surveysetgraphs':
         return PageTransition(
-          duration: Duration(milliseconds: 200),
+          duration: Duration(milliseconds: 0),
           child: SurveySetGraphsScreen(),
           type: PageTransitionType.fade,
         );

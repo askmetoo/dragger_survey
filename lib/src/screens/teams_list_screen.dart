@@ -31,7 +31,7 @@ class TeamsListScreen extends StatelessWidget {
               endDrawer: UserDrawer(),
               appBar: AppBar(
                 actions: <Widget>[
-                  SigendInUserCircleAvatar(),
+                  SignedInUserCircleAvatar(),
                 ],
                 title: Text("Your Teams"),
               ),

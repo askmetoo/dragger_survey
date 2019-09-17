@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dragger_survey/src/screens/screens.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
@@ -29,11 +31,11 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
       endDrawer: UserDrawer(),
       appBar: AppBar(
         actions: <Widget>[
-          SigendInUserCircleAvatar(),
+          SignedInUserCircleAvatar(),
         ],
         title: Text("${_titleOptions.elementAt(_selectedIndex)}"),
       ),
-      body: _widgetOptions(args: arg).elementAt(_selectedIndex),
+      body: _widgetOptions(context, args: arg).elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -67,14 +69,14 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
     });
   }
 
-  List<Widget> _widgetOptions({args}) {
+  List<Widget> _widgetOptions(context, {args}) {
+    var _id = args['id'];
+    log("In SurveySetScaffoldScreen _widgetOptions _id value: $_id");
     return <Widget>[
       SurveySetDetailsScreen(
-        surveySetId: args['id'],
+        surveySetId: _id,
       ),
-      DraggerScreen(
-        surveySetId: args['id'],
-      ),
+      DraggerScreen(),
       SurveySetGraphsScreen()
     ];
   }

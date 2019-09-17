@@ -62,7 +62,8 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
             scrollDirection: Axis.vertical,
             children: surveySetSnapshot.data.documents.map(
               (DocumentSnapshot surveySetDokumentSnapshot) {
-                if (!(surveySetSnapshot.connectionState == ConnectionState.done)) {
+                if (!(surveySetSnapshot.connectionState ==
+                    ConnectionState.done)) {
                   return Center(child: CircularProgressIndicator());
                 }
                 if (!surveySetDokumentSnapshot.exists) {
@@ -71,12 +72,16 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                 return Dismissible(
                   key: ValueKey(surveySetDokumentSnapshot.hashCode),
                   direction: DismissDirection.endToStart,
-                  onDismissed: (direction)  {
-                    print('----> Item ${surveySetDokumentSnapshot['name']} is dismissed');
-                    surveySetsBloc.deletePrismSurveySetById(id: surveySetDokumentSnapshot.documentID);
-                    },
+                  onDismissed: (direction) {
+                    print(
+                        '----> Item ${surveySetDokumentSnapshot['name']} is dismissed');
+                    surveySetsBloc.deletePrismSurveySetById(
+                        id: surveySetDokumentSnapshot.documentID);
+                  },
                   child: ListTile(
                       onTap: () {
+                        surveySetsBloc.setCurrentPrismSurveySetById(
+                            id: surveySetDokumentSnapshot.documentID);
                         Navigator.pushNamed(context, '/surveysetscaffold',
                             arguments: {
                               "id": "${surveySetDokumentSnapshot.documentID}"
