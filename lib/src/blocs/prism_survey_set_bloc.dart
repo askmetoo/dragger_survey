@@ -5,10 +5,10 @@ import 'package:dragger_survey/src/services/services.dart';
 import 'package:flutter/material.dart';
 
 class PrismSurveySetBloc extends ChangeNotifier {
-  DocumentSnapshot _currentPrismSurveySet;
+  Future<DocumentSnapshot> _currentPrismSurveySet;
   String _currentPrismSurveySetId;
 
-  DocumentSnapshot get currentPrismSurveySet {
+  Future<DocumentSnapshot> get currentPrismSurveySet async {
     if (_currentPrismSurveySet == null) {
       log("In PrismSurveySetBloc get currentPrismSurveySet value is $_currentPrismSurveySet");
       return null;
@@ -31,8 +31,8 @@ class PrismSurveySetBloc extends ChangeNotifier {
   }
 
   Future<DocumentSnapshot> setCurrentPrismSurveySetById({@required id}) async {
-    _currentPrismSurveySet = await getPrismSurveySetById(id: id);
-    log("In PrismSurveySetBloc setCurrentPrismSurveySetById returned _currentPrismSurveySet is ${_currentPrismSurveySet.documentID}");
+    _currentPrismSurveySet = getPrismSurveySetById(id: id);
+    log("In PrismSurveySetBloc setCurrentPrismSurveySetById returned _currentPrismSurveySet is ${_currentPrismSurveySet.then((val) => val.documentID)}");
     notifyListeners();
     return _currentPrismSurveySet;
   }

@@ -1,6 +1,6 @@
 export 'build_teams_list_view.dart';
 export 'custom_show_dialog.dart';
-export 'drag_target.dart';
+export 'dragger_target.dart';
 export 'draggable_item.dart';
 export 'dragger_board_button_row.dart';
 export 'dragger_board_form.dart';

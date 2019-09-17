@@ -15,9 +15,8 @@ class DraggerScreen extends StatefulWidget {
 
 class _DraggerScreenState extends State<DraggerScreen> {
   DocumentSnapshot _currentSurveySet;
-  String _xName;
-  String _yName;
-  _DraggerScreenState();
+  String _xName = '';
+  String _yName = '';
 
   @override
   Widget build(BuildContext context) {
@@ -27,15 +26,15 @@ class _DraggerScreenState extends State<DraggerScreen> {
         Provider.of<PrismSurveySetBloc>(context);
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
 
-    getCurrentSurveySet() {
-      _currentSurveySet = prismSurveySetBloc?.currentPrismSurveySet;
+    Future getCurrentSurveySet() async {
+      _currentSurveySet = await prismSurveySetBloc?.currentPrismSurveySet;
+      // _xName = await _currentSurveySet?.data['xName'];
+      // _yName = await _currentSurveySet?.data['yName'];
       try {
         _xName = _currentSurveySet?.data['xName'];
         _yName = _currentSurveySet?.data['yName'];
       } catch (e) {
         log("ERROR in DraggerScreen getCurrentSurveySet(): $e");
-        _xName = '';
-        _yName = '';
       }
     }
 
@@ -85,55 +84,45 @@ class BuildBoard extends StatelessWidget {
     return Stack(
       children: <Widget>[
         MatrixBoard(),
-        BuildXLabel(),
-        BuildYLabel(),
+        BuildXLabel(
+          xLabel: xLabel,
+        ),
+        BuildYLabel(
+          yLabel: yLabel,
+        ),
       ],
     );
   }
 }
 
 class BuildXLabel extends StatefulWidget {
+  final String xLabel;
+  BuildXLabel({this.xLabel}) : super();
   @override
   _BuildXLabelState createState() => _BuildXLabelState();
 }
 
 class _BuildXLabelState extends State<BuildXLabel> {
-  String xLabel = '';
-
   @override
   Widget build(BuildContext context) {
-    final PrismSurveySetBloc prismSurveySetBloc =
-        Provider.of<PrismSurveySetBloc>(context);
-
-    try {
-      xLabel = prismSurveySetBloc.currentPrismSurveySet?.data['yLabel'];
-    } catch (e) {
-      log("ERROR inDraggerScreen BuildXLabel: $e");
-    }
-
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10, bottom: 0, top: 0),
-      height: 384,
-      width: 388,
+      height: 389,
+      width: 354,
       child: Align(
-        alignment: Alignment.centerRight,
-        child: RotatedBox(
-          quarterTurns: 3,
-          child: Text(
-            "$xLabel",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Colors.black54.withOpacity(.5),
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                letterSpacing: -.6,
-                shadows: [
-                  Shadow(
-                      blurRadius: 4,
-                      color: Colors.black12,
-                      offset: Offset(1, 1)),
-                ]),
-          ),
+        alignment: Alignment.bottomCenter,
+        child: Text(
+          "${widget.xLabel}",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Colors.black54.withOpacity(.5),
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              letterSpacing: -.6,
+              shadows: [
+                Shadow(
+                    blurRadius: 4, color: Colors.black12, offset: Offset(1, 1)),
+              ]),
         ),
       ),
     );
@@ -141,22 +130,15 @@ class _BuildXLabelState extends State<BuildXLabel> {
 }
 
 class BuildYLabel extends StatefulWidget {
+  final String yLabel;
+  BuildYLabel({this.yLabel}) : super();
   @override
   _BuildYLabelState createState() => _BuildYLabelState();
 }
 
 class _BuildYLabelState extends State<BuildYLabel> {
-  String yLabel = '';
-
   @override
   Widget build(BuildContext context) {
-    final PrismSurveySetBloc prismSurveySetBloc =
-        Provider.of<PrismSurveySetBloc>(context);
-    try {
-      yLabel = prismSurveySetBloc.currentPrismSurveySet?.data['yLabel'];
-    } catch (e) {
-      log("ERROR inDraggerScreen BuildYLabel: $e");
-    }
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10, bottom: 0, top: 0),
       height: 384,
@@ -166,7 +148,7 @@ class _BuildYLabelState extends State<BuildYLabel> {
         child: RotatedBox(
           quarterTurns: 3,
           child: Text(
-            "$yLabel",
+            "${widget.yLabel}",
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: Colors.black54.withOpacity(.5),
