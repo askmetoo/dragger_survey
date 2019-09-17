@@ -1,7 +1,6 @@
-import 'package:dragger_survey/src/screens/dragger_screen.dart';
-import 'package:dragger_survey/src/screens/survey_set_details_screen.dart';
-import 'package:dragger_survey/src/screens/survey_set_how_to_screen.dart';
+import 'package:dragger_survey/src/screens/screens.dart';
 import 'package:dragger_survey/src/styles.dart';
+import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class SurveySetScaffoldScreen extends StatefulWidget {
@@ -17,29 +16,37 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
   Map<String, dynamic> arg;
 
   _SurveySetScaffoldScreenState(this.arg);
-  List<String> _titleOptions = ["Survey Set Details", "Survey Title", "How-To Dragger"];
+  List<String> _titleOptions = [
+    "Survey Set Details",
+    "Survey Title",
+    "Survey Set Graphs"
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Styles.drg_colorAppBackground,
+      endDrawer: UserDrawer(),
       appBar: AppBar(
+        actions: <Widget>[
+          SigendInUserCircleAvatar(),
+        ],
         title: Text("${_titleOptions.elementAt(_selectedIndex)}"),
       ),
       body: _widgetOptions(args: arg).elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
             title: Text('Details'),
+            icon: Icon(Icons.dvr),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            title: Text('Matrix'),
+            icon: Icon(Icons.apps),
+            title: Text('Dragger Board'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            title: Text('How-To'),
+            icon: Icon(Icons.show_chart),
+            title: Text('Graphs'),
           ),
         ],
         currentIndex: _selectedIndex,
@@ -65,8 +72,10 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
       SurveySetDetailsScreen(
         surveySetId: args['id'],
       ),
-      DraggerScreen(),
-      SurveySetHowToScreen()
+      DraggerScreen(
+        surveySetId: args['id'],
+      ),
+      SurveySetGraphsScreen()
     ];
   }
 }

@@ -1,8 +1,6 @@
 import 'dart:developer';
 
 import 'package:dragger_survey/src/styles.dart';
-import 'package:dragger_survey/src/widgets/build_survey_sets_list_view.dart';
-import 'package:dragger_survey/src/widgets/build_teams_dropdown_button.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

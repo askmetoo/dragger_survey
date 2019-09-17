@@ -12,6 +12,7 @@ class PrismSurveyBloc extends ChangeNotifier {
   DateTime _created = DateTime.now().toLocal();
   DateTime _edited = DateTime.now().toLocal();
   String _askedPerson = 'Anonymous';
+  int _counter = 0;
   int _yValue = 0;
   int _xValue = 0;
   dynamic _users = [];
@@ -24,6 +25,7 @@ class PrismSurveyBloc extends ChangeNotifier {
     _currentPrismSurveyData.created = _created;
     _currentPrismSurveyData.edited = _edited;
     _currentPrismSurveyData.askedPerson = _askedPerson;
+    _currentPrismSurveyData.counter = _counter;
     _currentPrismSurveyData.yValue = _yValue;
     _currentPrismSurveyData.xValue = _xValue;
     _currentPrismSurveyData.users = _users;
@@ -156,6 +158,10 @@ class PrismSurveyBloc extends ChangeNotifier {
     return _currentPrismSurveyData;
   }
 
+  Future<List<PrismSurvey>> getPrismSurveyDocuments () {
+    return Collection<PrismSurvey>(path: 'surveys').getDocuments();
+  }
+
   Future<DocumentSnapshot> getPrismSurveyById({@required id}){
     Future<DocumentSnapshot> snapshot = Collection<PrismSurvey>(path: 'surveys')
       .getDocument(id)
@@ -165,6 +171,26 @@ class PrismSurveyBloc extends ChangeNotifier {
       });
       
       return snapshot;
+  }
+
+  addPrismSurveyToDb({PrismSurvey survey}) async {
+    int counter;
+    List<PrismSurvey> allSurveys = await getPrismSurveyDocuments();
+    if(allSurveys.isEmpty) {
+      log("In PrismSurveyBloc addPrismSurveyToDb isEmpty: allSurveys.isEmpty");
+      counter = 1;
+    } else if(allSurveys.last.counter != null) {
+      counter = allSurveys.last.counter + 1;
+    } else {
+      counter = 1;
+    }
+
+    survey.counter = counter;
+
+    log("In PrismSurveyBloc addPrismSurveyToDb - value of survey.counter: ${survey.counter}");
+
+    Collection(path: "surveys").createDocumentWithObject(object: survey);
+    notifyListeners();
   }
 
 }
