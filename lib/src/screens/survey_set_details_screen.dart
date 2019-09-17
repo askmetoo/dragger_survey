@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:date_format/date_format.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/styles.dart';
@@ -54,8 +55,6 @@ class SurveySetDetailsScreen extends StatelessWidget {
   buildSurveyList(
       {BuildContext context,
       AsyncSnapshot<DocumentSnapshot> surveySetsSnapshot}) {
-    final PrismSurveySetBloc surveySetBloc =
-        Provider.of<PrismSurveySetBloc>(context);
     final PrismSurveyBloc surveyBloc =
         Provider.of<PrismSurveyBloc>(context);
 
@@ -83,7 +82,11 @@ class SurveySetDetailsScreen extends StatelessWidget {
 
                   try {
                      if (surveySnapshot.data['created'] != null) {
-                       return Text("Survey created: ${surveySnapshot?.data['created']} \nid: ${surveySetsSnapshot.data.data['surveys'][index]}");
+                       String formattedDate = formatDate(surveySnapshot?.data['created'].toDate(), [
+                         'dd', '.', 'mm', '.', 'yyyy', ', ', 'HH', ':', 'nn', ':','ss'
+                        ]);
+                       log("Date type: ${formattedDate.runtimeType}");
+                       return Text("Survey created: $formattedDate h \nid: ${surveySetsSnapshot.data.data['surveys'][index]}");
                      }
                   } catch (e) {
                     return Container();
