@@ -128,50 +128,50 @@ class SurveySetDetailsScreen extends StatelessWidget {
     }
   }
 
-  aaabuildSurveyList(
-      {@required BuildContext context,
-      AsyncSnapshot<DocumentSnapshot> surveySetsSnapshot}) {
-    final PrismSurveySetBloc surveySetBloc =
-        Provider.of<PrismSurveySetBloc>(context);
-    final PrismSurveyBloc prismSurveyBloc =
-        Provider.of<PrismSurveyBloc>(context);
+  // buildSurveyList(
+  //     {@required BuildContext context,
+  //     AsyncSnapshot<DocumentSnapshot> surveySetsSnapshot}) {
+  //   final PrismSurveySetBloc surveySetBloc =
+  //       Provider.of<PrismSurveySetBloc>(context);
+  //   final PrismSurveyBloc prismSurveyBloc =
+  //       Provider.of<PrismSurveyBloc>(context);
 
-    return FutureBuilder<DocumentSnapshot>(
-      future: surveySetBloc.getPrismSurveySetById(
-          id: surveySetsSnapshot.data.documentID),
-      builder: (context, AsyncSnapshot<DocumentSnapshot> surveySetSnapshot) {
-        if (!(surveySetsSnapshot.connectionState == ConnectionState.done)) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+  //   return FutureBuilder<DocumentSnapshot>(
+  //     future: surveySetBloc.getPrismSurveySetById(
+  //         id: surveySetsSnapshot.data.documentID),
+  //     builder: (context, AsyncSnapshot<DocumentSnapshot> surveySetSnapshot) {
+  //       if (!(surveySetsSnapshot.connectionState == ConnectionState.done)) {
+  //         return Center(
+  //           child: CircularProgressIndicator(),
+  //         );
+  //       }
 
-        if (!surveySetSnapshot.hasData || surveySetSnapshot.data == null) {
-          return Center(
-            child: Text("No data available"),
-          );
-        }
+  //       if (!surveySetSnapshot.hasData || surveySetSnapshot.data == null) {
+  //         return Center(
+  //           child: Text("No data available"),
+  //         );
+  //       }
 
-        return Expanded(
-          child: ListView(
-            scrollDirection: Axis.vertical,
-            children: surveySetSnapshot.data.data['surveys'].map(
-              (PrismSurvey survey) {
-                return Dismissible(
-                  key: ValueKey(surveySetSnapshot.data.hashCode),
-                  direction: DismissDirection.endToStart,
-                  onDismissed: (direction) {},
-                  child: ListTile(
-                    onTap: () {},
-                    title: Text("Survey id: {survey.data}"),
-                  ),
-                );
-              },
-            ).toList,
-          ),
-        );
-      },
-    );
+  //       return Expanded(
+  //         child: ListView(
+  //           scrollDirection: Axis.vertical,
+  //           children: surveySetSnapshot.data.data['surveys'].map(
+  //             (PrismSurvey survey) {
+  //               return Dismissible(
+  //                 key: ValueKey(surveySetSnapshot.data.hashCode),
+  //                 direction: DismissDirection.endToStart,
+  //                 onDismissed: (direction) {},
+  //                 child: ListTile(
+  //                   onTap: () {},
+  //                   title: Text("Survey id: {survey.data}"),
+  //                 ),
+  //               );
+  //             },
+  //           ).toList,
+  //         ),
+  //       );
+  //     },
+  //   );
 
   buildMetaDataList({surveySetsSnapshot}) {
     List<Widget> metaDataList = [
