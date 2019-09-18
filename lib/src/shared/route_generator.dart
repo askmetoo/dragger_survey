@@ -34,12 +34,22 @@ class RouteGenerator {
         var _id = settings.arguments;
         return PageTransition(
           duration: Duration(milliseconds: 200),
-          child: SurveySetScaffoldScreen(
+          child: SurveySetBtmNavigationController(
             arguments: _id,
           ),
           type: PageTransitionType.fade,
         );
         break;
+      // case '/surveysetscaffold':
+      //   var _id = settings.arguments;
+      //   return PageTransition(
+      //     duration: Duration(milliseconds: 200),
+      //     child: SurveySetScaffoldScreen(
+      //       arguments: _id,
+      //     ),
+      //     type: PageTransitionType.fade,
+      //   );
+      //   break;
       case '/teams':
         return PageTransition(
           duration: Duration(milliseconds: 200),

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class DraggerScreen extends StatefulWidget {
+  DraggerScreen({Key key}) : super(key: key);
   @override
   _DraggerScreenState createState() => _DraggerScreenState();
 }
@@ -27,9 +28,8 @@ class _DraggerScreenState extends State<DraggerScreen> {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
 
     Future getCurrentSurveySet() async {
+      log("------> In getCurrentSurveySet");
       _currentSurveySet = await prismSurveySetBloc?.currentPrismSurveySet;
-      // _xName = await _currentSurveySet?.data['xName'];
-      // _yName = await _currentSurveySet?.data['yName'];
       try {
         _xName = _currentSurveySet?.data['xName'];
         _yName = _currentSurveySet?.data['yName'];

@@ -3,15 +3,13 @@ import 'package:provider/provider.dart';
 import '../blocs/draggable_item_bloc.dart';
 import '../mixins/dragger_board_settings_sheet.dart';
 
-class DraggerBoardButtonRow extends StatelessWidget with ShowSettingsSheet {
+class DraggerBoardButtonRow extends StatelessWidget {
   const DraggerBoardButtonRow({
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final DraggableItemBloc draggableBloc =
-        Provider.of<DraggableItemBloc>(context);
 
     return Padding(
       padding: EdgeInsets.all(20),

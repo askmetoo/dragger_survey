@@ -23,8 +23,8 @@ class ProfileScreen extends StatelessWidget {
     if (loggedIn) {
       log("In ProfileScreen - User is signed in! user: $user");
       return Scaffold(
+        backgroundColor: Styles.drg_colorAppBackground,
         appBar: AppBar(
-          backgroundColor: Styles.drg_colorAppBackground,
           title: Text("Profile Screen for: ${user?.displayName ?? 'Guest'}"),
         ),
         body: FlatButton(

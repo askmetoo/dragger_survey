@@ -173,34 +173,6 @@ class SurveySetDetailsScreen extends StatelessWidget {
       },
     );
 
-    // return ListView(
-    //   scrollDirection: Axis.vertical,
-    //   children: <Widget>[
-    //     FutureBuilder<DocumentSnapshot>(
-    //       future: surveySetBloc.getPrismSurveySetById(id: surveySetsSnapshot.data.documentID),
-    //       builder: (context, AsyncSnapshot<DocumentSnapshot> surveySetSnapshot) {
-
-    //         if (!(surveySetsSnapshot.connectionState == ConnectionState.done)) {
-    //           return Center(child: CircularProgressIndicator(),);
-    //         }
-    //         if (!surveySetSnapshot.hasData || surveySetSnapshot.data == null) {
-    //           return Center(child: Text("No data available"),);
-    //         }
-    //         log("In SurveySetDetailsScreen surveySetSnapshot.data.data['surveys'][0]: ${surveySetSnapshot.data.data['surveys'][0]}");
-
-    //         surveySetSnapshot.data.data['surveys'].forEach( (survey) {
-    //           return Dismissible(
-    //             key: ValueKey(1),
-    //             child: Text("Survey id: ",)
-    //           );
-    //         });
-    //         return Container();
-    //       }
-    //     ),
-    //   ],
-    // );
-  }
-
   buildMetaDataList({surveySetsSnapshot}) {
     List<Widget> metaDataList = [
       Text(

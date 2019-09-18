@@ -46,7 +46,9 @@ class _DraggerTagetState extends State<DraggerTaget> {
       },
       onAccept: (data) {
         print("On accept - row: ${rowIdx()}, col: ${colIdx()}");
-        position = Offset(rowIdx().toDouble(), colIdx().toDouble());
+        setState(() {
+          position = Offset(rowIdx().toDouble(), colIdx().toDouble());
+        });
         widget.draggableItemBloc
             .setNewDraggableItemPositon(position: widget.position);
         widget.prismSurveyBloc.setRowIndex(rowIndex: rowIdx().toInt());

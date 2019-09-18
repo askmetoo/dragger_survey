@@ -37,6 +37,8 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
       ),
       body: _widgetOptions(context, args: arg).elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        key: ValueKey(arg.hashCode),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             title: Text('Details'),
@@ -52,21 +54,12 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        onTap: (index) {
-          _onItemTapped(index);
-        },
+        backgroundColor: Styles.drg_colorSecondary,
+        unselectedItemColor: Styles.drg_colorAppBackground,
+        selectedItemColor: Styles.drg_colorContrast,
+        onTap: (int index) => setState(() => _selectedIndex = index),
       ),
     );
-  }
-
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
   }
 
   List<Widget> _widgetOptions(context, {args}) {
