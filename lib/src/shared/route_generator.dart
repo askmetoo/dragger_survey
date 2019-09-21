@@ -7,7 +7,7 @@ class RouteGenerator {
     switch (settings.name) {
       case '/draggerboard':
         return PageTransition(
-          duration: Duration(milliseconds: 0),
+          duration: Duration(milliseconds: 400),
           child: DraggerScreen(),
           type: PageTransitionType.fade,
         );
@@ -15,7 +15,7 @@ class RouteGenerator {
       case '/surveysetslist':
         var _teamId = settings.arguments;
         return PageTransition(
-          duration: Duration(milliseconds: 200),
+          duration: Duration(milliseconds: 400),
           child: SurveySetsListScreen(teamId: _teamId),
           type: PageTransitionType.fade,
         );
@@ -23,7 +23,7 @@ class RouteGenerator {
       case '/surveysetdetails':
         var _id = settings.arguments;
         return PageTransition(
-          duration: Duration(milliseconds: 200),
+          duration: Duration(milliseconds: 400),
           type: PageTransitionType.fade,
           child: SurveySetDetailsScreen(
             surveySetId: _id,
@@ -33,61 +33,51 @@ class RouteGenerator {
       case '/surveysetscaffold':
         var _id = settings.arguments;
         return PageTransition(
-          duration: Duration(milliseconds: 200),
-          child: SurveySetBtmNavigationController(
+          duration: Duration(milliseconds: 400),
+          child: SurveySetScaffoldScreen(
             arguments: _id,
           ),
           type: PageTransitionType.fade,
         );
         break;
-      // case '/surveysetscaffold':
-      //   var _id = settings.arguments;
-      //   return PageTransition(
-      //     duration: Duration(milliseconds: 200),
-      //     child: SurveySetScaffoldScreen(
-      //       arguments: _id,
-      //     ),
-      //     type: PageTransitionType.fade,
-      //   );
-      //   break;
       case '/teams':
         return PageTransition(
-          duration: Duration(milliseconds: 200),
+          duration: Duration(milliseconds: 400),
           child: TeamsListScreen(),
           type: PageTransitionType.fade,
         );
         break;
       case '/howto':
         return PageTransition(
-          duration: Duration(milliseconds: 200),
+          duration: Duration(milliseconds: 400),
           child: HowToScreen(),
           type: PageTransitionType.fade,
         );
         break;
       case '/login':
         return PageTransition(
-          duration: Duration(milliseconds: 200),
+          duration: Duration(milliseconds: 400),
           child: LoginScreen(),
           type: PageTransitionType.fade,
         );
         break;
       case '/profile':
         return PageTransition(
-          duration: Duration(milliseconds: 200),
+          duration: Duration(milliseconds: 400),
           child: ProfileScreen(),
           type: PageTransitionType.fade,
         );
         break;
       case '/surveysetgraphs':
         return PageTransition(
-          duration: Duration(milliseconds: 0),
+          duration: Duration(milliseconds: 400),
           child: SurveySetGraphsScreen(),
           type: PageTransitionType.fade,
         );
         break;
       default:
         return PageTransition(
-          duration: Duration(microseconds: 200),
+          duration: Duration(microseconds: 400),
           child: ErrorScreen(),
           type: PageTransitionType.fade,
         );
