@@ -13,20 +13,24 @@ class LoginScreen extends StatelessWidget {
     final UserBloc userBloc = Provider.of<UserBloc>(context);
     FirebaseUser _user = Provider.of<FirebaseUser>(context);
     bool loggedIn = _user != null;
+    GlobalKey _globalLoginKey = GlobalKey();
 
     return FutureBuilder<FirebaseUser>(
         future: signInBloc.currentUser,
-        builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<FirebaseUser> currentUserSnapshot) {
           if (
-            snapshot.connectionState == ConnectionState.none ||
-            snapshot.connectionState == ConnectionState.waiting ||
-            snapshot.connectionState == ConnectionState.active
+            currentUserSnapshot.connectionState == ConnectionState.none ||
+            currentUserSnapshot.connectionState == ConnectionState.waiting ||
+            currentUserSnapshot.connectionState == ConnectionState.active
             ) CircularProgressIndicator();
 
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (!snapshot.hasData) {
+          if (currentUserSnapshot.connectionState == ConnectionState.done) {
+            if (!currentUserSnapshot.hasData) {
               CircularProgressIndicator();
             }
+            log("In LoginScreen currentUserSnapshot: ${currentUserSnapshot?.data?.displayName}");
+            log("In LoginScreen loggedIn: $loggedIn");
+            log("In LoginScreen _user: $_user");
             return Column(
               children: <Widget>[
                 Padding(
@@ -39,6 +43,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
                 OutlineButton(
+                  key: _globalLoginKey,
                   splashColor: Styles.drg_colorSecondary,
                   onPressed: () async {
                     signInBloc.signInWithGoogle().catchError(
@@ -49,23 +54,23 @@ class LoginScreen extends StatelessWidget {
                     QuerySnapshot returnedUser = await userBloc
                         .getUsersQuery(
                             fieldName: 'providersUID',
-                            fieldValue: snapshot.data?.uid)
+                            fieldValue: currentUserSnapshot.data?.uid)
                         .catchError(
                           (error) => log(
                               "ERROR in login_screen with getUsersQuery: $error"),
                         );
 
                     if (returnedUser == null ||
-                        snapshot.data?.uid !=
+                        currentUserSnapshot.data?.uid !=
                             returnedUser.documents[0]['providersUID']) {
                       print("USER not id DB");
                       try {
                         Map<String, dynamic> newUser = {
-                          "providersUID": snapshot.data?.uid,
-                          "displayName": snapshot.data?.displayName,
-                          "email": snapshot.data?.email,
-                          "photoUrl": snapshot.data?.photoUrl,
-                          "providerId": snapshot.data?.providerId,
+                          "providersUID": currentUserSnapshot.data?.uid,
+                          "displayName": currentUserSnapshot.data?.displayName,
+                          "email": currentUserSnapshot.data?.email,
+                          "photoUrl": currentUserSnapshot.data?.photoUrl,
+                          "providerId": currentUserSnapshot.data?.providerId,
                         };
                         userBloc.addUserToDb(user: newUser);
                         log(
@@ -76,7 +81,7 @@ class LoginScreen extends StatelessWidget {
                         var returnedUser = await userBloc
                             .getUsersQuery(
                                 fieldName: 'providersUID',
-                                fieldValue: snapshot.data?.uid)
+                                fieldValue: currentUserSnapshot.data?.uid)
                             .catchError((error) => print(
                                 "ERROR In login_screen getUsersQuery: $error"));
                         // fieldValue: bloc.signedInUserProvidersUID).catchError((error) => print("ERROR In login_screen getUsersQuery: $error"));
@@ -88,7 +93,7 @@ class LoginScreen extends StatelessWidget {
                         print("${returnedUser.documents[0]['providerId']}");
                         print(
                             "ROUTING NEW USER to first screen '/surveysetslist");
-                        Navigator.pushNamed(context, '/surveysetslist')
+                        Navigator.pushNamed(_globalLoginKey.currentContext, '/surveysetslist')
                             .catchError((err) => print(
                                 "ERROR In 'login_screen' routing to pushedNamed: $err"));
                       } catch (err) {
@@ -96,7 +101,7 @@ class LoginScreen extends StatelessWidget {
                             "ERROR in 'login_screen' with adding User to DB: $err");
                       }
                     } else if (loggedIn || returnedUser.documents.first.data.isNotEmpty ||
-                        snapshot.data?.uid ==
+                        currentUserSnapshot.data?.uid ==
                             returnedUser.documents[0]['providersUID']
                             ) {
                       log("USER found id DB");
@@ -105,7 +110,7 @@ class LoginScreen extends StatelessWidget {
                       print("${returnedUser.documents[0]['providersUID']}");
                       print(
                           "ROUTING EXISTING USER to first screen '/surveysetslist");
-                      Navigator.pushNamed(context, '/surveysetslist');
+                      Navigator.pushNamed(_globalLoginKey.currentContext, '/surveysetslist');
                     } else {
                       print("In 'login_screen' it's xmas time!!!");
                     }
