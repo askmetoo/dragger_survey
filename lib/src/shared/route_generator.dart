@@ -13,7 +13,7 @@ class RouteGenerator {
         );
         break;
       case '/surveysetslist':
-        var _teamId = settings.arguments;
+        var _teamId = settings.arguments ?? '';
         return PageTransition(
           duration: Duration(milliseconds: 400),
           child: SurveySetsListScreen(teamId: _teamId),
