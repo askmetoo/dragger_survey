@@ -14,7 +14,7 @@ class Global {
     PrismSurveySet: (data) => PrismSurveySet.fromFirestore(data),
     PrismSurvey: (data) => PrismSurvey.fromFirestore(data),
     Team: (data) => Team.fromFirestore(data),
-    User: (data) => User.fromFirestore(data),
+    User: (data) => User.fromDocument(data),
   };
 
   // Firestore References for Writes

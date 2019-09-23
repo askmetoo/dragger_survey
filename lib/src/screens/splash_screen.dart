@@ -12,7 +12,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     /// Initialize data, then navigator to Home screen.
-    initData().then((value) {
+    initData().then((_) {
       navigateToHomeScreen();
     });
 
@@ -28,7 +28,6 @@ class _SplashScreenState extends State<SplashScreen> {
         children: <Widget>[
           Image.asset(
             'assets/dragger-logo.png',
-//          width: 200,
           ),
         ],
       ),
@@ -36,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future initData() async {
-    await Future.delayed(Duration(milliseconds: 100));
+    await Future.delayed(Duration(milliseconds: 800));
   }
 
   void navigateToHomeScreen() {

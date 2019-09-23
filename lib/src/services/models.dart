@@ -88,7 +88,7 @@ class PrismSurvey {
       yValue: doc["yValue"] ?? 0,
       xValue: doc["xValue"] ?? 0,
       users: (doc["users"] as List ?? [])
-          .map((value) => User.fromFirestore(value))
+          .map((value) => User.fromDocument(value))
           .toList(),
     );
   }
@@ -129,7 +129,7 @@ class Team {
       lastEditedByUser: doc["lastEditedByUser"] ?? '',
       description: doc["description"] ?? '',
       users: (doc["users"] as List ?? [])
-          .map((value) => User.fromFirestore(value))
+          .map((value) => User.fromDocument(value))
           .toList(),
       prismSurveySets: (doc["prismSurveySets"] as List ?? [])
           .map((value) => PrismSurveySet.fromFirestore(value))
@@ -181,25 +181,23 @@ class User {
     this.originCreationTime
   });
 
-  factory User.fromFirestore(DocumentSnapshot doc) {
-    doc = doc ?? { };
+  factory User.fromDocument(DocumentSnapshot doc) {
     return User(
-      uid: doc["uid"] ?? '',
-      created: doc["created"] ?? DateTime.now(),
-      edited: doc["edited"] ?? '',
-      firstName: doc["firstName"] ?? '',
-      lastName: doc["lastName"] ?? '',
-      createdByUser: doc["createdByUser"] ?? '',
-      lastEditedByUser: doc["lastEditedByUser"] ?? '',
-      password: doc["password"] ?? '',
-      email: doc["email"] ?? '',
-      displayName: doc["displayName"] ?? '',
-      description: doc["description"] ?? '',
-      company: doc["company"] ?? '',
-      photoUrl: doc["photoUrl"] ?? '',
-      providersUID: doc["providersUID"] ?? '',
-      providerId: doc["providerId"] ?? '',
-      originCreationTime: doc["originCreationTime"] ?? '',
+      uid: doc["uid"],
+      created: doc["created"],
+      edited: doc["edited"],
+      firstName: doc["firstName"],
+      lastName: doc["lastName"],
+      lastEditedByUser: doc["lastEditedByUser"],
+      password: doc["password"],
+      email: doc["email"],
+      displayName: doc["displayName"],
+      description: doc["description"],
+      company: doc["company"],
+      photoUrl: doc["photoUrl"],
+      providersUID: doc["providersUID"],
+      providerId: doc["providerId"],
+      originCreationTime: doc["originCreationTime"],
       teams: (doc["teams"] as List ?? [])
           .map((value) => Team.fromFirestore(value))
           .toList(),
@@ -211,4 +209,26 @@ class User {
           .toList(),
     );
   }
+
+  Map<String, dynamic> toMap() => {
+      'uid': this.uid,
+      'created': this.created,
+      'edited': this.edited,
+      'firstName': this.firstName,
+      'lastName': this.lastName,
+      'createdByUser': this.createdByUser,
+      'lastEditedByUser': this.lastEditedByUser,
+      'password': this.password,
+      'email': this.email,
+      'displayName': this.displayName,
+      'description': this.description,
+      'company': this.company,
+      'photoUrl': this.photoUrl,
+      'providersUID': this.providersUID,
+      'providerId': this.providerId,
+      'teams': this.teams,
+      'prismSurveySets': this.prismSurveySets,
+      'prismSurveys': this.prismSurveys,
+      'originCreationTim': this.originCreationTime,
+    };
 }

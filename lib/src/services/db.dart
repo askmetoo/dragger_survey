@@ -92,16 +92,12 @@ class Collection<T> {
     });
   }
 
-  createDocumentWithObject({object}) async {
-    try {
-      debugPrint("----> In TRY of createDocumentWithObject");
-      ref.add(object as Map<String, dynamic>);
-      debugPrint(
-          "----> In TRY of createDocumentWithObject - after calling collection");
-    } catch (error) {
-      print("!!! ----> In db.dart - ERROR at createDocumentWithObject: $error");
-    }
-    print("3) ----> Form values have been sent to data base");
+  Future createDocumentWithObject({object}) async {
+      print("In DB.dart createDocumentWithObject - value of object: $object");
+      DocumentReference retunedValue = await ref.add(object.toMap());
+       
+      log("In DB.dart createDocumentWithObject retunedValue doc.documentID ${retunedValue.documentID}");
+      return retunedValue;
   }
 
   updateDocumentWithObject({object, id}) async {

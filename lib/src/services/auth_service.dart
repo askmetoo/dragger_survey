@@ -1,21 +1,30 @@
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:async';
 
 
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final GoogleSignIn _googleSignIn = GoogleSignIn();
+
 class AuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  // final GoogleSignInAccount user = _googleSignIn.currentUser;
 
   AuthService() {
     print("new AuthService");
   }
 
-  Future getCurrentUser() {
-    return _auth.currentUser();
+  Future getCurrentUser() async {
+    _auth
+        .currentUser()
+        .then( (val) {
+          log("In AuthService getCurrentUser() - value of _auth.currentUser(): ${val?.uid}");
+          }
+        );
+    FirebaseUser _currentUser = await  _auth.currentUser();
+
+    return _currentUser;
   }
 
   Future lougout() {
@@ -41,9 +50,9 @@ class AuthService {
       idToken: googleAuth.idToken,
     );
 
-    final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
-    log("signing-in - displayName: ${user.displayName}, user.uid: ${user.uid}");
+    final FirebaseUser _user = (await _auth.signInWithCredential(credential)).user;
+    log("In AuthService signInWithGoogle() - displayName: ${_user.displayName}, user.uid: ${_user.uid}");
 
-    return user;
+    return _user;
   }
 }

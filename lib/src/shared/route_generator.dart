@@ -75,6 +75,13 @@ class RouteGenerator {
           type: PageTransitionType.fade,
         );
         break;
+      case '/splash':
+        return PageTransition(
+          duration: Duration(milliseconds: 400),
+          child: SplashScreen(),
+          type: PageTransitionType.fade,
+        );
+        break;
       default:
         return PageTransition(
           duration: Duration(microseconds: 400),

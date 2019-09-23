@@ -16,7 +16,7 @@ class UserBloc extends ChangeNotifier {
         .getDocumentsByQuery(fieldName: fieldName, fieldValue: fieldValue);
   }
 
-  addUserToDb({Map<String, dynamic> user}) {
+  addUserToDb({User user}) {
     Collection(path: "users").createDocumentWithObject(object: user);
     notifyListeners();
   }
