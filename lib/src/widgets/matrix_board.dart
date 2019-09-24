@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MatrixBoard extends StatefulWidget {
+  final String xLabel;
+  final String yLabel;
+  MatrixBoard({this.xLabel, this.yLabel});
+
   @override
   _MatrixBoardState createState() => _MatrixBoardState();
 }
@@ -12,6 +16,8 @@ class MatrixBoard extends StatefulWidget {
 class _MatrixBoardState extends State<MatrixBoard> {
   final double aspectratioValue = .94;
   int gridLength;
+
+
   @override
   Widget build(BuildContext context) {
     final MatrixGranularityBloc granularitybloc =
@@ -39,6 +45,8 @@ class _MatrixBoardState extends State<MatrixBoard> {
             aspectratioValue: aspectratioValue,
             grid: grid,
             position: position),
+        BuildXLabel(xLabel: widget.xLabel,),
+        BuildYLabel(yLabel: widget.yLabel,),
         BuildGoalItem(),
         DraggableItem(),
       ],
@@ -51,6 +59,7 @@ class BuildMatrixBoard extends StatefulWidget {
   final double aspectratioValue;
   final Offset position;
   final List<List<List<int>>> grid;
+  
 
   BuildMatrixBoard({
     this.gridLength,
@@ -132,69 +141,75 @@ class BuildGoalItem extends StatelessWidget {
   }
 }
 
-// Widget buildMatrixBoard(
-//     {int gridLength,
-//     double aspectratioValue,
-//     Offset position,
-//     List<List<List<int>>> grid}) {
-//   return SizedBox(
-//     width: 420,
-//     height: 420,
-//     child: Container(
-//       decoration: BoxDecoration(
-//         borderRadius: BorderRadius.only(
-//           topLeft: Radius.circular(20),
-//           bottomLeft: Radius.circular(20),
-//           topRight: Radius.circular(20),
-//           bottomRight: Radius.circular(60),
-//         ),
-//         boxShadow: [
-//           BoxShadow(
-//               blurRadius: 8,
-//               offset: Offset(4, 4),
-//               color: Colors.brown.shade900.withOpacity(.3))
-//         ],
-//         color: Colors.orange.shade200,
-//       ),
-//       padding: EdgeInsets.all(10),
-//       margin: EdgeInsets.only(
-//         top: 10,
-//         left: 10,
-//         right: 10,
-//         bottom: 20,
-//       ),
-//       child: GridView.builder(
-//         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//             crossAxisCount: gridLength),
-//         itemCount: gridLength * gridLength,
-//         itemBuilder: (BuildContext context, int index) {
-// //              final database = Provider.of<AppDatabase>(context);
+class BuildXLabel extends StatefulWidget {
+  final String xLabel;
+  BuildXLabel({this.xLabel}) : super();
+  @override
+  _BuildXLabelState createState() => _BuildXLabelState();
+}
 
-//           final DraggableItemBloc draggableItemBloc =
-//               Provider.of<DraggableItemBloc>(context);
-//           final PrismSurveyBloc prismSurveyBloc =
-//               Provider.of<PrismSurveyBloc>(context);
+class _BuildXLabelState extends State<BuildXLabel> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(left: 10, right: 10, bottom: 0, top: 0),
+      height: 389,
+      width: 354,
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Text(
+          "${widget.xLabel}",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Colors.black54.withOpacity(.5),
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              letterSpacing: -.6,
+              shadows: [
+                Shadow(
+                    blurRadius: 4, color: Colors.black12, offset: Offset(1, 1)),
+              ]),
+        ),
+      ),
+    );
+  }
+}
 
-//           return AspectRatio(
-//               aspectRatio: aspectratioValue,
-//               child: Container(
-//                 child: dragTarget(
-//                     index: index,
-//                     position: position,
-//                     grid: grid,
-//                     draggableItemBloc: draggableItemBloc,
-//                     prismSurveyBloc: prismSurveyBloc),
-//               ));
-//         },
-//       ),
-//     ),
-//   );
-// }
+class BuildYLabel extends StatefulWidget {
+  final String yLabel;
+  BuildYLabel({this.yLabel}) : super();
+  @override
+  _BuildYLabelState createState() => _BuildYLabelState();
+}
 
-// Widget buildGoalItem() {
-//   return Positioned(
-//     bottom: 19,
-//     right: 11,
-//     child: GoalItem(),
-//   );
-// }
+class _BuildYLabelState extends State<BuildYLabel> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(left: 10, right: 10, bottom: 0, top: 0),
+      height: 384,
+      width: 388,
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: RotatedBox(
+          quarterTurns: 3,
+          child: Text(
+            "${widget.yLabel}",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Colors.black54.withOpacity(.5),
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                letterSpacing: -.6,
+                shadows: [
+                  Shadow(
+                      blurRadius: 4,
+                      color: Colors.black12,
+                      offset: Offset(1, 1)),
+                ]),
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '../blocs/draggable_item_bloc.dart';
 
 class DraggableItem extends StatefulWidget {
-  final Offset initialPosition = Offset(20, 80);
+  final Offset initialPosition = Offset(20, 60);
   @override
   _DraggableItemState createState() => _DraggableItemState();
 }
@@ -24,8 +24,8 @@ class _DraggableItemState extends State<DraggableItem> {
         Provider.of<DraggableItemBloc>(context);
 
     return Positioned(
-      left: draggableBloc.draggableItemPositon.dx,
-      top: draggableBloc.draggableItemPositon.dy - _draggableSize,
+      left: draggableBloc.draggableItemPositon.dx - 10,
+      top: draggableBloc.draggableItemPositon.dy - _draggableSize - 10,
       child: Draggable<String>(
         data: _dragData,
         child: Container(
@@ -77,7 +77,7 @@ class _DraggableItemState extends State<DraggableItem> {
         onDragEnd: (drag) {
           draggableBloc.setNewDraggableItemPositon(
               position:
-                  Offset(drag.offset.dx, drag.offset.dy - (_draggableSize / 2)));
+                  Offset(drag.offset.dx, drag.offset.dy - (_draggableSize / 0.53)));
         },
         onDraggableCanceled: (Velocity velocity, Offset offset) {
           draggableBloc.setNewDraggableItemPositon(position: offset);

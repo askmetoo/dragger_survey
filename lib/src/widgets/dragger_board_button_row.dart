@@ -1,15 +1,20 @@
+import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../blocs/draggable_item_bloc.dart';
 import '../mixins/dragger_board_settings_sheet.dart';
 
 class DraggerBoardButtonRow extends StatelessWidget {
+  final GlobalKey<FormState> formKey;
   const DraggerBoardButtonRow({
+    this.formKey,
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final PrismSurveyBloc prismSurveyBloc =
+        Provider.of<PrismSurveyBloc>(context);
 
     return Padding(
       padding: EdgeInsets.all(20),
@@ -25,7 +30,16 @@ class DraggerBoardButtonRow extends StatelessWidget {
               color: Colors.orangeAccent,
               textColor: Color(0xff662d00),
               child: Text("Ergebnis speichern"),
-              onPressed: () {},
+              onPressed: () {
+                if (this.formKey.currentState.validate()) {
+                  Scaffold
+                    .of(context)
+                    .showSnackBar(SnackBar(
+                      content: Text('Processing data \n${prismSurveyBloc.created} \n${prismSurveyBloc.rowIndex} \n${prismSurveyBloc.colIndex} \n${prismSurveyBloc.currentAskedPerson}'),
+                    ),
+                    );
+                }
+              },
             ),
           ),
           Container(
