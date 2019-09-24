@@ -206,10 +206,10 @@ class LoginScreen extends StatelessWidget {
                         print(
                             "ERROR in 'login_screen' with adding User to DB: $err");
                       }
+                      // Navigator.pushNamed(
+                      //         signInButtonContext, '/surveysetslist')
                       Navigator.pushNamed(
-                              signInButtonContext, '/surveysetslist')
-                          // Navigator.pushNamed(_globalLoginKey.currentContext,
-                          //         '/surveysetslist')
+                              _globalLoginKey.currentContext, '/surveysetslist')
                           .catchError((err) => print(
                               "ERROR In 'login_screen' routing to pushedNamed: $err"));
                     } else if (loggedIn ||
