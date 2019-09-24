@@ -39,6 +39,7 @@ dependencies:
   page_transition: "^1.1.4"
   date_format:
   connectivity: 0.4.3+7
+  cached_network_image: ^1.1.1
 
 
 
