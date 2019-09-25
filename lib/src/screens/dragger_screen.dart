@@ -5,6 +5,7 @@ import 'package:dragger_survey/src/screens/screens.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart' hide SimpleDialog;
 import 'package:flutter/material.dart';
+import 'package:icon_shadow/icon_shadow.dart';
 import 'package:provider/provider.dart';
 
 class DraggerScreen extends StatefulWidget {
@@ -70,9 +71,19 @@ class _DraggerScreenState extends State<DraggerScreen> {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        Text(
-                          "Asked Person or role: ",
-                          style: TextStyle(fontSize: 14),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Tooltip(
+                            message: "Asked person or role",
+                            child: IconShadowWidget(
+                              Icon(
+                                Icons.person,
+                                color: Styles.drg_colorLighterGreen,
+                                size: 30,
+                              ),
+                              shadowColor: Styles.drg_colorText,
+                            ),
+                          ),
                         ),
                         GestureDetector(
                           onTap: () {
@@ -81,10 +92,16 @@ class _DraggerScreenState extends State<DraggerScreen> {
                               prismSurveyBloc: prismSurveyBloc,
                             );
                           },
-                          child: Text(
-                            prismSurveyBloc?.currentAskedPerson,
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w700),
+                          child: Container(
+                            width: 250,
+                            child: Text(
+                              prismSurveyBloc?.currentAskedPerson,
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w700,
+                                color: Styles.drg_colorSecondary,
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -97,7 +114,7 @@ class _DraggerScreenState extends State<DraggerScreen> {
                           prismSurveyBloc: prismSurveyBloc,
                         );
                       },
-                      color: Styles.drg_colorSecondaryDeepDark,
+                      color: Styles.drg_colorSecondary.withOpacity(.6),
                       iconSize: 20,
                     ),
                   ],
@@ -132,7 +149,14 @@ class _DraggerScreenState extends State<DraggerScreen> {
         context: context,
         builder: (context) {
           return SimpleDialog(
-            title: Text("Dialog-Titel"),
+            backgroundColor: Styles.drg_colorSecondaryDeepDark,
+            title: Text(
+              "Whom will you ask?",
+              style: TextStyle(
+                fontFamily: 'Bitter',
+                color: Styles.drg_colorSecondary,
+              ),
+            ),
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 26),
@@ -145,18 +169,28 @@ class _DraggerScreenState extends State<DraggerScreen> {
                         onChanged: (value) {
                           _askedPersonController.text = value;
                         },
-                        decoration: InputDecoration(labelText: "Role or name"),
+                        style: TextStyle(
+                          color: Styles.drg_colorYellowGreen,
+                        ),
+                        decoration: InputDecoration(
+                            isDense: true,
+                            labelText: "Role or name",
+                            labelStyle:
+                                TextStyle(color: Styles.drg_colorLighterGreen)),
                       ),
                     ),
-                    FlatButton(
-                      child: Text("Speichern"),
-                      color: Styles.drg_colorSecondary,
-                      onPressed: () {
-                        log("_askedPersonController.text: ${_askedPersonController.text}");
-                        prismSurveyBloc.currentAskedPerson =
-                            _askedPersonController.text;
-                        Navigator.pop(context);
-                      },
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12.0),
+                      child: FlatButton(
+                        child: Text("Speichern"),
+                        color: Styles.drg_colorSecondary,
+                        onPressed: () {
+                          log("_askedPersonController.text: ${_askedPersonController.text}");
+                          prismSurveyBloc.currentAskedPerson =
+                              _askedPersonController.text;
+                          Navigator.pop(context);
+                        },
+                      ),
                     )
                   ],
                 ),
