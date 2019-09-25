@@ -44,9 +44,13 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Styles.drg_colorSecondary,
-        child: Icon(
+        label: Text(
+          "New survey set",
+          style: TextStyle(color: Styles.drg_colorText.withOpacity(0.8)),
+        ),
+        icon: Icon(
           Icons.library_add,
           color: Styles.drg_colorDarkerGreen,
         ),
