@@ -76,8 +76,11 @@ class _DraggableItemState extends State<DraggableItem> {
         onDragCompleted: () {},
         onDragEnd: (drag) {
           draggableBloc.setNewDraggableItemPositon(
-              position:
-                  Offset(drag.offset.dx, drag.offset.dy - (_draggableSize / 0.53)));
+            position: Offset(
+              drag.offset.dx,
+              drag.offset.dy - (_draggableSize / 0.98),
+            ),
+          );
         },
         onDraggableCanceled: (Velocity velocity, Offset offset) {
           draggableBloc.setNewDraggableItemPositon(position: offset);
