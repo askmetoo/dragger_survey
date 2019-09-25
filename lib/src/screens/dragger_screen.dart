@@ -68,20 +68,34 @@ class _DraggerScreenState extends State<DraggerScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(
-                      "Asked Person or role: ",
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    Text(
-                      prismSurveyBloc?.currentAskedPerson,
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          "Asked Person or role: ",
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            _builduildAskedPersonDialog(
+                              context: context,
+                              prismSurveyBloc: prismSurveyBloc,
+                            );
+                          },
+                          child: Text(
+                            prismSurveyBloc?.currentAskedPerson,
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      ],
                     ),
                     IconButton(
                       icon: Icon(Icons.edit),
                       onPressed: () {
                         _builduildAskedPersonDialog(
-                            context: context, prismSurveyBloc: prismSurveyBloc);
+                          context: context,
+                          prismSurveyBloc: prismSurveyBloc,
+                        );
                       },
                       color: Styles.drg_colorSecondaryDeepDark,
                       iconSize: 20,
