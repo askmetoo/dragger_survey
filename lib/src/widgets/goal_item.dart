@@ -1,21 +1,35 @@
+import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class GoalItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(image: AssetImage('assets/goals.png')),
-        borderRadius: BorderRadius.circular(80.0),
-        boxShadow: [
-          BoxShadow(
-              color: Colors.brown.shade800.withOpacity(.5),
-              blurRadius: 4.5,
-              offset: Offset(6.0, 6.0))
-        ],
+    final DraggableItemBloc draggableBloc =
+        Provider.of<DraggableItemBloc>(context);
+
+    return GestureDetector(
+      onDoubleTap: () {
+        draggableBloc.resetDraggableItemPositon();
+      },
+      child: Tooltip(
+        message:
+            "\nThe Goal - the tighter the dragger, \nthe higher the value. \n\nDouble click to reset draggable postion.\n",
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(image: AssetImage('assets/goals.png')),
+            borderRadius: BorderRadius.circular(80.0),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.brown.shade800.withOpacity(.5),
+                  blurRadius: 4.5,
+                  offset: Offset(6.0, 6.0))
+            ],
+          ),
+          width: 90,
+          height: 90,
+        ),
       ),
-      width: 90,
-      height: 90,
     );
   }
 }
