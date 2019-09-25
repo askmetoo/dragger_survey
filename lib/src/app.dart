@@ -46,10 +46,12 @@ class App extends StatelessWidget {
         )
       ],
       child: MaterialApp(
+        title: 'Dragger Survey',
         navigatorKey: navigatorKey,
         onGenerateRoute: RouteGenerator.generateRoute,
         theme: ThemeData(
-          fontFamily: 'Nunito',
+          fontFamily: 'Barlow',
+          // fontFamily: 'Nunito',
           bottomAppBarTheme: BottomAppBarTheme(color: Styles.drg_colorGreen),
           accentColor: Colors.orangeAccent[300],
           primaryColor: Colors.orange.shade700,

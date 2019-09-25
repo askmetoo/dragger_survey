@@ -61,6 +61,42 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  fonts:
+    - family: Barlow
+      fonts:
+        - asset: fonts/barlow/Barlow-RegularItalic.ttf
+          style: italic
+          weight: 400
+        - asset: fonts/barlow/Barlow-MediumItalic.ttf
+          style: italic
+          weight: 500
+        - asset: fonts/barlow/Barlow-SemiBoldItalic.ttf
+          style: italic
+          weight: 600
+        - asset: fonts/barlow/Barlow-BoldItalic.ttf
+          style: italic
+          weight: 700
+        - asset: fonts/barlow/Barlow-Regular.ttf
+          weight: 400
+        - asset: fonts/barlow/Barlow-Medium.ttf
+          weight: 500
+        - asset: fonts/barlow/Barlow-SemiBold.ttf
+          weight: 600
+        - asset: fonts/barlow/Barlow-Bold.ttf
+          weight: 700
+    - family: Bitter
+      fonts:
+        - asset: fonts/bitter/Bitter-Regular.ttf
+          weight: 400
+        - asset: fonts/bitter/Bitter-RegularItalic.ttf
+          style: italic
+          weight: 400
+        - asset: fonts/bitter/Bitter-Bold.ttf
+          weight: 700
+    - family: SonsieOne
+      fonts:
+        - asset: fonts/sonsieone/SonsieOne-Regular.ttf
+          weight: 400
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

@@ -68,7 +68,11 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                           hint: _selectedTeamId == null
                               ? Text(
                                   "Please Select a Team",
-                                  style: TextStyle(color: Styles.drg_colorText),
+                                  style: TextStyle(
+                                    color: Styles.drg_colorText.withOpacity(.8),
+                                    fontFamily: 'Bitter',
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 )
                               : RichText(
                                   overflow: TextOverflow.clip,
@@ -80,11 +84,13 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                         fontSize: 20),
                                     children: [
                                       TextSpan(
-                                        text: "${_selectedTeam.data['name']}",
+                                        text: "{_selectedTeam.data['name']}",
                                         style: TextStyle(
-                                            color: Styles.drg_colorText,
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.w600),
+                                          color: Styles.drg_colorText,
+                                          fontSize: 26,
+                                          fontFamily: 'SonsieOne',
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
                                       TextSpan(
                                         text: _selectedTeam
@@ -101,34 +107,54 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                   ),
                                 ),
                           items: teamsListSnapshot.data.documents
-                              .map<DropdownMenuItem>((team) {
-                            return DropdownMenuItem(
-                              value: team.documentID,
-                              // value: team['id'].toString(),
-                              child: RichText(
-                                text: TextSpan(
-                                  text: "${team['name']}\n",
-                                  style: TextStyle(
-                                    color: Styles.drg_colorText,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: team['description'] != ''
-                                          ? "${team['description']}"
-                                          : 'Team has no description',
-                                      style: TextStyle(
-                                        color:
-                                            Styles.drg_colorSecondaryDeepDark,
-                                        fontSize: 12,
+                              .map<DropdownMenuItem>(
+                            (team) {
+                              return DropdownMenuItem(
+                                value: team.documentID,
+                                // value: team['id'].toString(),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        height: 21,
+                                        child: Text(
+                                          "${team['name']}\n",
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                            color: Styles.drg_colorText
+                                                .withOpacity(0.8),
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w900,
+                                            fontFamily: 'Bitter',
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }).toList()),
+                                      Container(
+                                        height: 20,
+                                        child: Text(
+                                          team['description'] != ''
+                                              ? "${team['description']}"
+                                              : 'Team has no description',
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          softWrap: true,
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                            color:
+                                                Styles.drg_colorSecondaryDeepDark,
+                                            fontFamily: 'Bitter',
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                              );
+                            },
+                          ).toList(),
+                        ),
                 ),
               ),
             );
@@ -138,7 +164,6 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
   }
 
   Widget buildTeamText({AsyncSnapshot<QuerySnapshot> teamsListSnapshot}) {
-
     DocumentSnapshot teamDoc;
 
     if (!teamsListSnapshot.hasData) {
@@ -146,38 +171,35 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
     }
 
     teamDoc = teamsListSnapshot?.data?.documents[0];
-    
+
     return Padding(
       padding: EdgeInsets.only(top: 10),
-          child: RichText(
-          overflow: TextOverflow.clip,
-          maxLines: 2,
-          text: TextSpan(
-            text: "Your Team: ",
-            style: TextStyle(
-                color: Styles.drg_colorText, fontSize: 20),
-            children: [
-              TextSpan(
-                text: "${teamDoc['name']}",
-                style: TextStyle(
-                    color: Styles.drg_colorText,
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600),
-              ),
-              TextSpan(
-                text: teamDoc['description'] !=
-                        ''
-                    ? "\n${teamDoc['description']}"
-                    : "\nTeam has no description",
-                style: TextStyle(
+      child: RichText(
+        overflow: TextOverflow.clip,
+        maxLines: 2,
+        text: TextSpan(
+          text: "Your Team: ",
+          style: TextStyle(color: Styles.drg_colorText, fontSize: 20),
+          children: [
+            TextSpan(
+              text: "${teamDoc['name']}",
+              style: TextStyle(
                   color: Styles.drg_colorText,
-                  fontSize: 14,
-                ),
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600),
+            ),
+            TextSpan(
+              text: teamDoc['description'] != ''
+                  ? "\n${teamDoc['description']}"
+                  : "\nTeam has no description",
+              style: TextStyle(
+                color: Styles.drg_colorText,
+                fontSize: 14,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
     );
   }
 }
-

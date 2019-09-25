@@ -23,7 +23,67 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
     if (teamBloc?.currentSelectedTeam?.documentID == null) {
       return Center(
-        child: Text("Please select a team"),
+        child: Column(
+          children: <Widget>[
+            Spacer(),
+            Text(
+              "Before you      ",
+              style: TextStyle(
+                fontFamily: 'SonsieOne',
+                fontSize: 34,
+                letterSpacing: -2,
+                color: Styles.drg_colorSecondary,
+                shadows: [
+                  Shadow(
+                    color: Styles.drg_colorText.withOpacity(.3),
+                    blurRadius: 8,
+                  ),
+                  Shadow(
+                      color: Styles.drg_colorText.withOpacity(.1),
+                      blurRadius: 3,
+                      offset: Offset(5, 6)),
+                ],
+              ),
+            ),
+            Text(
+              "           can start",
+              style: TextStyle(
+                fontFamily: 'SonsieOne',
+                fontSize: 28,
+                letterSpacing: -2,
+                color: Styles.drg_colorSecondaryDeepDark,
+                shadows: [
+                  Shadow(
+                    color: Styles.drg_colorText.withOpacity(.2),
+                    blurRadius: 5,
+                  ),
+                  Shadow(
+                      color: Styles.drg_colorText.withOpacity(.2),
+                      blurRadius: 3,
+                      offset: Offset(2, 3)),
+                ],
+              ),
+            ),
+            Text(
+              "please, first chose a team for which",
+              style: TextStyle(
+                fontFamily: 'Bitter',
+                fontWeight: FontWeight.w700,
+                color: Styles.drg_colorText.withOpacity(.7),
+              ),
+            ),
+            Text(
+              "you want to conduct the survey.",
+              style: TextStyle(
+                fontFamily: 'Bitter',
+                fontWeight: FontWeight.w700,
+                color: Styles.drg_colorText.withOpacity(.7),
+              ),
+            ),
+            Spacer(),
+            Spacer(),
+          ],
+        ),
       );
     }
     return FutureBuilder<QuerySnapshot>(
@@ -51,9 +111,93 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
           }
           if (surveySetSnapshot.data.documents.isEmpty) {
             return Center(
-              child: Text(
-                "Currently no available survey sets. \n\nPlease select another team \nor create a set",
-                textAlign: TextAlign.center,
+              child: Column(
+                children: <Widget>[
+                  Spacer(),
+                  Container(
+                    height: 24,
+                    child: Text(
+                      "Sorry, currently          ",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontFamily: 'SonsieOne',
+                        fontSize: 18,
+                        letterSpacing: -2,
+                        color: Styles.drg_colorSecondaryDeepDark,
+                        shadows: [
+                          Shadow(
+                            color: Styles.drg_colorText.withOpacity(.2),
+                            blurRadius: 5,
+                          ),
+                          Shadow(
+                              color: Styles.drg_colorText.withOpacity(.2),
+                              blurRadius: 3,
+                              offset: Offset(2, 3)),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "no survey sets",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontFamily: 'SonsieOne',
+                      fontSize: 32,
+                      letterSpacing: -2,
+                      color: Styles.drg_colorSecondary,
+                      shadows: [
+                        Shadow(
+                          color: Styles.drg_colorText.withOpacity(.3),
+                          blurRadius: 8,
+                        ),
+                        Shadow(
+                            color: Styles.drg_colorText.withOpacity(.1),
+                            blurRadius: 3,
+                            offset: Offset(5, 6)),
+                      ],
+                    ),
+                  ),
+                  Text(
+                    "available.          ",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontFamily: 'SonsieOne',
+                      fontSize: 24,
+                      letterSpacing: -2,
+                      color: Styles.drg_colorSecondaryDeepDark,
+                      shadows: [
+                        Shadow(
+                          color: Styles.drg_colorText.withOpacity(.2),
+                          blurRadius: 5,
+                        ),
+                        Shadow(
+                            color: Styles.drg_colorText.withOpacity(.2),
+                            blurRadius: 3,
+                            offset: Offset(2, 3)),
+                      ],
+                    ),
+                  ),
+                  Text(
+                    "Please select another team",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Bitter',
+                      fontWeight: FontWeight.w700,
+                      color: Styles.drg_colorText.withOpacity(.7),
+                    ),
+                  ),
+                  Text(
+                    "or create a new set.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Bitter',
+                      fontWeight: FontWeight.w700,
+                      color: Styles.drg_colorText.withOpacity(.7),
+                    ),
+                  ),
+                  Spacer(),
+                  Spacer(),
+                ],
               ),
             );
           }

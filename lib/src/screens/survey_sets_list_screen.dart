@@ -24,6 +24,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
     bool loggedIn = user != null;
     if (!loggedIn) {
       log("In SurveySetsListScreen - User is not signed in!");
+      // Navigator.of(context).popUntil(ModalRoute.withName('splash'));
       // return SplashScreen();
     }
     return Scaffold(
