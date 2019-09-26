@@ -49,7 +49,7 @@ class PrismSurveySet {
       yName: doc['yName'],
       yDescription: doc['yDescription'],
       prismSurveys: (doc['prismSurveys'] as List ?? [])
-          .map((value) => PrismSurvey.fromFirestore(doc))
+          .map((value) => PrismSurvey.fromDocument(doc))
           .toList(),
     );
   }
@@ -93,22 +93,31 @@ class PrismSurvey {
     this.users,
   });
 
-  factory PrismSurvey.fromFirestore(DocumentSnapshot doc) {
-    doc = doc ?? {};
-
+  factory PrismSurvey.fromDocument(DocumentSnapshot doc) {
     return PrismSurvey(
       id: doc.documentID,
       counter: doc["counter"],
-      created: doc["created"] ?? DateTime.now(),
-      edited: doc["edited"] ?? '',
-      askedPerson: doc["askedPerson"] ?? '',
-      yValue: doc["yValue"] ?? 0,
-      xValue: doc["xValue"] ?? 0,
+      created: doc["created"],
+      edited: doc["edited"],
+      askedPerson: doc["askedPerson"],
+      yValue: doc["yValue"],
+      xValue: doc["xValue"],
       users: (doc["users"] as List ?? [])
           .map((value) => User.fromDocument(value))
           .toList(),
     );
   }
+
+  Map<String, dynamic> toMap() => {
+        "id": this.id,
+        "counter": this.counter,
+        "created": this.created,
+        "edited": this.edited,
+        "askedPerson": this.askedPerson,
+        "yValue": this.yValue,
+        "xValue": this.xValue,
+        "users": this.users,
+      };
 }
 
 class Team {
@@ -220,7 +229,7 @@ class User {
           .map((value) => PrismSurveySet.fromDocument(value))
           .toList(),
       prismSurveys: (doc["prismSurveys"] as List ?? [])
-          .map((value) => PrismSurvey.fromFirestore(value))
+          .map((value) => PrismSurvey.fromDocument(value))
           .toList(),
     );
   }
