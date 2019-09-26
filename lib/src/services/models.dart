@@ -55,7 +55,6 @@ class PrismSurveySet {
   }
 
   Map<String, dynamic> toMap() => {
-        'id': this.id,
         'created': this.created,
         'edited': this.edited,
         'name': this.name,
@@ -109,7 +108,6 @@ class PrismSurvey {
   }
 
   Map<String, dynamic> toMap() => {
-        "id": this.id,
         "counter": this.counter,
         "created": this.created,
         "edited": this.edited,
@@ -145,7 +143,7 @@ class Team {
 
   factory Team.fromDocument(DocumentSnapshot doc) {
     return Team(
-      id: doc["id"],
+      id: doc.documentID,
       created: doc["created"],
       edited: doc["edited"],
       name: doc["name"],
@@ -162,7 +160,6 @@ class Team {
   }
 
   Map<String, dynamic> toMap() => {
-        "id": this.id,
         "created": this.created,
         "edited": this.edited,
         "name": this.name,
@@ -176,6 +173,7 @@ class Team {
 
 class User {
   String uid;
+  String id;
   DateTime created;
   DateTime edited;
   String firstName;
@@ -197,6 +195,7 @@ class User {
 
   User(
       {this.uid,
+      this.id,
       this.created,
       this.edited,
       this.firstName,
@@ -218,6 +217,7 @@ class User {
   factory User.fromDocument(DocumentSnapshot doc) {
     return User(
       uid: doc["uid"],
+      id: doc.documentID,
       created: doc["created"],
       edited: doc["edited"],
       firstName: doc["firstName"],
