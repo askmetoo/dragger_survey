@@ -41,6 +41,8 @@ dependencies:
   connectivity: 0.4.3+7
   cached_network_image: ^1.1.1
   icon_shadow: ^1.0.1
+  flutter_slidable: "^0.5.3"
+
 
 
 

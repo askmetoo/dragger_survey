@@ -6,6 +6,7 @@ import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
 class SurveySetDetailsScreen extends StatelessWidget {
@@ -78,10 +79,37 @@ class SurveySetDetailsScreen extends StatelessWidget {
               itemCount: surveySetsSnapshot?.data?.data['surveys']?.length,
               scrollDirection: Axis.vertical,
               itemBuilder: (BuildContext context, int index) {
-                return Dismissible(
+                return Slidable(
                   key: ValueKey(index),
-                  direction: DismissDirection.endToStart,
-                  onDismissed: (direction) {},
+                  actionPane: SlidableDrawerActionPane(),
+                  actionExtentRatio: 0.25,
+                  // actions: <Widget>[
+                  //   IconSlideAction(
+                  //     caption: 'Archive',
+                  //     color: Colors.blue,
+                  //     icon: Icons.archive,
+                  //     onTap: () {},
+                  //   ),
+                  // ],
+                  secondaryActions: <Widget>[
+                    IconSlideAction(
+                      caption: 'More',
+                      color: Styles.drg_colorSecondaryDeepDark,
+                      icon: Icons.more_horiz,
+                      onTap: () {
+                        log("In SurveySetDetailsScreen Slidable 'More..'");
+                      },
+                    ),
+                    IconSlideAction(
+                      caption: 'Delete',
+                      color: Styles.drg_colorAttention,
+                      icon: Icons.delete,
+                      onTap: () {
+                        String _surveyId = surveySetsSnapshot?.data?.data['surveys'][index];
+                        log("In SurveySetDetailsScreen Slidable 'Delete': $_surveyId");
+                      },
+                    ),
+                  ],
                   child: ListTile(
                     onTap: () {},
                     title: FutureBuilder<Object>(
@@ -112,7 +140,6 @@ class SurveySetDetailsScreen extends StatelessWidget {
                                 ':',
                                 'ss'
                               ]);
-                              log("Date type: ${formattedDate.runtimeType}");
                               return Text(
                                   "Survey created: $formattedDate h \nid: ${surveySetsSnapshot.data.data['surveys'][index]}");
                             }
@@ -127,51 +154,6 @@ class SurveySetDetailsScreen extends StatelessWidget {
             ));
     }
   }
-
-  // buildSurveyList(
-  //     {@required BuildContext context,
-  //     AsyncSnapshot<DocumentSnapshot> surveySetsSnapshot}) {
-  //   final PrismSurveySetBloc surveySetBloc =
-  //       Provider.of<PrismSurveySetBloc>(context);
-  //   final PrismSurveyBloc prismSurveyBloc =
-  //       Provider.of<PrismSurveyBloc>(context);
-
-  //   return FutureBuilder<DocumentSnapshot>(
-  //     future: surveySetBloc.getPrismSurveySetById(
-  //         id: surveySetsSnapshot.data.documentID),
-  //     builder: (context, AsyncSnapshot<DocumentSnapshot> surveySetSnapshot) {
-  //       if (!(surveySetsSnapshot.connectionState == ConnectionState.done)) {
-  //         return Center(
-  //           child: CircularProgressIndicator(),
-  //         );
-  //       }
-
-  //       if (!surveySetSnapshot.hasData || surveySetSnapshot.data == null) {
-  //         return Center(
-  //           child: Text("No data available"),
-  //         );
-  //       }
-
-  //       return Expanded(
-  //         child: ListView(
-  //           scrollDirection: Axis.vertical,
-  //           children: surveySetSnapshot.data.data['surveys'].map(
-  //             (PrismSurvey survey) {
-  //               return Dismissible(
-  //                 key: ValueKey(surveySetSnapshot.data.hashCode),
-  //                 direction: DismissDirection.endToStart,
-  //                 onDismissed: (direction) {},
-  //                 child: ListTile(
-  //                   onTap: () {},
-  //                   title: Text("Survey id: {survey.data}"),
-  //                 ),
-  //               );
-  //             },
-  //           ).toList,
-  //         ),
-  //       );
-  //     },
-  //   );
 
   buildMetaDataList({surveySetsSnapshot}) {
     List<Widget> metaDataList = [
