@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PrismSurveySet {
@@ -33,24 +32,22 @@ class PrismSurveySet {
   });
 
   factory PrismSurveySet.fromFirestore(DocumentSnapshot doc) {
-
-    doc = doc ?? { };
+    doc = doc ?? {};
 
     return PrismSurveySet(
-      id: doc.documentID,
-      created: (doc['created']) ?? DateTime.now().toLocal(),
-      name: doc['name'] ?? '',
-      lastEditedByUser: (doc['lastEditedByUser']) ?? DateTime.now().toLocal(),
-      createdByTeam: doc['createdByTeam'] ?? '',
-      createdByUser: doc['createdByUser'] ?? '',
-      description: doc['description'] ?? '',
-      resolution: doc['resolution'] ?? 5,
-      xName: doc['xName'] ?? '',
-      xDescription: doc['xDescription'] ?? '',
-      yName: doc['yName'] ?? '',
-      yDescription: doc['yDescription'] ?? '',
-      prismSurveys: (doc['prismSurveys'] as List ?? [])
-    );
+        id: doc.documentID,
+        created: (doc['created']) ?? DateTime.now().toLocal(),
+        name: doc['name'] ?? '',
+        lastEditedByUser: (doc['lastEditedByUser']) ?? DateTime.now().toLocal(),
+        createdByTeam: doc['createdByTeam'] ?? '',
+        createdByUser: doc['createdByUser'] ?? '',
+        description: doc['description'] ?? '',
+        resolution: doc['resolution'] ?? 5,
+        xName: doc['xName'] ?? '',
+        xDescription: doc['xDescription'] ?? '',
+        yName: doc['yName'] ?? '',
+        yDescription: doc['yDescription'] ?? '',
+        prismSurveys: (doc['prismSurveys'] as List ?? []));
   }
 }
 
@@ -76,8 +73,7 @@ class PrismSurvey {
   });
 
   factory PrismSurvey.fromFirestore(DocumentSnapshot doc) {
-
-    doc = doc ?? { };
+    doc = doc ?? {};
 
     return PrismSurvey(
       id: doc.documentID,
@@ -144,7 +140,6 @@ class User {
   DateTime edited;
   String firstName;
   String lastName;
-  String createdByUser;
   String lastEditedByUser;
   String password;
   String email;
@@ -152,34 +147,33 @@ class User {
   String description;
   String company;
   String photoUrl;
-  String providersUID; // UID of User prvided by Auth Provider (e.g. Google SignIn)
+  String
+      providersUID; // UID of User prvided by Auth Provider (e.g. Google SignIn)
   String providerId;
   DateTime originCreationTime;
   dynamic teams;
   dynamic prismSurveySets;
   dynamic prismSurveys;
 
-  User({
-    this.uid,
-    this.created,
-    this.edited,
-    this.firstName,
-    this.lastName,
-    this.createdByUser,
-    this.lastEditedByUser,
-    this.password,
-    this.email,
-    this.displayName,
-    this.description,
-    this.company,
-    this.photoUrl,
-    this.providersUID,
-    this.providerId,
-    this.teams,
-    this.prismSurveySets,
-    this.prismSurveys,
-    this.originCreationTime
-  });
+  User(
+      {this.uid,
+      this.created,
+      this.edited,
+      this.firstName,
+      this.lastName,
+      this.lastEditedByUser,
+      this.password,
+      this.email,
+      this.displayName,
+      this.description,
+      this.company,
+      this.photoUrl,
+      this.providersUID,
+      this.providerId,
+      this.teams,
+      this.prismSurveySets,
+      this.prismSurveys,
+      this.originCreationTime});
 
   factory User.fromDocument(DocumentSnapshot doc) {
     return User(
@@ -211,24 +205,23 @@ class User {
   }
 
   Map<String, dynamic> toMap() => {
-      'uid': this.uid,
-      'created': this.created,
-      'edited': this.edited,
-      'firstName': this.firstName,
-      'lastName': this.lastName,
-      'createdByUser': this.createdByUser,
-      'lastEditedByUser': this.lastEditedByUser,
-      'password': this.password,
-      'email': this.email,
-      'displayName': this.displayName,
-      'description': this.description,
-      'company': this.company,
-      'photoUrl': this.photoUrl,
-      'providersUID': this.providersUID,
-      'providerId': this.providerId,
-      'teams': this.teams,
-      'prismSurveySets': this.prismSurveySets,
-      'prismSurveys': this.prismSurveys,
-      'originCreationTim': this.originCreationTime,
-    };
+        'uid': this.uid,
+        'created': this.created,
+        'edited': this.edited,
+        'firstName': this.firstName,
+        'lastName': this.lastName,
+        'lastEditedByUser': this.lastEditedByUser,
+        'password': this.password,
+        'email': this.email,
+        'displayName': this.displayName,
+        'description': this.description,
+        'company': this.company,
+        'photoUrl': this.photoUrl,
+        'providersUID': this.providersUID,
+        'providerId': this.providerId,
+        'teams': this.teams,
+        'prismSurveySets': this.prismSurveySets,
+        'prismSurveys': this.prismSurveys,
+        'originCreationTime': this.originCreationTime,
+      };
 }
