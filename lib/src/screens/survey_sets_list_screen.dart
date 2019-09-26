@@ -18,7 +18,8 @@ class SurveySetsListScreen extends StatefulWidget {
 class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
   @override
   Widget build(BuildContext context) {
-    Provider.of<PrismSurveySetBloc>(context);
+    final PrismSurveySetBloc prismSurveySetBloc = Provider.of<PrismSurveySetBloc>(context);
+    final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
 
     FirebaseUser user = Provider.of<FirebaseUser>(context);
     bool loggedIn = user != null;
@@ -44,7 +45,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: teamBloc?.currentSelectedTeam?.documentID == null ? null : FloatingActionButton.extended(
         backgroundColor: Styles.drg_colorSecondary,
         label: Text(
           "New survey set",
