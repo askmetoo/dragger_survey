@@ -146,7 +146,7 @@ class Team {
   factory Team.fromDocument(DocumentSnapshot doc) {
     return Team(
       id: doc["id"],
-      created: doc["created"] ?? DateTime.now(),
+      created: doc["created"],
       edited: doc["edited"],
       name: doc["name"],
       createdByUser: doc["createdByUser"],
