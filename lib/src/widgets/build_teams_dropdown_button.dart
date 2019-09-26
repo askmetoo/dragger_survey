@@ -80,17 +80,24 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                   overflow: TextOverflow.clip,
                                   maxLines: 1,
                                   text: TextSpan(
-                                    text: "Team: ",
+                                    text: "",
                                     style: TextStyle(
                                         color: Styles.drg_colorText,
                                         fontSize: 20),
                                     children: [
                                       TextSpan(
-                                        text: "{_selectedTeam.data['name']}",
+                                        text: _selectedTeam?.data != null
+                                            ? "${_selectedTeam?.data['name']}"
+                                            : 'No selected team',
                                         style: TextStyle(
                                           color: Styles.drg_colorText,
-                                          fontSize: 26,
-                                          fontFamily: 'SonsieOne',
+                                          fontSize: _selectedTeam?.data != null
+                                              ? 26
+                                              : 20,
+                                          fontFamily:
+                                              _selectedTeam?.data != null
+                                                  ? 'SonsieOne'
+                                                  : 'Bitter',
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
