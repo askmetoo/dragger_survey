@@ -50,22 +50,21 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                           isExpanded: true,
                           value: _selectedTeamId,
                           onChanged: (value) {
-                            log("---->In BuildTeamsDropdownButton DropdownButton pressed - value in onChanged (selcted team id): $value");
                             setState(() {
                               _selectedTeamId = value;
                             });
                             teamBloc.getTeamById(id: value).then((returnValue) {
-                              log("---->In BuildTeamsDropdownButton DropdownButton pressed getTeamById - returnValue.documentID: ${returnValue.documentID}");
                               teamBloc.setCurrentSelectedTeam(returnValue);
                               setState(() {
                                 _selectedTeam = returnValue;
                               });
-                              print(
-                                  "---->In BuildTeamsDropdownButton DropdownButton pressed getTeamById - after setState - \nteamBloc.currentSelectedTeam.documentID: ${teamBloc.currentSelectedTeam.documentID}");
                             });
                           },
+                          icon: Icon(Icons.people, color: Styles.drg_colorSecondary,),
+                          elevation: 12,
                           // hint: Text("Hint text"),
-                          hint: _selectedTeamId == null
+                          hint: teamBloc.currentSelectedTeam == null
+                          // hint: _selectedTeamId == null
                               ? Text(
                                   "Please Select a Team",
                                   style: TextStyle(
