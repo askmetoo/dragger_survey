@@ -51,7 +51,6 @@ class App extends StatelessWidget {
         onGenerateRoute: RouteGenerator.generateRoute,
         theme: ThemeData(
           fontFamily: 'Barlow',
-          // fontFamily: 'Nunito',
           bottomAppBarTheme: BottomAppBarTheme(color: Styles.drg_colorGreen),
           accentColor: Colors.orangeAccent[300],
           primaryColor: Colors.orange.shade700,
