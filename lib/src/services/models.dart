@@ -2,10 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PrismSurveySet {
   String id;
-  String created;
+  DateTime created;
+  DateTime edited;
   String createdByTeam;
   String createdByUser;
-  String lastEditedByUser;
+  DateTime lastEditedByUser;
   String name;
   String description;
   int resolution;
@@ -18,6 +19,7 @@ class PrismSurveySet {
   PrismSurveySet({
     this.id,
     this.created,
+    this.edited,
     this.createdByTeam,
     this.createdByUser,
     this.lastEditedByUser,
@@ -31,24 +33,43 @@ class PrismSurveySet {
     this.prismSurveys,
   });
 
-  factory PrismSurveySet.fromFirestore(DocumentSnapshot doc) {
-    doc = doc ?? {};
-
+  factory PrismSurveySet.fromDocument(DocumentSnapshot doc) {
     return PrismSurveySet(
-        id: doc.documentID,
-        created: (doc['created']) ?? DateTime.now().toLocal(),
-        name: doc['name'] ?? '',
-        lastEditedByUser: (doc['lastEditedByUser']) ?? DateTime.now().toLocal(),
-        createdByTeam: doc['createdByTeam'] ?? '',
-        createdByUser: doc['createdByUser'] ?? '',
-        description: doc['description'] ?? '',
-        resolution: doc['resolution'] ?? 5,
-        xName: doc['xName'] ?? '',
-        xDescription: doc['xDescription'] ?? '',
-        yName: doc['yName'] ?? '',
-        yDescription: doc['yDescription'] ?? '',
-        prismSurveys: (doc['prismSurveys'] as List ?? []));
+      id: doc.documentID,
+      created: doc['created'],
+      edited: doc['edited'],
+      name: doc['name'],
+      lastEditedByUser: (doc['lastEditedByUser']),
+      createdByTeam: doc['createdByTeam'],
+      createdByUser: doc['createdByUser'],
+      description: doc['description'],
+      resolution: doc['resolution'],
+      xName: doc['xName'],
+      xDescription: doc['xDescription'],
+      yName: doc['yName'],
+      yDescription: doc['yDescription'],
+      prismSurveys: (doc['prismSurveys'] as List ?? [])
+          .map((value) => PrismSurvey.fromFirestore(doc))
+          .toList(),
+    );
   }
+
+  Map<String, dynamic> toMap() => {
+        'id': this.id,
+        'created': this.created,
+        'edited': this.edited,
+        'name': this.name,
+        'lastEditedByUser': this.lastEditedByUser,
+        'createdByTeam': this.createdByTeam,
+        'createdByUser': this.createdByUser,
+        'description': this.description,
+        'resolution': this.resolution,
+        'xName': this.xName,
+        'xDescription': this.xDescription,
+        'yName': this.yName,
+        'yDescription': this.yDescription,
+        'prismSurveys': this.prismSurveys,
+      };
 }
 
 class PrismSurvey {
@@ -128,7 +149,7 @@ class Team {
           .map((value) => User.fromDocument(value))
           .toList(),
       prismSurveySets: (doc["prismSurveySets"] as List ?? [])
-          .map((value) => PrismSurveySet.fromFirestore(value))
+          .map((value) => PrismSurveySet.fromDocument(value))
           .toList(),
     );
   }
@@ -196,7 +217,7 @@ class User {
           .map((value) => Team.fromFirestore(value))
           .toList(),
       prismSurveySets: (doc["prismCurveySets"] as List ?? [])
-          .map((value) => PrismSurveySet.fromFirestore(value))
+          .map((value) => PrismSurveySet.fromDocument(value))
           .toList(),
       prismSurveys: (doc["prismSurveys"] as List ?? [])
           .map((value) => PrismSurvey.fromFirestore(value))
