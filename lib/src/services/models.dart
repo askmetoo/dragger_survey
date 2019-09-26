@@ -143,17 +143,15 @@ class Team {
     this.prismSurveySets,
   });
 
-  factory Team.fromFirestore(DocumentSnapshot doc) {
-    // doc = doc ?? { };
-    print("In Models Team.fromFirestore");
+  factory Team.fromDocument(DocumentSnapshot doc) {
     return Team(
-      id: doc["id"] ?? '',
+      id: doc["id"],
       created: doc["created"] ?? DateTime.now(),
-      edited: doc["edited"] ?? '',
-      name: doc["name"] ?? '',
-      createdByUser: doc["createdByUser"] ?? '',
-      lastEditedByUser: doc["lastEditedByUser"] ?? '',
-      description: doc["description"] ?? '',
+      edited: doc["edited"],
+      name: doc["name"],
+      createdByUser: doc["createdByUser"],
+      lastEditedByUser: doc["lastEditedByUser"],
+      description: doc["description"],
       users: (doc["users"] as List ?? [])
           .map((value) => User.fromDocument(value))
           .toList(),
@@ -162,6 +160,18 @@ class Team {
           .toList(),
     );
   }
+
+  Map<String, dynamic> toMap() => {
+        "id": this.id,
+        "created": this.created,
+        "edited": this.edited,
+        "name": this.name,
+        "createdByUser": this.createdByUser,
+        "lastEditedByUser": this.lastEditedByUser,
+        "description": this.description,
+        "users": this.users,
+        "prismSurveySets": this.prismSurveySets,
+      };
 }
 
 class User {
@@ -223,7 +233,7 @@ class User {
       providerId: doc["providerId"],
       originCreationTime: doc["originCreationTime"],
       teams: (doc["teams"] as List ?? [])
-          .map((value) => Team.fromFirestore(value))
+          .map((value) => Team.fromDocument(value))
           .toList(),
       prismSurveySets: (doc["prismCurveySets"] as List ?? [])
           .map((value) => PrismSurveySet.fromDocument(value))
