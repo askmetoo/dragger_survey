@@ -107,7 +107,6 @@ class _SurveySetFormState extends State<SurveySetForm> {
         children: <Widget>[
           SelectGranularity(),
           TextFormField(
-            autofocus: true,
             focusNode: firstFocus,
             onEditingComplete: () =>
                 FocusScope.of(context).requestFocus(secondFocus),
