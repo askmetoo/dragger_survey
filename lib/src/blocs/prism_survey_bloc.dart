@@ -173,22 +173,7 @@ class PrismSurveyBloc extends ChangeNotifier {
       return snapshot;
   }
 
-  addPrismSurveyToDb({PrismSurvey survey}) async {
-    int counter;
-    List<PrismSurvey> allSurveys = await getPrismSurveyDocuments();
-    if(allSurveys.isEmpty) {
-      log("In PrismSurveyBloc addPrismSurveyToDb isEmpty: allSurveys.isEmpty");
-      counter = 1;
-    } else if(allSurveys.last.counter != null) {
-      counter = allSurveys.last.counter + 1;
-    } else {
-      counter = 1;
-    }
-
-    survey.counter = counter;
-
-    log("In PrismSurveyBloc addPrismSurveyToDb - value of survey.counter: ${survey.counter}");
-
+  addPrismSurveyToDb({Map<String, dynamic> survey}) async {
     Collection(path: "surveys").createDocumentWithObject(object: survey);
     notifyListeners();
   }

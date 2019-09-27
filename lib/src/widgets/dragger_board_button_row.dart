@@ -1,4 +1,6 @@
 import 'package:dragger_survey/src/blocs/blocs.dart';
+import 'package:dragger_survey/src/services/models.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +15,9 @@ class DraggerBoardButtonRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final PrismSurveyBloc prismSurveyBloc =
         Provider.of<PrismSurveyBloc>(context);
+    final TeamBloc teamBloc =
+        Provider.of<TeamBloc>(context);
+    FirebaseUser user = Provider.of<FirebaseUser>(context);
 
     return Padding(
       padding: EdgeInsets.all(20),
@@ -35,6 +40,16 @@ class DraggerBoardButtonRow extends StatelessWidget {
                         'Processing data \n${prismSurveyBloc.created} \n${prismSurveyBloc.rowIndex} \n${prismSurveyBloc.colIndex} \n${prismSurveyBloc.currentAskedPerson}'),
                   ),
                 );
+                Map<String, dynamic> survey = {
+                  "created": prismSurveyBloc.created,
+                  "askedPerson": prismSurveyBloc.currentAskedPerson,
+                  "team": teamBloc.currentSelectedTeam?.documentID,
+                  "edited": DateTime.now(),
+                  "users": user.uid,
+                  "xValue": prismSurveyBloc.colIndex,
+                  "yValue": prismSurveyBloc.rowIndex,
+                };
+                prismSurveyBloc.addPrismSurveyToDb(survey: survey);
               },
             ),
           ),

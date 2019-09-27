@@ -94,7 +94,7 @@ class Collection<T> {
 
   Future createDocumentWithObject({object}) async {
       print("In DB.dart createDocumentWithObject - value of object: $object");
-      DocumentReference retunedValue = await ref.add(object.toMap());
+      DocumentReference retunedValue = await ref.add(object);
        
       log("In DB.dart createDocumentWithObject retunedValue doc.documentID ${retunedValue.documentID}");
       return retunedValue;
