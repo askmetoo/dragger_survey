@@ -78,6 +78,7 @@ class PrismSurvey {
   DateTime edited;
   String askedPerson;
   String team;
+  String surveySet;
   int yValue;
   int xValue;
   dynamic users;
@@ -89,6 +90,7 @@ class PrismSurvey {
     this.edited,
     this.askedPerson,
     this.team,
+    this.surveySet,
     this.yValue,
     this.xValue,
     this.users,
@@ -102,6 +104,7 @@ class PrismSurvey {
       edited: doc["edited"],
       askedPerson: doc["askedPerson"],
       team: doc["team"],
+      surveySet: doc["surveySet"],
       yValue: doc["yValue"],
       xValue: doc["xValue"],
       users: (doc["users"] as List ?? [])
@@ -116,6 +119,7 @@ class PrismSurvey {
         "edited": this.edited,
         "askedPerson": this.askedPerson,
         "team": this.team,
+        "surveySet": this.surveySet,
         "yValue": this.yValue,
         "xValue": this.xValue,
         "users": this.users,
