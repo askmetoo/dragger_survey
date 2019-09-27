@@ -25,11 +25,11 @@ class Styles {
     fontWeight: FontWeight.w400,
   );
   static const drg_textListTitle = TextStyle(
-    color: Color.fromRGBO(0, 0, 0, 0.8),
-    fontFamily: 'Barlow',
+    color: Styles.drg_colorText,
+    fontFamily: 'Bitter',
     fontSize: Styles.drg_fontSizeMediumHeadline,
     fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w600,
   );
   static const drg_textListContent = TextStyle(
     color: Color.fromRGBO(0, 0, 0, 0.8),
@@ -50,14 +50,15 @@ class Styles {
     fontWeight: FontWeight.w400,
     color: Styles.drg_colorDarkerGreen,
   );
+
   static const Color drg_colorAttention = Color(0xffff0200);
   static const Color drg_colorContrast = Color(0xff119da4);
   static const Color drg_colorPrimary = Color(0xffc66400);
   static const Color drg_colorSecondary = Color(0xfff7b71d);
   static const Color drg_colorSecondaryDeepDark = Color(0xff583c00);
   static const Color drg_colorText = Color(0xff0e2431);
-  static const Color drg_colorTextMedium = Color(0xff465761);
-  static const Color drg_colorTextLighter = Color(0xff78838a);
+  static const Color drg_colorTextMediumDark = Color(0xff465761);
+  static Color drgColorTextMediumLight = drg_colorText.withOpacity(0.8);
 
   static const Color drg_colorYellowGreen = Color(0xffffff7f);
   static const Color drg_colorLighterGreen = Color(0xffafa939);

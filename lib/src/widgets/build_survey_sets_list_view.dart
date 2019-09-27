@@ -217,8 +217,6 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                   key: ValueKey(surveySetDokumentSnapshot.hashCode),
                   direction: DismissDirection.endToStart,
                   onDismissed: (direction) {
-                    print(
-                        '----> Item ${surveySetDokumentSnapshot['name']} is dismissed');
                     surveySetsBloc.deletePrismSurveySetById(
                         id: surveySetDokumentSnapshot.documentID);
                   },
@@ -233,7 +231,13 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                       },
                       title: Text(
                         "${surveySetDokumentSnapshot.data['name']}",
-                        style: Styles.drg_textListTitle,
+                        style: TextStyle(
+                          color: Styles.drgColorTextMediumLight,
+                          fontFamily: 'Bitter',
+                          fontSize: Styles.drg_fontSizeMediumHeadline,
+                          // fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       subtitle: Text(
                         "By Team: ${surveySetDokumentSnapshot.data['createdByTeamName']} \nCreated: ${formatDate(surveySetDokumentSnapshot['created'].toDate(), [

@@ -105,7 +105,8 @@ class SurveySetDetailsScreen extends StatelessWidget {
                       color: Styles.drg_colorAttention,
                       icon: Icons.delete,
                       onTap: () {
-                        String _surveyId = surveySetsSnapshot?.data?.data['surveys'][index];
+                        String _surveyId =
+                            surveySetsSnapshot?.data?.data['surveys'][index];
                         log("In SurveySetDetailsScreen Slidable 'Delete': $_surveyId");
                       },
                     ),
@@ -158,11 +159,16 @@ class SurveySetDetailsScreen extends StatelessWidget {
   buildMetaDataList({surveySetsSnapshot}) {
     List<Widget> metaDataList = [
       Text(
-        "Survey Set name: ${surveySetsSnapshot?.data['name']}",
-        style: TextStyle(fontSize: Styles.drg_fontSizeMediumHeadline),
+        "${surveySetsSnapshot?.data['name']}",
+        style: TextStyle(
+            fontSize: Styles.drg_fontSizeMediumHeadline,
+            fontFamily: 'Bitter',
+            fontWeight: FontWeight.w700),
       ),
-      Text("Survey Set description: ${surveySetsSnapshot.data['description']}",
-          style: TextStyle(fontSize: Styles.drg_fontSizesubHeadline)),
+      Text("${surveySetsSnapshot.data['description']}",
+          style: TextStyle(
+              fontSize: Styles.drg_fontSizesubHeadline,
+              fontWeight: FontWeight.w500)),
       Text(
         "Granularity: ${surveySetsSnapshot.data['resolution']} \nCreated by User ID: ${surveySetsSnapshot.data['createdByUser']} \nUser displayName: TODO",
         style: TextStyle(fontSize: Styles.drg_fontSizeCopyText),
