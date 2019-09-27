@@ -33,16 +33,11 @@ Widget buildTeamsListView({BuildContext context}) {
                 return CircularProgressIndicator();
               }
 
-              log("In BuildTeamListView value of teamsListSnapshot: ${teamsListSnapshot.data.documents}");
-              teamsListSnapshot.data.documents
-                  .forEach((doc) => log("---> ${doc.documentID}"));
-
               return ListView(
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
                   children: teamsListSnapshot.data.documents
                       .map((teamDocumentSnapshot) {
-                    log("----> In BuildTeamListView ListView value of documentSnapshot.documentID: ${teamDocumentSnapshot.documentID}");
                     String teamId = teamDocumentSnapshot.documentID;
                     return Slidable(
                       key: ValueKey(teamDocumentSnapshot.hashCode),
@@ -70,9 +65,21 @@ Widget buildTeamsListView({BuildContext context}) {
                           color: Styles.drg_colorAttention,
                           icon: Icons.delete,
                           onTap: () {
-                            log("In BuildTeamListView ListView Dismissible Item ${teamDocumentSnapshot.data['name']}, ${teamDocumentSnapshot.data} is dismissed'");
+                            log("In BuildTeamListView ListView Dismissible Item name: ${teamDocumentSnapshot.data['name']}, id: ${teamDocumentSnapshot.documentID} is dismissed'");
                             teamBloc.deleteTeamById(
-                                id: teamDocumentSnapshot.documentID);
+                              id: teamDocumentSnapshot.documentID,
+                            );
+
+                            Scaffold.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: Styles.drg_colorAttention,
+                                elevation: 20,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(40)),
+                                content: Text(
+                                    "${teamDocumentSnapshot.data['name']} has been deleted."),
+                              ),
+                            );
                           },
                         ),
                       ],
