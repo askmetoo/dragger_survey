@@ -7,7 +7,7 @@ import 'package:dragger_survey/src/screens/screens.dart';
 import '../styles.dart';
 
 class SurveySetBtmNavigationController extends StatefulWidget {
-  Map<String, dynamic> arguments;
+  final Map<String, dynamic> arguments;
   SurveySetBtmNavigationController({Key key, this.arguments}) : super(key: key);
 
   @override
