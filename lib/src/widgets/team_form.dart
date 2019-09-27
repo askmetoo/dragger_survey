@@ -91,32 +91,28 @@ class _TeamFormState extends State<TeamForm> {
   Widget _buildForm({@required context, @required formKey, String documentId}) {
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
 
-    if (documentId != null) {
-      teamBloc.updatingTeamData = true;
-      teamBloc.currentSelectedTeamId = Future.value(documentId);
-    } else {
+    log("---------> $documentId");
+
+    if (documentId == null) {
       teamBloc.updatingTeamData = false;
+    } else {
+      teamBloc.updatingTeamData = true;
     }
-    log('In Teams form - updatingTeamData: ${teamBloc.updatingTeamData}');
-    log('In Teams form - Selected team id: $documentId');
-    log('In Teams form - Selected team: ');
 
     return FutureBuilder(
       future: teamBloc.getTeamById(id: documentId),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        // if (snapshot.connectionState != ConnectionState.done) {
-        //   return CircularProgressIndicator();
-        // }
-        if (!snapshot.hasData) {
-          log("In TeamForm buildForm snapshot.hasData has no data");
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> teamSnapshot) {
+        if (!teamSnapshot.hasData) {
+          return CircularProgressIndicator();
         }
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             TextFormField(
-              initialValue: teamBloc.updatingTeamData && snapshot?.data != null
-                  ? '${snapshot?.data['name']}'
-                  : '',
+              initialValue:
+                  documentId != null ? teamSnapshot?.data['name'] : '',
               autofocus: true,
               focusNode: firstFocus,
               onEditingComplete: () =>
@@ -145,9 +141,8 @@ class _TeamFormState extends State<TeamForm> {
               minLines: 2,
               maxLines: 9,
               maxLength: 200,
-              initialValue: teamBloc.updatingTeamData && snapshot?.data != null
-                  ? '${snapshot?.data['description']}'
-                  : '',
+              initialValue:
+                  documentId != null ? teamSnapshot?.data['description'] : '',
               focusNode: secondFocus,
               onEditingComplete: () =>
                   FocusScope.of(context).requestFocus(thirdFocus),
@@ -216,10 +211,12 @@ class _TeamFormState extends State<TeamForm> {
         onPressed: _formHasChanged
             ? () {
                 _buttonOnPressed(context: context, formKey: formKey);
-                print("Submit button presssed");
+                log("In TeamForm Submit button presssed - form has changed");
                 Navigator.of(context).pop();
               }
-            : null,
+            : () {
+                log("In TeamForm Submit button presssed - form has NOT changed");
+              },
         child: teamBloc.updatingTeamData ? Text('Update') : Text('Submit'),
       ),
     );
@@ -280,45 +277,31 @@ class _TeamFormState extends State<TeamForm> {
   }
 
   void _buttonOnPressed({formKey, @required BuildContext context}) {
-    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
+    FirebaseUser user = Provider.of<FirebaseUser>(context);
 
-    FutureBuilder<FirebaseUser>(
-      future: signInBloc.currentUser,
-      builder:
-          (BuildContext context, AsyncSnapshot<FirebaseUser> signInSnapshot) {
-        switch (signInSnapshot.connectionState) {
-          case ConnectionState.none:
-          case ConnectionState.waiting:
-          case ConnectionState.active:
-          case ConnectionState.done:
-            if (formKey.currentState.validate()) {
-              print("1a team) ----> Form has been validated.");
-              if (!(teamBloc.updatingTeamData)) {
-                _createdByUser = signInSnapshot.data.uid;
-                _users.add(signInSnapshot.data.uid);
-              } else {
-                _lastEditedByUser = signInSnapshot.data.uid;
-              }
-              formKey.currentState.save();
+    log("----> In TeamForm _buttonOnPressed");
 
-              _sendFormValuesToBloc(context: context);
-              print("1b team) ----> Sending form values to bloc.");
+    if (formKey.currentState.validate()) {
+      print("1a TeamForm) ----> Form has been validated.");
+      if (!(teamBloc.updatingTeamData)) {
+        _createdByUser = user.uid;
+        _users.add(user.uid);
+      } else {
+        _lastEditedByUser = user.uid;
+      }
+      formKey.currentState.save();
 
-              print("1c) ----> Sent data:");
-              print("_created: $_created");
-              print("_name: $_name");
-              print("_description: $_description");
-              print("_createdByUser: $_createdByUser");
-              print("_lastEditedByUser: $_lastEditedByUser");
-              print("_users: $_users");
-            }
+      _sendFormValuesToBloc(context: context);
+      print("1b TeamForm) ----> Sending form values to bloc.");
 
-            break;
-        }
-
-        return Container();
-      },
-    );
+      print("1c TeamForm) ----> Sent data:");
+      print("_created: $_created");
+      print("_name: $_name");
+      print("_description: $_description");
+      print("_createdByUser: $_createdByUser");
+      print("_lastEditedByUser: $_lastEditedByUser");
+      print("_users: $_users");
+    }
   }
 }

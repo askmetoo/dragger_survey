@@ -6,6 +6,7 @@ import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
 import '../styles.dart';
@@ -25,8 +26,12 @@ Widget buildTeamsListView({BuildContext context}) {
           builder: (BuildContext context,
               AsyncSnapshot<QuerySnapshot> teamsListSnapshot) {
             if (teamsListSnapshot.connectionState == ConnectionState.done) {
-              if (!teamsListSnapshot.hasData) CircularProgressIndicator();
-              if (!signInSnapshot.hasData) CircularProgressIndicator();
+              if (!teamsListSnapshot.hasData) {
+                return CircularProgressIndicator();
+              }
+              if (!signInSnapshot.hasData) {
+                return CircularProgressIndicator();
+              }
 
               log("In BuildTeamListView value of teamsListSnapshot: ${teamsListSnapshot.data.documents}");
               teamsListSnapshot.data.documents
@@ -39,13 +44,38 @@ Widget buildTeamsListView({BuildContext context}) {
                       .map((teamDocumentSnapshot) {
                     log("----> In BuildTeamListView ListView value of documentSnapshot.documentID: ${teamDocumentSnapshot.documentID}");
                     String teamId = teamDocumentSnapshot.documentID;
-                    return Dismissible(
+                    return Slidable(
                       key: ValueKey(teamDocumentSnapshot.hashCode),
-                      direction: DismissDirection.endToStart,
-                      onDismissed: (direction) {
-                        log("In BuildTeamListView ListView Dismissible Item ${teamDocumentSnapshot.data['name']}, ${teamDocumentSnapshot.data} is dismissed'");
-                        // teamBloc.deleteTeamById(id: singleTeamSnapshot['id']);
-                      },
+                      actionPane: SlidableDrawerActionPane(),
+                      actionExtentRatio: .25,
+                      // actions: <Widget>[
+                      //   IconSlideAction(
+                      //     caption: 'Archive',
+                      //     color: Colors.blue,
+                      //     icon: Icons.archive,
+                      //     onTap: () {},
+                      //   ),
+                      // ],
+                      secondaryActions: <Widget>[
+                        IconSlideAction(
+                          caption: 'More',
+                          color: Styles.drg_colorSecondaryDeepDark,
+                          icon: Icons.more_horiz,
+                          onTap: () {
+                            log("In SurveySetDetailsScreen Slidable 'More..'");
+                          },
+                        ),
+                        IconSlideAction(
+                          caption: 'Delete',
+                          color: Styles.drg_colorAttention,
+                          icon: Icons.delete,
+                          onTap: () {
+                            log("In BuildTeamListView ListView Dismissible Item ${teamDocumentSnapshot.data['name']}, ${teamDocumentSnapshot.data} is dismissed'");
+                            teamBloc.deleteTeamById(
+                                id: teamDocumentSnapshot.documentID);
+                          },
+                        ),
+                      ],
                       child: ListTile(
                         isThreeLine: false,
                         dense: true,
@@ -55,8 +85,7 @@ Widget buildTeamsListView({BuildContext context}) {
                           key: Key(teamId),
                           icon: Icon(Icons.edit),
                           onPressed: () async {
-                            teamBloc.currentSelectedTeamId =
-                                Future.value(teamId);
+                            teamBloc.currentSelectedTeamId = teamId;
 
                             print("Edit button pressed in teams");
                             showDialog(
