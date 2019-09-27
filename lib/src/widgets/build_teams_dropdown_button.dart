@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
-import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +36,8 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
               return CircularProgressIndicator();
             }
             log("In BuildTeamsDropdownButton - length: ${teamsListSnapshot?.data?.documents?.length}");
+            log("In BuildTeamsDropdownButton - _selectedTeam: $_selectedTeam");
+            log("In BuildTeamsDropdownButton - teamBloc.currentSelectedTeam.documentID: ${teamBloc?.currentSelectedTeam?.documentID}");
 
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -66,7 +67,7 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                           ),
                           elevation: 12,
                           // hint: Text("Hint text"),
-                          hint: teamBloc.currentSelectedTeam == null
+                          hint: teamBloc?.currentSelectedTeam?.documentID == null
                               // hint: _selectedTeamId == null
                               ? Text(
                                   "Please Select a Team",
@@ -86,8 +87,8 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                         fontSize: 20),
                                     children: [
                                       TextSpan(
-                                        text: _selectedTeam?.data != null
-                                            ? "${_selectedTeam?.data['name']}"
+                                        text: teamBloc?.currentSelectedTeam?.documentID != null
+                                            ? "${teamBloc?.currentSelectedTeam?.data['name']}"
                                             : 'No selected team',
                                         style: TextStyle(
                                           color: Styles.drg_colorText,

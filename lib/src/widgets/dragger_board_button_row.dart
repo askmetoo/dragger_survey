@@ -6,8 +6,10 @@ import 'package:provider/provider.dart';
 
 class DraggerBoardButtonRow extends StatelessWidget {
   final GlobalKey<FormState> formKey;
+  final String currentSurveySet;
   const DraggerBoardButtonRow({
     this.formKey,
+    @required this.currentSurveySet,
     Key key,
   }) : super(key: key);
 
@@ -44,6 +46,7 @@ class DraggerBoardButtonRow extends StatelessWidget {
                   "created": prismSurveyBloc.created,
                   "askedPerson": prismSurveyBloc.currentAskedPerson,
                   "team": teamBloc.currentSelectedTeam?.documentID,
+                  "surveySet": currentSurveySet,
                   "edited": DateTime.now(),
                   "users": user.uid,
                   "xValue": prismSurveyBloc.colIndex,

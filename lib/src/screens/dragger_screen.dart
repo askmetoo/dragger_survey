@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/screens/screens.dart';
 import 'package:dragger_survey/src/styles.dart';
@@ -18,13 +19,14 @@ class _DraggerScreenState extends State<DraggerScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _xName = '';
   String _yName = '';
+  DocumentSnapshot surveySet;
 
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
     final PrismSurveySetBloc prismSurveySetBloc =
         Provider.of<PrismSurveySetBloc>(context);
-    var surveySet = await prismSurveySetBloc?.currentPrismSurveySet;
+    surveySet = await prismSurveySetBloc?.currentPrismSurveySet;
     try {
       setState(() {
         _xName = surveySet?.data['xName'];
@@ -132,6 +134,7 @@ class _DraggerScreenState extends State<DraggerScreen> {
                 "Granularity: ${matrixGranularityBloc.matrixGranularity} \nStone is dragged to \n$_xName: ${prismSurveyBloc.rowIndex} \n$_yName: ${prismSurveyBloc.colIndex}"),
             DraggerBoardButtonRow(
               formKey: _formKey,
+              currentSurveySet: surveySet?.documentID,
             ),
           ],
         ),

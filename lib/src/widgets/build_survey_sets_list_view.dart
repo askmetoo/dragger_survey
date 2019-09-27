@@ -4,6 +4,7 @@ import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/enums/connectivity_status.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:date_format/date_format.dart';
 
@@ -51,7 +52,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                 fontFamily: 'SonsieOne',
                 fontSize: 28,
                 letterSpacing: -2,
-                color: Styles.drg_colorSecondaryDeepDark,
+                color: Styles.drg_colorText.withOpacity(0.7),
                 shadows: [
                   Shadow(
                     color: Styles.drg_colorText.withOpacity(.2),
@@ -213,13 +214,53 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                 if (!surveySetDokumentSnapshot.exists) {
                   Text("surveySetDokumentSnapshot does not exist");
                 }
-                return Dismissible(
+                return Slidable(
                   key: ValueKey(surveySetDokumentSnapshot.hashCode),
-                  direction: DismissDirection.endToStart,
-                  onDismissed: (direction) {
-                    surveySetsBloc.deletePrismSurveySetById(
-                        id: surveySetDokumentSnapshot.documentID);
-                  },
+                  actionPane: SlidableBehindActionPane(),
+                  actionExtentRatio: .20,
+                  // actions: <Widget>[
+                  //   IconSlideAction(
+                  //     caption: 'Archive',
+                  //     color: Colors.blue,
+                  //     icon: Icons.archive,
+                  //     onTap: () {},
+                  //   ),
+                  // ],
+                  secondaryActions: <Widget>[
+                    // IconSlideAction(
+                    //   caption: 'More',
+                    //   color: Styles.drg_colorSecondaryDeepDark,
+                    //   icon: Icons.more_horiz,
+                    //   onTap: () {
+                    //     log("In BuildSurveySesListView Slidable 'More..'");
+                    //   },
+                    // ),
+                    IconSlideAction(
+                      caption: 'Delete',
+                      color: Styles.drg_colorAttention,
+                      icon: Icons.delete,
+                      onTap: () {
+                        log("In BuildSurveySesListView ListView Dismissible Item name: ${surveySetDokumentSnapshot.data['name']}, id: ${surveySetDokumentSnapshot.documentID} is dismissed'");
+                        surveySetsBloc.deletePrismSurveySetById(
+                            id: surveySetDokumentSnapshot.documentID);
+
+                        Scaffold.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Styles.drg_colorAttention,
+                            elevation: 20,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(40)),
+                            content: Text(
+                                "${surveySetDokumentSnapshot.data['name']} has been deleted."),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                  // onDismissed: (direction) {
+                  //   surveySetsBloc.deletePrismSurveySetById(
+                  //       id: surveySetDokumentSnapshot.documentID);
+                  // },
                   child: ListTile(
                       onTap: () {
                         surveySetsBloc.setCurrentPrismSurveySetById(

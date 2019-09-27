@@ -42,7 +42,7 @@ Widget buildTeamsListView({BuildContext context}) {
                     return Slidable(
                       key: ValueKey(teamDocumentSnapshot.hashCode),
                       actionPane: SlidableDrawerActionPane(),
-                      actionExtentRatio: .25,
+                      actionExtentRatio: .20,
                       // actions: <Widget>[
                       //   IconSlideAction(
                       //     caption: 'Archive',
@@ -52,14 +52,14 @@ Widget buildTeamsListView({BuildContext context}) {
                       //   ),
                       // ],
                       secondaryActions: <Widget>[
-                        IconSlideAction(
-                          caption: 'More',
-                          color: Styles.drg_colorSecondaryDeepDark,
-                          icon: Icons.more_horiz,
-                          onTap: () {
-                            log("In SurveySetDetailsScreen Slidable 'More..'");
-                          },
-                        ),
+                        // IconSlideAction(
+                        //   caption: 'More',
+                        //   color: Styles.drg_colorSecondaryDeepDark,
+                        //   icon: Icons.more_horiz,
+                        //   onTap: () {
+                        //     log("In SurveySetDetailsScreen Slidable 'More..'");
+                        //   },
+                        // ),
                         IconSlideAction(
                           caption: 'Delete',
                           color: Styles.drg_colorAttention,
