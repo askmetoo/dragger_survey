@@ -29,14 +29,12 @@ class DraggerBoardButtonRow extends StatelessWidget {
               textColor: Color(0xff662d00),
               child: Text("Ergebnis speichern"),
               onPressed: () {
-                if (this.formKey.currentState.validate()) {
-                  Scaffold
-                    .of(context)
-                    .showSnackBar(SnackBar(
-                      content: Text('Processing data \n${prismSurveyBloc.created} \n${prismSurveyBloc.rowIndex} \n${prismSurveyBloc.colIndex} \n${prismSurveyBloc.currentAskedPerson}'),
-                    ),
-                    );
-                }
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                        'Processing data \n${prismSurveyBloc.created} \n${prismSurveyBloc.rowIndex} \n${prismSurveyBloc.colIndex} \n${prismSurveyBloc.currentAskedPerson}'),
+                  ),
+                );
               },
             ),
           ),
