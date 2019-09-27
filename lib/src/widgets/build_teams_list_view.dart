@@ -28,18 +28,23 @@ Widget buildTeamsListView({BuildContext context}) {
               if (!teamsListSnapshot.hasData) CircularProgressIndicator();
               if (!signInSnapshot.hasData) CircularProgressIndicator();
 
+              log("In BuildTeamListView value of teamsListSnapshot: ${teamsListSnapshot.data.documents}");
+              teamsListSnapshot.data.documents
+                  .forEach((doc) => log("---> ${doc.documentID}"));
+
               return ListView(
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
                   children: teamsListSnapshot.data.documents
-                      .map((singleTeamSnapshot) {
+                      .map((teamDocumentSnapshot) {
+                    log("----> In BuildTeamListView ListView value of documentSnapshot.documentID: ${teamDocumentSnapshot.documentID}");
+                    String teamId = teamDocumentSnapshot.documentID;
                     return Dismissible(
-                      key: ValueKey(singleTeamSnapshot.hashCode),
+                      key: ValueKey(teamDocumentSnapshot.hashCode),
                       direction: DismissDirection.endToStart,
                       onDismissed: (direction) {
-                        print(
-                            '------>>> Item ${singleTeamSnapshot['name']}, ${singleTeamSnapshot['id']} is dismissed');
-                        teamBloc.deleteTeamById(id: singleTeamSnapshot['id']);
+                        log("In BuildTeamListView ListView Dismissible Item ${teamDocumentSnapshot.data['name']}, ${teamDocumentSnapshot.data} is dismissed'");
+                        // teamBloc.deleteTeamById(id: singleTeamSnapshot['id']);
                       },
                       child: ListTile(
                         isThreeLine: false,
@@ -47,19 +52,21 @@ Widget buildTeamsListView({BuildContext context}) {
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         trailing: IconButton(
-                          key: Key(singleTeamSnapshot['id']),
+                          key: Key(teamId),
                           icon: Icon(Icons.edit),
                           onPressed: () async {
                             teamBloc.currentSelectedTeamId =
-                                singleTeamSnapshot['id'] as Future<String>;
+                                Future.value(teamId);
+
                             print("Edit button pressed in teams");
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
+                                log("In BuildTeamsListView showDialog value of documentSnapshot.documentID: $teamId");
                                 return AlertDialog(
                                   title: Text("Edit Team"),
                                   content: TeamForm(
-                                    id: singleTeamSnapshot['id'],
+                                    id: teamId,
                                   ),
                                   elevation: 10,
                                   shape: RoundedRectangleBorder(
@@ -79,15 +86,16 @@ Widget buildTeamsListView({BuildContext context}) {
                           },
                         ),
                         onTap: () {
+                          log("In BuildTeamListView ListTile onTap - teamId: $teamId");
                           Navigator.pushNamed(context, '/surveysetslist',
-                              arguments: "${singleTeamSnapshot['id']}");
+                              arguments: "$teamId");
                         },
                         title: Text(
-                          "${singleTeamSnapshot['name']}",
+                          "${teamDocumentSnapshot['name']}",
                           style: Styles.drg_textListTitle,
                         ),
                         subtitle: Text(
-                          """id: ${singleTeamSnapshot['id']} \nCreated: ${formatDate(singleTeamSnapshot['created'].toDate(), [
+                          """id: $teamId \nCreated: ${formatDate(teamDocumentSnapshot['created'].toDate(), [
                             dd,
                             '. ',
                             MM,
@@ -97,7 +105,7 @@ Widget buildTeamsListView({BuildContext context}) {
                             HH,
                             ':',
                             nn
-                          ])} \nLast edited: ${singleTeamSnapshot['edited'] != null ? formatDate(singleTeamSnapshot['edited'].toDate(), [
+                          ])} \nLast edited: ${teamDocumentSnapshot['edited'] != null ? formatDate(teamDocumentSnapshot['edited'].toDate(), [
                               dd,
                               '. ',
                               MM,
