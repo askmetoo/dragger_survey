@@ -11,9 +11,9 @@ class Global {
 
   // Data Models
   static final Map models = {
-    PrismSurveySet: (data) => PrismSurveySet.fromFirestore(data),
-    PrismSurvey: (data) => PrismSurvey.fromFirestore(data),
-    Team: (data) => Team.fromFirestore(data),
+    PrismSurveySet: (data) => PrismSurveySet.fromDocument(data),
+    PrismSurvey: (data) => PrismSurvey.fromDocument(data),
+    Team: (data) => Team.fromDocument(data),
     User: (data) => User.fromDocument(data),
   };
 
