@@ -169,8 +169,26 @@ class PrismSurveyBloc extends ChangeNotifier {
         log("ERROR in PrismSurveyBloc getPrismSurveyById - error: $err");
         return null;
       });
-      
+
       return snapshot;
+  }
+
+  Future<QuerySnapshot> getPrismSurveyQuery(
+      {String fieldName, String fieldValue}) {
+    return Collection<PrismSurvey>(path: 'surveys')
+        .getDocumentsByQuery(fieldName: fieldName, fieldValue: fieldValue);
+  }
+
+  Future<QuerySnapshot> getPrismSurveyQueryOrderCreatedAsc(
+      {String fieldName, String fieldValue}) {
+    return Collection<PrismSurvey>(path: 'surveys')
+        .getDocumentsByQuerySortByCreatedAsc(fieldName: fieldName, fieldValue: fieldValue);
+  }
+  
+  Future<QuerySnapshot> getPrismSurveyQueryOrderCreatedDesc(
+      {String fieldName, String fieldValue}) {
+    return Collection<PrismSurvey>(path: 'surveys')
+        .getDocumentsByQuerySortByCreatedDesc(fieldName: fieldName, fieldValue: fieldValue);
   }
 
   addPrismSurveyToDb({Map<String, dynamic> survey}) async {

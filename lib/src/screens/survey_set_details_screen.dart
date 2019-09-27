@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
-import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -53,12 +52,13 @@ class SurveySetDetailsScreen extends StatelessWidget {
     );
   }
 
-  buildSurveyList(
-      {BuildContext context,
-      AsyncSnapshot<DocumentSnapshot> surveySetsSnapshot}) {
+  buildSurveyList({
+    BuildContext context,
+    AsyncSnapshot<DocumentSnapshot> surveySetsSnapshot,
+  }) {
     final PrismSurveyBloc surveyBloc = Provider.of<PrismSurveyBloc>(context);
+    Future<QuerySnapshot> _surveyList;
 
-    List<dynamic> surveysArray;
 
     if (surveySetsSnapshot.connectionState == ConnectionState.done) {
       if (!surveySetsSnapshot.hasData) {
@@ -66,93 +66,126 @@ class SurveySetDetailsScreen extends StatelessWidget {
       }
 
       try {
-        surveysArray = surveySetsSnapshot?.data?.data['surveys'];
+        // log("In SurveySetDetailsScreen surveySetsSnapshot.data.documentID: ${surveySetsSnapshot.data.documentID}");
+        _surveyList = surveyBloc.getPrismSurveyQueryOrderCreatedDesc(fieldName: 'surveySet', fieldValue: surveySetsSnapshot.data.documentID);
       } catch (e) {
         log("ERROR in SurveySetDetailsScreen try surveysArray: $e");
-        surveysArray = [];
       }
 
-      return surveysArray?.length == 0 || surveysArray == null
-          ? Text('>>> No surveys yet <<<')
-          : Expanded(
-              child: ListView.builder(
-              itemCount: surveySetsSnapshot?.data?.data['surveys']?.length,
-              scrollDirection: Axis.vertical,
-              itemBuilder: (BuildContext context, int index) {
-                return Slidable(
-                  key: ValueKey(index),
-                  actionPane: SlidableDrawerActionPane(),
-                  actionExtentRatio: 0.25,
-                  // actions: <Widget>[
-                  //   IconSlideAction(
-                  //     caption: 'Archive',
-                  //     color: Colors.blue,
-                  //     icon: Icons.archive,
-                  //     onTap: () {},
-                  //   ),
-                  // ],
-                  secondaryActions: <Widget>[
-                    IconSlideAction(
-                      caption: 'More',
-                      color: Styles.drg_colorSecondaryDeepDark,
-                      icon: Icons.more_horiz,
-                      onTap: () {
-                        log("In SurveySetDetailsScreen Slidable 'More..'");
-                      },
-                    ),
-                    IconSlideAction(
-                      caption: 'Delete',
-                      color: Styles.drg_colorAttention,
-                      icon: Icons.delete,
-                      onTap: () {
-                        String _surveyId =
-                            surveySetsSnapshot?.data?.data['surveys'][index];
-                        log("In SurveySetDetailsScreen Slidable 'Delete': $_surveyId");
-                      },
-                    ),
-                  ],
-                  child: ListTile(
-                    onTap: () {},
-                    title: FutureBuilder<Object>(
-                        future: surveyBloc.getPrismSurveyById(
-                            id: surveysArray[index]),
-                        builder: (context, AsyncSnapshot surveySnapshot) {
-                          if (!(surveySnapshot.connectionState ==
-                              ConnectionState.done)) {
-                            return CircularProgressIndicator();
-                          }
-                          if (!surveySnapshot.hasData) {
-                            return Text("No data in survey");
-                          }
+      return FutureBuilder<QuerySnapshot>(
+        future: _surveyList,
+        builder: (context, AsyncSnapshot<QuerySnapshot> surveySnapshot) {
+          if (surveySnapshot.connectionState == ConnectionState.done) {
+            if( surveySnapshot.data.documents == null ) {
+              return Text(">>> No Surveys yet! <<<");
+            }
+          return Expanded(
+                  child: ListView.builder(
+                  itemCount: surveySnapshot.data.documents.length,
+                  // itemCount: surveySetsSnapshot?.data?.data['surveys']?.length,
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (BuildContext context, int index) {
+                    log("-----> In SurveySetDetailsScreen ListView index: $index");
+                    DocumentSnapshot document = surveySnapshot.data.documents[index];
+                    return Slidable(
+                      key: ValueKey(index),
+                      actionPane: SlidableDrawerActionPane(),
+                      actionExtentRatio: 0.25,
+                      // actions: <Widget>[
+                      //   IconSlideAction(
+                      //     caption: 'Archive',
+                      //     color: Colors.blue,
+                      //     icon: Icons.archive,
+                      //     onTap: () {},
+                      //   ),
+                      // ],
+                      secondaryActions: <Widget>[
+                        IconSlideAction(
+                          caption: 'More',
+                          color: Styles.drg_colorSecondaryDeepDark,
+                          icon: Icons.more_horiz,
+                          onTap: () {
+                            log("In SurveySetDetailsScreen Slidable 'More..'");
+                          },
+                        ),
+                        IconSlideAction(
+                          caption: 'Delete',
+                          color: Styles.drg_colorAttention,
+                          icon: Icons.delete,
+                          onTap: () {
+                            String _surveyId =
+                                surveySetsSnapshot?.data?.data['surveys'][index];
+                            log("In SurveySetDetailsScreen Slidable 'Delete': $_surveyId");
+                          },
+                        ),
+                      ],
+                      child: ListTile(
+                        onTap: () {},
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text("Asked: ${document.data['askedPerson']}"),
+                            Text("Created: ${formatDate(
+                                      document.data['created'].toDate(), [
+                                    'dd',
+                                    '.',
+                                    'mm',
+                                    '.',
+                                    'yyyy',
+                                    ', ',
+                                    'HH',
+                                    ':',
+                                    'nn',
+                                    ':',
+                                    'ss'
+                                  ])
+                                  }"),
+                          ],
+                        ),
+                        // title: FutureBuilder<Object>(
+                        //     future: surveyBloc.getPrismSurveyById(
+                        //         id: surveySnapshot?.data?.documents[index]),
+                        //     builder: (context, AsyncSnapshot surveySnapshot) {
+                        //       if (!(surveySnapshot.connectionState ==
+                        //           ConnectionState.done)) {
+                        //         return CircularProgressIndicator();
+                        //       }
+                        //       if (!surveySnapshot.hasData) {
+                        //         return Text("No data in survey");
+                        //       }
 
-                          try {
-                            if (surveySnapshot.data['created'] != null) {
-                              String formattedDate = formatDate(
-                                  surveySnapshot?.data['created'].toDate(), [
-                                'dd',
-                                '.',
-                                'mm',
-                                '.',
-                                'yyyy',
-                                ', ',
-                                'HH',
-                                ':',
-                                'nn',
-                                ':',
-                                'ss'
-                              ]);
-                              return Text(
-                                  "Survey created: $formattedDate h \nid: ${surveySetsSnapshot.data.data['surveys'][index]}");
-                            }
-                          } catch (e) {
-                            return Container();
-                          }
-                          return Container();
-                        }),
-                  ),
-                );
-              },
-            ));
+                        //       try {
+                        //         if (surveySnapshot.data['created'] != null) {
+                        //           String formattedDate = formatDate(
+                        //               surveySnapshot?.data['created'].toDate(), [
+                        //             'dd',
+                        //             '.',
+                        //             'mm',
+                        //             '.',
+                        //             'yyyy',
+                        //             ', ',
+                        //             'HH',
+                        //             ':',
+                        //             'nn',
+                        //             ':',
+                        //             'ss'
+                        //           ]);
+                        //           return Text(
+                        //               "Survey created: $formattedDate h \nid: ${surveySetsSnapshot.data.data['surveys'][index]}");
+                        //         }
+                        //       } catch (e) {
+                        //         return Container();
+                        //       }
+                        //       return Container();
+                        //     }),
+                      ),
+                    );
+                  },
+                ));
+                }
+                return Container();
+        }
+      );
     }
   }
 

@@ -56,6 +56,20 @@ class Collection<T> {
       {String fieldName, String fieldValue}) async {
     return ref.where(fieldName, isEqualTo: fieldValue).getDocuments();
   }
+  Future<QuerySnapshot> getDocumentsByQuerySortByCreatedAsc(
+      {String fieldName, String fieldValue}) async {
+    return ref.where(fieldName, isEqualTo: fieldValue)
+              .orderBy('created', descending: false)
+              .getDocuments()
+              .catchError((e) => log("ERROR in db.dart getDocumentsByQuerySortByCreatedDesc: $e"));
+  }
+  Future<QuerySnapshot> getDocumentsByQuerySortByCreatedDesc(
+      {String fieldName, String fieldValue}) async {
+    return ref.where(fieldName, isEqualTo: fieldValue)
+              .orderBy('created', descending: true)
+              .getDocuments()
+              .catchError((e) => print("ERROR in db.dart getDocumentsByQuerySortByCreatedDesc: $e"));
+  }
 
   Future<QuerySnapshot> getDocumentsByQueryArray(
       {String fieldName, String arrayValue}) {
