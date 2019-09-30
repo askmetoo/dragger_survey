@@ -53,6 +53,7 @@ class DraggerBoardButtonRow extends StatelessWidget {
                   "yValue": prismSurveyBloc.rowIndex,
                 };
                 prismSurveyBloc.addPrismSurveyToDb(survey: survey);
+                Navigator.of(context).pop();
               },
             ),
           ),

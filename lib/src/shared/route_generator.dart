@@ -12,6 +12,13 @@ class RouteGenerator {
           type: PageTransitionType.fade,
         );
         break;
+      case '/draggerscaffold':
+        return PageTransition(
+          duration: Duration(milliseconds: 400),
+          child: DraggerScaffoldScreen(),
+          type: PageTransitionType.fade,
+        );
+        break;
       case '/surveysetslist':
         var _teamId = settings.arguments ?? '';
         return PageTransition(

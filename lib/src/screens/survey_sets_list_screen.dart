@@ -18,7 +18,6 @@ class SurveySetsListScreen extends StatefulWidget {
 class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
   @override
   Widget build(BuildContext context) {
-    final PrismSurveySetBloc prismSurveySetBloc = Provider.of<PrismSurveySetBloc>(context);
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
 
     FirebaseUser user = Provider.of<FirebaseUser>(context);

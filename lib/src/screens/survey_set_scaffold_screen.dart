@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/screens/screens.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
@@ -36,6 +37,23 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
         title: Text("${_titleOptions.elementAt(_selectedIndex)}"),
       ),
       body: _widgetOptions(context, args: arg).elementAt(_selectedIndex),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Styles.drg_colorSecondary,
+        label: Text(
+          "New Survey",
+          style: TextStyle(
+            color: Styles.drg_colorText.withOpacity(0.8),
+          ),
+        ),
+        icon: Icon(
+          Icons.group_add,
+          color: Styles.drg_colorDarkerGreen,
+        ),
+        tooltip: "Add new Survey",
+        onPressed: () {
+          Navigator.pushNamed(context, '/draggerscaffold');
+        },
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         key: ValueKey(arg.hashCode),
@@ -45,13 +63,13 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
             icon: Icon(Icons.dvr),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.apps),
-            title: Text('Dragger Board'),
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.show_chart),
             title: Text('Graphs'),
           ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.apps),
+          //   title: Text('Dragger Board'),
+          // ),
         ],
         currentIndex: _selectedIndex,
         backgroundColor: Styles.drg_colorSecondary,
@@ -69,8 +87,10 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
       SurveySetDetailsScreen(
         surveySetId: _id,
       ),
+      SurveySetGraphsScreen(
+        surveySetId: _id,
+      ),
       DraggerScreen(),
-      SurveySetGraphsScreen()
     ];
   }
 }

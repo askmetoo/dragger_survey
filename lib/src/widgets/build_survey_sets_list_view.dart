@@ -26,7 +26,9 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
       return Center(
         child: Column(
           children: <Widget>[
-            Spacer(),
+            Spacer(
+              flex: 8,
+            ),
             Text(
               "Before you      ",
               style: TextStyle(
@@ -65,6 +67,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                 ],
               ),
             ),
+            Spacer(),
             Text(
               "please, first chose a team for which",
               style: TextStyle(
@@ -81,8 +84,12 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                 color: Styles.drg_colorText.withOpacity(.7),
               ),
             ),
-            Spacer(),
-            Spacer(),
+            Spacer(
+              flex: 8,
+            ),
+            Spacer(
+              flex: 8,
+            ),
           ],
         ),
       );
@@ -114,7 +121,9 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
             return Center(
               child: Column(
                 children: <Widget>[
-                  Spacer(),
+                  Spacer(
+                    flex: 8,
+                  ),
                   Container(
                     height: 24,
                     child: Text(
@@ -178,6 +187,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                       ],
                     ),
                   ),
+                  Spacer(),
                   Text(
                     "Please select another team",
                     textAlign: TextAlign.center,
@@ -196,111 +206,151 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                       color: Styles.drg_colorText.withOpacity(.7),
                     ),
                   ),
-                  Spacer(),
-                  Spacer(),
+                  Spacer(
+                    flex: 8,
+                  ),
+                  Spacer(
+                    flex: 8,
+                  ),
                 ],
               ),
             );
           }
 
-          return ListView(
-            scrollDirection: Axis.vertical,
-            children: surveySetSnapshot.data.documents.map(
-              (DocumentSnapshot surveySetDokumentSnapshot) {
-                if (!(surveySetSnapshot.connectionState ==
-                    ConnectionState.done)) {
-                  return Center(child: CircularProgressIndicator());
-                }
-                if (!surveySetDokumentSnapshot.exists) {
-                  Text("surveySetDokumentSnapshot does not exist");
-                }
-                return Slidable(
-                  key: ValueKey(surveySetDokumentSnapshot.hashCode),
-                  actionPane: SlidableBehindActionPane(),
-                  actionExtentRatio: .20,
-                  // actions: <Widget>[
-                  //   IconSlideAction(
-                  //     caption: 'Archive',
-                  //     color: Colors.blue,
-                  //     icon: Icons.archive,
-                  //     onTap: () {},
-                  //   ),
-                  // ],
-                  secondaryActions: <Widget>[
-                    // IconSlideAction(
-                    //   caption: 'More',
-                    //   color: Styles.drg_colorSecondaryDeepDark,
-                    //   icon: Icons.more_horiz,
-                    //   onTap: () {
-                    //     log("In BuildSurveySesListView Slidable 'More..'");
-                    //   },
-                    // ),
-                    IconSlideAction(
-                      caption: 'Delete',
-                      color: Styles.drg_colorAttention,
-                      icon: Icons.delete,
-                      onTap: () {
-                        log("In BuildSurveySesListView ListView Dismissible Item name: ${surveySetDokumentSnapshot.data['name']}, id: ${surveySetDokumentSnapshot.documentID} is dismissed'");
-                        surveySetsBloc.deletePrismSurveySetById(
-                            id: surveySetDokumentSnapshot.documentID);
-
-                        Scaffold.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor: Styles.drg_colorAttention,
-                            elevation: 20,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(40)),
-                            content: Text(
-                                "${surveySetDokumentSnapshot.data['name']} has been deleted."),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                  // onDismissed: (direction) {
-                  //   surveySetsBloc.deletePrismSurveySetById(
-                  //       id: surveySetDokumentSnapshot.documentID);
-                  // },
-                  child: ListTile(
-                      onTap: () {
-                        surveySetsBloc.setCurrentPrismSurveySetById(
-                            id: surveySetDokumentSnapshot.documentID);
-                        Navigator.pushNamed(context, '/surveysetscaffold',
-                            arguments: {
-                              "id": "${surveySetDokumentSnapshot.documentID}"
-                            });
-                      },
-                      title: Text(
-                        "${surveySetDokumentSnapshot.data['name']}",
-                        style: TextStyle(
-                          color: Styles.drgColorTextMediumLight,
-                          fontFamily: 'Bitter',
-                          fontSize: Styles.drg_fontSizeMediumHeadline,
-                          // fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      subtitle: Text(
-                        "By Team: ${surveySetDokumentSnapshot.data['createdByTeamName']} \nCreated: ${formatDate(surveySetDokumentSnapshot['created'].toDate(), [
-                          dd,
-                          '. ',
-                          MM,
-                          ' ',
-                          yyyy,
-                          ', ',
-                          HH,
-                          ':',
-                          nn
-                        ])}",
-                        style: Styles.drg_textListContent,
-                      )),
-                );
-              },
-            ).toList(),
+          return Column(
+            children: <Widget>[
+              Container(
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Text(
+                    "Select a Survey Set or new Set.", textAlign: TextAlign.start,
+                  ),
+              ),
+              Expanded(
+                  child: BuildListOfSets(
+                hashCode: hashCode,
+                surveySetsBloc: surveySetsBloc,
+                surveySetSnapshot: surveySetSnapshot,
+              )),
+            ],
           );
         }
         return Container();
       },
+    );
+  }
+}
+
+class BuildListOfSets extends StatelessWidget {
+  const BuildListOfSets({
+    Key key,
+    @required this.hashCode,
+    @required this.surveySetsBloc,
+    @required this.surveySetSnapshot,
+  }) : super(key: key);
+
+  final int hashCode;
+  final PrismSurveySetBloc surveySetsBloc;
+  final AsyncSnapshot<QuerySnapshot> surveySetSnapshot;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      scrollDirection: Axis.vertical,
+      children: surveySetSnapshot.data.documents.map(
+        (DocumentSnapshot surveySetDokumentSnapshot) {
+          if (!(surveySetSnapshot.connectionState == ConnectionState.done)) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (!surveySetDokumentSnapshot.exists) {
+            Text("surveySetDokumentSnapshot does not exist");
+          }
+          return Slidable(
+            key: ValueKey(surveySetDokumentSnapshot.hashCode),
+            actionPane: SlidableBehindActionPane(),
+            actionExtentRatio: .20,
+            // actions: <Widget>[
+            //   IconSlideAction(
+            //     caption: 'Archive',
+            //     color: Colors.blue,
+            //     icon: Icons.archive,
+            //     onTap: () {},
+            //   ),
+            // ],
+            secondaryActions: <Widget>[
+              // IconSlideAction(
+              //   caption: 'More',
+              //   color: Styles.drg_colorSecondaryDeepDark,
+              //   icon: Icons.more_horiz,
+              //   onTap: () {
+              //     log("In BuildSurveySesListView Slidable 'More..'");
+              //   },
+              // ),
+              IconSlideAction(
+                caption: 'Delete',
+                color: Styles.drg_colorAttention,
+                icon: Icons.delete,
+                onTap: () {
+                  log("In BuildSurveySesListView ListView Dismissible Item name: ${surveySetDokumentSnapshot.data['name']}, id: ${surveySetDokumentSnapshot.documentID} is dismissed'");
+                  surveySetsBloc.deletePrismSurveySetById(
+                      id: surveySetDokumentSnapshot.documentID);
+
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: Styles.drg_colorAttention,
+                      elevation: 20,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40)),
+                      content: Text(
+                          "${surveySetDokumentSnapshot.data['name']} has been deleted."),
+                    ),
+                  );
+                },
+              ),
+            ],
+            // onDismissed: (direction) {
+            //   surveySetsBloc.deletePrismSurveySetById(
+            //       id: surveySetDokumentSnapshot.documentID);
+            // },
+            child: Container(
+              color: Styles.drg_colorSecondary.withOpacity(.3),
+              child: ListTile(
+                  onTap: () {
+                    surveySetsBloc.setCurrentPrismSurveySetById(
+                        id: surveySetDokumentSnapshot.documentID);
+                    Navigator.pushNamed(context, '/surveysetscaffold',
+                        arguments: {
+                          "id": "${surveySetDokumentSnapshot.documentID}"
+                        });
+                  },
+                  title: Text(
+                    "${surveySetDokumentSnapshot.data['name']}",
+                    style: TextStyle(
+                      color: Styles.drgColorTextMediumLight,
+                      fontFamily: 'Bitter',
+                      fontSize: Styles.drg_fontSizeMediumHeadline,
+                      // fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  subtitle: Text(
+                    "Board resolution: ${surveySetDokumentSnapshot.data['resolution']} \nCreated: ${formatDate(surveySetDokumentSnapshot['created'].toDate(), [
+                      dd,
+                      '. ',
+                      MM,
+                      ' ',
+                      yyyy,
+                      ', ',
+                      HH,
+                      ':',
+                      nn
+                    ])}",
+                    style: Styles.drg_textListContent,
+                  )),
+            ),
+          );
+        },
+      ).toList(),
     );
   }
 }
