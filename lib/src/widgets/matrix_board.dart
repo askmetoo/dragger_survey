@@ -16,7 +16,7 @@ class MatrixBoard extends StatefulWidget {
 }
 
 class _MatrixBoardState extends State<MatrixBoard> {
-  final double aspectratioValue = .94;
+  final double aspectratioValue = .98;
   int gridLength;
 
   @override
@@ -81,16 +81,15 @@ class _BuildMatrixBoardState extends State<BuildMatrixBoard> {
   Widget build(BuildContext context) {
     return RotatedBox(
       quarterTurns: 3,
-      child: SizedBox(
-        width: 420,
-        height: 420,
+      child: AspectRatio(
+        aspectRatio: widget.aspectratioValue,
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
+              topLeft: Radius.circular(60),
               bottomLeft: Radius.circular(20),
               topRight: Radius.circular(20),
-              bottomRight: Radius.circular(60),
+              bottomRight: Radius.circular(20),
             ),
             boxShadow: [
               BoxShadow(
@@ -100,12 +99,10 @@ class _BuildMatrixBoardState extends State<BuildMatrixBoard> {
             ],
             color: Colors.orange.shade200,
           ),
-          padding: EdgeInsets.all(10),
-          margin: EdgeInsets.only(
-            top: 10,
-            left: 10,
-            right: 10,
-            bottom: 20,
+          padding: EdgeInsets.all(0),
+          margin: EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 10,
           ),
           child: GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -117,16 +114,14 @@ class _BuildMatrixBoardState extends State<BuildMatrixBoard> {
               final PrismSurveyBloc prismSurveyBloc =
                   Provider.of<PrismSurveyBloc>(context);
 
-              return AspectRatio(
-                  aspectRatio: widget.aspectratioValue,
-                  child: Container(
-                    child: DraggerTaget(
-                        index: index,
-                        position: widget.position,
-                        grid: widget.grid,
-                        draggableItemBloc: draggableItemBloc,
-                        prismSurveyBloc: prismSurveyBloc),
-                  ));
+              return Container(
+                child: DraggerTaget(
+                    index: index,
+                    position: widget.position,
+                    grid: widget.grid,
+                    draggableItemBloc: draggableItemBloc,
+                    prismSurveyBloc: prismSurveyBloc),
+              );
             },
           ),
         ),

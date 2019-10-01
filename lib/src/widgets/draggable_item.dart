@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../blocs/draggable_item_bloc.dart';
@@ -11,8 +13,8 @@ class DraggableItem extends StatefulWidget {
 class _DraggableItemState extends State<DraggableItem> {
   int rowIdx;
   int colIdx;
-  double top;
-  double left;
+  double _top = -230;
+  double _left = -50;
 
   final String _dragData = "Meine Meinung";
   final double _draggableSize = 70.0;
@@ -23,9 +25,14 @@ class _DraggableItemState extends State<DraggableItem> {
     final DraggableItemBloc draggableBloc =
         Provider.of<DraggableItemBloc>(context);
 
+    log("draggableItemPositon.dx: ${draggableBloc.draggableItemPositon.dx}");
+    log("draggableItemPositon.dy: ${draggableBloc.draggableItemPositon.dy}");
+
     return Positioned(
-      left: draggableBloc.draggableItemPositon.dx - 10,
-      top: draggableBloc.draggableItemPositon.dy + 220,
+      left: draggableBloc.draggableItemPositon.dx + (_draggableSize / 2),
+      top: draggableBloc.draggableItemPositon.dy + (_draggableSize / 2),
+      // left: draggableBloc.draggableItemPositon.dx - 10,
+      // top: draggableBloc.draggableItemPositon.dy + 220,
       // left: draggableBloc.draggableItemPositon.dx - 10,
       // top: draggableBloc.draggableItemPositon.dy - _draggableSize - 10,
       child: Draggable<String>(
@@ -79,8 +86,10 @@ class _DraggableItemState extends State<DraggableItem> {
         onDragEnd: (drag) {
           draggableBloc.setNewDraggableItemPositon(
             position: Offset(
-              drag.offset.dx - (_draggableSize / 2.04),
-              drag.offset.dy - (_draggableSize / .185),
+              drag.offset.dx - (_draggableSize / 2.1),
+              drag.offset.dy - (_draggableSize / .39),
+              // drag.offset.dx - (_draggableSize / 2.04),
+              // drag.offset.dy - (_draggableSize / .185),
               // drag.offset.dy - (_draggableSize / .98),
             ),
           );
