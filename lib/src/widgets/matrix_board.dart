@@ -134,8 +134,8 @@ class BuildGoalItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: 30,
-      right: 0,
+      bottom: 302,
+      left: 290,
       child: GoalItem(),
     );
   }
