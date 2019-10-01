@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math' hide log;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
@@ -126,9 +127,12 @@ class _DraggerScreenState extends State<DraggerScreen> {
             // BuildAskedRoleForm(
             //   formKey: _formKey,
             // ),
-            BuildBoard(
-              xLabel: _xName,
-              yLabel: _yName,
+            Padding(
+              padding: const EdgeInsets.only(left: 30.0, right: 20),
+              child: BuildBoard(
+                xLabel: _xName,
+                yLabel: _yName,
+              ),
             ),
             Text(
                 "Granularity: ${matrixGranularityBloc.matrixGranularity} \nStone is dragged to \n$_xName: ${prismSurveyBloc.rowIndex} \n$_yName: ${prismSurveyBloc.colIndex}"),
@@ -301,9 +305,15 @@ class BuildBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        MatrixBoard(
-          xLabel: xLabel,
-          yLabel: yLabel,
+        Padding(
+          padding: EdgeInsets.only(left: 0.0),
+          child: Transform.rotate(
+            angle: -pi / 2,
+                      child: MatrixBoard(
+              xLabel: xLabel,
+              yLabel: yLabel,
+            ),
+          ),
         ),
         // MatrixBoard(xLabel: xLabel, yLabel: yLabel,),
       ],

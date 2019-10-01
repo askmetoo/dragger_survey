@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +18,7 @@ class MatrixBoard extends StatefulWidget {
 class _MatrixBoardState extends State<MatrixBoard> {
   final double aspectratioValue = .94;
   int gridLength;
-
+  double _rotateValue = pi / 2;
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +47,16 @@ class _MatrixBoardState extends State<MatrixBoard> {
             aspectratioValue: aspectratioValue,
             grid: grid,
             position: position),
-        BuildXLabel(xLabel: widget.xLabel,),
-        BuildYLabel(yLabel: widget.yLabel,),
-        BuildGoalItem(),
-        DraggableItem(),
+        BuildXLabel(
+          _rotateValue,
+          xLabel: widget.xLabel,
+        ),
+        BuildYLabel(
+          _rotateValue,
+          yLabel: widget.yLabel,
+        ),
+        BuildGoalItem(_rotateValue),
+        DraggableItem(_rotateValue),
       ],
     );
   }
@@ -59,7 +67,6 @@ class BuildMatrixBoard extends StatefulWidget {
   final double aspectratioValue;
   final Offset position;
   final List<List<List<int>>> grid;
-  
 
   BuildMatrixBoard({
     this.gridLength,
@@ -76,74 +83,77 @@ class _BuildMatrixBoardState extends State<BuildMatrixBoard> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 420,
-      height: 420,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            bottomLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-            bottomRight: Radius.circular(60),
-          ),
-          boxShadow: [
-            BoxShadow(
-                blurRadius: 8,
-                offset: Offset(4, 4),
-                color: Colors.brown.shade900.withOpacity(.3))
-          ],
-          color: Colors.orange.shade200,
-        ),
-        padding: EdgeInsets.all(10),
-        margin: EdgeInsets.only(
-          top: 10,
-          left: 10,
-          right: 10,
-          bottom: 20,
-        ),
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: widget.gridLength),
-          itemCount: widget.gridLength * widget.gridLength,
-          itemBuilder: (BuildContext context, int index) {
-//              final database = Provider.of<AppDatabase>(context);
-
-            final DraggableItemBloc draggableItemBloc =
-                Provider.of<DraggableItemBloc>(context);
-            final PrismSurveyBloc prismSurveyBloc =
-                Provider.of<PrismSurveyBloc>(context);
-
-            return AspectRatio(
-                aspectRatio: widget.aspectratioValue,
-                child: Container(
-                  child: DraggerTaget(
-                      index: index,
-                      position: widget.position,
-                      grid: widget.grid,
-                      draggableItemBloc: draggableItemBloc,
-                      prismSurveyBloc: prismSurveyBloc),
-                ));
-          },
-        ),
+        width: 420,
+        height: 420,
+        child: Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(20),
+        bottomLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+        bottomRight: Radius.circular(60),
       ),
-    );
+      boxShadow: [
+        BoxShadow(
+            blurRadius: 8,
+            offset: Offset(4, 4),
+            color: Colors.brown.shade900.withOpacity(.3))
+      ],
+      color: Colors.orange.shade200,
+    ),
+    padding: EdgeInsets.all(10),
+    margin: EdgeInsets.only(
+      top: 10,
+      left: 10,
+      right: 10,
+      bottom: 20,
+    ),
+    child: GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: widget.gridLength),
+      itemCount: widget.gridLength * widget.gridLength,
+      itemBuilder: (BuildContext context, int index) {
+
+        final DraggableItemBloc draggableItemBloc =
+            Provider.of<DraggableItemBloc>(context);
+        final PrismSurveyBloc prismSurveyBloc =
+            Provider.of<PrismSurveyBloc>(context);
+
+        return AspectRatio(
+            aspectRatio: widget.aspectratioValue,
+            child: Container(
+              child: DraggerTaget(
+                  index: index,
+                  position: widget.position,
+                  grid: widget.grid,
+                  draggableItemBloc: draggableItemBloc,
+                  prismSurveyBloc: prismSurveyBloc),
+            ));
+      },
+    ),
+        ),
+      );
   }
 }
 
 class BuildGoalItem extends StatelessWidget {
+  final double rotateValue;
+  BuildGoalItem(this.rotateValue) : super();
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: 19,
-      right: 11,
-      child: GoalItem(),
+      bottom: 30,
+      right: 0,
+      child: GoalItem(rotateValue),
     );
   }
 }
 
 class BuildXLabel extends StatefulWidget {
   final String xLabel;
-  BuildXLabel({this.xLabel}) : super();
+  final double rotateValue;
+  BuildXLabel(this.rotateValue, {this.xLabel}) : super();
   @override
   _BuildXLabelState createState() => _BuildXLabelState();
 }
@@ -151,50 +161,16 @@ class BuildXLabel extends StatefulWidget {
 class _BuildXLabelState extends State<BuildXLabel> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(left: 10, right: 10, bottom: 0, top: 0),
-      height: 389,
-      width: 354,
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: Text(
-          "${widget.xLabel}",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              color: Colors.black54.withOpacity(.5),
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              letterSpacing: -.6,
-              shadows: [
-                Shadow(
-                    blurRadius: 4, color: Colors.black12, offset: Offset(1, 1)),
-              ]),
-        ),
-      ),
-    );
-  }
-}
-
-class BuildYLabel extends StatefulWidget {
-  final String yLabel;
-  BuildYLabel({this.yLabel}) : super();
-  @override
-  _BuildYLabelState createState() => _BuildYLabelState();
-}
-
-class _BuildYLabelState extends State<BuildYLabel> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(left: 10, right: 10, bottom: 0, top: 0),
-      height: 384,
-      width: 388,
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: RotatedBox(
-          quarterTurns: 3,
+    return Transform.rotate(
+        angle: widget.rotateValue,
+          child: Container(
+        padding: EdgeInsets.only(left: 25, bottom: 35),
+        height: 389,
+        width: 354,
+        child: Align(
+          alignment: Alignment.bottomCenter,
           child: Text(
-            "${widget.yLabel}",
+            "${widget.xLabel}",
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: Colors.black54.withOpacity(.5),
@@ -203,10 +179,51 @@ class _BuildYLabelState extends State<BuildYLabel> {
                 letterSpacing: -.6,
                 shadows: [
                   Shadow(
-                      blurRadius: 4,
-                      color: Colors.black12,
-                      offset: Offset(1, 1)),
+                      blurRadius: 4, color: Colors.black12, offset: Offset(1, 1)),
                 ]),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class BuildYLabel extends StatefulWidget {
+  final String yLabel;
+  final double rotateValue;
+  BuildYLabel(this.rotateValue, {this.yLabel}) : super();
+  @override
+  _BuildYLabelState createState() => _BuildYLabelState();
+}
+
+class _BuildYLabelState extends State<BuildYLabel> {
+  @override
+  Widget build(BuildContext context) {
+    return Transform.rotate(
+      // alignment: Alignment.centerLeft,
+      angle: widget.rotateValue,
+          child: Container(
+        height: 384,
+        width: 388,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: RotatedBox(
+            quarterTurns: 3,
+            child: Text(
+              "${widget.yLabel}",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.black54.withOpacity(.5),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: -.6,
+                  shadows: [
+                    Shadow(
+                        blurRadius: 4,
+                        color: Colors.black12,
+                        offset: Offset(1, 1)),
+                  ]),
+            ),
           ),
         ),
       ),
