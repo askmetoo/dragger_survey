@@ -1,4 +1,5 @@
 import 'package:dragger_survey/src/blocs/blocs.dart';
+import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -57,34 +58,33 @@ class _MatrixBoardState extends State<MatrixBoard> {
 
     return Column(
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-          child: Stack(
-            children: <Widget>[
-              Container(
-                key: _matrixBoardKey,
-                child: BuildMatrixBoard(
-                  gridLength: gridLength,
-                  aspectratioValue: aspectratioValue,
-                  grid: grid,
-                  draggableItemPositon: draggableItemPositon,
-                ),
+        Stack(
+          children: <Widget>[
+            Container(
+              key: _matrixBoardKey,
+              child: BuildMatrixBoard(
+                gridLength: gridLength,
+                aspectratioValue: aspectratioValue,
+                grid: grid,
+                draggableItemPositon: draggableItemPositon,
               ),
-              BuildXLabel(
-                xLabel: widget.xLabel,
-              ),
-              BuildYLabel(
-                yLabel: widget.yLabel,
-              ),
-              BuildGoalItem(),
-              DraggableItem(matrixBoardPositon: _matrixBoardPosition,),
-            ],
-          ),
+            ),
+            BuildXLabel(
+              xLabel: widget.xLabel,
+            ),
+            BuildYLabel(
+              yLabel: widget.yLabel,
+            ),
+            // BuildGoalItem(),
+            DraggableItem(
+              matrixBoardPositon: _matrixBoardPosition,
+            ),
+          ],
         ),
-        Text(
-            "MatrixBoard size: ${_matrixBoardSize.width} x ${_matrixBoardSize.height} (h x w)"),
-        Text(
-            "MatrixBoard position: ${_matrixBoardPosition.dx} / ${_matrixBoardPosition.dy} (x / y)"),
+        // Text(
+        //     "MatrixBoard size: ${_matrixBoardSize.width} x ${_matrixBoardSize.height} (h x w)"),
+        // Text(
+        //     "MatrixBoard position: ${_matrixBoardPosition.dx} / ${_matrixBoardPosition.dy} (x / y)"),
       ],
     );
   }
@@ -131,50 +131,58 @@ class BuildMatrixBoard extends StatefulWidget {
 class _BuildMatrixBoardState extends State<BuildMatrixBoard> {
   @override
   Widget build(BuildContext context) {
-    return RotatedBox(
-      quarterTurns: 3,
-      child: AspectRatio(
-        aspectRatio: widget.aspectratioValue,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(60),
-              bottomLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-              bottomRight: Radius.circular(20),
+    return Padding(
+      padding: const EdgeInsets.all(0.0),
+      child: RotatedBox(
+        quarterTurns: 3,
+        child: AspectRatio(
+          aspectRatio: widget.aspectratioValue,
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/matrix_backgr_with_flag.png'),
+                alignment: Alignment.topRight,
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(60),
+                bottomLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
+              boxShadow: [
+                BoxShadow(
+                    blurRadius: 8,
+                    offset: Offset(4, 4),
+                    color: Colors.brown.shade900.withOpacity(.3))
+              ],
+              color: Styles.drg_colorAppBackgroundLight,
+              // color: Colors.orange.shade200,
             ),
-            boxShadow: [
-              BoxShadow(
-                  blurRadius: 8,
-                  offset: Offset(4, 4),
-                  color: Colors.brown.shade900.withOpacity(.3))
-            ],
-            color: Colors.orange.shade200,
-          ),
-          padding: EdgeInsets.all(0),
-          // margin: EdgeInsets.symmetric(
-          //   horizontal: 10,
-          //   vertical: 10,
-          // ),
-          child: GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: widget.gridLength),
-            itemCount: widget.gridLength * widget.gridLength,
-            itemBuilder: (BuildContext context, int index) {
-              final DraggableItemBloc draggableItemBloc =
-                  Provider.of<DraggableItemBloc>(context);
-              final PrismSurveyBloc prismSurveyBloc =
-                  Provider.of<PrismSurveyBloc>(context);
+            margin: EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 20,
+            ),
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: widget.gridLength),
+              itemCount: widget.gridLength * widget.gridLength,
+              itemBuilder: (BuildContext context, int index) {
+                final DraggableItemBloc draggableItemBloc =
+                    Provider.of<DraggableItemBloc>(context);
+                final PrismSurveyBloc prismSurveyBloc =
+                    Provider.of<PrismSurveyBloc>(context);
 
-              return Container(
-                child: DraggerTaget(
-                    index: index,
-                    position: widget.draggableItemPositon,
-                    grid: widget.grid,
-                    draggableItemBloc: draggableItemBloc,
-                    prismSurveyBloc: prismSurveyBloc),
-              );
-            },
+                return Container(
+                  child: DraggerTaget(
+                      index: index,
+                      position: widget.draggableItemPositon,
+                      grid: widget.grid,
+                      draggableItemBloc: draggableItemBloc,
+                      prismSurveyBloc: prismSurveyBloc),
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -204,7 +212,7 @@ class _BuildXLabelState extends State<BuildXLabel> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 25, bottom: 35),
+      padding: EdgeInsets.only(left: 25, bottom: 40),
       height: 389,
       width: 354,
       child: Align(
@@ -238,6 +246,7 @@ class _BuildYLabelState extends State<BuildYLabel> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(left: 25),
       height: 384,
       width: 388,
       child: Align(

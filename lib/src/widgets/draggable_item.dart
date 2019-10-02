@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../blocs/draggable_item_bloc.dart';
@@ -28,15 +29,14 @@ class _DraggableItemState extends State<DraggableItem> {
     super.didChangeDependencies();
     final DraggableItemBloc draggableBloc =
         Provider.of<DraggableItemBloc>(context);
-    draggableBloc.setInitialDraggableItemPostion(position: widget.initialPosition);
+    draggableBloc.setInitialDraggableItemPostion(
+        position: widget.initialPosition);
   }
 
   @override
   Widget build(BuildContext context) {
     final DraggableItemBloc draggableBloc =
         Provider.of<DraggableItemBloc>(context);
-    
-    
 
     log("draggableItemPositon.dx: ${draggableBloc.draggableItemPositon.dx}");
     log("draggableItemPositon.dy: ${draggableBloc.draggableItemPositon.dy}");
@@ -44,7 +44,7 @@ class _DraggableItemState extends State<DraggableItem> {
     log("draggableItemPositon.dy + widget.matrixBoardPositon.dy: ${draggableBloc.draggableItemPositon.dy + widget.matrixBoardPositon.dy}");
 
     return Positioned(
-      left: draggableBloc.draggableItemPositon.dx ,
+      left: draggableBloc.draggableItemPositon.dx,
       top: draggableBloc.draggableItemPositon.dy,
       // left: draggableBloc.draggableItemPositon.dx - 10,
       // top: draggableBloc.draggableItemPositon.dy + 220,
@@ -69,10 +69,14 @@ class _DraggableItemState extends State<DraggableItem> {
         childWhenDragging: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(80.0),
+            border: Border.all(
+              width: 3,
+              color: Styles.drg_colorAppBackgroundMedium.withOpacity(.7),
+            ),
             boxShadow: [
               BoxShadow(
-                  color: Colors.brown.shade400.withOpacity(.27),
-                  blurRadius: 5.5,
+                  color: Styles.drg_colorAppBackground.withOpacity(.20),
+                  blurRadius: 3,
                   offset: Offset(1.0, 2.0))
             ],
           ),
@@ -84,12 +88,12 @@ class _DraggableItemState extends State<DraggableItem> {
             image: DecorationImage(
               image: AssetImage('assets/hat.png'),
             ),
-            borderRadius: BorderRadius.circular(100.0),
+            borderRadius: BorderRadius.circular(120.0),
             boxShadow: [
               BoxShadow(
                   color: Colors.brown.shade400,
                   blurRadius: 12.0,
-                  offset: Offset(-4.0, -6.0))
+                  offset: Offset(20.0, 22.0))
             ],
           ),
           width: _draggableFeedbackSize,
@@ -101,13 +105,14 @@ class _DraggableItemState extends State<DraggableItem> {
         onDragEnd: (drag) {
           draggableBloc.setNewDraggableItemPositon(
             position: Offset(
-              drag.offset.dx,
-              drag.offset.dy,
-              // drag.offset.dx - (_draggableSize / 2.1),
-              // drag.offset.dy - (_draggableSize / .39),
-              // drag.offset.dx - (_draggableSize / 2.04),
-              // drag.offset.dy - (_draggableSize / .185),
-              // drag.offset.dy - (_draggableSize / .98),
+              drag.offset.dx +
+                  widget.matrixBoardPositon.dx -
+                  (_draggableSize / 2.98) +
+                  10,
+              drag.offset.dy +
+                  widget.matrixBoardPositon.dy -
+                  (_draggableSize / .219) +
+                  10,
             ),
           );
         },

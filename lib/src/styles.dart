@@ -69,6 +69,9 @@ class Styles {
   static const Color redColorDonNotUse = Color(0xfffc3a52);
 
   static const Color drg_colorAppBackground = drg_colorPrimary;
+  static const Color drg_colorAppBackgroundMedium = Color(0xffff933b);
+  static const Color drg_colorAppBackgroundLight = Color(0xffffc46a);
+  static const Color drg_colorAppBackgroundShiny = Color(0xffffe8c1);
 
   static const Color drg_scaffoldBackground = Color(0xfff0f0f0);
 }
