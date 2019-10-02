@@ -105,15 +105,14 @@ class _DraggableItemState extends State<DraggableItem> {
         onDragEnd: (drag) {
           draggableBloc.setNewDraggableItemPositon(
             position: Offset(
-              drag.offset.dx +
-                  widget.matrixBoardPositon.dx -
-                  (_draggableSize / 2.98) +
-                  10,
-              drag.offset.dy +
-                  widget.matrixBoardPositon.dy -
-                  (_draggableSize / .219) +
-                  10,
-            ),
+                drag.offset.dx +
+                    widget.matrixBoardPositon.dx -
+                    (_draggableSize / 2.98) +
+                    10,
+                drag.offset.dy - (_draggableSize / .739)
+                // widget.matrixBoardPositon.dy -
+                // (_draggableSize / .219),
+                ),
           );
         },
         onDraggableCanceled: (Velocity velocity, Offset offset) {

@@ -81,10 +81,10 @@ class _MatrixBoardState extends State<MatrixBoard> {
             ),
           ],
         ),
-        // Text(
-        //     "MatrixBoard size: ${_matrixBoardSize.width} x ${_matrixBoardSize.height} (h x w)"),
-        // Text(
-        //     "MatrixBoard position: ${_matrixBoardPosition.dx} / ${_matrixBoardPosition.dy} (x / y)"),
+        Text(
+            "MatrixBoard size: ${_matrixBoardSize.width} x ${_matrixBoardSize.height} (h x w)"),
+        Text(
+            "MatrixBoard position: ${_matrixBoardPosition.dx} / ${_matrixBoardPosition.dy} (x / y)"),
       ],
     );
   }
