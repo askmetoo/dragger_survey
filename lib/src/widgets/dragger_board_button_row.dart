@@ -1,5 +1,4 @@
 import 'package:dragger_survey/src/blocs/blocs.dart';
-import 'package:dragger_survey/src/services/models.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,8 +16,9 @@ class DraggerBoardButtonRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final PrismSurveyBloc prismSurveyBloc =
         Provider.of<PrismSurveyBloc>(context);
-    final TeamBloc teamBloc =
-        Provider.of<TeamBloc>(context);
+    final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
+    final DraggableItemBloc draggableItemBloc =
+        Provider.of<DraggableItemBloc>(context);
     FirebaseUser user = Provider.of<FirebaseUser>(context);
 
     return Padding(
@@ -53,6 +53,7 @@ class DraggerBoardButtonRow extends StatelessWidget {
                   "yValue": prismSurveyBloc.rowIndex,
                 };
                 prismSurveyBloc.addPrismSurveyToDb(survey: survey);
+                draggableItemBloc.resetDraggableItemPositon();
                 Navigator.of(context).pop();
               },
             ),

@@ -1,6 +1,4 @@
 import 'dart:developer';
-import 'dart:math' hide log;
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/screens/screens.dart';
@@ -124,9 +122,6 @@ class _DraggerScreenState extends State<DraggerScreen> {
                 ),
               ),
             ),
-            // BuildAskedRoleForm(
-            //   formKey: _formKey,
-            // ),
             BuildBoard(
               xLabel: _xName,
               yLabel: _yName,
@@ -306,7 +301,6 @@ class BuildBoard extends StatelessWidget {
           xLabel: xLabel,
           yLabel: yLabel,
         ),
-        // MatrixBoard(xLabel: xLabel, yLabel: yLabel,),
       ],
     );
   }

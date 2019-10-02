@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,9 +5,7 @@ import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/services/services.dart';
 import 'package:flutter/material.dart';
 
-
 class PrismSurveyBloc extends ChangeNotifier {
-
   DateTime _created = DateTime.now().toLocal();
   DateTime _edited = DateTime.now().toLocal();
   String _askedPerson = 'Anonymous';
@@ -20,6 +17,16 @@ class PrismSurveyBloc extends ChangeNotifier {
   PrismSurvey _currentPrismSurveyData = PrismSurvey();
 
   bool _formIsEmpty = true;
+
+  _resetPrismSurveyData() {
+    _created = DateTime.now().toLocal();
+    _edited = DateTime.now().toLocal();
+    _askedPerson = 'Anonymous';
+    _counter = 0;
+    _yValue = 0;
+    _xValue = 0;
+    _users = [];
+  }
 
   PrismSurvey get currentPrismSurvey {
     _currentPrismSurveyData.created = _created;
@@ -158,19 +165,19 @@ class PrismSurveyBloc extends ChangeNotifier {
     return _currentPrismSurveyData;
   }
 
-  Future<List<PrismSurvey>> getPrismSurveyDocuments () {
+  Future<List<PrismSurvey>> getPrismSurveyDocuments() {
     return Collection<PrismSurvey>(path: 'surveys').getDocuments();
   }
 
-  Future<DocumentSnapshot> getPrismSurveyById({@required id}){
+  Future<DocumentSnapshot> getPrismSurveyById({@required id}) {
     Future<DocumentSnapshot> snapshot = Collection<PrismSurvey>(path: 'surveys')
-      .getDocument(id)
-      .catchError((err) {
-        log("ERROR in PrismSurveyBloc getPrismSurveyById - error: $err");
-        return null;
-      });
+        .getDocument(id)
+        .catchError((err) {
+      log("ERROR in PrismSurveyBloc getPrismSurveyById - error: $err");
+      return null;
+    });
 
-      return snapshot;
+    return snapshot;
   }
 
   Future<QuerySnapshot> getPrismSurveyQuery(
@@ -182,18 +189,20 @@ class PrismSurveyBloc extends ChangeNotifier {
   Future<QuerySnapshot> getPrismSurveyQueryOrderCreatedAsc(
       {String fieldName, String fieldValue}) {
     return Collection<PrismSurvey>(path: 'surveys')
-        .getDocumentsByQuerySortByCreatedAsc(fieldName: fieldName, fieldValue: fieldValue);
+        .getDocumentsByQuerySortByCreatedAsc(
+            fieldName: fieldName, fieldValue: fieldValue);
   }
-  
+
   Future<QuerySnapshot> getPrismSurveyQueryOrderCreatedDesc(
       {String fieldName, String fieldValue}) {
     return Collection<PrismSurvey>(path: 'surveys')
-        .getDocumentsByQuerySortByCreatedDesc(fieldName: fieldName, fieldValue: fieldValue);
+        .getDocumentsByQuerySortByCreatedDesc(
+            fieldName: fieldName, fieldValue: fieldValue);
   }
 
   addPrismSurveyToDb({Map<String, dynamic> survey}) async {
     Collection(path: "surveys").createDocumentWithObject(object: survey);
+    _resetPrismSurveyData();
     notifyListeners();
   }
-
 }
