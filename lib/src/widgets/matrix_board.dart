@@ -81,10 +81,10 @@ class _MatrixBoardState extends State<MatrixBoard> {
             ),
           ],
         ),
-        Text(
-            "MatrixBoard size: ${_matrixBoardSize.width} x ${_matrixBoardSize.height} (h x w)"),
-        Text(
-            "MatrixBoard position: ${_matrixBoardPosition.dx} / ${_matrixBoardPosition.dy} (x / y)"),
+        // Text(
+        //     "MatrixBoard size: ${_matrixBoardSize.width} x ${_matrixBoardSize.height} (h x w)"),
+        // Text(
+        //     "MatrixBoard position: ${_matrixBoardPosition.dx} / ${_matrixBoardPosition.dy} (x / y)"),
       ],
     );
   }
@@ -131,57 +131,65 @@ class BuildMatrixBoard extends StatefulWidget {
 class _BuildMatrixBoardState extends State<BuildMatrixBoard> {
   @override
   Widget build(BuildContext context) {
+    final DraggableItemBloc draggableBloc =
+        Provider.of<DraggableItemBloc>(context);
+
     return Padding(
       padding: const EdgeInsets.all(0.0),
       child: RotatedBox(
         quarterTurns: 3,
         child: AspectRatio(
           aspectRatio: widget.aspectratioValue,
-          child: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/matrix_backgr_with_flag.png'),
-                alignment: Alignment.topRight,
-                fit: BoxFit.cover,
+          child: GestureDetector(
+            onDoubleTap: () {
+              draggableBloc.resetDraggableItemPositon();
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/matrix_backgr_with_flag.png'),
+                  alignment: Alignment.topRight,
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(60),
+                  bottomLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                      blurRadius: 8,
+                      offset: Offset(4, 4),
+                      color: Colors.brown.shade900.withOpacity(.3))
+                ],
+                color: Styles.drg_colorAppBackgroundLight,
+                // color: Colors.orange.shade200,
               ),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(60),
-                bottomLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-                bottomRight: Radius.circular(20),
+              margin: EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 20,
               ),
-              boxShadow: [
-                BoxShadow(
-                    blurRadius: 8,
-                    offset: Offset(4, 4),
-                    color: Colors.brown.shade900.withOpacity(.3))
-              ],
-              color: Styles.drg_colorAppBackgroundLight,
-              // color: Colors.orange.shade200,
-            ),
-            margin: EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 20,
-            ),
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: widget.gridLength),
-              itemCount: widget.gridLength * widget.gridLength,
-              itemBuilder: (BuildContext context, int index) {
-                final DraggableItemBloc draggableItemBloc =
-                    Provider.of<DraggableItemBloc>(context);
-                final PrismSurveyBloc prismSurveyBloc =
-                    Provider.of<PrismSurveyBloc>(context);
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: widget.gridLength),
+                itemCount: widget.gridLength * widget.gridLength,
+                itemBuilder: (BuildContext context, int index) {
+                  final DraggableItemBloc draggableItemBloc =
+                      Provider.of<DraggableItemBloc>(context);
+                  final PrismSurveyBloc prismSurveyBloc =
+                      Provider.of<PrismSurveyBloc>(context);
 
-                return Container(
-                  child: DraggerTaget(
-                      index: index,
-                      position: widget.draggableItemPositon,
-                      grid: widget.grid,
-                      draggableItemBloc: draggableItemBloc,
-                      prismSurveyBloc: prismSurveyBloc),
-                );
-              },
+                  return Container(
+                    child: DraggerTaget(
+                        index: index,
+                        position: widget.draggableItemPositon,
+                        grid: widget.grid,
+                        draggableItemBloc: draggableItemBloc,
+                        prismSurveyBloc: prismSurveyBloc),
+                  );
+                },
+              ),
             ),
           ),
         ),
@@ -212,7 +220,7 @@ class _BuildXLabelState extends State<BuildXLabel> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 25, bottom: 40),
+      padding: EdgeInsets.only(left: 55, bottom: 10),
       height: 389,
       width: 354,
       child: Align(

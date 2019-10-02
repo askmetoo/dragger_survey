@@ -29,8 +29,8 @@ class _DraggableItemState extends State<DraggableItem> {
     super.didChangeDependencies();
     final DraggableItemBloc draggableBloc =
         Provider.of<DraggableItemBloc>(context);
-    draggableBloc.setInitialDraggableItemPostion(
-        position: widget.initialPosition);
+    // draggableBloc.setInitialDraggableItemPostion(
+    // position: widget.initialPosition);
   }
 
   @override
