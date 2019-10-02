@@ -6,6 +6,9 @@ import '../blocs/draggable_item_bloc.dart';
 
 class DraggableItem extends StatefulWidget {
   final Offset initialPosition = Offset(20, 60);
+  final Offset matrixBoardPositon;
+  DraggableItem({this.matrixBoardPositon}) : super();
+
   @override
   _DraggableItemState createState() => _DraggableItemState();
 }
@@ -13,24 +16,36 @@ class DraggableItem extends StatefulWidget {
 class _DraggableItemState extends State<DraggableItem> {
   int rowIdx;
   int colIdx;
-  double _top = -230;
-  double _left = -50;
+  double _top;
+  double _left;
 
   final String _dragData = "Meine Meinung";
   final double _draggableSize = 70.0;
   final double _draggableFeedbackSize = 80.0;
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final DraggableItemBloc draggableBloc =
+        Provider.of<DraggableItemBloc>(context);
+    draggableBloc.setInitialDraggableItemPostion(position: widget.initialPosition);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final DraggableItemBloc draggableBloc =
         Provider.of<DraggableItemBloc>(context);
+    
+    
 
     log("draggableItemPositon.dx: ${draggableBloc.draggableItemPositon.dx}");
     log("draggableItemPositon.dy: ${draggableBloc.draggableItemPositon.dy}");
+    log("draggableItemPositon.dx + widget.matrixBoardPositon.dx: ${draggableBloc.draggableItemPositon.dx + widget.matrixBoardPositon.dx}");
+    log("draggableItemPositon.dy + widget.matrixBoardPositon.dy: ${draggableBloc.draggableItemPositon.dy + widget.matrixBoardPositon.dy}");
 
     return Positioned(
-      left: draggableBloc.draggableItemPositon.dx + (_draggableSize / 2),
-      top: draggableBloc.draggableItemPositon.dy + (_draggableSize / 2),
+      left: draggableBloc.draggableItemPositon.dx ,
+      top: draggableBloc.draggableItemPositon.dy,
       // left: draggableBloc.draggableItemPositon.dx - 10,
       // top: draggableBloc.draggableItemPositon.dy + 220,
       // left: draggableBloc.draggableItemPositon.dx - 10,
@@ -86,8 +101,10 @@ class _DraggableItemState extends State<DraggableItem> {
         onDragEnd: (drag) {
           draggableBloc.setNewDraggableItemPositon(
             position: Offset(
-              drag.offset.dx - (_draggableSize / 2.1),
-              drag.offset.dy - (_draggableSize / .39),
+              drag.offset.dx,
+              drag.offset.dy,
+              // drag.offset.dx - (_draggableSize / 2.1),
+              // drag.offset.dy - (_draggableSize / .39),
               // drag.offset.dx - (_draggableSize / 2.04),
               // drag.offset.dy - (_draggableSize / .185),
               // drag.offset.dy - (_draggableSize / .98),

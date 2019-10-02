@@ -1,9 +1,6 @@
-import 'dart:math';
-
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
 
 class MatrixBoard extends StatefulWidget {
@@ -16,8 +13,27 @@ class MatrixBoard extends StatefulWidget {
 }
 
 class _MatrixBoardState extends State<MatrixBoard> {
-  final double aspectratioValue = .98;
+  final double aspectratioValue = 1;
+  // final double aspectratioValue = .98;
   int gridLength;
+
+  // *** Needed for getting board position on the screen *** //
+  GlobalKey _matrixBoardKey = GlobalKey();
+  Size _matrixBoardSize = Size(0, 0);
+  Offset _matrixBoardPosition = Offset(0, 0);
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(_onBuildCompleted);
+  }
+
+  _onBuildCompleted(_) {
+    // *** These methods are below build function  ***//
+    _getMatrixBoardSize();
+    _getMatrixBoardPosition();
+  }
+  // *** =============================================== *** //
 
   @override
   Widget build(BuildContext context) {
@@ -34,41 +50,77 @@ class _MatrixBoardState extends State<MatrixBoard> {
             granularitybloc.matrixGranularity, (row) => [column, row].toList());
       },
     );
-    Offset position = draggableBloc.draggableItemPositon;
+    Offset draggableItemPositon = draggableBloc.draggableItemPositon;
     setState(() {
       gridLength = grid.length;
     });
 
-    return Stack(
+    return Column(
       children: <Widget>[
-        BuildMatrixBoard(
-            gridLength: gridLength,
-            aspectratioValue: aspectratioValue,
-            grid: grid,
-            position: position),
-        BuildXLabel(
-          xLabel: widget.xLabel,
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+          child: Stack(
+            children: <Widget>[
+              Container(
+                key: _matrixBoardKey,
+                child: BuildMatrixBoard(
+                  gridLength: gridLength,
+                  aspectratioValue: aspectratioValue,
+                  grid: grid,
+                  draggableItemPositon: draggableItemPositon,
+                ),
+              ),
+              BuildXLabel(
+                xLabel: widget.xLabel,
+              ),
+              BuildYLabel(
+                yLabel: widget.yLabel,
+              ),
+              BuildGoalItem(),
+              DraggableItem(matrixBoardPositon: _matrixBoardPosition,),
+            ],
+          ),
         ),
-        BuildYLabel(
-          yLabel: widget.yLabel,
-        ),
-        BuildGoalItem(),
-        DraggableItem(),
+        Text(
+            "MatrixBoard size: ${_matrixBoardSize.width} x ${_matrixBoardSize.height} (h x w)"),
+        Text(
+            "MatrixBoard position: ${_matrixBoardPosition.dx} / ${_matrixBoardPosition.dy} (x / y)"),
       ],
     );
   }
+
+  // *** Needed for getting board position on the screen *** //
+  _getMatrixBoardSize() {
+    final RenderBox matrixBoardRenderBox =
+        _matrixBoardKey.currentContext.findRenderObject();
+    final matrixBoardSize = matrixBoardRenderBox.size;
+    setState(() {
+      _matrixBoardSize = matrixBoardSize;
+    });
+  }
+
+  _getMatrixBoardPosition() {
+    final RenderBox matrixBoardRenderBox =
+        _matrixBoardKey.currentContext.findRenderObject();
+    final matrixBoardPosition = matrixBoardRenderBox.localToGlobal(Offset.zero);
+
+    setState(() {
+      _matrixBoardPosition = matrixBoardPosition;
+    });
+  }
+  // *** =============================================== *** //
 }
 
 class BuildMatrixBoard extends StatefulWidget {
   final int gridLength;
   final double aspectratioValue;
-  final Offset position;
+  final Offset draggableItemPositon;
   final List<List<List<int>>> grid;
 
   BuildMatrixBoard({
     this.gridLength,
     this.aspectratioValue,
-    this.position,
+    this.draggableItemPositon,
     this.grid,
   }) : super();
 
@@ -100,10 +152,10 @@ class _BuildMatrixBoardState extends State<BuildMatrixBoard> {
             color: Colors.orange.shade200,
           ),
           padding: EdgeInsets.all(0),
-          margin: EdgeInsets.symmetric(
-            horizontal: 10,
-            vertical: 10,
-          ),
+          // margin: EdgeInsets.symmetric(
+          //   horizontal: 10,
+          //   vertical: 10,
+          // ),
           child: GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: widget.gridLength),
@@ -117,7 +169,7 @@ class _BuildMatrixBoardState extends State<BuildMatrixBoard> {
               return Container(
                 child: DraggerTaget(
                     index: index,
-                    position: widget.position,
+                    position: widget.draggableItemPositon,
                     grid: widget.grid,
                     draggableItemBloc: draggableItemBloc,
                     prismSurveyBloc: prismSurveyBloc),

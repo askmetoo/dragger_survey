@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DraggableItemBloc extends ChangeNotifier {
-  Offset _initialPosition = Offset(25.0, 95.0);
+  Offset _initialPosition = Offset(20.0, 0.0);
   Offset _draggableItemPosition;
 
   void initState() {
@@ -26,6 +26,12 @@ class DraggableItemBloc extends ChangeNotifier {
   getInitialDraggableItemPositon({Offset position}) {
     _draggableItemPosition = _initialPosition;
     notifyListeners();
+  }
+
+  setInitialDraggableItemPostion({Offset position}) {
+    _initialPosition = position;
+    // TODO: is this OK?
+    // notifyListeners();
   }
 
   setNewDraggableItemPositon({Offset position}) {
