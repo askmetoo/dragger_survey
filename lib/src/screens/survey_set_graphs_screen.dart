@@ -115,6 +115,11 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
                                   data, _xLabel, _yLabel, _granulariy),
                             ),
                             Text("Surveys in total: $_sum"),
+                            OutlineButton.icon(
+                              icon: Icon(Icons.save_alt, color: Styles.drg_colorTextMediumDark,),
+                              label: Text('Export to CSV', style: TextStyle(color: Styles.drg_colorTextMediumDark),),
+                              onPressed: () {},
+                            )
                           ],
                         ),
                       ),
