@@ -205,4 +205,11 @@ class PrismSurveyBloc extends ChangeNotifier {
     _resetPrismSurveyData();
     notifyListeners();
   }
+
+  Future<DocumentSnapshot> deletePrismSurveyById({id}) {
+    var returnValue =
+        Collection<PrismSurveySet>(path: 'surveys').deleteById(id);
+    notifyListeners();
+    return returnValue;
+  }
 }

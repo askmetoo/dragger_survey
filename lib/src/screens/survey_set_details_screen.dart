@@ -6,6 +6,7 @@ import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class SurveySetDetailsScreen extends StatelessWidget {
   final String surveySetId;
@@ -97,43 +98,59 @@ class SurveySetDetailsScreen extends StatelessWidget {
                       surveySnapshot.data.documents[index];
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                    child: Container(
-                      margin: EdgeInsets.only(bottom: 1),
-                      color: Styles.drg_colorSecondary.withOpacity(.13),
-                      height: 36,
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: ListTile(
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            RichText(
-                              text: TextSpan(
-                                text: "${document.data['askedPerson']} ",
-                                style: TextStyle(
-                                  color: Styles.drg_colorText,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: "was asked.",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w200,
-                                    ),
+                    child: Slidable(
+                      key: ValueKey(index),
+                      actionPane: SlidableDrawerActionPane(),
+                      actionExtentRatio: 0.25,
+                      secondaryActions: <Widget>[
+                        IconSlideAction(
+                          caption: 'Delete',
+                          color: Styles.drg_colorAttention,
+                          icon: Icons.delete,
+                          onTap: () {
+                            log("In SurveySetDetailsScreen Slidable 'Delete': ${document.documentID}");
+                            surveyBloc.deletePrismSurveyById(id: document.documentID);
+                          },
+                        ),
+                      ],
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 1),
+                        color: Styles.drg_colorSecondary.withOpacity(.13),
+                        height: 36,
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: ListTile(
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              RichText(
+                                text: TextSpan(
+                                  text: "${document.data['askedPerson']} ",
+                                  style: TextStyle(
+                                    color: Styles.drg_colorText,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                  TextSpan(
-                                    text: timeago.format(DateTime.now()
-                                        .subtract(DateTime.now().difference(
-                                            document.data['created']
-                                                .toDate()))),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w200,
+                                  children: [
+                                    TextSpan(
+                                      text: "was asked.",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w200,
+                                      ),
                                     ),
-                                  )
-                                ],
+                                    TextSpan(
+                                      text: timeago.format(DateTime.now()
+                                          .subtract(DateTime.now().difference(
+                                              document.data['created']
+                                                  .toDate()))),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w200,
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
