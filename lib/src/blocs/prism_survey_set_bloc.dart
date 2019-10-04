@@ -5,20 +5,20 @@ import 'package:dragger_survey/src/services/services.dart';
 import 'package:flutter/material.dart';
 
 class PrismSurveySetBloc extends ChangeNotifier {
-  Future<DocumentSnapshot> _currentPrismSurveySet;
+  Future<DocumentSnapshot> _currentPrismSurveySetFuture;
   String _currentPrismSurveySetId;
 
   Future<DocumentSnapshot> get currentPrismSurveySet async {
-    if (_currentPrismSurveySet == null) {
-      log("In PrismSurveySetBloc get currentPrismSurveySet value is $_currentPrismSurveySet");
+    if (_currentPrismSurveySetFuture == null) {
+      log("In PrismSurveySetBloc get currentPrismSurveySet value is $_currentPrismSurveySetFuture");
       return null;
     }
-    return _currentPrismSurveySet;
+    return _currentPrismSurveySetFuture;
   }
 
   String get currentPrismSurveySetId {
-    if (_currentPrismSurveySet == null) {
-      log("In PrismSurveySetBloc get currentPrismSurveySet value is $_currentPrismSurveySetId");
+    if (_currentPrismSurveySetFuture == null) {
+      log("In PrismSurveySetBloc get currentPrismSurveySetId value is $_currentPrismSurveySetId");
       return null;
     }
     return _currentPrismSurveySetId;
@@ -31,10 +31,10 @@ class PrismSurveySetBloc extends ChangeNotifier {
   }
 
   Future<DocumentSnapshot> setCurrentPrismSurveySetById({@required id}) async {
-    _currentPrismSurveySet = getPrismSurveySetById(id: id);
-    log("In PrismSurveySetBloc setCurrentPrismSurveySetById returned _currentPrismSurveySet is ${_currentPrismSurveySet.then((val) => val.documentID)}");
+    _currentPrismSurveySetFuture = getPrismSurveySetById(id: id);
+    log("In PrismSurveySetBloc setCurrentPrismSurveySetById returned _currentPrismSurveySet is ${_currentPrismSurveySetFuture.then((val) => val.documentID)}");
     notifyListeners();
-    return _currentPrismSurveySet;
+    return _currentPrismSurveySetFuture;
   }
 
   Future<List<PrismSurveySet>> get collectionPrismSurveySets {

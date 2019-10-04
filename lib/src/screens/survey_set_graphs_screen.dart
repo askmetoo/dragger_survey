@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
@@ -17,29 +16,28 @@ class SurveySetGraphsScreen extends StatefulWidget {
 }
 
 class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
+  DocumentSnapshot currentSurveySet;
+  String _xLabel;
+  String _yLabel;
+
   @override
   Widget build(BuildContext context) {
     final PrismSurveySetBloc surveySetsBloc =
         Provider.of<PrismSurveySetBloc>(context);
     final PrismSurveyBloc surveyBloc = Provider.of<PrismSurveyBloc>(context);
 
-    log("In SurveySetGraphScreen - id: ${widget.surveySetId}");
-
     int _granulariy = 0;
     final double dotRadius = 10;
-    final String _xLabel = "xLabel";
-    final String _yLabel = "yLabel";
     int _sum = 0;
 
     List<SurveyResult> data = [];
 
-    return FutureBuilder<QuerySnapshot>(
-        future: surveyBloc.getPrismSurveyQuery(
-            fieldName: 'surveySet', fieldValue: widget.surveySetId),
-        builder: (context, AsyncSnapshot<QuerySnapshot> surveySnapshot) {
-          if (surveySnapshot.connectionState == ConnectionState.done) {
-            if (surveySnapshot.data.documents.isEmpty) {
-              print("In SurveySetGraphScreen - Snapshot has no data.");
+    return FutureBuilder<DocumentSnapshot>(
+        future: surveySetsBloc.currentPrismSurveySet,
+        builder: (context, surveySetSnapshot) {
+          if (surveySetSnapshot.connectionState == ConnectionState.done) {
+            if (!surveySetSnapshot.hasData) {
+              print("In SurveySetGraphScreen - surveySetSnapshot has no data: ${surveySetSnapshot?.data} ");
               return Center(
                 child: Container(
                   child: buildNoDataAvailable(),
@@ -47,40 +45,62 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
               );
             }
 
-            surveySnapshot.data.documents.forEach((doc) {
-              _sum += 1;
-              data.add(
-                SurveyResult(
-                  xValue: doc.data['xValue'],
-                  yValue: doc.data['yValue'],
-                  radius: dotRadius,
-                ),
-              );
-            });
+            _xLabel = surveySetSnapshot?.data?.data['xName'];
+            _yLabel = surveySetSnapshot?.data?.data['yName'];
 
-            return SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: <Widget>[
-                    AspectRatio(
-                      aspectRatio: 1,
-                      child: SimpleScatterPlotChart.withData(
-                          data, _xLabel, _yLabel, _granulariy),
-                    ),
-                    Text("Surveys in total: $_sum"),
-                  ],
-                ),
-              ),
-            );
+            return FutureBuilder<QuerySnapshot>(
+                future: surveyBloc.getPrismSurveyQuery(
+                    fieldName: 'surveySet', fieldValue: widget.surveySetId),
+                builder:
+                    (context, AsyncSnapshot<QuerySnapshot> surveySnapshot) {
+                  if (surveySnapshot.connectionState == ConnectionState.done) {
+                    if (surveySnapshot.data.documents.isEmpty) {
+                      print(
+                          "In SurveySetGraphScreen - surveySnapshot has no data.");
+                      return Center(
+                        child: Container(
+                          child: buildNoDataAvailable(),
+                        ),
+                      );
+                    }
+
+                    surveySnapshot.data.documents.forEach((doc) {
+                      _sum += 1;
+                      data.add(
+                        SurveyResult(
+                          xValue: doc.data['xValue'],
+                          yValue: doc.data['yValue'],
+                          radius: dotRadius,
+                        ),
+                      );
+                    });
+
+                    return SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: <Widget>[
+                            AspectRatio(
+                              aspectRatio: 1,
+                              child: SurveyScatterPlotChart.withData(
+                                  data, _xLabel, _yLabel, _granulariy),
+                            ),
+                            Text("Surveys in total: $_sum"),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+                  return SurveyScatterPlotChart.withData(
+                      data, _xLabel, _yLabel, _granulariy);
+                });
           }
-          return SimpleScatterPlotChart.withData(
-              data, _xLabel, _yLabel, _granulariy);
+          return Container();
         });
   }
 }
 
-class SimpleScatterPlotChart extends StatelessWidget {
+class SurveyScatterPlotChart extends StatelessWidget {
   final List<charts.Series> seriesList;
   final bool animate;
   final SurveyResult data;
@@ -88,12 +108,12 @@ class SimpleScatterPlotChart extends StatelessWidget {
   final String yLabel;
   final int granularity;
 
-  SimpleScatterPlotChart(this.seriesList,
+  SurveyScatterPlotChart(this.seriesList,
       {this.data, this.animate, this.xLabel, this.yLabel, this.granularity});
 
   /// Creates a [ScatterPlotChart] with sample data and no transition.
-  factory SimpleScatterPlotChart.withData(data, xLabel, yLabel, granularity) {
-    return SimpleScatterPlotChart(
+  factory SurveyScatterPlotChart.withData(data, xLabel, yLabel, granularity) {
+    return SurveyScatterPlotChart(
       _createData(data: data, granularity: granularity),
       // Disable animations for image tests.
       animate: true,
@@ -109,16 +129,11 @@ class SimpleScatterPlotChart extends StatelessWidget {
       animate: animate,
       domainAxis: charts.NumericAxisSpec(
         tickProviderSpec: charts.BasicNumericTickProviderSpec(
-          // desiredTickCount: granularity,
-          // desiredMaxTickCount: granularity ?? 20,
-          // desiredMaxTickCount: granularity?.toInt() ?? 9,
           desiredMinTickCount: granularity?.toInt() ?? 3,
         ),
       ),
       primaryMeasureAxis: charts.NumericAxisSpec(
         tickProviderSpec: charts.BasicNumericTickProviderSpec(
-          // desiredTickCount: granularity,
-          // desiredMinTickCount: 0,
           desiredMinTickCount: granularity?.toInt() ?? 3,
         ),
       ),
