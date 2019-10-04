@@ -35,10 +35,6 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
             if (!teamsListSnapshot.hasData) {
               return CircularProgressIndicator();
             }
-            log("In BuildTeamsDropdownButton - length: ${teamsListSnapshot?.data?.documents?.length}");
-            log("In BuildTeamsDropdownButton - _selectedTeam: $_selectedTeam");
-            log("In BuildTeamsDropdownButton - teamBloc.currentSelectedTeam.documentID: ${teamBloc?.currentSelectedTeam?.documentID}");
-
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               child: Container(
@@ -49,6 +45,7 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                       ? buildTeamText(teamsListSnapshot: teamsListSnapshot)
                       : DropdownButton(
                           isExpanded: true,
+                          isDense: false,
                           value: _selectedTeamId,
                           onChanged: (value) {
                             setState(() {
@@ -61,14 +58,14 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                               });
                             });
                           },
+                          iconSize: 46,
                           icon: Icon(
                             Icons.people,
                             color: Styles.drg_colorSecondary,
                           ),
                           elevation: 12,
-                          // hint: Text("Hint text"),
-                          hint: teamBloc?.currentSelectedTeam?.documentID == null
-                              // hint: _selectedTeamId == null
+                          hint: teamBloc?.currentSelectedTeam?.documentID ==
+                                  null
                               ? Text(
                                   "Please Select a Team",
                                   style: TextStyle(
@@ -87,7 +84,9 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                         fontSize: 20),
                                     children: [
                                       TextSpan(
-                                        text: teamBloc?.currentSelectedTeam?.documentID != null
+                                        text: teamBloc?.currentSelectedTeam
+                                                    ?.documentID !=
+                                                null
                                             ? "${teamBloc?.currentSelectedTeam?.data['name']}"
                                             : 'No selected team',
                                         style: TextStyle(
@@ -119,45 +118,50 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                             (team) {
                               return DropdownMenuItem(
                                 value: team.documentID,
-                                // value: team['id'].toString(),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height: 21,
-                                      child: Text(
-                                        "${team['name']}\n",
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          color: Styles.drg_colorText
-                                              .withOpacity(0.8),
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w900,
-                                          fontFamily: 'Bitter',
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        height: 24,
+                                        child: Text(
+                                          "${team['name']}\n",
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                            color: Styles.drg_colorText
+                                                .withOpacity(0.8),
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w900,
+                                            fontFamily: 'Bitter',
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Container(
-                                      height: 20,
-                                      child: Text(
-                                        team['description'] != ''
-                                            ? "${team['description']}"
-                                            : 'Team has no description',
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                        softWrap: true,
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          color:
-                                              Styles.drg_colorSecondaryDeepDark,
-                                          fontFamily: 'Bitter',
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 14,
+                                      Container(
+                                        height: 52,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(bottom: 18.0),
+                                          child: Text(
+                                            team['description'] != ''
+                                                ? "${team['description']}"
+                                                : 'Team has no description',
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                            softWrap: true,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: Styles
+                                                  .drg_colorSecondaryDeepDark,
+                                              fontFamily: 'Bitter',
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 14,
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               );
                             },
