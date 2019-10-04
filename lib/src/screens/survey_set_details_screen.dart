@@ -132,7 +132,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
                                   ),
                                   children: [
                                     TextSpan(
-                                      text: "was asked.",
+                                      text: "was asked ",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w200,
                                       ),

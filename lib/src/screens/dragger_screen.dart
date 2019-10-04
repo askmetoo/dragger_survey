@@ -142,7 +142,7 @@ class _DraggerScreenState extends State<DraggerScreen> {
       {context, PrismSurveyBloc prismSurveyBloc}) async {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     TextEditingController _askedPersonController = TextEditingController();
-    _askedPersonController.text = 'Anonymous';
+    _askedPersonController.text = prismSurveyBloc.currentAskedPerson ?? 'Anonymous';
 
     await showDialog(
         context: context,
@@ -165,6 +165,7 @@ class _DraggerScreenState extends State<DraggerScreen> {
                     Form(
                       key: _formKey,
                       child: TextField(
+                        controller: _askedPersonController,
                         onChanged: (value) {
                           _askedPersonController.text = value;
                         },
