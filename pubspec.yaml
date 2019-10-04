@@ -46,13 +46,8 @@ dependencies:
   timeago:
   flutter_form_builder:
   csv: 4.0.3
-  path_provider: ^0.4.1
+  path_provider: 
   simple_permissions: ^0.1.9
-
-
-
-
-
 
 
   # The following adds the Cupertino Icons font to your application.
