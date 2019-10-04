@@ -223,7 +223,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Text(
-                    "Select a Survey Set or new Set.", textAlign: TextAlign.start,
+                    "Select a Survey Set from below \nor create a new Set.", textAlign: TextAlign.start,
                   ),
               ),
               Expanded(
