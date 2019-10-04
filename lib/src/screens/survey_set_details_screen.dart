@@ -109,7 +109,19 @@ class SurveySetDetailsScreen extends StatelessWidget {
                           icon: Icons.delete,
                           onTap: () {
                             log("In SurveySetDetailsScreen Slidable 'Delete': ${document.documentID}");
-                            surveyBloc.deletePrismSurveyById(id: document.documentID);
+                            surveyBloc.deletePrismSurveyById(
+                                id: document.documentID);
+                          },
+                        ),
+                        IconSlideAction(
+                          caption: 'Edit',
+                          color: Styles.drg_colorLighterGreen,
+                          icon: Icons.edit,
+                          onTap: () {
+                            log("In SurveySetDetailsScreen Slidable 'Edit': ${document.documentID}");
+                            _buildSurveyEditDialog(context,
+                                documentID: document.documentID,
+                                surveyBloc: surveyBloc);
                           },
                         ),
                       ],
@@ -195,5 +207,41 @@ class SurveySetDetailsScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _buildSurveyEditDialog(context,
+      {@required documentID, @required surveyBloc}) async {
+    log("In SurveySetDetailsScreen _buildSurveyEditDialog 'Edit': $documentID");
+    final GlobalKey<FormState> _formSurveyEditKey = GlobalKey<FormState>();
+    TextEditingController _surveyEditController = TextEditingController();
+
+    await showDialog(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            backgroundColor: Styles.drg_colorSecondaryDeepDark,
+            title: Text(
+              "Edit Survey Metadata",
+              style: TextStyle(
+                fontFamily: 'Bitter',
+                color: Styles.drg_colorSecondary,
+              ),
+            ),
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 26),
+                child: Form(
+                  key: _formSurveyEditKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      
+                    ],
+                  ),
+                ),
+              )
+            ],
+          );
+        });
   }
 }
