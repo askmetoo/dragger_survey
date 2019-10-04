@@ -57,6 +57,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
     AsyncSnapshot<DocumentSnapshot> surveySetsSnapshot,
   }) {
     final PrismSurveyBloc surveyBloc = Provider.of<PrismSurveyBloc>(context);
+    final PrismSurveySetBloc surveySetBloc = Provider.of<PrismSurveySetBloc>(context);
     Future<QuerySnapshot> _surveyList;
 
     if (surveySetsSnapshot.connectionState == ConnectionState.done) {
@@ -65,6 +66,8 @@ class SurveySetDetailsScreen extends StatelessWidget {
       }
 
       try {
+        surveySetBloc.setCurrentPrismSurveySetId(id: surveySetsSnapshot?.data?.documentID);
+        surveySetBloc.setCurrentPrismSurveySetById(id: surveySetsSnapshot?.data?.documentID);
         _surveyList = surveyBloc.getPrismSurveyQueryOrderCreatedDesc(
             fieldName: 'surveySet',
             fieldValue: surveySetsSnapshot.data.documentID);
