@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -39,7 +38,8 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
         builder: (context, surveySetSnapshot) {
           if (surveySetSnapshot.connectionState == ConnectionState.done) {
             if (!surveySetSnapshot.hasData) {
-              print("In SurveySetGraphScreen - surveySetSnapshot has no data: ${surveySetSnapshot?.data} ");
+              print(
+                  "In SurveySetGraphScreen - surveySetSnapshot has no data: ${surveySetSnapshot?.data} ");
               return Center(
                 child: Container(
                   child: buildNoDataAvailable(),
@@ -78,22 +78,37 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
                     });
                     data.forEach((value) {
                       log("------> forEach value: ${value.xValue} / ${value.yValue}, radius: ${value.radius}");
-                      var newData = data.where( (testValue) {
-                          if (testValue.xValue == value.xValue && testValue.yValue == value.yValue) {
-                            testValue.radius += 3;
-                            return true;
-                          };
-                          return false;
+                      var newData = data.where((testValue) {
+                        if (testValue.xValue == value.xValue &&
+                            testValue.yValue == value.yValue) {
+                          testValue.radius += 3;
+                          return true;
                         }
-                      );
-                      newData.forEach((newDoc) => log("------> forEach newDoc: ${newDoc.xValue} / ${newDoc.yValue}, radius: ${newDoc.radius}"));
+                        ;
+                        return false;
+                      });
+                      newData.forEach((newDoc) => log(
+                          "------> forEach newDoc: ${newDoc.xValue} / ${newDoc.yValue}, radius: ${newDoc.radius}"));
                     });
 
                     return SingleChildScrollView(
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.fromLTRB(0, 20, 8, 0),
                         child: Column(
                           children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.fromLTRB(14, 0, 0, 0),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text( surveySetSnapshot?.data?.data['name'] ?? "Survey title", 
+                                style: TextStyle(
+                                  fontFamily: 'Bitter',
+                                  fontSize: Styles.drg_fontSizeMediumHeadline,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                ),
+                              ),
+                            ),
                             AspectRatio(
                               aspectRatio: 1,
                               child: SurveyScatterPlotChart.withData(

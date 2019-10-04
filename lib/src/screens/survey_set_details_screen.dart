@@ -1,12 +1,11 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:date_format/date_format.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class SurveySetDetailsScreen extends StatelessWidget {
   final String surveySetId;
@@ -38,8 +37,11 @@ class SurveySetDetailsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  buildMetaDataList(surveySetsSnapshot: surveySetsSnapshot),
-                  Divider(),
+                  buildMetaHeader(surveySetsSnapshot: surveySetsSnapshot),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                    child: Text("Surveys made:"),
+                  ),
                   buildSurveyList(
                       context: context, surveySetsSnapshot: surveySetsSnapshot)
                 ],
@@ -57,7 +59,8 @@ class SurveySetDetailsScreen extends StatelessWidget {
     AsyncSnapshot<DocumentSnapshot> surveySetsSnapshot,
   }) {
     final PrismSurveyBloc surveyBloc = Provider.of<PrismSurveyBloc>(context);
-    final PrismSurveySetBloc surveySetBloc = Provider.of<PrismSurveySetBloc>(context);
+    final PrismSurveySetBloc surveySetBloc =
+        Provider.of<PrismSurveySetBloc>(context);
     Future<QuerySnapshot> _surveyList;
 
     if (surveySetsSnapshot.connectionState == ConnectionState.done) {
@@ -66,8 +69,10 @@ class SurveySetDetailsScreen extends StatelessWidget {
       }
 
       try {
-        surveySetBloc.setCurrentPrismSurveySetId(id: surveySetsSnapshot?.data?.documentID);
-        surveySetBloc.setCurrentPrismSurveySetById(id: surveySetsSnapshot?.data?.documentID);
+        surveySetBloc.setCurrentPrismSurveySetId(
+            id: surveySetsSnapshot?.data?.documentID);
+        surveySetBloc.setCurrentPrismSurveySetById(
+            id: surveySetsSnapshot?.data?.documentID);
         _surveyList = surveyBloc.getPrismSurveyQueryOrderCreatedDesc(
             fieldName: 'surveySet',
             fieldValue: surveySetsSnapshot.data.documentID);
@@ -90,43 +95,14 @@ class SurveySetDetailsScreen extends StatelessWidget {
                   log("-----> In SurveySetDetailsScreen ListView index: $index");
                   DocumentSnapshot document =
                       surveySnapshot.data.documents[index];
-                  return Slidable(
-                    key: ValueKey(index),
-                    actionPane: SlidableDrawerActionPane(),
-                    actionExtentRatio: 0.25,
-                    // actions: <Widget>[
-                    //   IconSlideAction(
-                    //     caption: 'Archive',
-                    //     color: Colors.blue,
-                    //     icon: Icons.archive,
-                    //     onTap: () {},
-                    //   ),
-                    // ],
-                    secondaryActions: <Widget>[
-                      IconSlideAction(
-                        caption: 'More',
-                        color: Styles.drg_colorSecondaryDeepDark,
-                        icon: Icons.more_horiz,
-                        onTap: () {
-                          log("In SurveySetDetailsScreen Slidable 'More..'");
-                        },
-                      ),
-                      IconSlideAction(
-                        caption: 'Delete',
-                        color: Styles.drg_colorAttention,
-                        icon: Icons.delete,
-                        onTap: () {
-                          String _surveyId =
-                              surveySetsSnapshot?.data?.data['surveys'][index];
-                          log("In SurveySetDetailsScreen Slidable 'Delete': $_surveyId");
-                        },
-                      ),
-                    ],
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14.0),
                     child: Container(
                       margin: EdgeInsets.only(bottom: 1),
-                      color: Styles.drg_colorSecondary.withOpacity(.3),
+                      color: Styles.drg_colorSecondary.withOpacity(.13),
+                      height: 36,
+                      padding: EdgeInsets.symmetric(horizontal: 10),
                       child: ListTile(
-                        onTap: () {},
                         title: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -142,28 +118,21 @@ class SurveySetDetailsScreen extends StatelessWidget {
                                   TextSpan(
                                     text: "was asked.",
                                     style: TextStyle(
-                                      color: Styles.drg_colorText,
-                                      fontSize: 16,
                                       fontWeight: FontWeight.w200,
                                     ),
                                   ),
+                                  TextSpan(
+                                    text: timeago.format(DateTime.now()
+                                        .subtract(DateTime.now().difference(
+                                            document.data['created']
+                                                .toDate()))),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w200,
+                                    ),
+                                  )
                                 ],
                               ),
                             ),
-                            Text(
-                                "Created: ${formatDate(document.data['created'].toDate(), [
-                              'dd',
-                              '.',
-                              'mm',
-                              '.',
-                              'yyyy',
-                              ', ',
-                              'HH',
-                              ':',
-                              'nn',
-                              ':',
-                              'ss'
-                            ])}"),
                           ],
                         ),
                       ),
@@ -177,7 +146,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
     }
   }
 
-  buildMetaDataList({surveySetsSnapshot}) {
+  buildMetaHeader({surveySetsSnapshot}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(

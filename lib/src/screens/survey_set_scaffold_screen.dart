@@ -20,7 +20,7 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
   _SurveySetScaffoldScreenState(this.arg);
   List<String> _titleOptions = [
     "Survey Set Details",
-    "Survey Title",
+    "Survey Results",
     "Survey Set Graphs"
   ];
 
