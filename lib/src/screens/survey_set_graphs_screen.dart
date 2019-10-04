@@ -1,6 +1,13 @@
 import 'dart:developer';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+// import 'package:simple_permissions/simple_permissions.dart';
+
+
+
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:csv/csv.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
@@ -20,6 +27,75 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
   DocumentSnapshot currentSurveySet;
   String _xLabel;
   String _yLabel;
+  bool _allowWriteFile = false;
+
+  Future get _localPath async {
+    // Application documents directory: /data/user/0/{package_name}/{app_name}
+    final applicationDirectory = await getApplicationDocumentsDirectory();
+
+    // External storage directory: /storage/emulated/0
+    final externalDirectory = await getExternalStorageDirectory();
+
+    // Application temporary directory: /data/user/0/{package_name}/cache
+    final tempDirectory = await getTemporaryDirectory();
+
+    return applicationDirectory.path;
+  }
+  
+  Future get _localFile async {
+    final path = await _localPath;
+
+    return File('$path/survey_xxx.csv');
+  }
+
+  Future _writeToFile({String surveyString}) async {
+    if (!_allowWriteFile) {
+      return null;
+    }
+
+    final file = await _localFile;
+
+    // Write the file
+    File result = await file.writeAsString('$surveyString');
+
+    if (result == null ) {
+      print("Writing survey to file failed");
+    } else {
+      print("Successfully writing to file");
+
+      print("Reading the content of file");
+      String readResult = await _readFile();
+      print("readResult: " + readResult.toString());
+    }
+  }
+
+  Future _readFile() async {
+    try {
+      final file = await _localFile;
+
+      // Read the file
+      return await file.readAsString();
+    } catch (e) {
+      // Return null if we encounter an error
+      return null;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // _requestWritePermission();
+  }
+
+  // _requestWritePermission() async {
+  //   PermissionStatus permissionStatus = await SimplePermissions.requestPermission(Permission.WriteExternalStorage);
+
+  //   if (permissionStatus == PermissionStatus.authorized) {
+  //     setState(() {
+  //       _allowWriteFile = true;
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +194,17 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
                             OutlineButton.icon(
                               icon: Icon(Icons.save_alt, color: Styles.drg_colorTextMediumDark,),
                               label: Text('Export to CSV', style: TextStyle(color: Styles.drg_colorTextMediumDark),),
-                              onPressed: () {},
+                              onPressed: () {
+                                List<List<dynamic>> list = [[]];
+                                list.add([surveySetSnapshot.data.data['xName'], surveySetSnapshot.data.data['yName']]);
+                                surveySnapshot.data.documents.forEach( (doc) {
+                                   list.add( [doc.data['xValue'], doc.data['yValue']]);
+                                });
+                                var result = ListToCsvConverter().convert( list, fieldDelimiter: ';', textDelimiter: ',', eol: '\n').toString();
+                                print("-----\/\/\/");
+                                print(result);
+                                _writeToFile(surveyString: result);
+                              },
                             )
                           ],
                         ),
@@ -189,7 +275,7 @@ class SurveyScatterPlotChart extends StatelessWidget {
       {data, granularity}) {
     return [
       charts.Series<SurveyResult, int>(
-        id: 'Sales',
+        id: 'Surveys',
         colorFn: (SurveyResult survey, _) {
           return charts.ColorUtil.fromDartColor(Styles.drg_colorContrast);
         },

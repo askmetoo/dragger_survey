@@ -105,23 +105,23 @@ PODS:
     - GoogleToolboxForMac/Defines (= 2.2.1)
     - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.1)"
   - "GoogleToolboxForMac/NSString+URLArguments (2.2.1)"
-  - GoogleUtilities/AppDelegateSwizzler (6.3.0):
+  - GoogleUtilities/AppDelegateSwizzler (6.3.1):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (6.3.0)
-  - GoogleUtilities/Logger (6.3.0):
+  - GoogleUtilities/Environment (6.3.1)
+  - GoogleUtilities/Logger (6.3.1):
     - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (6.3.0):
+  - GoogleUtilities/MethodSwizzler (6.3.1):
     - GoogleUtilities/Logger
-  - GoogleUtilities/Network (6.3.0):
+  - GoogleUtilities/Network (6.3.1):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (6.3.0)"
-  - GoogleUtilities/Reachability (6.3.0):
+  - "GoogleUtilities/NSData+zlib (6.3.1)"
+  - GoogleUtilities/Reachability (6.3.1):
     - GoogleUtilities/Logger
-  - GoogleUtilities/UserDefaults (6.3.0):
+  - GoogleUtilities/UserDefaults (6.3.1):
     - GoogleUtilities/Logger
   - "gRPC-C++ (0.0.9)":
     - "gRPC-C++/Implementation (= 0.0.9)"
@@ -151,7 +151,7 @@ PODS:
   - nanopb/encode (0.3.901)
   - path_provider (0.0.1):
     - Flutter
-  - Protobuf (3.9.2)
+  - Protobuf (3.10.0)
   - Reachability (3.2)
   - sqflite (0.0.1):
     - Flutter
@@ -238,7 +238,7 @@ SPEC CHECKSUMS:
   GoogleDataTransportCCTSupport: 9f352523e8785a71f6754f51eeff09f49ec19268
   GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
   GoogleToolboxForMac: b3553629623a3b1bff17f555e736cd5a6d95ad55
-  GoogleUtilities: 9c2c544202301110b29f7974a82e77fdcf12bf51
+  GoogleUtilities: f895fde57977df4e0233edda0dbeac490e3703b6
   "gRPC-C++": 9dfe7b44821e7b3e44aacad2af29d2c21f7cde83
   gRPC-Core: c9aef9a261a1247e881b18059b84d597293c9947
   GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
@@ -246,7 +246,7 @@ SPEC CHECKSUMS:
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
-  Protobuf: 67fb42ba613def994e61854de2b3164f13790cc4
+  Protobuf: a4dc852ad69c027ca2166ed287b856697814375b
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   sqflite: ff1d9da63c06588cc8d1faf7256d741f16989d5a
 
