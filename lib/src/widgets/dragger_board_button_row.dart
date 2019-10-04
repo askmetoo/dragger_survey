@@ -49,8 +49,8 @@ class DraggerBoardButtonRow extends StatelessWidget {
                   "surveySet": currentSurveySet,
                   "edited": DateTime.now(),
                   "users": user.uid,
-                  "xValue": prismSurveyBloc.colIndex,
-                  "yValue": prismSurveyBloc.rowIndex,
+                  "xValue": prismSurveyBloc.rowIndex,
+                  "yValue": prismSurveyBloc.colIndex,
                 };
                 prismSurveyBloc.addPrismSurveyToDb(survey: survey);
                 draggableItemBloc.resetDraggableItemPositon();
