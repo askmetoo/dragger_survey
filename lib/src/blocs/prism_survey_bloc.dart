@@ -206,6 +206,12 @@ class PrismSurveyBloc extends ChangeNotifier {
     notifyListeners();
   }
 
+  updatePrismSurveyById({id, field, value}) async {
+    Collection(path: "surveys").updateDocumentByIdWithFieldAndValue(
+        id: id, field: field, value: value);
+    notifyListeners();
+  }
+
   Future<DocumentSnapshot> deletePrismSurveyById({id}) {
     var returnValue =
         Collection<PrismSurveySet>(path: 'surveys').deleteById(id);

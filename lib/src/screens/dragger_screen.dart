@@ -166,7 +166,7 @@ class _DraggerScreenState extends State<DraggerScreen> {
                       key: _formKey,
                       child: TextField(
                         controller: _askedPersonController,
-                        onChanged: (value) {
+                        onSubmitted: (value) {
                           _askedPersonController.text = value;
                         },
                         style: TextStyle(

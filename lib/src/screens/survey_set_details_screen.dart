@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -111,6 +112,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
                             log("In SurveySetDetailsScreen Slidable 'Delete': ${document.documentID}");
                             surveyBloc.deletePrismSurveyById(
                                 id: document.documentID);
+                            surveyBloc.currentAskedPerson = null;
                           },
                         ),
                         IconSlideAction(
@@ -119,9 +121,12 @@ class SurveySetDetailsScreen extends StatelessWidget {
                           icon: Icons.edit,
                           onTap: () {
                             log("In SurveySetDetailsScreen Slidable 'Edit': ${document.documentID}");
-                            _buildSurveyEditDialog(context,
-                                documentID: document.documentID,
-                                surveyBloc: surveyBloc);
+                            _buildSurveyEditDialog(
+                              context,
+                              documentID: document.documentID,
+                              surveyBloc: surveyBloc,
+                              askedPerson: document.data['askedPerson'],
+                            );
                           },
                         ),
                       ],
@@ -209,11 +214,17 @@ class SurveySetDetailsScreen extends StatelessWidget {
     );
   }
 
-  void _buildSurveyEditDialog(context,
-      {@required documentID, @required surveyBloc}) async {
+  void _buildSurveyEditDialog(
+    context, {
+    @required documentID,
+    @required PrismSurveyBloc surveyBloc,
+    @required String askedPerson,
+  }) async {
     log("In SurveySetDetailsScreen _buildSurveyEditDialog 'Edit': $documentID");
-    final GlobalKey<FormState> _formSurveyEditKey = GlobalKey<FormState>();
-    TextEditingController _surveyEditController = TextEditingController();
+    // final GlobalKey<FormState> _formSurveyEditKey = GlobalKey<FormState>();
+    final GlobalKey<FormBuilderState> _formSurveyEditKey =
+        GlobalKey<FormBuilderState>();
+    // TextEditingController _surveyEditController = TextEditingController();
 
     await showDialog(
         context: context,
@@ -230,12 +241,44 @@ class SurveySetDetailsScreen extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 26),
-                child: Form(
+                child: FormBuilder(
                   key: _formSurveyEditKey,
+                  initialValue: {
+                    'askedPerson': askedPerson ?? 'Anonymous'
+                  },
+                  autovalidate: true,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      
+                      FormBuilderTextField(
+                        attribute: "askedPerson",
+                        decoration: InputDecoration(labelText: "Asked Person"),
+                        validators: [
+                          FormBuilderValidators.max(45),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 12.0),
+                        child: FlatButton(
+                          child: Text("Speichern"),
+                          color: Styles.drg_colorSecondary,
+                          onPressed: () {
+                            if (_formSurveyEditKey.currentState
+                                .saveAndValidate()) {
+                              log("_askedPersonController.text: ${_formSurveyEditKey.currentState.value['askedPerson']}");
+                              surveyBloc.currentAskedPerson = _formSurveyEditKey
+                                  .currentState.value['askedPerson'];
+                              surveyBloc.updatePrismSurveyById(
+                                field: 'askedPerson',
+                                id: documentID,
+                                value: _formSurveyEditKey
+                                  .currentState.value['askedPerson'],
+                              );
+                            }
+                            Navigator.pop(context);
+                          },
+                        ),
+                      )
                     ],
                   ),
                 ),

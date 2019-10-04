@@ -120,7 +120,17 @@ class Collection<T> {
     } catch (error) {
       print('Error occured while updating data: $error');
     } finally {
-      print("End of Update");
+      print("End of updateDocumentWithObject()");
+    }
+  }
+
+  updateDocumentByIdWithFieldAndValue({id, field, value}) async {
+    try {
+      ref.document('$id').updateData({'$field': value});
+    } catch (error) {
+      print('Error occured while updating data: $error');
+    } finally {
+      print("End of updateDocumentByIdWithFieldAndValue()");
     }
   }
 

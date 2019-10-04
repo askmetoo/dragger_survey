@@ -1,9 +1,11 @@
 import 'dart:developer';
 
+import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/screens/screens.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SurveySetScaffoldScreen extends StatefulWidget {
   final Map<String, dynamic> arguments;
@@ -26,6 +28,7 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final PrismSurveyBloc surveyBloc = Provider.of<PrismSurveyBloc>(context);
     return Scaffold(
       backgroundColor: Styles.drg_colorAppBackground,
       endDrawer: UserDrawer(),
@@ -50,6 +53,7 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
         ),
         tooltip: "Add new Survey",
         onPressed: () {
+          surveyBloc.currentAskedPerson = 'Anonymous';
           Navigator.pushNamed(context, '/draggerscaffold');
         },
       ),
