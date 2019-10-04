@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/styles.dart';
@@ -27,7 +29,7 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
     final PrismSurveyBloc surveyBloc = Provider.of<PrismSurveyBloc>(context);
 
     int _granulariy = 0;
-    final double dotRadius = 10;
+    final double dotRadius = 3;
     int _sum = 0;
 
     List<SurveyResult> data = [];
@@ -73,6 +75,18 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
                           radius: dotRadius,
                         ),
                       );
+                    });
+                    data.forEach((value) {
+                      log("------> forEach value: ${value.xValue} / ${value.yValue}, radius: ${value.radius}");
+                      var newData = data.where( (testValue) {
+                          if (testValue.xValue == value.xValue && testValue.yValue == value.yValue) {
+                            testValue.radius += 3;
+                            return true;
+                          };
+                          return false;
+                        }
+                      );
+                      newData.forEach((newDoc) => log("------> forEach newDoc: ${newDoc.xValue} / ${newDoc.yValue}, radius: ${newDoc.radius}"));
                     });
 
                     return SingleChildScrollView(
@@ -176,7 +190,7 @@ class SurveyScatterPlotChart extends StatelessWidget {
 class SurveyResult {
   final int xValue;
   final int yValue;
-  final double radius;
+  double radius;
 
   SurveyResult({
     this.xValue,
