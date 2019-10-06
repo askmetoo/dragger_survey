@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dragger_survey/src/shared/utils.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/screens/screens.dart';
 import 'package:dragger_survey/src/styles.dart';
@@ -8,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class UserDrawer extends StatelessWidget {
   const UserDrawer({
@@ -29,6 +31,8 @@ class UserDrawer extends StatelessWidget {
           ));
     }
 
+    log("in UserDrawer - random string: ${Utils.createCryptoRandomString(4)}");
+
     return FutureBuilder<FirebaseUser>(
         future: signInBloc.currentUser,
         builder:
@@ -47,12 +51,30 @@ class UserDrawer extends StatelessWidget {
                   padding: EdgeInsets.all(0),
                   children: <Widget>[
                     DrawerHeader(
-                      child: Column(
-                        children: <Widget>[
-                          SignedInUserCircleAvatar(),
-                          Text('${signInSnapshot.data.displayName}'),
-                          _buildSignoutButton(signInBloc),
-                        ],
+                      child: Container(
+                        alignment: Alignment.topLeft,
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 2,
+                              child: Column(
+                                children: <Widget>[
+                                  SignedInUserCircleAvatar(),
+                                  Text(
+                                    '${signInSnapshot.data.displayName}',
+                                    textAlign: TextAlign.start,
+                                  ),
+                                  _buildSignoutButton(signInBloc),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: QrImage(
+                                data: "${signInSnapshot.data.displayName}; ${Utils.createCryptoRandomString(2)}${signInSnapshot.data.uid}${Utils.createCryptoRandomString(2)}",
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       decoration: BoxDecoration(
                         color: Styles.drg_colorSecondary,
