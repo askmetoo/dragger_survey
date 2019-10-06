@@ -18,10 +18,11 @@ class AuthService {
   Future getCurrentUser() async {
     _auth
         .currentUser()
-        .then( (val) {
-          log("In AuthService getCurrentUser() - value of _auth.currentUser(): ${val?.uid}");
-          }
-        );
+        // .then( (val) {
+        //   log("In AuthService getCurrentUser() - value of _auth.currentUser(): ${val?.uid}");
+        //   }
+        // )
+        ;
     FirebaseUser _currentUser = await  _auth.currentUser();
 
     return _currentUser;

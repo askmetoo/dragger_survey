@@ -303,7 +303,7 @@ class LoginScreen extends StatelessWidget {
   Widget _getConnectionStatusText({BuildContext context}) {
     final connectionStatus = Provider.of<ConnectivityStatus>(context);
 
-    print("connectionStatus: $connectionStatus");
+    // print("connectionStatus: $connectionStatus");
 
     if (connectionStatus == ConnectivityStatus.WiFi ||
         connectionStatus == ConnectivityStatus.Cellular ||

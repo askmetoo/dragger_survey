@@ -95,30 +95,36 @@ Widget buildTeamsListView({BuildContext context}) {
                             teamBloc.currentSelectedTeamId = teamId;
 
                             print("Edit button pressed in teams");
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                log("In BuildTeamsListView showDialog value of documentSnapshot.documentID: $teamId");
-                                return AlertDialog(
-                                  title: Text("Edit Team"),
-                                  content: TeamForm(
-                                    id: teamId,
-                                  ),
-                                  elevation: 10,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      topRight: Radius.circular(3),
-                                      bottomLeft: Radius.circular(20),
-                                      bottomRight: Radius.circular(20),
-                                    ),
-                                  ),
-                                  backgroundColor: Styles.drg_colorSecondary,
-                                  contentTextStyle:
-                                      TextStyle(color: Styles.drg_colorText),
-                                );
+
+                            Navigator.pushNamed(context, '/teammanager',
+                              arguments: {
+                                "id": "$teamId"
                               },
                             );
+                            // showDialog(
+                            //   context: context,
+                            //   builder: (BuildContext context) {
+                            //     log("In BuildTeamsListView showDialog value of documentSnapshot.documentID: $teamId");
+                            //     return AlertDialog(
+                            //       title: Text("Edit Team"),
+                            //       content: TeamForm(
+                            //         id: teamId,
+                            //       ),
+                            //       elevation: 10,
+                            //       shape: RoundedRectangleBorder(
+                            //         borderRadius: BorderRadius.only(
+                            //           topLeft: Radius.circular(20),
+                            //           topRight: Radius.circular(3),
+                            //           bottomLeft: Radius.circular(20),
+                            //           bottomRight: Radius.circular(20),
+                            //         ),
+                            //       ),
+                            //       backgroundColor: Styles.drg_colorSecondary,
+                            //       contentTextStyle:
+                            //           TextStyle(color: Styles.drg_colorText),
+                            //     );
+                            //   },
+                            // );
                           },
                         ),
                         onTap: () {

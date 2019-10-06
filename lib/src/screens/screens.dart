@@ -12,3 +12,4 @@ export 'teams_list_screen.dart';
 export 'how_to_screen.dart';
 export 'survey_set_btm_navigation_controller.dart';
 export 'dragger_scaffold_screen.dart';
+export 'team_manager_screen.dart';

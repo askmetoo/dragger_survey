@@ -91,7 +91,7 @@ class _TeamFormState extends State<TeamForm> {
   Widget _buildForm({@required context, @required formKey, String documentId}) {
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
 
-    log("---------> $documentId");
+    log("---------> In TeamForm _buildForm - documentId: $documentId");
 
     if (documentId == null) {
       teamBloc.updatingTeamData = false;
@@ -107,61 +107,92 @@ class _TeamFormState extends State<TeamForm> {
           return CircularProgressIndicator();
         }
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            TextFormField(
-              initialValue:
-                  documentId != null ? teamSnapshot?.data['name'] : '',
-              autofocus: true,
-              focusNode: firstFocus,
-              onEditingComplete: () =>
-                  FocusScope.of(context).requestFocus(secondFocus),
-              textInputAction: TextInputAction.next,
-              keyboardType: TextInputType.text,
-              style: Styles.drg_textFieldContent,
-              decoration: InputDecoration(
-                labelStyle: TextStyle(
-                    color: Styles.drg_colorPrimary,
-                    fontSize: Styles.drg_fontSizeFloatingLabel),
-                labelText: "Team Name",
-                hintStyle: TextStyle(fontSize: Styles.drg_fontSizeHintText),
-                hintText: "Please provide a team name",
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(bottom: 12),
+                child: TextFormField(
+                  initialValue:
+                      documentId != null ? teamSnapshot?.data['name'] : '',
+                  autofocus: true,
+                  focusNode: firstFocus,
+                  onEditingComplete: () =>
+                      FocusScope.of(context).requestFocus(secondFocus),
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.text,
+                  // style: Styles.drg_textFieldContent,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    filled: true,
+                    fillColor: Styles.drg_colorAppBackgroundLight.withOpacity(.5),
+
+                    labelStyle: TextStyle(
+                        color: Styles.drg_colorAppBackground,
+                        ),
+                    labelText: "Team Name",
+                    hintStyle: TextStyle(
+                      fontSize: Styles.drg_fontSizeHintText, 
+                    ),
+                    hintText: "Please provide a team name",
+                    errorStyle: TextStyle(
+                      fontSize: 14,
+                      color: Styles.drg_colorAppBackgroundShiny,
+                      backgroundColor: Styles.drg_colorAttention,
+
+                    )
+                  ),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return '  Please enter a team name  ';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) => _name = value,
+                ),
               ),
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please enter a name';
-                }
-                return null;
-              },
-              onSaved: (value) => _name = value,
-            ),
-            TextFormField(
-              // expands: true,
-              minLines: 2,
-              maxLines: 9,
-              maxLength: 200,
-              initialValue:
-                  documentId != null ? teamSnapshot?.data['description'] : '',
-              focusNode: secondFocus,
-              onEditingComplete: () =>
-                  FocusScope.of(context).requestFocus(thirdFocus),
-              textInputAction: TextInputAction.next,
-              keyboardType: TextInputType.text,
-              style: Styles.drg_textFieldContent,
-              decoration: InputDecoration(
-                labelStyle: TextStyle(color: Styles.drg_colorPrimary),
-                labelText: "Team description",
-                hintText: "How would you like to describe your team",
+              Padding(
+                padding: EdgeInsets.only(bottom: 12),
+                child: TextFormField(
+                  minLines: 2,
+                  maxLines: 9,
+                  maxLength: 200,
+                  initialValue:
+                      documentId != null ? teamSnapshot?.data['description'] : '',
+                  focusNode: secondFocus,
+                  onEditingComplete: () =>
+                      FocusScope.of(context).requestFocus(thirdFocus),
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.text,
+                  style: Styles.drg_textFieldContent,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      // borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        style: BorderStyle.solid,
+                        color: Styles.drg_colorAppBackground
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: Styles.drg_colorAppBackgroundLight.withOpacity(.5),
+                    labelStyle: TextStyle(
+                        color: Styles.drg_colorText,
+                        ),
+                    labelText: "Team description",
+                    hintText: "How would you like to describe your team",
+                  ),
+                  onSaved: (value) => _description = value,
+                ),
               ),
-              onSaved: (value) => _description = value,
-            ),
-            _buildFormButton(
-              bloc: teamBloc,
-              context: context,
-              formKey: formKey,
-            ),
-          ],
+              _buildFormButton(
+                bloc: teamBloc,
+                context: context,
+                formKey: formKey,
+              ),
+            ],
+          ),
         );
       },
     );
@@ -206,7 +237,7 @@ class _TeamFormState extends State<TeamForm> {
       child: FlatButton(
         disabledColor: Colors.orange.shade50.withOpacity(0.4),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        color: Colors.orange,
+        color: Styles.drg_colorPrimary,
         textColor: Colors.white,
         onPressed: _formHasChanged
             ? () {
