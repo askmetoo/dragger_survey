@@ -46,6 +46,8 @@ dependencies:
   timeago:
   flutter_form_builder:
   qr_flutter: ^3.0.1
+  barcode_scan: ^1.0.0
+
 
   csv: 4.0.3
   path_provider: 

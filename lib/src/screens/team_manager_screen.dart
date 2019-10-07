@@ -1,14 +1,17 @@
 import 'dart:developer';
+import 'package:flutter/services.dart';
 
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
-import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
+
+
 
 class TeamManagerScreen extends StatefulWidget {
   final Map<String, dynamic> arguments;
@@ -23,6 +26,33 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
   Map<String, dynamic> args;
 
   _TeamManagerScreenState({this.args});
+
+  String _scanedBarcode;
+
+  initState() {
+    super.initState();
+  }
+
+  Future scanBarcode() async {
+    try {
+      String barcode = await BarcodeScanner.scan();
+      setState(() => this._scanedBarcode = barcode);
+    } on PlatformException catch (e) {
+      if (e.code == BarcodeScanner.CameraAccessDenied) {
+        setState(() {
+          this._scanedBarcode = 'The user did not grant the camera permission!';
+        });
+      } else {
+        setState(() => this._scanedBarcode = 'Unknown error: $e');
+      }
+    } on FormatException{
+      setState(() => this._scanedBarcode = 'null (User returned using the "back"-button before scanning anything. Result)');
+    } catch (e) {
+      setState(() => this._scanedBarcode = 'Unknown error: $e');
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +147,7 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
       floatingActionButton: FloatingActionButton.extended(
         label: Text("Add new member"),
         icon: Icon(Icons.person_add),
-        onPressed: () {},
+        onPressed: scanBarcode,
       ),
     );
   }
