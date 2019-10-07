@@ -11,8 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
-
-
 class TeamManagerScreen extends StatefulWidget {
   final Map<String, dynamic> arguments;
   const TeamManagerScreen({Key key, this.arguments}) : super(key: key);
@@ -37,6 +35,7 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
     try {
       String barcode = await BarcodeScanner.scan();
       setState(() => this._scanedBarcode = barcode);
+      log("QRQRQRQRQRQR------> Scanned QR-Code/Barcode String: $_scanedBarcode");
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         setState(() {
@@ -45,14 +44,15 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
       } else {
         setState(() => this._scanedBarcode = 'Unknown error: $e');
       }
-    } on FormatException{
-      setState(() => this._scanedBarcode = 'null (User returned using the "back"-button before scanning anything. Result)');
+    } on FormatException {
+      setState(() => this._scanedBarcode =
+          'null (User returned using the "back"-button before scanning anything. Result)');
     } catch (e) {
       setState(() => this._scanedBarcode = 'Unknown error: $e');
     }
+
+    log("Scanned QR-Code/Barcode String: $_scanedBarcode");
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -69,75 +69,86 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
         builder: (context, AsyncSnapshot<DocumentSnapshot> teamSnapshot) {
           if (teamSnapshot.connectionState == ConnectionState.done) {
             List userIds = teamSnapshot.data.data['users'];
-            return Padding(
-              padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  // Text("Team Manager args: $args"),
-                  TeamForm(
-                    id: args['id'],
-                  ),
-                  Divider(
-                    color: Styles.drg_colorAppBackground,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 12.0),
-                    child: Text("Team members:"),
-                  ),
-                  ListView(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    children: userIds.map(
-                      (memberId) {
-                        log("ooo------------> memberId: $memberId");
-                        return Container(
-                          color: Styles.drg_colorAppBackground.withOpacity(.2),
-                          margin: EdgeInsets.only(bottom: 1),
-                          child: FutureBuilder<QuerySnapshot>(
-                            future: userBloc.getUsersQuery(fieldName: 'providersUID', fieldValue: memberId),
-                            // future: userBloc.getUserById(id: memberId),
-                            builder: (context, userSnapshot) {
+            return SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    // Text("Team Manager args: $args"),
+                    TeamForm(
+                      id: args['id'],
+                    ),
+                    Divider(
+                      color: Styles.drg_colorAppBackground,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 12.0),
+                      child: Text("Team members:"),
+                    ),
+                    ListView(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        children: userIds.map((memberId) {
+                          log("ooo------------> memberId: $memberId");
+                          return Container(
+                            color:
+                                Styles.drg_colorAppBackground.withOpacity(.2),
+                            margin: EdgeInsets.only(bottom: 1),
+                            child: FutureBuilder<QuerySnapshot>(
+                                future: userBloc.getUsersQuery(
+                                    fieldName: 'providersUID',
+                                    fieldValue: memberId),
+                                // future: userBloc.getUserById(id: memberId),
+                                builder: (context, userSnapshot) {
+                                  if (userSnapshot.connectionState ==
+                                      ConnectionState.done) {
+                                    if (!userSnapshot.hasData) {
+                                      return CircularProgressIndicator();
+                                    }
+                                    print("oooooo ----------> $userSnapshot");
+                                    print(
+                                        "oooooo ----------> ${userSnapshot.hasData}");
+                                    print(
+                                        "oooooo ----------> ${userSnapshot?.data == null}");
+                                    print(
+                                        "oooooo ----------> ${userSnapshot?.data.toString()}");
+                                    print(
+                                        "oooooo ----------> ${userSnapshot?.data?.documents?.first['displayName']}");
+                                    String userName = userSnapshot
+                                        ?.data?.documents?.first['displayName'];
 
-                              if ( userSnapshot.connectionState == ConnectionState.done) {
-                                if ( !userSnapshot.hasData) {
-                                  return CircularProgressIndicator();
-                                }
-                                print("oooooo ----------> $userSnapshot");
-                                print("oooooo ----------> ${userSnapshot.hasData}");
-                                print("oooooo ----------> ${userSnapshot?.data == null}");
-                                print("oooooo ----------> ${userSnapshot?.data.toString()}");
-                                print("oooooo ----------> ${userSnapshot?.data?.documents?.first['displayName']}");
-                                String userName = userSnapshot?.data?.documents?.first['displayName'];
-
-                                return Slidable(
-                                  actionPane: SlidableBehindActionPane(),
-                                  actionExtentRatio: 0.2,
-                                  child: ListTile(
-                                    leading: CircleAvatar(backgroundImage: CachedNetworkImageProvider(userSnapshot?.data?.documents?.first['photoUrl'])),
-                                    dense: true,
-                                    title: Text(userName),
-                                    // title: Text("Member: " + memberId.toString()),
-                                  ),
-                                  secondaryActions: <Widget>[
-                                    IconSlideAction(
-                                      caption: 'Delete',
-                                      icon: Icons.delete,
-                                      color: Styles.drg_colorAttention,
-                                      onTap: () {},
-                                    )
-                                  ],
-                                );
-
-                              }
-                              return Container();
-                            }
-                          ),
-                        );
-                      }
-                    ).toList()
-                  )
-                ],
+                                    return Slidable(
+                                      actionPane: SlidableBehindActionPane(),
+                                      actionExtentRatio: 0.2,
+                                      child: ListTile(
+                                        leading: CircleAvatar(
+                                            backgroundImage:
+                                                CachedNetworkImageProvider(
+                                                    userSnapshot
+                                                        ?.data
+                                                        ?.documents
+                                                        ?.first['photoUrl'])),
+                                        dense: true,
+                                        title: Text(userName),
+                                        // title: Text("Member: " + memberId.toString()),
+                                      ),
+                                      secondaryActions: <Widget>[
+                                        IconSlideAction(
+                                          caption: 'Delete',
+                                          icon: Icons.delete,
+                                          color: Styles.drg_colorAttention,
+                                          onTap: () {},
+                                        )
+                                      ],
+                                    );
+                                  }
+                                  return Container();
+                                }),
+                          );
+                        }).toList())
+                  ],
+                ),
               ),
             );
           }
