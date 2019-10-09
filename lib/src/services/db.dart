@@ -78,7 +78,13 @@ class Collection<T> {
 
   Future<DocumentSnapshot> getDocument(id) async {
     try {
-      return await ref.document('$id').get();
+      DocumentSnapshot _doc = await ref.document('$id').get();
+      if (!_doc.exists) {
+        print("NO SUCCESS!!! In DB getDocument - document found: ${_doc.documentID}");
+        return null;
+      }
+      print("SUCCESS! In DB getDocument - document found: ${_doc.exists}");
+      return _doc;
     } catch (e) {
       log("ERROR in DB.dart - getDocument(id) - error: $e");
       return null;
@@ -131,6 +137,18 @@ class Collection<T> {
       print('Error occured while updating data: $error');
     } finally {
       print("End of updateDocumentByIdWithFieldAndValue()");
+    }
+  }
+
+  updateArrayInDocumentByIdWithFieldAndValue({id, field, value}) async {
+    try {
+      ref.document('$id').updateData(
+        {'$field': FieldValue.arrayUnion(['$value'])}
+      );
+    } catch ( error) {
+      print('Error occured while updating data: $error');
+    } finally {
+      print("End of updateArrayInDocumentByIdWithFieldAndValue()");
     }
   }
 
