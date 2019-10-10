@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/services/services.dart';
+import 'package:dragger_survey/src/services/services.dart' as prefix0;
 import 'package:flutter/material.dart';
 
 class TeamBloc extends ChangeNotifier {
@@ -56,10 +57,6 @@ class TeamBloc extends ChangeNotifier {
   }
 
   updateTeamArrayFieldByIdWithFieldAndValue({id, field, value}) async {
-    try {
-      DocumentSnapshot fetchedUser = await Collection(path: 'users').getDocument(id);
-      print("!!!!!------------> FETCHED USER in TeamBloc - user isEmpty: ${fetchedUser.documentID.isEmpty}");
-    } catch(e) { log("!!!!!---------> ERROR with TeamBloc updateTeamArrayFieldByIdWithFieldAndValue: $e");}
     Collection(path: "teams").updateArrayInDocumentByIdWithFieldAndValue(
       id: id, field: field, value: value,
     );

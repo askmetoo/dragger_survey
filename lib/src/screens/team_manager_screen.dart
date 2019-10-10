@@ -36,22 +36,37 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
       String barcode = await BarcodeScanner.scan();
       setState(() => this._scanedBarcode = barcode);
       log("QRQRQRQRQRQR------> Scanned QR-Code/Barcode String: $_scanedBarcode");
-      Scaffold.of(context).showSnackBar(SnackBar(content: Text("Code sucessfully scanned."), backgroundColor: Styles.drg_colorLighterGreen,));
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text("Code sucessfully scanned."),
+        backgroundColor: Styles.drg_colorLighterGreen,
+      ));
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
-        Scaffold.of(context).showSnackBar(SnackBar(content: Text("You did not grant camera permission!"), backgroundColor: Styles.drg_colorAttention,));
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text("You did not grant camera permission!"),
+          backgroundColor: Styles.drg_colorAttention,
+        ));
         setState(() {
           this._scanedBarcode = null;
         });
       } else {
-        Scaffold.of(context).showSnackBar(SnackBar(content: Text("An error occured: $e"), backgroundColor: Styles.drg_colorAttention,));
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text("An error occured: $e"),
+          backgroundColor: Styles.drg_colorAttention,
+        ));
         setState(() => this._scanedBarcode = null);
       }
     } on FormatException {
-      Scaffold.of(context).showSnackBar(SnackBar(content: Text("You aborted before the qr code could be scanned."), backgroundColor: Colors.black87,));
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text("You aborted before the qr code could be scanned."),
+        backgroundColor: Colors.black87,
+      ));
       setState(() => this._scanedBarcode = null);
     } catch (e) {
-      Scaffold.of(context).showSnackBar(SnackBar(content: Text("Unknown error: $e."), backgroundColor: Styles.drg_colorAttention,));
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text("Unknown error: $e."),
+        backgroundColor: Styles.drg_colorAttention,
+      ));
       setState(() => this._scanedBarcode = null);
     }
 
@@ -72,7 +87,6 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
         future: teamBloc.getTeamById(id: args['id']),
         builder: (context, AsyncSnapshot<DocumentSnapshot> teamSnapshot) {
           if (teamSnapshot.connectionState == ConnectionState.done) {
-
             List userIds = teamSnapshot.data.data['users'];
             return SingleChildScrollView(
               child: Padding(
@@ -111,8 +125,10 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
                                     if (!userSnapshot.hasData) {
                                       return CircularProgressIndicator();
                                     }
-                                    print("oooooo In TeamManager list of Team Members vvv");
-                                    print("oooooo userSnapshot ----------> $userSnapshot");
+                                    print(
+                                        "oooooo In TeamManager list of Team Members vvv");
+                                    print(
+                                        "oooooo userSnapshot ----------> $userSnapshot");
                                     print(
                                         "oooooo hasData ----------> ${userSnapshot.hasData}");
                                     print(
@@ -162,26 +178,37 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
         },
       ),
       floatingActionButton: FutureBuilder<DocumentSnapshot>(
-        future: teamBloc.getTeamById(id: args['id']),
-        builder: (context, teamSnapshotInFAB) {
-          return FloatingActionButton.extended(
-            label: Text("Add new member"),
-            icon: Icon(Icons.person_add),
-            onPressed: () async {
-              await scanBarcode(context: context);
-              if (_scanedBarcode == null) {
-                Scaffold.of(context).showSnackBar(SnackBar(content: Text("No datat to save."), backgroundColor: Colors.black87,));
+          future: teamBloc.getTeamById(id: args['id']),
+          builder: (context, teamSnapshotInFAB) {
+            return FloatingActionButton.extended(
+              label: Text("Add new member"),
+              icon: Icon(Icons.person_add),
+              onPressed: () async {
+                await scanBarcode(context: context);
+                if (_scanedBarcode == null) {
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Text("No datat to save."),
+                    backgroundColor: Colors.black87,
+                  ));
+                  return null;
+                }
+                bool userExists =
+                    await userBloc.checkIfUserExists(id: _scanedBarcode);
+                if (userExists) {
+                  teamBloc.updateTeamArrayFieldByIdWithFieldAndValue(
+                      id: teamSnapshotInFAB.data.documentID,
+                      field: 'users',
+                      value: _scanedBarcode);
+                }
+                Scaffold.of(context).showSnackBar(SnackBar(
+                  content: Text(
+                      "User not in Dragger db. User first needs to install Dragger app and log-into it before adding to team."),
+                  backgroundColor: Styles.drg_colorAttention,
+                ));
                 return null;
-              }
-              try {
-                teamBloc.updateTeamArrayFieldByIdWithFieldAndValue(id: teamSnapshotInFAB.data.documentID,field: 'users', value: _scanedBarcode);
-              } catch (e) {
-                log("ERROR in TeamManagerScreen FAB teamBloc.updateTeamArrayFieldByIdWithFieldAndValue(...), error: $e");
-              }
-            },
-          );
-        }
-      ),
+              },
+            );
+          }),
     );
   }
 }

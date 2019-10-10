@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/services/services.dart';
@@ -21,13 +23,17 @@ class UserBloc extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateUserById({object, id}) {
+  updateUserById({object, id}) async {
     Collection(path: 'users').updateDocumentWithObject(object: object, id: id);
     notifyListeners();
   }
 
-  Future<DocumentSnapshot> getUserById({id}) {
+  Future<DocumentSnapshot> getUserById({id}) async {
     return Collection<Team>(path: 'users').getDocument(id);
+  }
+
+  Future<bool> checkIfUserExists({id}) async {
+    return Collection(path: 'users').checkIfDocumentExists(id);
   }
 
   deleteUserById({id}) {

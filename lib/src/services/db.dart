@@ -91,6 +91,11 @@ class Collection<T> {
     }
   }
 
+  Future<bool> checkIfDocumentExists(id) async {
+    bool _exists = await ref.document(id).get().then((doc) => doc.exists);
+    return _exists;
+  }
+
   createDocumentWithValues({
     @required name,
     description = "",
