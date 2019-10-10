@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/services/services.dart';
+import 'package:dragger_survey/src/services/services.dart' as prefix0;
 import 'package:flutter/material.dart';
 
 class TeamBloc extends ChangeNotifier {
@@ -44,6 +47,19 @@ class TeamBloc extends ChangeNotifier {
 
   updateTeamById({object, id}) {
     Collection(path: 'teams').updateDocumentWithObject(object: object, id: id);
+    notifyListeners();
+  }
+
+  updateTeamByIdWithFieldAndValue({id, field, value}) async {
+    Collection(path: "teams").updateDocumentByIdWithFieldAndValue(
+        id: id, field: field, value: value);
+    notifyListeners();
+  }
+
+  updateTeamArrayFieldByIdWithFieldAndValue({id, field, value}) async {
+    Collection(path: "teams").updateArrayInDocumentByIdWithFieldAndValue(
+      id: id, field: field, value: value,
+    );
     notifyListeners();
   }
 
