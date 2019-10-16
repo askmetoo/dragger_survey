@@ -18,7 +18,7 @@ class SignInBloc extends ChangeNotifier {
   }
 
   Future<FirebaseUser> signInWithGoogle() async {
-    FirebaseUser _user = (await authService.signInWithGoogle());
+    FirebaseUser _user = await authService.signInWithGoogle();
     notifyListeners();
     return _user;
   }
