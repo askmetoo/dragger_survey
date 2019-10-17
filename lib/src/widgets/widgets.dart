@@ -10,6 +10,7 @@ export 'select_granularity.dart';
 export 'signed_in_user_circle_avatar.dart';
 export 'survey_set_form.dart';
 export 'team_form.dart';
+export 'create_team_form.dart';
 export 'user_drawer.dart';
 export 'build_survey_sets_list_view.dart';
 export 'build_teams_dropdown_button.dart';

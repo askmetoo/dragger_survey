@@ -38,9 +38,11 @@ class TeamsListScreen extends StatelessWidget {
               body: buildTeamsListView(
                 context: context,
               ),
-              floatingActionButton: FloatingActionButton(
+              floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+              floatingActionButton: FloatingActionButton.extended(
                 backgroundColor: Styles.drg_colorSecondary,
-                child: Icon(
+                label: Text("Create Team"),
+                icon: Icon(
                   Icons.people,
                   color: Styles.drg_colorDarkerGreen,
                 ),
@@ -53,7 +55,7 @@ class TeamsListScreen extends StatelessWidget {
                       builder: (BuildContext context) {
                         return AlertDialog(
                           title: Text("Create new Team"),
-                          content: TeamForm(),
+                          content: CreateTeamForm(),
                           elevation: 10,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(

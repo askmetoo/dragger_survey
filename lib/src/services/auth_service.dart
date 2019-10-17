@@ -9,22 +9,13 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn _googleSignIn = GoogleSignIn();
 
 class AuthService {
-  // final GoogleSignInAccount user = _googleSignIn.currentUser;
 
   AuthService() {
     print("new AuthService");
   }
 
   Future getCurrentUser() async {
-    _auth
-        .currentUser()
-        // .then( (val) {
-        //   log("In AuthService getCurrentUser() - value of _auth.currentUser(): ${val?.uid}");
-        //   }
-        // )
-        ;
     FirebaseUser _currentUser = await  _auth.currentUser();
-
     return _currentUser;
   }
 
