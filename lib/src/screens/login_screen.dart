@@ -3,61 +3,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/enums/connectivity_status.dart';
 import 'package:dragger_survey/src/services/models.dart';
-import 'package:dragger_survey/src/services/services.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreen extends StatelessWidget {
   final GlobalKey _globalLoginKey = GlobalKey();
-  final GoogleSignIn googleSignIn = GoogleSignIn();
-  final AuthService authService = AuthService();
-  bool loggedIn = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    googleSignIn.onCurrentUserChanged.listen((account) {
-      handleCurrentUserChanged(account);
-    }, onError: (e) {
-      debugPrint(
-          'ERROR in LoginSreen googleSignIn.onCurrentUserChanged.listen: $e');
-    });
-
-    // Reauthenticate user when app is opened
-    googleSignIn.signInSilently(suppressErrors: false).then((account) {
-      handleCurrentUserChanged(account);
-    }).catchError((e) {
-      print('Error signing in: $e');
-    });
-  }
-
-  handleCurrentUserChanged(GoogleSignInAccount account) {
-    print(
-        "In LoginScreen handleCurrentUserChanged - value of account: $account");
-    if (account != null) {
-      authService.createUserInFirestore(account: account);
-      setState(() {
-        loggedIn = true;
-      });
-    } else {
-      setState(() {
-        loggedIn = false;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     FirebaseUser _user = Provider.of<FirebaseUser>(context);
+    bool loggedIn = _user != null;
 
     return Scaffold(
       body: Container(
@@ -73,8 +30,6 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 50,
               ),
-              Text(
-                  "User logged in: ${_user != null ? _user.uid : 'no uid'}, ${_user != null ? _user.displayName : 'no displayName'}"),
               loggedIn // User is logged in?
                   ? Column(children: [
                       _openSurveyListButton(context: context),
@@ -140,6 +95,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _signInButton({BuildContext signInButtonContext}) {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(signInButtonContext);
     final UserBloc userBloc = Provider.of<UserBloc>(signInButtonContext);
+    FirebaseUser _user = Provider.of<FirebaseUser>(signInButtonContext);
+    bool loggedIn = _user != null;
 
     FirebaseUser _returnedLoginFirebaseUser;
 
@@ -147,14 +104,18 @@ class _LoginScreenState extends State<LoginScreen> {
         future: signInBloc.currentUser,
         builder: (signInButtonContext,
             AsyncSnapshot<FirebaseUser> currentUserSnapshot) {
-          if (currentUserSnapshot.connectionState != ConnectionState.done) {
+          if (currentUserSnapshot.connectionState == ConnectionState.none ||
+              currentUserSnapshot.connectionState == ConnectionState.waiting ||
+              currentUserSnapshot.connectionState == ConnectionState.active)
             CircularProgressIndicator();
-          }
 
           if (currentUserSnapshot.connectionState == ConnectionState.done) {
             if (!currentUserSnapshot.hasData) {
               CircularProgressIndicator();
             }
+            log("In LoginScreen value of 'currentUserSnapshot': ${currentUserSnapshot?.data?.displayName}");
+            log("In LoginScreen value of 'loggedIn': $loggedIn");
+            log("In LoginScreen value of '_user': $_user");
 
             return Column(
               children: <Widget>[
@@ -175,16 +136,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         await signInBloc.signInWithGoogle().catchError(
                               (error) => debugPrint(
                                   """ERROR in login_screen _signInButton() after
-                                       signInBloc.signInWithGoogle()
-                                       - error: $error"""),
+                                 signInBloc.signInWithGoogle()
+                                 - error: $error"""),
                             );
-                    print(
-                        "------> In LoginScreen OutlineButton value of _returnedLoginFirebaseUser.displayName: ${_returnedLoginFirebaseUser.displayName}");
-                    print(
-                        "------> In LoginScreen OutlineButton value of _returnedLoginFirebaseUser.uid: ${_returnedLoginFirebaseUser.uid}");
-                    // print("------> In LoginScreen OutlineButton value of _user: ${_user.uid}");
-                    print(
-                        "------> In LoginScreen OutlineButton value of loggedIn: $loggedIn");
+                    log("In LoginScreen OutlineButton value of fbUser.displayName: ${_returnedLoginFirebaseUser.displayName}");
+                    log("In LoginScreen OutlineButton value of fbUser.uid: ${_returnedLoginFirebaseUser.uid}");
 
                     QuerySnapshot returnedUserQuerySnapshot = await userBloc
                         .getUsersQuery(
@@ -192,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             fieldValue: _returnedLoginFirebaseUser.uid)
                         .catchError(
                           (error) => log(
-                              "ERROR in LoginScreen with getUsersQuery: $error"),
+                              "ERROR in login_screen with getUsersQuery: $error"),
                         );
 
                     if (returnedUserQuerySnapshot == null ||
@@ -203,7 +159,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         _returnedLoginFirebaseUser?.uid !=
                             returnedUserQuerySnapshot
                                 ?.documents?.first?.data['providersUID']) {
+                      // if (_returnedLoginFirebaseUser?.uid !=
+                      //         returnedUserQuerySnapshot.documents.first.data['providersUID']) {
                       log("In LoginScreen - USER not id DB");
+                      try {
+                        log("returnedUserQuerySnapshot?.documents[0]['providersUID']: ${returnedUserQuerySnapshot?.documents[0]['providersUID']}");
+                      } catch (e) {
+                        log("ERROR returnedUserQuerySnapshot?.documents[0]['providersUID'] is empty: $e");
+                      }
                       log("_returnedLoginFirebaseUser?.uid: ${_returnedLoginFirebaseUser?.uid}");
                       log("_returnedLoginFirebaseUser?.displayName: ${_returnedLoginFirebaseUser?.displayName}");
                       try {
