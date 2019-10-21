@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -65,13 +67,13 @@ class _LoginScreenState extends State<LoginScreen> {
             .signInWithGoogle()
             .catchError(
                 (e) => print("ERROR in LoginScreen signInwithGoogle: $e "));
-        print(
-            "In LoginScreen _singInButton - value of returnedUser: $returnedUser");
-        print(
-            "In LoginScreen _singInButton - value of ${signInBloc.currentUser}");
-        setState(() {
-          _loggedIn = true;
-        });
+        log("In LoginScreen _singInButton - value of returnedUser.uid: ${returnedUser.uid}");
+        if (returnedUser != null) {
+          setState(() {
+            _loggedIn = true;
+          });
+          signInBloc.createUserInDbIfNotExist(account: returnedUser);
+        }
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,

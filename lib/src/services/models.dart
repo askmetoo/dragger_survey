@@ -224,9 +224,9 @@ class User {
 
   factory User.fromDocument(DocumentSnapshot doc) {
     return User(
-      uid: doc["providersUID"],
+      uid: doc['providersUID'],
       id: doc.documentID,
-      created: doc["created"],
+      created: doc['created'],
       edited: doc["edited"],
       firstName: doc["firstName"],
       lastName: doc["lastName"],

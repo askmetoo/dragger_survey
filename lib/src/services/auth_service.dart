@@ -35,42 +35,52 @@ class AuthService {
     return user;
   }
 
-  Future<User> createUserInFirestore({GoogleSignInAccount account}) async {
+  Future<User> createUserInFirestore({FirebaseUser account}) async {
     // 1) check if user exists in users collection in database (according to their id)
-    final GoogleSignInAccount user = _googleSignIn.currentUser;
-    FirebaseUser _currentUser = await _auth.currentUser();
+    // final GoogleSignInAccount user = _googleSignIn.currentUser;
+    // FirebaseUser _currentUser = await _auth.currentUser();
+
+    DocumentSnapshot returnUser;
+    User _user;
 
     print(
-        "In AuthService createUserInFirestore value of account.id: ${account.id}");
+        "In AuthService createUserInFirestore value of account.uid: ${account.uid}");
     DocumentSnapshot doc =
-        await _db.collection('users').document(account.id).get();
+        await _db.collection('users').document(account.uid).get();
     // 1b) check if FirebaseUser _currentUser is the same currentUser
-
-    print("user.displayName ${user?.displayName}");
-    print("_currentUser.displayName: ${_currentUser?.displayName}");
-    print(
-        "user.displayName == _currentUser.displayName: ${user?.displayName == _currentUser?.displayName}");
 
     if (!doc.exists) {
       // 2) if the user doesn't exist, then create account
+      log("In AuthService createUserInFirestore when !doc.exists - account?.uid: ${account?.uid}");
+      log("In AuthService createUserInFirestore when !doc.exists - account?.displayName: ${account?.displayName}");
+      log("In AuthService createUserInFirestore when !doc.exists - account?.email: ${account?.email}");
+      log("In AuthService createUserInFirestore when !doc.exists - account?.photoUrl: ${account?.photoUrl}");
+      log("In AuthService createUserInFirestore when !doc.exists - account?.providerId: ${account?.providerId}");
       User newUser = User(
-        providersUID: _currentUser?.uid,
-        displayName: _currentUser?.displayName,
-        email: _currentUser?.email,
+        providersUID: account?.uid,
+        displayName: account?.displayName,
+        email: account?.email,
         created: DateTime.now(),
-        photoUrl: _currentUser?.photoUrl,
-        providerId: _currentUser.providerId,
+        photoUrl: account?.photoUrl,
+        providerId: account?.providerId,
       );
       UserBloc userBloc = UserBloc();
       userBloc.addUserToDb(
         user: newUser,
       );
 
-      doc = await _db.collection('users').document(user.id).get();
+      doc = await _db
+          .collection('users')
+          .document(account.uid)
+          .get()
+          .then((user) {
+        _user = User.fromDocument(user);
+        return returnUser;
+      });
     }
-    User returnUser = User.fromDocument(doc);
-
-    return returnUser;
+    // User returnUser = User.fromDocument(doc);
+    return _user;
+    // return Future.value(returnUser);
   }
 
   Future<FirebaseUser> signInWithGoogle() async {
@@ -86,11 +96,8 @@ class AuthService {
     final FirebaseUser _user =
         (await _auth.signInWithCredential(credential)).user;
 
-    log("In AuthService value of _user.uid: ${_user.uid}");
-
     assert(!_user.isAnonymous);
     assert(await _user.getIdToken() != null);
-    log("In AuthService value of _user.getIdToken(): ${_user.getIdToken()}");
 
     final FirebaseUser currentUser = await _auth.currentUser();
     assert(_user.uid == currentUser.uid);

@@ -79,8 +79,14 @@ class _SurveySetFormState extends State<SurveySetForm> {
     FirebaseUser _user = Provider.of<FirebaseUser>(context);
     bool loggedIn = _user != null;
     _createdByTeam = teamBloc.currentSelectedTeam;
-    _createdByTeamId = teamBloc?.currentSelectedTeam?.documentID;
-    if (teamBloc.currentSelectedTeam.data['name'] != null) {
+    _createdByTeamId = teamBloc.currentSelectedTeamId ??
+        teamBloc?.currentSelectedTeam?.documentID;
+
+    log("In SurveySetForm - value of teamBloc.currentSelectedTeam == null: ${teamBloc.currentSelectedTeam == null}");
+    log("In SurveySetForm - value of teamBloc.currentSelectedTeamId: ${teamBloc.currentSelectedTeamId}");
+
+    if (teamBloc?.currentSelectedTeam != null &&
+        teamBloc?.currentSelectedTeam?.data['name'] != null) {
       _createdByTeamName = teamBloc?.currentSelectedTeam?.data['name'];
     }
     if (loggedIn) {
@@ -325,7 +331,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
     if (formKey.currentState.validate()) {
       log("1b) ----> In SurveySetForm _submitButtonOnPressed - has been validated.");
 
-      log("1b-b ----> teamBloc.getCurrentSelectedTeam().documentID: ${teamBloc.currentSelectedTeam.documentID}");
+      log("1b-b ----> teamBloc.currentSelectedTeamId: ${teamBloc.currentSelectedTeamId}");
 
       signInBloc.currentUser.then((currentUserValue) {
         log("current team: ${teamBloc?.currentSelectedTeam?.documentID}");

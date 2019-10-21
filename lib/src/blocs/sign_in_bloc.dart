@@ -22,4 +22,11 @@ class SignInBloc extends ChangeNotifier {
     notifyListeners();
     return _user;
   }
+
+  Future<User> createUserInDbIfNotExist({account}) async {
+    User _createdUser =
+        await authService.createUserInFirestore(account: account);
+    notifyListeners();
+    return _createdUser;
+  }
 }

@@ -56,19 +56,25 @@ class Collection<T> {
       {String fieldName, String fieldValue}) async {
     return ref.where(fieldName, isEqualTo: fieldValue).getDocuments();
   }
+
   Future<QuerySnapshot> getDocumentsByQuerySortByCreatedAsc(
       {String fieldName, String fieldValue}) async {
-    return ref.where(fieldName, isEqualTo: fieldValue)
-              .orderBy('created', descending: false)
-              .getDocuments()
-              .catchError((e) => log("ERROR in db.dart getDocumentsByQuerySortByCreatedDesc: $e"));
+    return ref
+        .where(fieldName, isEqualTo: fieldValue)
+        .orderBy('created', descending: false)
+        .getDocuments()
+        .catchError((e) =>
+            log("ERROR in db.dart getDocumentsByQuerySortByCreatedDesc: $e"));
   }
+
   Future<QuerySnapshot> getDocumentsByQuerySortByCreatedDesc(
       {String fieldName, String fieldValue}) async {
-    return ref.where(fieldName, isEqualTo: fieldValue)
-              .orderBy('created', descending: true)
-              .getDocuments()
-              .catchError((e) => print("ERROR in db.dart getDocumentsByQuerySortByCreatedDesc: $e"));
+    return ref
+        .where(fieldName, isEqualTo: fieldValue)
+        .orderBy('created', descending: true)
+        .getDocuments()
+        .catchError((e) =>
+            print("ERROR in db.dart getDocumentsByQuerySortByCreatedDesc: $e"));
   }
 
   Future<QuerySnapshot> getDocumentsByQueryArray(
@@ -80,7 +86,8 @@ class Collection<T> {
     try {
       DocumentSnapshot _doc = await ref.document('$id').get();
       if (!_doc.exists) {
-        print("NO SUCCESS!!! In DB getDocument - document found: ${_doc.documentID}");
+        print(
+            "NO SUCCESS!!! In DB getDocument - document found: ${_doc.documentID}");
         return null;
       }
       print("SUCCESS! In DB getDocument - document found: ${_doc.exists}");
@@ -118,11 +125,11 @@ class Collection<T> {
   }
 
   Future createDocumentWithObject({object}) async {
-      print("In DB.dart createDocumentWithObject - value of object: $object");
-      DocumentReference retunedValue = await ref.add(object);
-       
-      log("In DB.dart createDocumentWithObject retunedValue doc.documentID ${retunedValue.documentID}");
-      return retunedValue;
+    print("In DB.dart createDocumentWithObject - value of object: $object");
+    DocumentReference retunedValue = await ref.add(object);
+
+    log("In DB.dart createDocumentWithObject retunedValue doc.documentID ${retunedValue.documentID}");
+    return retunedValue;
   }
 
   updateDocumentWithObject({object, id}) async {
@@ -147,10 +154,10 @@ class Collection<T> {
 
   updateArrayInDocumentByIdWithFieldAndValue({id, field, value}) async {
     try {
-      ref.document('$id').updateData(
-        {'$field': FieldValue.arrayUnion(['$value'])}
-      );
-    } catch ( error) {
+      ref.document('$id').updateData({
+        '$field': FieldValue.arrayUnion(['$value'])
+      });
+    } catch (error) {
       print('Error occured while updating data: $error');
     } finally {
       print("End of updateArrayInDocumentByIdWithFieldAndValue()");

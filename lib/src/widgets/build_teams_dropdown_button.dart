@@ -21,20 +21,29 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
     FirebaseUser _user = Provider.of<FirebaseUser>(context);
 
+    Future<QuerySnapshot> teamsQuery = teamBloc
+        .getTeamsQueryByArray(
+          fieldName: 'users',
+          arrayValue: _user?.uid,
+        )
+        .catchError((err) => log(
+            "ERROR in BuildTeamsDropdownButton getTeamsQueryByArray: $err"));
+
+    if (teamsQuery == null) {
+      return Text("No Team Snapshot");
+    }
+
     return FutureBuilder<QuerySnapshot>(
-        future: teamBloc
-            .getTeamsQueryByArray(
-              fieldName: 'users',
-              arrayValue: _user?.uid,
-            )
-            .catchError((err) => log(
-                "ERROR in BuildTeamsDropdownButton getTeamsQueryByArray: $err")),
+        future: teamsQuery,
         builder: (BuildContext context,
             AsyncSnapshot<QuerySnapshot> teamsListSnapshot) {
           if (teamsListSnapshot.connectionState == ConnectionState.done) {
             if (!teamsListSnapshot.hasData) {
               return CircularProgressIndicator();
+            } else if (teamsListSnapshot.data.documents.isEmpty) {
+              return Container();
             }
+
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               child: Container(
@@ -141,7 +150,8 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                       Container(
                                         height: 52,
                                         child: Padding(
-                                          padding: const EdgeInsets.only(bottom: 18.0),
+                                          padding: const EdgeInsets.only(
+                                              bottom: 18.0),
                                           child: Text(
                                             team['description'] != ''
                                                 ? "${team['description']}"
@@ -177,6 +187,10 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
 
   Widget buildTeamText({AsyncSnapshot<QuerySnapshot> teamsListSnapshot}) {
     DocumentSnapshot teamDoc;
+
+    if (teamsListSnapshot.connectionState != ConnectionState.done) {
+      return CircularProgressIndicator();
+    }
 
     if (!teamsListSnapshot.hasData) {
       return CircularProgressIndicator();

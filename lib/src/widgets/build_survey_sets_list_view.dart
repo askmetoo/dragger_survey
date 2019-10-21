@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/enums/connectivity_status.dart';
 import 'package:dragger_survey/src/styles.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
@@ -17,226 +18,346 @@ class BuildSurveySetsListView extends StatefulWidget {
 }
 
 class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
+  Future<QuerySnapshot> queryTeamsForUser({teamBloc, user}) async {
+    QuerySnapshot teamsQuery = await teamBloc
+        .getTeamsQueryByArray(
+          fieldName: 'users',
+          arrayValue: user?.uid,
+        )
+        .catchError((err) => log(
+            "ERROR in BuildTeamsDropdownButton getTeamsQueryByArray: $err"));
+    return teamsQuery;
+  }
+
   @override
   Widget build(BuildContext context) {
     final PrismSurveySetBloc surveySetsBloc =
         Provider.of<PrismSurveySetBloc>(context);
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
-    if (teamBloc?.currentSelectedTeam?.documentID == null) {
-      return Center(
-        child: Column(
-          children: <Widget>[
-            Spacer(
-              flex: 8,
-            ),
-            Text(
-              "Before you      ",
-              style: TextStyle(
-                fontFamily: 'SonsieOne',
-                fontSize: 34,
-                letterSpacing: -2,
-                color: Styles.drg_colorSecondary,
-                shadows: [
-                  Shadow(
-                    color: Styles.drg_colorText.withOpacity(.3),
-                    blurRadius: 8,
-                  ),
-                  Shadow(
-                      color: Styles.drg_colorText.withOpacity(.1),
-                      blurRadius: 3,
-                      offset: Offset(5, 6)),
-                ],
-              ),
-            ),
-            Text(
-              "           can start",
-              style: TextStyle(
-                fontFamily: 'SonsieOne',
-                fontSize: 28,
-                letterSpacing: -2,
-                color: Styles.drg_colorText.withOpacity(0.7),
-                shadows: [
-                  Shadow(
-                    color: Styles.drg_colorText.withOpacity(.2),
-                    blurRadius: 5,
-                  ),
-                  Shadow(
-                      color: Styles.drg_colorText.withOpacity(.2),
-                      blurRadius: 3,
-                      offset: Offset(2, 3)),
-                ],
-              ),
-            ),
-            Spacer(),
-            Text(
-              "please, first chose a team for which",
-              style: TextStyle(
-                fontFamily: 'Bitter',
-                fontWeight: FontWeight.w700,
-                color: Styles.drg_colorText.withOpacity(.7),
-              ),
-            ),
-            Text(
-              "you want to conduct the survey.",
-              style: TextStyle(
-                fontFamily: 'Bitter',
-                fontWeight: FontWeight.w700,
-                color: Styles.drg_colorText.withOpacity(.7),
-              ),
-            ),
-            Spacer(
-              flex: 8,
-            ),
-            Spacer(
-              flex: 8,
-            ),
-          ],
-        ),
-      );
-    }
-    return FutureBuilder<QuerySnapshot>(
-      future: surveySetsBloc
-          .getPrismSurveySetQuery(
-              fieldName: 'createdByTeam',
-              fieldValue: teamBloc?.currentSelectedTeam?.documentID)
-          .catchError((err) => log(
-              "ERROR in BuildSurveySetsListView getPrismSurveySetQuery: $err")),
-      builder: (BuildContext context,
-          AsyncSnapshot<QuerySnapshot> surveySetSnapshot) {
-        final connectionStatus = Provider.of<ConnectivityStatus>(context);
+    FirebaseUser _user = Provider.of<FirebaseUser>(context);
 
-        if (surveySetSnapshot.connectionState == ConnectionState.done) {
-          if (!surveySetSnapshot.hasData) {
-            return CircularProgressIndicator();
-          }
-
-          if (connectionStatus == ConnectivityStatus.Offline) {
-            return Text(
-              "You are currently ${connectionStatus.toString().split('.')[1]}",
-              style: TextStyle(
-                  fontSize: 20, color: Styles.drg_colorSecondaryDeepDark),
-            );
-          }
-          if (surveySetSnapshot.data.documents.isEmpty) {
-            return Center(
-              child: Column(
-                children: <Widget>[
-                  Spacer(
-                    flex: 8,
-                  ),
-                  Container(
-                    height: 24,
-                    child: Text(
-                      "Sorry, currently          ",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontFamily: 'SonsieOne',
-                        fontSize: 18,
-                        letterSpacing: -2,
-                        color: Styles.drg_colorSecondaryDeepDark,
-                        shadows: [
-                          Shadow(
-                            color: Styles.drg_colorText.withOpacity(.2),
-                            blurRadius: 5,
-                          ),
-                          Shadow(
-                              color: Styles.drg_colorText.withOpacity(.2),
-                              blurRadius: 3,
-                              offset: Offset(2, 3)),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Text(
-                    "no survey sets",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontFamily: 'SonsieOne',
-                      fontSize: 32,
-                      letterSpacing: -2,
-                      color: Styles.drg_colorSecondary,
-                      shadows: [
-                        Shadow(
-                          color: Styles.drg_colorText.withOpacity(.3),
-                          blurRadius: 8,
-                        ),
-                        Shadow(
-                            color: Styles.drg_colorText.withOpacity(.1),
-                            blurRadius: 3,
-                            offset: Offset(5, 6)),
-                      ],
-                    ),
-                  ),
-                  Text(
-                    "available.          ",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontFamily: 'SonsieOne',
-                      fontSize: 24,
-                      letterSpacing: -2,
-                      color: Styles.drg_colorSecondaryDeepDark,
-                      shadows: [
-                        Shadow(
-                          color: Styles.drg_colorText.withOpacity(.2),
-                          blurRadius: 5,
-                        ),
-                        Shadow(
-                            color: Styles.drg_colorText.withOpacity(.2),
-                            blurRadius: 3,
-                            offset: Offset(2, 3)),
-                      ],
-                    ),
-                  ),
-                  Spacer(),
-                  Text(
-                    "Please select another team",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: 'Bitter',
-                      fontWeight: FontWeight.w700,
-                      color: Styles.drg_colorText.withOpacity(.7),
-                    ),
-                  ),
-                  Text(
-                    "or create a new set.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: 'Bitter',
-                      fontWeight: FontWeight.w700,
-                      color: Styles.drg_colorText.withOpacity(.7),
-                    ),
-                  ),
-                  Spacer(
-                    flex: 8,
-                  ),
-                  Spacer(
-                    flex: 8,
-                  ),
-                ],
-              ),
-            );
-          }
-
-          return Column(
-            children: <Widget>[
-              Container(
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Text(
-                    "Select a Survey Set from below \nor create a new Set.", textAlign: TextAlign.start,
-                  ),
-              ),
-              Expanded(
-                  child: BuildListOfSets(
-                hashCode: hashCode,
-                surveySetsBloc: surveySetsBloc,
-                surveySetSnapshot: surveySetSnapshot,
-              )),
-            ],
-          );
+    return FutureBuilder(
+      future: queryTeamsForUser(teamBloc: teamBloc, user: _user),
+      builder:
+          (BuildContext context, AsyncSnapshot<QuerySnapshot> teamsSnapshot) {
+        if (teamsSnapshot.connectionState != ConnectionState.done) {
+          return CircularProgressIndicator();
         }
-        return Container();
+
+        if (teamsSnapshot.data.documents.isEmpty) {
+          // return Text("No teams in snapshot");
+          return buildNotMemberOfATeamBText();
+        }
+
+        if (teamsSnapshot.data.documents.length == 1) {
+          teamBloc.currentSelectedTeamId =
+              teamsSnapshot.data.documents[0].documentID;
+          teamBloc.getTeamById(id: teamsSnapshot.data.documents[0].documentID);
+          // .then((val) => teamBloc.setCurrentSelectedTeam(val));
+        }
+
+        log("In BuildSurveySetsListView - value of teamsSnapshot.data.documents.length: ${teamsSnapshot.data.documents.length}");
+        log("In BuildSurveySetsListView - value of teamsSnapshot.data.documents.length: ${teamsSnapshot.data.documents[0].documentID}");
+
+        if (teamBloc?.currentSelectedTeam?.documentID == null &&
+            teamsSnapshot.data.documents.length != 1) {
+          return buildChooseATeamBeforeYouStartText();
+        }
+
+        return FutureBuilder<QuerySnapshot>(
+          future: surveySetsBloc
+              .getPrismSurveySetQuery(
+                  fieldName: 'createdByTeam',
+                  fieldValue: teamBloc?.currentSelectedTeamId)
+              // fieldValue: teamBloc?.currentSelectedTeam?.documentID)
+              .catchError((err) => log(
+                  "ERROR in BuildSurveySetsListView getPrismSurveySetQuery: $err")),
+          builder: (BuildContext context,
+              AsyncSnapshot<QuerySnapshot> surveySetSnapshot) {
+            final connectionStatus = Provider.of<ConnectivityStatus>(context);
+
+            if (surveySetSnapshot.connectionState == ConnectionState.done) {
+              if (!surveySetSnapshot.hasData) {
+                return CircularProgressIndicator();
+              }
+
+              if (connectionStatus == ConnectivityStatus.Offline) {
+                return Text(
+                  "You are currently ${connectionStatus.toString().split('.')[1]}",
+                  style: TextStyle(
+                      fontSize: 20, color: Styles.drg_colorSecondaryDeepDark),
+                );
+              }
+              log("In BuildSurveySetsListView build - surveySetSnapshot.data.documents.isEmpty: ${surveySetSnapshot.data.documents.isEmpty}");
+              if (surveySetSnapshot.data.documents.isEmpty) {
+                return Center(
+                  child: Column(
+                    children: <Widget>[
+                      Spacer(
+                        flex: 8,
+                      ),
+                      Container(
+                        height: 24,
+                        child: Text(
+                          "Sorry, currently          ",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontFamily: 'SonsieOne',
+                            fontSize: 18,
+                            letterSpacing: -2,
+                            color: Styles.drg_colorSecondaryDeepDark,
+                            shadows: [
+                              Shadow(
+                                color: Styles.drg_colorText.withOpacity(.2),
+                                blurRadius: 5,
+                              ),
+                              Shadow(
+                                  color: Styles.drg_colorText.withOpacity(.2),
+                                  blurRadius: 3,
+                                  offset: Offset(2, 3)),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Text(
+                        "no survey sets",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontFamily: 'SonsieOne',
+                          fontSize: 32,
+                          letterSpacing: -2,
+                          color: Styles.drg_colorSecondary,
+                          shadows: [
+                            Shadow(
+                              color: Styles.drg_colorText.withOpacity(.3),
+                              blurRadius: 8,
+                            ),
+                            Shadow(
+                                color: Styles.drg_colorText.withOpacity(.1),
+                                blurRadius: 3,
+                                offset: Offset(5, 6)),
+                          ],
+                        ),
+                      ),
+                      Text(
+                        "available.          ",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontFamily: 'SonsieOne',
+                          fontSize: 24,
+                          letterSpacing: -2,
+                          color: Styles.drg_colorSecondaryDeepDark,
+                          shadows: [
+                            Shadow(
+                              color: Styles.drg_colorText.withOpacity(.2),
+                              blurRadius: 5,
+                            ),
+                            Shadow(
+                                color: Styles.drg_colorText.withOpacity(.2),
+                                blurRadius: 3,
+                                offset: Offset(2, 3)),
+                          ],
+                        ),
+                      ),
+                      Spacer(),
+                      Text(
+                        "Please select another team",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'Bitter',
+                          fontWeight: FontWeight.w700,
+                          color: Styles.drg_colorText.withOpacity(.7),
+                        ),
+                      ),
+                      Text(
+                        "or create a new set.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'Bitter',
+                          fontWeight: FontWeight.w700,
+                          color: Styles.drg_colorText.withOpacity(.7),
+                        ),
+                      ),
+                      Spacer(
+                        flex: 8,
+                      ),
+                      Spacer(
+                        flex: 8,
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              return Column(
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Text(
+                      "Select a Survey Set from below \nor create a new Set.",
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  Expanded(
+                      child: BuildListOfSets(
+                    hashCode: hashCode,
+                    surveySetsBloc: surveySetsBloc,
+                    surveySetSnapshot: surveySetSnapshot,
+                  )),
+                ],
+              );
+            }
+            return Container();
+          },
+        );
       },
+    );
+  }
+
+  Center buildChooseATeamBeforeYouStartText() {
+    return Center(
+      child: Column(
+        children: <Widget>[
+          Spacer(
+            flex: 8,
+          ),
+          Text(
+            "Before you      ",
+            style: TextStyle(
+              fontFamily: 'SonsieOne',
+              fontSize: 34,
+              letterSpacing: -2,
+              color: Styles.drg_colorSecondary,
+              shadows: [
+                Shadow(
+                  color: Styles.drg_colorText.withOpacity(.3),
+                  blurRadius: 8,
+                ),
+                Shadow(
+                    color: Styles.drg_colorText.withOpacity(.1),
+                    blurRadius: 3,
+                    offset: Offset(5, 6)),
+              ],
+            ),
+          ),
+          Text(
+            "           can start",
+            style: TextStyle(
+              fontFamily: 'SonsieOne',
+              fontSize: 28,
+              letterSpacing: -2,
+              color: Styles.drg_colorText.withOpacity(0.7),
+              shadows: [
+                Shadow(
+                  color: Styles.drg_colorText.withOpacity(.2),
+                  blurRadius: 5,
+                ),
+                Shadow(
+                    color: Styles.drg_colorText.withOpacity(.2),
+                    blurRadius: 3,
+                    offset: Offset(2, 3)),
+              ],
+            ),
+          ),
+          Spacer(),
+          Text(
+            "please, first choose a team for which",
+            style: TextStyle(
+              fontFamily: 'Bitter',
+              fontWeight: FontWeight.w700,
+              color: Styles.drg_colorText.withOpacity(.7),
+            ),
+          ),
+          Text(
+            "you want to conduct the survey.",
+            style: TextStyle(
+              fontFamily: 'Bitter',
+              fontWeight: FontWeight.w700,
+              color: Styles.drg_colorText.withOpacity(.7),
+            ),
+          ),
+          Spacer(
+            flex: 8,
+          ),
+          Spacer(
+            flex: 8,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Center buildNotMemberOfATeamBText() {
+    return Center(
+      child: Column(
+        children: <Widget>[
+          Spacer(
+            flex: 8,
+          ),
+          Text(
+            "You are not a Member of a Team      ",
+            style: TextStyle(
+              fontFamily: 'SonsieOne',
+              fontSize: 34,
+              letterSpacing: -2,
+              color: Styles.drg_colorSecondary,
+              shadows: [
+                Shadow(
+                  color: Styles.drg_colorText.withOpacity(.3),
+                  blurRadius: 8,
+                ),
+                Shadow(
+                    color: Styles.drg_colorText.withOpacity(.1),
+                    blurRadius: 3,
+                    offset: Offset(5, 6)),
+              ],
+            ),
+          ),
+          Text(
+            "           First create one",
+            style: TextStyle(
+              fontFamily: 'SonsieOne',
+              fontSize: 28,
+              letterSpacing: -2,
+              color: Styles.drg_colorText.withOpacity(0.7),
+              shadows: [
+                Shadow(
+                  color: Styles.drg_colorText.withOpacity(.2),
+                  blurRadius: 5,
+                ),
+                Shadow(
+                    color: Styles.drg_colorText.withOpacity(.2),
+                    blurRadius: 3,
+                    offset: Offset(2, 3)),
+              ],
+            ),
+          ),
+          Spacer(),
+          Text(
+            "or get invited",
+            style: TextStyle(
+              fontFamily: 'Bitter',
+              fontWeight: FontWeight.w700,
+              color: Styles.drg_colorText.withOpacity(.7),
+            ),
+          ),
+          Text(
+            "to start.",
+            style: TextStyle(
+              fontFamily: 'Bitter',
+              fontWeight: FontWeight.w700,
+              color: Styles.drg_colorText.withOpacity(.7),
+            ),
+          ),
+          Spacer(
+            flex: 8,
+          ),
+          Spacer(
+            flex: 8,
+          ),
+        ],
+      ),
     );
   }
 }

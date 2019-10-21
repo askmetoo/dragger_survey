@@ -19,7 +19,7 @@ class UserBloc extends ChangeNotifier {
   }
 
   addUserToDb({User user}) {
-    Collection(path: "users").createDocumentWithObject(object: user);
+    Collection(path: "users").createDocumentWithObject(object: user.toMap());
     notifyListeners();
   }
 

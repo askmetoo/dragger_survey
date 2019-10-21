@@ -15,7 +15,7 @@ class TeamBloc extends ChangeNotifier {
   DocumentSnapshot getCurrentSelectedTeam() => currentSelectedTeam;
   String getCurrentSelectedTeamId() => currentSelectedTeamId;
 
-  setCurrentSelectedTeam(selectedTeam) async {
+  setCurrentSelectedTeam(DocumentSnapshot selectedTeam) async {
     currentSelectedTeam = selectedTeam;
     notifyListeners();
   }
@@ -58,7 +58,9 @@ class TeamBloc extends ChangeNotifier {
 
   updateTeamArrayFieldByIdWithFieldAndValue({id, field, value}) async {
     Collection(path: "teams").updateArrayInDocumentByIdWithFieldAndValue(
-      id: id, field: field, value: value,
+      id: id,
+      field: field,
+      value: value,
     );
     notifyListeners();
   }
