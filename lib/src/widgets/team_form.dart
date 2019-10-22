@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
-import 'package:dragger_survey/src/widgets/widgets.dart';
 
 class TeamForm extends StatefulWidget {
   final String id;
@@ -125,25 +124,23 @@ class _TeamFormState extends State<TeamForm> {
                   keyboardType: TextInputType.text,
                   // style: Styles.drg_textFieldContent,
                   decoration: InputDecoration(
-                    isDense: true,
-                    filled: true,
-                    fillColor: Styles.drg_colorAppBackgroundLight.withOpacity(.5),
-
-                    labelStyle: TextStyle(
+                      isDense: true,
+                      filled: true,
+                      fillColor:
+                          Styles.drg_colorAppBackgroundLight.withOpacity(.5),
+                      labelStyle: TextStyle(
                         color: Styles.drg_colorAppBackground,
-                        ),
-                    labelText: "Team Name",
-                    hintStyle: TextStyle(
-                      fontSize: Styles.drg_fontSizeHintText, 
-                    ),
-                    hintText: "Please provide a team name",
-                    errorStyle: TextStyle(
-                      fontSize: 14,
-                      color: Styles.drg_colorAppBackgroundShiny,
-                      backgroundColor: Styles.drg_colorAttention,
-
-                    )
-                  ),
+                      ),
+                      labelText: "Team Name",
+                      hintStyle: TextStyle(
+                        fontSize: Styles.drg_fontSizeHintText,
+                      ),
+                      hintText: "Please provide a team name",
+                      errorStyle: TextStyle(
+                        fontSize: 14,
+                        color: Styles.drg_colorAppBackgroundShiny,
+                        backgroundColor: Styles.drg_colorAttention,
+                      )),
                   validator: (value) {
                     if (value.isEmpty) {
                       return '  Please enter a team name  ';
@@ -159,8 +156,9 @@ class _TeamFormState extends State<TeamForm> {
                   minLines: 2,
                   maxLines: 9,
                   maxLength: 200,
-                  initialValue:
-                      documentId != null ? teamSnapshot?.data['description'] : '',
+                  initialValue: documentId != null
+                      ? teamSnapshot?.data['description']
+                      : '',
                   focusNode: secondFocus,
                   onEditingComplete: () =>
                       FocusScope.of(context).requestFocus(thirdFocus),
@@ -171,15 +169,15 @@ class _TeamFormState extends State<TeamForm> {
                     border: OutlineInputBorder(
                       // borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(
-                        style: BorderStyle.solid,
-                        color: Styles.drg_colorAppBackground
-                      ),
+                          style: BorderStyle.solid,
+                          color: Styles.drg_colorAppBackground),
                     ),
                     filled: true,
-                    fillColor: Styles.drg_colorAppBackgroundLight.withOpacity(.5),
+                    fillColor:
+                        Styles.drg_colorAppBackgroundLight.withOpacity(.5),
                     labelStyle: TextStyle(
-                        color: Styles.drg_colorText,
-                        ),
+                      color: Styles.drg_colorText,
+                    ),
                     labelText: "Team description",
                     hintText: "How would you like to describe your team",
                   ),

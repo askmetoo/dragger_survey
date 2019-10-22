@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

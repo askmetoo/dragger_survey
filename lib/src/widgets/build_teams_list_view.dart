@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
-import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -96,10 +95,10 @@ Widget buildTeamsListView({BuildContext context}) {
 
                             print("Edit button pressed in teams");
 
-                            Navigator.pushNamed(context, '/teammanager',
-                              arguments: {
-                                "id": "$teamId"
-                              },
+                            Navigator.pushNamed(
+                              context,
+                              '/teammanager',
+                              arguments: {"id": "$teamId"},
                             );
                             // showDialog(
                             //   context: context,
