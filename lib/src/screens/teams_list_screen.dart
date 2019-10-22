@@ -38,10 +38,16 @@ class TeamsListScreen extends StatelessWidget {
               body: buildTeamsListView(
                 context: context,
               ),
-              floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerFloat,
               floatingActionButton: FloatingActionButton.extended(
                 backgroundColor: Styles.drg_colorSecondary,
-                label: Text("Create Team"),
+                label: Text(
+                  "Create new Team",
+                  style: TextStyle(
+                    color: Styles.drg_colorText.withOpacity(0.8),
+                  ),
+                ),
                 icon: Icon(
                   Icons.people,
                   color: Styles.drg_colorDarkerGreen,
@@ -51,25 +57,26 @@ class TeamsListScreen extends StatelessWidget {
                   print("Add new Team button pressed");
                   teamBloc.updatingTeamData = false;
                   showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text("Create new Team"),
-                          content: CreateTeamForm(),
-                          elevation: 10,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(3),
-                              bottomLeft: Radius.circular(20),
-                              bottomRight: Radius.circular(20),
-                            ),
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text("Create new Team"),
+                        content: CreateTeamForm(),
+                        elevation: 10,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(3),
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20),
                           ),
-                          backgroundColor: Styles.drg_colorSecondary,
-                          contentTextStyle:
-                              TextStyle(color: Styles.drg_colorText),
-                        );
-                      });
+                        ),
+                        backgroundColor: Styles.drg_colorSecondary,
+                        contentTextStyle:
+                            TextStyle(color: Styles.drg_colorText),
+                      );
+                    },
+                  );
                 },
               ),
             );
