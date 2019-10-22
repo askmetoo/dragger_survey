@@ -90,103 +90,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
               }
               log("In BuildSurveySetsListView build - surveySetSnapshot.data.documents.isEmpty: ${surveySetSnapshot.data.documents.isEmpty}");
               if (surveySetSnapshot.data.documents.isEmpty) {
-                return Center(
-                  child: Column(
-                    children: <Widget>[
-                      Spacer(
-                        flex: 8,
-                      ),
-                      Container(
-                        height: 24,
-                        child: Text(
-                          "Sorry, currently          ",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontFamily: 'SonsieOne',
-                            fontSize: 18,
-                            letterSpacing: -2,
-                            color: Styles.drg_colorSecondaryDeepDark,
-                            shadows: [
-                              Shadow(
-                                color: Styles.drg_colorText.withOpacity(.2),
-                                blurRadius: 5,
-                              ),
-                              Shadow(
-                                  color: Styles.drg_colorText.withOpacity(.2),
-                                  blurRadius: 3,
-                                  offset: Offset(2, 3)),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Text(
-                        "no survey sets",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontFamily: 'SonsieOne',
-                          fontSize: 32,
-                          letterSpacing: -2,
-                          color: Styles.drg_colorSecondary,
-                          shadows: [
-                            Shadow(
-                              color: Styles.drg_colorText.withOpacity(.3),
-                              blurRadius: 8,
-                            ),
-                            Shadow(
-                                color: Styles.drg_colorText.withOpacity(.1),
-                                blurRadius: 3,
-                                offset: Offset(5, 6)),
-                          ],
-                        ),
-                      ),
-                      Text(
-                        "available.          ",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontFamily: 'SonsieOne',
-                          fontSize: 24,
-                          letterSpacing: -2,
-                          color: Styles.drg_colorSecondaryDeepDark,
-                          shadows: [
-                            Shadow(
-                              color: Styles.drg_colorText.withOpacity(.2),
-                              blurRadius: 5,
-                            ),
-                            Shadow(
-                                color: Styles.drg_colorText.withOpacity(.2),
-                                blurRadius: 3,
-                                offset: Offset(2, 3)),
-                          ],
-                        ),
-                      ),
-                      Spacer(),
-                      Text(
-                        "Please select another team",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: 'Bitter',
-                          fontWeight: FontWeight.w700,
-                          color: Styles.drg_colorText.withOpacity(.7),
-                        ),
-                      ),
-                      Text(
-                        "or create a new set.",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: 'Bitter',
-                          fontWeight: FontWeight.w700,
-                          color: Styles.drg_colorText.withOpacity(.7),
-                        ),
-                      ),
-                      Spacer(
-                        flex: 8,
-                      ),
-                      Spacer(
-                        flex: 8,
-                      ),
-                    ],
-                  ),
-                );
+                return buildNoSurveySetsAvailableText();
               }
 
               return Column(
@@ -212,6 +116,106 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
           },
         );
       },
+    );
+  }
+
+  Widget buildNoSurveySetsAvailableText() {
+    return Center(
+      child: Column(
+        children: <Widget>[
+          Spacer(
+            flex: 8,
+          ),
+          Container(
+            height: 24,
+            child: Text(
+              "Sorry, currently          ",
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontFamily: 'SonsieOne',
+                fontSize: 18,
+                letterSpacing: -2,
+                color: Styles.drg_colorSecondaryDeepDark,
+                shadows: [
+                  Shadow(
+                    color: Styles.drg_colorText.withOpacity(.2),
+                    blurRadius: 5,
+                  ),
+                  Shadow(
+                      color: Styles.drg_colorText.withOpacity(.2),
+                      blurRadius: 3,
+                      offset: Offset(2, 3)),
+                ],
+              ),
+            ),
+          ),
+          Text(
+            "no survey sets",
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontFamily: 'SonsieOne',
+              fontSize: 32,
+              letterSpacing: -2,
+              color: Styles.drg_colorSecondary,
+              shadows: [
+                Shadow(
+                  color: Styles.drg_colorText.withOpacity(.3),
+                  blurRadius: 8,
+                ),
+                Shadow(
+                    color: Styles.drg_colorText.withOpacity(.1),
+                    blurRadius: 3,
+                    offset: Offset(5, 6)),
+              ],
+            ),
+          ),
+          Text(
+            "available.          ",
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontFamily: 'SonsieOne',
+              fontSize: 24,
+              letterSpacing: -2,
+              color: Styles.drg_colorSecondaryDeepDark,
+              shadows: [
+                Shadow(
+                  color: Styles.drg_colorText.withOpacity(.2),
+                  blurRadius: 5,
+                ),
+                Shadow(
+                    color: Styles.drg_colorText.withOpacity(.2),
+                    blurRadius: 3,
+                    offset: Offset(2, 3)),
+              ],
+            ),
+          ),
+          Spacer(),
+          Text(
+            "Please select another team",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'Bitter',
+              fontWeight: FontWeight.w700,
+              color: Styles.drg_colorText.withOpacity(.7),
+            ),
+          ),
+          Text(
+            "or create a new set.",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'Bitter',
+              fontWeight: FontWeight.w700,
+              color: Styles.drg_colorText.withOpacity(.7),
+            ),
+          ),
+          Spacer(
+            flex: 8,
+          ),
+          Spacer(
+            flex: 8,
+          ),
+        ],
+      ),
     );
   }
 
@@ -295,27 +299,30 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
           Spacer(
             flex: 8,
           ),
-          Text(
-            "You are not a Member of a Team      ",
-            style: TextStyle(
-              fontFamily: 'SonsieOne',
-              fontSize: 34,
-              letterSpacing: -2,
-              color: Styles.drg_colorSecondary,
-              shadows: [
-                Shadow(
-                  color: Styles.drg_colorText.withOpacity(.3),
-                  blurRadius: 8,
-                ),
-                Shadow(
-                    color: Styles.drg_colorText.withOpacity(.1),
-                    blurRadius: 3,
-                    offset: Offset(5, 6)),
-              ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              "  You are not            \na Member of \n           a Team      ",
+              style: TextStyle(
+                fontFamily: 'SonsieOne',
+                fontSize: 34,
+                letterSpacing: -2,
+                color: Styles.drg_colorSecondary,
+                shadows: [
+                  Shadow(
+                    color: Styles.drg_colorText.withOpacity(.3),
+                    blurRadius: 8,
+                  ),
+                  Shadow(
+                      color: Styles.drg_colorText.withOpacity(.1),
+                      blurRadius: 3,
+                      offset: Offset(5, 6)),
+                ],
+              ),
             ),
           ),
           Text(
-            "           First create one",
+            "        First create one  \n    or get invited\n           to start.",
             style: TextStyle(
               fontFamily: 'SonsieOne',
               fontSize: 28,
@@ -331,23 +338,6 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                     blurRadius: 3,
                     offset: Offset(2, 3)),
               ],
-            ),
-          ),
-          Spacer(),
-          Text(
-            "or get invited",
-            style: TextStyle(
-              fontFamily: 'Bitter',
-              fontWeight: FontWeight.w700,
-              color: Styles.drg_colorText.withOpacity(.7),
-            ),
-          ),
-          Text(
-            "to start.",
-            style: TextStyle(
-              fontFamily: 'Bitter',
-              fontWeight: FontWeight.w700,
-              color: Styles.drg_colorText.withOpacity(.7),
             ),
           ),
           Spacer(

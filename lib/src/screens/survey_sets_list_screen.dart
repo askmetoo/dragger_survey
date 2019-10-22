@@ -45,14 +45,15 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
             (BuildContext context, AsyncSnapshot<QuerySnapshot> teamsSnapshot) {
           // log("In SurveySetsListScreen - value of teamsSnapshot.data.documents.length: ${teamsSnapshot.data.documents.length}");
           // log("In SurveySetsListScreen - value of teamsSnapshot.data.documents[0].documentID: ${teamsSnapshot.data.documents[0].documentID}");
-
+          log("In SurveySetsListScreen - value of teamsSnapshot.data.documents.isEmpty: ${teamsSnapshot.data.documents.isEmpty}");
           if (teamsSnapshot.connectionState != ConnectionState.done) {
             return CircularProgressIndicator();
           } else if (!teamsSnapshot.hasData) {
             return CircularProgressIndicator();
+          } else if (teamsSnapshot.data.documents.isNotEmpty) {
+            teamBloc.setCurrentSelectedTeamId(
+                teamsSnapshot?.data?.documents[0].documentID);
           }
-          teamBloc.setCurrentSelectedTeamId(
-              teamsSnapshot?.data?.documents[0].documentID);
 
           return Scaffold(
             backgroundColor: Styles.drg_colorAppBackground,
@@ -74,13 +75,26 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
             floatingActionButton:
                 (teamBloc?.currentSelectedTeam?.documentID == null &&
                         teamsSnapshot.data.documents.length < 1)
-                    ? null
+                    ? teamsSnapshot.data.documents.isEmpty
+                        ? FloatingActionButton.extended(
+                            backgroundColor: Styles.drg_colorSecondary,
+                            icon: Icon(Icons.people, color: Styles.drg_colorText.withOpacity(.8),),
+                            label: Text(
+                              'Create new Team',
+                              style: TextStyle(
+                                color: Styles.drg_colorText.withOpacity(0.8),
+                              ),
+                            ),
+                            onPressed: () {},
+                          )
+                        : null
                     : FloatingActionButton.extended(
                         backgroundColor: Styles.drg_colorSecondary,
                         label: Text(
                           "Create new survey set",
                           style: TextStyle(
-                              color: Styles.drg_colorText.withOpacity(0.8)),
+                            color: Styles.drg_colorText.withOpacity(0.8),
+                          ),
                         ),
                         icon: Icon(
                           Icons.library_add,
