@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/services/services.dart';
@@ -31,7 +33,17 @@ class UserBloc extends ChangeNotifier {
   }
 
   Future<bool> checkIfUserExists({id}) async {
-    return Collection(path: 'users').checkIfDocumentExists(id);
+    // return Collection(path: 'users').checkIfDocumentExists(id);
+    return Collection(path: 'users')
+        .getDocumentsByQuery(fieldName: 'providersUID', fieldValue: id)
+        .then((val) {
+      if (val != null) {
+        log("----------------> In UserBloc checkIfUserExists val != null - value of val: $val");
+        log("----------------> In UserBloc checkIfUserExists val != null - value of val.documents.isNotEmpty: ${val.documents.isNotEmpty}");
+        return val.documents.isNotEmpty;
+      }
+      return false;
+    });
   }
 
   deleteUserById({id}) {

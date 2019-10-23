@@ -118,7 +118,6 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
                                 future: userBloc.getUsersQuery(
                                     fieldName: 'providersUID',
                                     fieldValue: memberId),
-                                // future: userBloc.getUserById(id: memberId),
                                 builder: (context, userSnapshot) {
                                   if (userSnapshot.connectionState ==
                                       ConnectionState.done) {
@@ -145,22 +144,39 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
                                       actionExtentRatio: 0.2,
                                       child: ListTile(
                                         leading: CircleAvatar(
-                                            backgroundImage:
-                                                CachedNetworkImageProvider(
-                                                    userSnapshot
-                                                        ?.data
-                                                        ?.documents
-                                                        ?.first['photoUrl'])),
+                                          backgroundImage:
+                                              CachedNetworkImageProvider(
+                                            userSnapshot?.data?.documents
+                                                ?.first['photoUrl'],
+                                          ),
+                                        ),
                                         dense: true,
                                         title: Text(userName),
-                                        // title: Text("Member: " + memberId.toString()),
                                       ),
                                       secondaryActions: <Widget>[
                                         IconSlideAction(
                                           caption: 'Delete',
                                           icon: Icons.delete,
                                           color: Styles.drg_colorAttention,
-                                          onTap: () {},
+                                          onTap: () {
+                                            log("In TeamManagerScreen members list - delete user id: $memberId");
+                                            List modifiableList = new List();
+                                            List usersOfTeam = teamSnapshot
+                                                ?.data?.data['users'];
+                                            modifiableList.addAll(usersOfTeam);
+
+                                            print(
+                                                "In TeamManagerScreen value of members list: $modifiableList");
+                                            modifiableList.remove(memberId);
+                                            modifiableList.join(',');
+                                            print(
+                                                "In TeamManagerScreen value after removal of members list: $modifiableList");
+                                            teamBloc
+                                                .updateTeamByIdWithFieldAndValue(
+                                                    id: args['id'],
+                                                    field: 'users',
+                                                    value: modifiableList);
+                                          },
                                         )
                                       ],
                                     );
@@ -177,6 +193,7 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
           return Container();
         },
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FutureBuilder<DocumentSnapshot>(
           future: teamBloc.getTeamById(id: args['id']),
           builder: (context, teamSnapshotInFAB) {
@@ -192,18 +209,30 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
                   ));
                   return null;
                 }
+
+                String splittedString = _scanedBarcode.split(';')[1].trim();
+                String returnIdString =
+                    splittedString.substring(4, splittedString.length - 4);
+                log("---------------> In TeamManagerScreen - value of returnIdString: $returnIdString");
                 bool userExists =
-                    await userBloc.checkIfUserExists(id: _scanedBarcode);
+                    await userBloc.checkIfUserExists(id: returnIdString);
                 if (userExists) {
                   teamBloc.updateTeamArrayFieldByIdWithFieldAndValue(
-                      id: teamSnapshotInFAB.data.documentID,
-                      field: 'users',
-                      value: _scanedBarcode);
+                    id: teamSnapshotInFAB.data.documentID,
+                    field: 'users',
+                    value: returnIdString,
+                  );
+                }
+                if (!userExists) {
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                        "The user you are trying to add is not available in Dragger database. This is strange, but maybe the user is not signed in with Dragger. The user first needs to install Dragger app and log-into it before adding to team."),
+                    backgroundColor: Styles.drg_colorAttention,
+                  ));
                 }
                 Scaffold.of(context).showSnackBar(SnackBar(
-                  content: Text(
-                      "User not in Dragger db. User first needs to install Dragger app and log-into it before adding to team."),
-                  backgroundColor: Styles.drg_colorAttention,
+                  content: Text("User added to team!"),
+                  backgroundColor: Styles.drg_colorLighterGreen,
                 ));
                 return null;
               },

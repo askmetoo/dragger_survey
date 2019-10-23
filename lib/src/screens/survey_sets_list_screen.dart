@@ -91,7 +91,6 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                               ),
                             ),
                             onPressed: () {
-                              // TODO:
                               print(
                                   "In SurveySetsListScreen 'Create new Team' button pressed");
                               teamBloc.updatingTeamData = false;

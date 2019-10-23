@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/services/services.dart';
@@ -54,6 +56,9 @@ class TeamBloc extends ChangeNotifier {
   }
 
   updateTeamArrayFieldByIdWithFieldAndValue({id, field, value}) async {
+    log("--------> In TeamBloc updateTeamArrayFieldByIdWithFieldAndValue - value of id: $id");
+    log("--------> In TeamBloc updateTeamArrayFieldByIdWithFieldAndValue - value of field: $field");
+    log("--------> In TeamBloc updateTeamArrayFieldByIdWithFieldAndValue - value of value: $value");
     Collection(path: "teams").updateArrayInDocumentByIdWithFieldAndValue(
       id: id,
       field: field,

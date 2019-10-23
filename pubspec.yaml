@@ -38,7 +38,7 @@ dependencies:
   page_transition: "^1.1.4"
   date_format:
   connectivity: 0.4.3+7
-  cached_network_image: ^1.1.2+1
+  cached_network_image: 2.0.0-rc
   icon_shadow: ^1.0.1
   flutter_slidable: "^0.5.3"
   charts_flutter:

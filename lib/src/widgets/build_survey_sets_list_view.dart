@@ -69,7 +69,6 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
               .getPrismSurveySetQuery(
                   fieldName: 'createdByTeam',
                   fieldValue: teamBloc?.currentSelectedTeamId)
-              // fieldValue: teamBloc?.currentSelectedTeam?.documentID)
               .catchError((err) => log(
                   "ERROR in BuildSurveySetsListView getPrismSurveySetQuery: $err")),
           builder: (BuildContext context,
