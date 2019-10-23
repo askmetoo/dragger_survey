@@ -35,22 +35,27 @@ class AuthService {
     return user;
   }
 
-  Future<User> createUserInFirestore({FirebaseUser account}) async {
+  Future<DocumentSnapshot> createUserInFirestore({FirebaseUser account}) async {
     // 1) check if user exists in users collection in database (according to their id)
     // final GoogleSignInAccount user = _googleSignIn.currentUser;
     // FirebaseUser _currentUser = await _auth.currentUser();
 
-    DocumentSnapshot returnUser;
-    User _user;
-
     print(
         "In AuthService createUserInFirestore value of account.uid: ${account.uid}");
-    DocumentSnapshot doc =
-        await _db.collection('users').document(account.uid).get();
-    // 1b) check if FirebaseUser _currentUser is the same currentUser
+    // 1b) query for account.uid in DB
+    QuerySnapshot doc = await _db
+        .collection('users')
+        .where('providersUID', isEqualTo: account.uid)
+        .getDocuments()
+        .catchError(
+            (e) => print("ERROR in AuthService query for existing user: $e"));
+    print("---------> In AuthService createUserInFirestore value of doc: $doc");
 
-    if (!doc.exists) {
-      // 2) if the user doesn't exist, then create account
+    // 2) if the user doesn't exist, then create account
+    if (doc.documents.isEmpty) {
+      print(
+          "---------> In AuthService createUserInFirestore value of doc.documents.isEmpty: ${doc.documents.isEmpty}");
+
       log("In AuthService createUserInFirestore when !doc.exists - account?.uid: ${account?.uid}");
       log("In AuthService createUserInFirestore when !doc.exists - account?.displayName: ${account?.displayName}");
       log("In AuthService createUserInFirestore when !doc.exists - account?.email: ${account?.email}");
@@ -68,19 +73,30 @@ class AuthService {
       userBloc.addUserToDb(
         user: newUser,
       );
-
-      doc = await _db
-          .collection('users')
-          .document(account.uid)
-          .get()
-          .then((user) {
-        _user = User.fromDocument(user);
-        return returnUser;
-      });
+      return null;
     }
-    // User returnUser = User.fromDocument(doc);
-    return _user;
-    // return Future.value(returnUser);
+
+    // 3) In case user exists return first account
+    if (doc.documents.first.data.isNotEmpty) {
+      log("--------> In AuthService createUserInFirestore doc.documents.isNotEmpty: ${doc.documents.isNotEmpty}");
+      log("--------> In AuthService createUserInFirestore doc.documents.first.data.isNotEmpty: ${doc.documents.first.data.isNotEmpty}");
+      if (account.uid == doc.documents.first.data['providersUID']) {
+        log("In AuthService createUserInFirestore account.uid == doc.data['providersUID']: ${account.uid == doc.documents.first.data['providersUID']}");
+        print(
+            "--------> In AuthService createUserInFirestore returned user doc: ${doc.documents.first.data['providersUID']}");
+        return doc.documents.first.data['providersUID'];
+      }
+    }
+
+    // 4) Else return new query for account
+    doc = await _db
+        .collection('users')
+        .where('providersUID', isEqualTo: account.uid)
+        .getDocuments()
+        .catchError(
+            (e) => print("ERROR in AuthService query for existing user: $e"));
+
+    return doc.documents.first;
   }
 
   Future<FirebaseUser> signInWithGoogle() async {

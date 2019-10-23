@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/services/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +24,8 @@ class SignInBloc extends ChangeNotifier {
     return _user;
   }
 
-  Future<User> createUserInDbIfNotExist({account}) async {
-    User _createdUser =
+  Future<DocumentSnapshot> createUserInDbIfNotExist({account}) async {
+    DocumentSnapshot _createdUser =
         await authService.createUserInFirestore(account: account);
     notifyListeners();
     return _createdUser;
