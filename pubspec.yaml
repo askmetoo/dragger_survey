@@ -49,6 +49,7 @@ dependencies:
 
   csv: 4.0.3
   path_provider:
+  share: 0.6.3
 
   # simple_permissions: ^0.1.9
 

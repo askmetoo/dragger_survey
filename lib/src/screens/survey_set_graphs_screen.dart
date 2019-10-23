@@ -1,10 +1,9 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:share/share.dart';
+
 // import 'package:simple_permissions/simple_permissions.dart';
-
-
-
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csv/csv.dart';
@@ -27,7 +26,7 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
   DocumentSnapshot currentSurveySet;
   String _xLabel;
   String _yLabel;
-  bool _allowWriteFile = false;
+  bool _allowWriteFile = true;
 
   Future get _localPath async {
     // Application documents directory: /data/user/0/{package_name}/{app_name}
@@ -41,7 +40,7 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
 
     return applicationDirectory.path;
   }
-  
+
   Future get _localFile async {
     final path = await _localPath;
 
@@ -50,6 +49,7 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
 
   Future _writeToFile({String surveyString}) async {
     if (!_allowWriteFile) {
+      log("In SurveySetGraphScreen _writeToFile - value of _allowWriteFile: $_allowWriteFile");
       return null;
     }
 
@@ -58,7 +58,7 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
     // Write the file
     File result = await file.writeAsString('$surveyString');
 
-    if (result == null ) {
+    if (result == null) {
       print("Writing survey to file failed");
     } else {
       print("Successfully writing to file");
@@ -86,16 +86,6 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
     super.initState();
     // _requestWritePermission();
   }
-
-  // _requestWritePermission() async {
-  //   PermissionStatus permissionStatus = await SimplePermissions.requestPermission(Permission.WriteExternalStorage);
-
-  //   if (permissionStatus == PermissionStatus.authorized) {
-  //     setState(() {
-  //       _allowWriteFile = true;
-  //     });
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -176,12 +166,14 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
                               padding: EdgeInsets.fromLTRB(14, 0, 0, 0),
                               child: Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text( surveySetSnapshot?.data?.data['name'] ?? "Survey title", 
-                                style: TextStyle(
-                                  fontFamily: 'Bitter',
-                                  fontSize: Styles.drg_fontSizeMediumHeadline,
-                                  fontWeight: FontWeight.w700,
-                                ),
+                                child: Text(
+                                  surveySetSnapshot?.data?.data['name'] ??
+                                      "Survey title",
+                                  style: TextStyle(
+                                    fontFamily: 'Bitter',
+                                    fontSize: Styles.drg_fontSizeMediumHeadline,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
                               ),
                             ),
@@ -192,17 +184,34 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
                             ),
                             Text("Surveys in total: $_sum"),
                             OutlineButton.icon(
-                              icon: Icon(Icons.save_alt, color: Styles.drg_colorTextMediumDark,),
-                              label: Text('Export to CSV', style: TextStyle(color: Styles.drg_colorTextMediumDark),),
+                              icon: Icon(
+                                Icons.share,
+                                color: Styles.drg_colorTextMediumDark,
+                              ),
+                              label: Text(
+                                'Share as string in CSV format',
+                                style: TextStyle(
+                                    color: Styles.drg_colorTextMediumDark),
+                              ),
                               onPressed: () {
                                 List<List<dynamic>> list = [[]];
-                                list.add([surveySetSnapshot.data.data['xName'], surveySetSnapshot.data.data['yName']]);
-                                surveySnapshot.data.documents.forEach( (doc) {
-                                   list.add( [doc.data['xValue'], doc.data['yValue']]);
+                                list.add([
+                                  surveySetSnapshot.data.data['xName'],
+                                  surveySetSnapshot.data.data['yName']
+                                ]);
+                                surveySnapshot.data.documents.forEach((doc) {
+                                  list.add(
+                                      [doc.data['xValue'], doc.data['yValue']]);
                                 });
-                                var result = ListToCsvConverter().convert( list, fieldDelimiter: ';', textDelimiter: ',', eol: '\n').toString();
+                                var result = ListToCsvConverter()
+                                    .convert(list,
+                                        fieldDelimiter: ';',
+                                        textDelimiter: ',',
+                                        eol: '\n')
+                                    .toString();
                                 print("-----\/\/\/");
                                 print(result);
+                                Share.share(result);
                                 _writeToFile(surveyString: result);
                               },
                             )

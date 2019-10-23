@@ -39,6 +39,7 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
         title: Text("${_titleOptions.elementAt(_selectedIndex)}"),
       ),
       body: _widgetOptions(context, args: arg).elementAt(_selectedIndex),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Styles.drg_colorSecondary,
         label: Text(
