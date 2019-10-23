@@ -43,9 +43,6 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
         future: queryTeamsForUser(teamBloc: teamBloc, user: user),
         builder:
             (BuildContext context, AsyncSnapshot<QuerySnapshot> teamsSnapshot) {
-          // log("In SurveySetsListScreen - value of teamsSnapshot.data.documents.length: ${teamsSnapshot.data.documents.length}");
-          // log("In SurveySetsListScreen - value of teamsSnapshot.data.documents[0].documentID: ${teamsSnapshot.data.documents[0].documentID}");
-          // log("In SurveySetsListScreen - value of teamsSnapshot.data.documents.isEmpty: ${teamsSnapshot.data.documents.isEmpty}");
           if (teamsSnapshot.connectionState != ConnectionState.done) {
             return Center(
               child: Container(
@@ -66,10 +63,11 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                 ),
               ),
             );
-          } else if (teamsSnapshot.data.documents.isNotEmpty) {
-            teamBloc.setCurrentSelectedTeamId(
-                teamsSnapshot?.data?.documents[0].documentID);
           }
+          // else if (teamsSnapshot.data.documents.isNotEmpty) {
+          //   teamBloc.setCurrentSelectedTeamId(
+          //       teamsSnapshot?.data?.documents[0].documentID);
+          // }
 
           return Scaffold(
             backgroundColor: Styles.drg_colorAppBackground,

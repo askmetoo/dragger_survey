@@ -20,6 +20,7 @@ class TeamBloc extends ChangeNotifier {
   }
 
   setCurrentSelectedTeamId(String selectedTeamId) {
+    log("In TeamBloc setCurrentSelectedTeamId value of selectedTeamId: $selectedTeamId");
     currentSelectedTeamId = selectedTeamId;
     notifyListeners();
   }

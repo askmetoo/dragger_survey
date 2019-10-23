@@ -57,13 +57,18 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                           isDense: false,
                           value: _selectedTeamId,
                           onChanged: (value) {
+                            String _selectedTeamId = value;
+                            log("------> In BuildTeamsDropdownButton onChanged selected team value: $_selectedTeamId");
+                            teamBloc.setCurrentSelectedTeamId(_selectedTeamId);
                             setState(() {
-                              _selectedTeamId = value;
+                              _selectedTeamId = _selectedTeamId;
                             });
-                            teamBloc.getTeamById(id: value).then((returnValue) {
-                              teamBloc.setCurrentSelectedTeam(returnValue);
+                            teamBloc
+                                .getTeamById(id: _selectedTeamId)
+                                .then((returnedTeam) {
+                              teamBloc.setCurrentSelectedTeam(returnedTeam);
                               setState(() {
-                                _selectedTeam = returnValue;
+                                _selectedTeam = returnedTeam;
                               });
                             });
                           },

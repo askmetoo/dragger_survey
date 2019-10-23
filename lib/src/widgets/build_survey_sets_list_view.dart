@@ -53,7 +53,6 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
         }
 
         if (teamsSnapshot.data.documents.isEmpty) {
-          // return Text("No teams in snapshot");
           return buildNotMemberOfATeamBText();
         }
 
@@ -61,11 +60,10 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
           teamBloc.currentSelectedTeamId =
               teamsSnapshot.data.documents[0].documentID;
           teamBloc.getTeamById(id: teamsSnapshot.data.documents[0].documentID);
-          // .then((val) => teamBloc.setCurrentSelectedTeam(val));
         }
 
         log("In BuildSurveySetsListView - value of teamsSnapshot.data.documents.length: ${teamsSnapshot.data.documents.length}");
-        log("In BuildSurveySetsListView - value of teamsSnapshot.data.documents.length: ${teamsSnapshot.data.documents[0].documentID}");
+        log("In BuildSurveySetsListView - value of team ID teamsSnapshot.data.documents[0].documentID: ${teamsSnapshot.data.documents[0].documentID}");
 
         if (teamBloc?.currentSelectedTeam?.documentID == null &&
             teamsSnapshot.data.documents.length != 1) {
@@ -81,6 +79,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                   "ERROR in BuildSurveySetsListView getPrismSurveySetQuery: $err")),
           builder: (BuildContext context,
               AsyncSnapshot<QuerySnapshot> surveySetSnapshot) {
+            log("In BuildSurveySetsListView value of teamBloc?.getCurrentSelectedTeamId(): ${teamBloc?.getCurrentSelectedTeamId()}");
             final connectionStatus = Provider.of<ConnectivityStatus>(context);
 
             if (surveySetSnapshot.connectionState == ConnectionState.done) {
