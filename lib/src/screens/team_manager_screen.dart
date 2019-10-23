@@ -122,7 +122,16 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
                                   if (userSnapshot.connectionState ==
                                       ConnectionState.done) {
                                     if (!userSnapshot.hasData) {
-                                      return CircularProgressIndicator();
+                                      return Center(
+                                        child: Container(
+                                          constraints:
+                                              BoxConstraints(maxWidth: 200),
+                                          child: AspectRatio(
+                                            aspectRatio: 1,
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        ),
+                                      );
                                     }
                                     print(
                                         "oooooo In TeamManager list of Team Members vvv");

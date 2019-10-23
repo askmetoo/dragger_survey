@@ -6,7 +6,15 @@ class Loader extends StatelessWidget {
     return Container(
       width: 250,
       height: 250,
-      child: CircularProgressIndicator(),
+      child: Center(
+        child: Container(
+          constraints: BoxConstraints(maxWidth: 200),
+          child: AspectRatio(
+            aspectRatio: 1,
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -47,9 +47,25 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
           // log("In SurveySetsListScreen - value of teamsSnapshot.data.documents[0].documentID: ${teamsSnapshot.data.documents[0].documentID}");
           // log("In SurveySetsListScreen - value of teamsSnapshot.data.documents.isEmpty: ${teamsSnapshot.data.documents.isEmpty}");
           if (teamsSnapshot.connectionState != ConnectionState.done) {
-            return CircularProgressIndicator();
+            return Center(
+              child: Container(
+                constraints: BoxConstraints(maxWidth: 200),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            );
           } else if (!teamsSnapshot.hasData) {
-            return CircularProgressIndicator();
+            return Center(
+              child: Container(
+                constraints: BoxConstraints(maxWidth: 200),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            );
           } else if (teamsSnapshot.data.documents.isNotEmpty) {
             teamBloc.setCurrentSelectedTeamId(
                 teamsSnapshot?.data?.documents[0].documentID);

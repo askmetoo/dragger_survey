@@ -67,7 +67,15 @@ class SurveySetDetailsScreen extends StatelessWidget {
 
     if (surveySetsSnapshot.connectionState == ConnectionState.done) {
       if (!surveySetsSnapshot.hasData) {
-        return CircularProgressIndicator();
+        return Center(
+          child: Container(
+            constraints: BoxConstraints(maxWidth: 200),
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        );
       }
 
       try {
@@ -243,9 +251,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 26),
                 child: FormBuilder(
                   key: _formSurveyEditKey,
-                  initialValue: {
-                    'askedPerson': askedPerson ?? 'Anonymous'
-                  },
+                  initialValue: {'askedPerson': askedPerson ?? 'Anonymous'},
                   autovalidate: true,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -272,7 +278,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
                                 field: 'askedPerson',
                                 id: documentID,
                                 value: _formSurveyEditKey
-                                  .currentState.value['askedPerson'],
+                                    .currentState.value['askedPerson'],
                               );
                             }
                             Navigator.pop(context);

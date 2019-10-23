@@ -19,7 +19,15 @@ class TeamsListScreen extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (!snapshot.hasData) {
-              return CircularProgressIndicator();
+              return Center(
+                child: Container(
+                  constraints: BoxConstraints(maxWidth: 200),
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              );
             }
 
             if (snapshot.data.uid == null) {

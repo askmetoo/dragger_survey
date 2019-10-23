@@ -189,11 +189,35 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
     DocumentSnapshot teamDoc;
 
     if (teamsListSnapshot.connectionState != ConnectionState.done) {
-      return CircularProgressIndicator();
+      return Center(
+        child: Container(
+          constraints: BoxConstraints(maxWidth: 80),
+          child: AspectRatio(
+            aspectRatio: 1,
+            child: Center(
+              child: Container(
+                constraints: BoxConstraints(maxWidth: 200),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
     }
 
     if (!teamsListSnapshot.hasData) {
-      return CircularProgressIndicator();
+      return Center(
+        child: Container(
+          constraints: BoxConstraints(maxWidth: 200),
+          child: AspectRatio(
+            aspectRatio: 1,
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      );
     }
 
     teamDoc = teamsListSnapshot?.data?.documents[0];

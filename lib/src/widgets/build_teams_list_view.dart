@@ -26,10 +26,26 @@ Widget buildTeamsListView({BuildContext context}) {
               AsyncSnapshot<QuerySnapshot> teamsListSnapshot) {
             if (teamsListSnapshot.connectionState == ConnectionState.done) {
               if (!teamsListSnapshot.hasData) {
-                return CircularProgressIndicator();
+                return Center(
+                  child: Container(
+                    constraints: BoxConstraints(maxWidth: 200),
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                );
               }
               if (!signInSnapshot.hasData) {
-                return CircularProgressIndicator();
+                return Center(
+                  child: Container(
+                    constraints: BoxConstraints(maxWidth: 200),
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                );
               }
 
               return ListView(

@@ -103,7 +103,15 @@ class _TeamFormState extends State<TeamForm> {
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> teamSnapshot) {
         if (!teamSnapshot.hasData) {
-          return CircularProgressIndicator();
+          return Center(
+            child: Container(
+              constraints: BoxConstraints(maxWidth: 200),
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          );
         }
 
         return Padding(

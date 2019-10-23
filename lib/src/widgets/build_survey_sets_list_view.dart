@@ -41,7 +41,15 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
       builder:
           (BuildContext context, AsyncSnapshot<QuerySnapshot> teamsSnapshot) {
         if (teamsSnapshot.connectionState != ConnectionState.done) {
-          return CircularProgressIndicator();
+          return Center(
+            child: Container(
+              constraints: BoxConstraints(maxWidth: 200),
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          );
         }
 
         if (teamsSnapshot.data.documents.isEmpty) {
@@ -77,7 +85,15 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
 
             if (surveySetSnapshot.connectionState == ConnectionState.done) {
               if (!surveySetSnapshot.hasData) {
-                return CircularProgressIndicator();
+                return Center(
+                  child: Container(
+                    constraints: BoxConstraints(maxWidth: 200),
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                );
               }
 
               if (connectionStatus == ConnectivityStatus.Offline) {

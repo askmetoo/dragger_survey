@@ -79,7 +79,12 @@ class OldLoginScreen extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.none ||
               snapshot.connectionState == ConnectionState.waiting ||
               snapshot.connectionState == ConnectionState.active) {
-            return CircularProgressIndicator();
+            return Center(
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: CircularProgressIndicator(),
+              ),
+            );
           }
 
           if (!(snapshot.connectionState == ConnectionState.done &&
