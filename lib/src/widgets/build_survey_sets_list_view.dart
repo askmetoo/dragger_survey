@@ -442,7 +442,7 @@ class BuildListOfSets extends StatelessWidget {
         // },
         child: Container(
           margin: EdgeInsets.only(left: 14, bottom: 1, top: 1),
-          color: Styles.drg_colorSecondary.withOpacity(.0),
+          color: Styles.drg_colorSecondary.withOpacity(0),
           child: ClipRRect(
             clipBehavior: Clip.antiAlias,
             borderRadius: BorderRadius.only(
@@ -452,7 +452,7 @@ class BuildListOfSets extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.only(left: 16, bottom: 4),
               decoration: BoxDecoration(
-                color: Styles.drg_colorSecondary,
+                color: Styles.drg_colorSecondary.withOpacity(.7),
               ),
               child: ListTile(
                     onTap: () {

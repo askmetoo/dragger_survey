@@ -133,6 +133,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                           )
                         : null
                     : FloatingActionButton.extended(
+                        elevation: 12,
                         backgroundColor: Styles.drg_colorSecondary,
                         label: Text(
                           "Create new survey set",
