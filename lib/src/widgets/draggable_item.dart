@@ -27,8 +27,8 @@ class _DraggableItemState extends State<DraggableItem> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final DraggableItemBloc draggableBloc =
-        Provider.of<DraggableItemBloc>(context);
+    // final DraggableItemBloc draggableBloc =
+    //     Provider.of<DraggableItemBloc>(context);
     // draggableBloc.setInitialDraggableItemPostion(
     // position: widget.initialPosition);
   }
@@ -109,7 +109,8 @@ class _DraggableItemState extends State<DraggableItem> {
                     widget.matrixBoardPositon.dx -
                     (_draggableSize / 2.98) +
                     10,
-                drag.offset.dy - (_draggableSize / .739)
+                drag.offset.dy - (_draggableSize / .56)
+                // drag.offset.dy - (_draggableSize / .739)
                 // widget.matrixBoardPositon.dy -
                 // (_draggableSize / .219),
                 ),

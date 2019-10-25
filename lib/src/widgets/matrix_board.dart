@@ -18,9 +18,9 @@ class _MatrixBoardState extends State<MatrixBoard> {
   // final double aspectratioValue = .98;
   int gridLength;
 
-  // *** Needed for getting board position on the screen *** //
+  // *** Part of getting board position on the screen *** //
   GlobalKey _matrixBoardKey = GlobalKey();
-  Size _matrixBoardSize = Size(0, 0);
+  // Size _matrixBoardSize = Size(0, 0);
   Offset _matrixBoardPosition = Offset(0, 0);
 
   @override
@@ -30,11 +30,9 @@ class _MatrixBoardState extends State<MatrixBoard> {
   }
 
   _onBuildCompleted(_) {
-    // *** These methods are below build function  ***//
-    _getMatrixBoardSize();
+    // _getMatrixBoardSize();
     _getMatrixBoardPosition();
   }
-  // *** =============================================== *** //
 
   @override
   Widget build(BuildContext context) {
@@ -89,15 +87,15 @@ class _MatrixBoardState extends State<MatrixBoard> {
     );
   }
 
-  // *** Needed for getting board position on the screen *** //
-  _getMatrixBoardSize() {
-    final RenderBox matrixBoardRenderBox =
-        _matrixBoardKey.currentContext.findRenderObject();
-    final matrixBoardSize = matrixBoardRenderBox.size;
-    setState(() {
-      _matrixBoardSize = matrixBoardSize;
-    });
-  }
+  // *** Get position of board on the screen *** //
+  // _getMatrixBoardSize() {
+  //   final RenderBox matrixBoardRenderBox =
+  //       _matrixBoardKey.currentContext.findRenderObject();
+  //   final matrixBoardSize = matrixBoardRenderBox.size;
+  //   setState(() {
+  //     _matrixBoardSize = matrixBoardSize;
+  //   });
+  // }
 
   _getMatrixBoardPosition() {
     final RenderBox matrixBoardRenderBox =
