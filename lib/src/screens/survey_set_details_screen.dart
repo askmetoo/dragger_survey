@@ -106,7 +106,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
                   DocumentSnapshot document =
                       surveySnapshot.data.documents[index];
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                    padding: const EdgeInsets.only(left: 14.0),
                     child: Slidable(
                       key: ValueKey(index),
                       actionPane: SlidableDrawerActionPane(),
@@ -139,44 +139,42 @@ class SurveySetDetailsScreen extends StatelessWidget {
                         ),
                       ],
                       child: Container(
-                        margin: EdgeInsets.only(bottom: 1),
-                        color: Styles.drg_colorSecondary.withOpacity(.13),
-                        height: 36,
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: ListTile(
-                          title: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              RichText(
-                                text: TextSpan(
-                                  text: "${document.data['askedPerson']} ",
-                                  style: TextStyle(
-                                    color: Styles.drg_colorText,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: "was asked ",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w200,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: timeago.format(DateTime.now()
-                                          .subtract(DateTime.now().difference(
-                                              document.data['created']
-                                                  .toDate()))),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w200,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                        decoration: BoxDecoration(
+                          color: Styles.drg_colorSecondary.withOpacity(.13),
+                          borderRadius: BorderRadius.only(topLeft: Radius.circular(40), bottomLeft: Radius.circular(40),)
                         ),
+                        margin: EdgeInsets.only(bottom: 2),
+                        child: ListTile(
+                          dense: true,
+                            leading: Icon(Icons.person),
+                            title: RichText(
+                              text: TextSpan(
+                                text: "${document.data['askedPerson']} ",
+                                style: TextStyle(
+                                  color: Styles.drg_colorText,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: "was asked ",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w200,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: timeago.format(DateTime.now()
+                                        .subtract(DateTime.now().difference(
+                                            document.data['created']
+                                                .toDate()))),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w200,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
                       ),
                     ),
                   );
