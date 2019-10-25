@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:flutter/services.dart';
 
 import 'package:barcode_scan/barcode_scan.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/styles.dart';
@@ -154,10 +153,12 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
                                       child: ListTile(
                                         leading: CircleAvatar(
                                           backgroundImage:
-                                              CachedNetworkImageProvider(
-                                            userSnapshot?.data?.documents
-                                                ?.first['photoUrl'],
-                                          ),
+                                              NetworkImage(userSnapshot?.data?.documents
+                                                ?.first['photoUrl'],),
+                                            //   CachedNetworkImageProvider(
+                                            // userSnapshot?.data?.documents
+                                            //     ?.first['photoUrl'],
+                                          // ),
                                         ),
                                         dense: true,
                                         title: Text(userName),

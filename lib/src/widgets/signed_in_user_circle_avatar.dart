@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,7 +21,8 @@ class SignedInUserCircleAvatar extends StatelessWidget {
                   child: CircleAvatar(
                     backgroundColor: Styles.drg_colorDarkerGreen,
                     backgroundImage: snapshot.data?.uid != null
-                        ? CachedNetworkImageProvider(snapshot.data.photoUrl)
+                        ? NetworkImage(snapshot.data.photoUrl)
+                        // ? CachedNetworkImageProvider(snapshot.data.photoUrl)
                         : null,
                   ),
                 ));
