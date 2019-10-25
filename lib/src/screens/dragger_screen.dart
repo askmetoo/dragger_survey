@@ -127,7 +127,7 @@ class _DraggerScreenState extends State<DraggerScreen> {
               yLabel: _yName,
             ),
             Text(
-                "Granularity: ${matrixGranularityBloc.matrixGranularity} \nStone is dragged to \n$_xName: ${prismSurveyBloc.rowIndex} \n$_yName: ${prismSurveyBloc.colIndex}"),
+                "Granularity: ${matrixGranularityBloc.matrixGranularity} \n$_xName: ${prismSurveyBloc.rowIndex +1} - $_yName: ${prismSurveyBloc.colIndex +1}"),
             DraggerBoardButtonRow(
               formKey: _formKey,
               currentSurveySet: surveySet?.documentID,
