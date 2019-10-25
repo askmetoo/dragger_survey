@@ -107,9 +107,11 @@ class _DraggableItemState extends State<DraggableItem> {
             position: Offset(
                 drag.offset.dx +
                     widget.matrixBoardPositon.dx -
-                    (_draggableSize / 2.98) +
+                    (_draggableSize / 7) +
                     10,
-                drag.offset.dy - (_draggableSize / .56)
+                    // (_draggableSize / 2.98) +
+                    // 10,
+                drag.offset.dy - (_draggableSize / .5)
                 // drag.offset.dy - (_draggableSize / .739)
                 // widget.matrixBoardPositon.dy -
                 // (_draggableSize / .219),
