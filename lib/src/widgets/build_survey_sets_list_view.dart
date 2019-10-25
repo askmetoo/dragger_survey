@@ -381,126 +381,120 @@ class BuildListOfSets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      scrollDirection: Axis.vertical,
-      children: surveySetSnapshot.data.documents.map(
-        (DocumentSnapshot surveySetDokumentSnapshot) {
-          if (!(surveySetSnapshot.connectionState == ConnectionState.done)) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (!surveySetDokumentSnapshot.exists) {
-            Text("surveySetDokumentSnapshot does not exist");
-          }
-          return Slidable(
-            key: ValueKey(surveySetDokumentSnapshot.hashCode),
-            actionPane: SlidableBehindActionPane(),
-            actionExtentRatio: .20,
-            // actions: <Widget>[
-            //   IconSlideAction(
-            //     caption: 'Archive',
-            //     color: Colors.blue,
-            //     icon: Icons.archive,
-            //     onTap: () {},
-            //   ),
-            // ],
-            secondaryActions: <Widget>[
-              // IconSlideAction(
-              //   caption: 'More',
-              //   color: Styles.drg_colorSecondaryDeepDark,
-              //   icon: Icons.more_horiz,
-              //   onTap: () {
-              //     log("In BuildSurveySesListView Slidable 'More..'");
-              //   },
-              // ),
-              IconSlideAction(
-                caption: 'Delete',
-                color: Styles.drg_colorAttention,
-                icon: Icons.delete,
-                onTap: () {
-                  log("In BuildSurveySesListView ListView Dismissible Item name: ${surveySetDokumentSnapshot.data['name']}, id: ${surveySetDokumentSnapshot.documentID} is dismissed'");
-                  surveySetsBloc.deletePrismSurveySetById(
-                      id: surveySetDokumentSnapshot.documentID);
+        scrollDirection: Axis.vertical,
+        padding: EdgeInsets.only(bottom: 90),
 
-                  Scaffold.of(context).showSnackBar(
-                    SnackBar(
-                      backgroundColor: Styles.drg_colorAttention,
-                      elevation: 20,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(40)),
-                      content: Text(
-                          "${surveySetDokumentSnapshot.data['name']} has been deleted."),
-                    ),
-                  );
-                },
-              ),
-            ],
-            // onDismissed: (direction) {
-            //   surveySetsBloc.deletePrismSurveySetById(
-            //       id: surveySetDokumentSnapshot.documentID);
-            // },
+        physics: BouncingScrollPhysics(),
+        children: surveySetSnapshot.data.documents.map(
+    (DocumentSnapshot surveySetDokumentSnapshot) {
+      if (!(surveySetSnapshot.connectionState == ConnectionState.done)) {
+        return Center(child: CircularProgressIndicator());
+      }
+      if (!surveySetDokumentSnapshot.exists) {
+        Text("surveySetDokumentSnapshot does not exist");
+      }
+      return Slidable(
+        key: ValueKey(surveySetDokumentSnapshot.hashCode),
+        actionPane: SlidableBehindActionPane(),
+        actionExtentRatio: .20,
+        // actions: <Widget>[
+        //   IconSlideAction(
+        //     caption: 'Archive',
+        //     color: Colors.blue,
+        //     icon: Icons.archive,
+        //     onTap: () {},
+        //   ),
+        // ],
+        secondaryActions: <Widget>[
+          // IconSlideAction(
+          //   caption: 'More',
+          //   color: Styles.drg_colorSecondaryDeepDark,
+          //   icon: Icons.more_horiz,
+          //   onTap: () {
+          //     log("In BuildSurveySesListView Slidable 'More..'");
+          //   },
+          // ),
+          IconSlideAction(
+            caption: 'Delete',
+            color: Styles.drg_colorAttention,
+            icon: Icons.delete,
+            onTap: () {
+              log("In BuildSurveySesListView ListView Dismissible Item name: ${surveySetDokumentSnapshot.data['name']}, id: ${surveySetDokumentSnapshot.documentID} is dismissed'");
+              surveySetsBloc.deletePrismSurveySetById(
+                  id: surveySetDokumentSnapshot.documentID);
+
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: Styles.drg_colorAttention,
+                  elevation: 20,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(40)),
+                  content: Text(
+                      "${surveySetDokumentSnapshot.data['name']} has been deleted."),
+                ),
+              );
+            },
+          ),
+        ],
+        // onDismissed: (direction) {
+        //   surveySetsBloc.deletePrismSurveySetById(
+        //       id: surveySetDokumentSnapshot.documentID);
+        // },
+        child: Container(
+          margin: EdgeInsets.only(left: 14, bottom: 1, top: 1),
+          color: Styles.drg_colorSecondary.withOpacity(.0),
+          child: ClipRRect(
+            clipBehavior: Clip.antiAlias,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(65),
+              bottomLeft: Radius.circular(65),
+            ),
             child: Container(
-              margin: EdgeInsets.only(left: 14),
-              color: Styles.drg_colorSecondary.withOpacity(.0),
-              child: ClipRRect(
-                clipBehavior: Clip.antiAlias,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50),
-                  bottomLeft: Radius.circular(50),
-                ),
-                child: Container(
-                  margin: EdgeInsets.only(bottom: 2),
-                  padding: EdgeInsets.only(left: 8),
-                  decoration: BoxDecoration(
-                    // boxShadow: [
-                    //   BoxShadow(
-                    //       blurRadius: 2,
-                    //       offset: Offset(.2, .2),
-                    //       color: Colors.black.withOpacity(.3))
-                    // ],
-                    color: Styles.drg_colorSecondary,
-                    // borderRadius: BorderRadius.only(
-                    //   topLeft: Radius.circular(50),
-                    //   bottomLeft: Radius.circular(50),
-                    // ),
-                  ),
-                  child: ListTile(
-                      onTap: () {
-                        surveySetsBloc.setCurrentPrismSurveySetById(
-                            id: surveySetDokumentSnapshot.documentID);
-                        Navigator.pushNamed(context, '/surveysetscaffold',
-                            arguments: {
-                              "id": "${surveySetDokumentSnapshot.documentID}"
-                            });
-                      },
-                      title: Text(
-                        "${surveySetDokumentSnapshot.data['name']}",
-                        style: TextStyle(
-                          color: Styles.drgColorTextMediumLight,
-                          fontFamily: 'Bitter',
-                          fontSize: Styles.drg_fontSizeMediumHeadline,
-                          // fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w600,
-                        ),
+              padding: EdgeInsets.only(left: 16, bottom: 4),
+              decoration: BoxDecoration(
+                color: Styles.drg_colorSecondary,
+              ),
+              child: ListTile(
+                    onTap: () {
+                      surveySetsBloc.setCurrentPrismSurveySetById(
+                          id: surveySetDokumentSnapshot.documentID);
+                      Navigator.pushNamed(context, '/surveysetscaffold',
+                          arguments: {
+                            "id": "${surveySetDokumentSnapshot.documentID}"
+                          });
+                    },
+                    title: Text(
+                      "${surveySetDokumentSnapshot.data['name']}",
+                      style: TextStyle(
+                        color: Styles.drgColorTextMediumLight,
+                        fontFamily: 'Bitter',
+                        fontSize: Styles.drg_fontSizeMediumHeadline,
+                        // fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w600,
                       ),
-                      subtitle: Text(
-                        "Board resolution: ${surveySetDokumentSnapshot.data['resolution']} \nCreated: ${formatDate(surveySetDokumentSnapshot['created'].toDate(), [
-                          dd,
-                          '. ',
-                          MM,
-                          ' ',
-                          yyyy,
-                          ', ',
-                          HH,
-                          ':',
-                          nn
-                        ])}",
-                        style: Styles.drg_textListContent,
-                      )),
-                ),
+                    ),
+                    subtitle: Text(
+                      "Board resolution: ${surveySetDokumentSnapshot.data['resolution']} \nCreated: ${formatDate(surveySetDokumentSnapshot['created'].toDate(), [
+                        dd,
+                        '. ',
+                        MM,
+                        ' ',
+                        yyyy,
+                        ', ',
+                        HH,
+                        ':',
+                        nn
+                      ])}",
+                      style: Styles.drg_textListContent,
+                    ),
               ),
             ),
-          );
-        },
-      ).toList(),
-    );
+          ),
+        ),
+      );
+    },
+        ).toList(),
+        
+      );
   }
 }
