@@ -438,40 +438,65 @@ class BuildListOfSets extends StatelessWidget {
             //       id: surveySetDokumentSnapshot.documentID);
             // },
             child: Container(
-              color: Styles.drg_colorSecondary.withOpacity(.3),
-              child: ListTile(
-                  onTap: () {
-                    surveySetsBloc.setCurrentPrismSurveySetById(
-                        id: surveySetDokumentSnapshot.documentID);
-                    Navigator.pushNamed(context, '/surveysetscaffold',
-                        arguments: {
-                          "id": "${surveySetDokumentSnapshot.documentID}"
-                        });
-                  },
-                  title: Text(
-                    "${surveySetDokumentSnapshot.data['name']}",
-                    style: TextStyle(
-                      color: Styles.drgColorTextMediumLight,
-                      fontFamily: 'Bitter',
-                      fontSize: Styles.drg_fontSizeMediumHeadline,
-                      // fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.w600,
-                    ),
+              margin: EdgeInsets.only(left: 14),
+              color: Styles.drg_colorSecondary.withOpacity(.0),
+              child: ClipRRect(
+                clipBehavior: Clip.antiAlias,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50),
+                  bottomLeft: Radius.circular(50),
+                ),
+                child: Container(
+                  margin: EdgeInsets.only(bottom: 2),
+                  padding: EdgeInsets.only(left: 8),
+                  decoration: BoxDecoration(
+                    // boxShadow: [
+                    //   BoxShadow(
+                    //       blurRadius: 2,
+                    //       offset: Offset(.2, .2),
+                    //       color: Colors.black.withOpacity(.3))
+                    // ],
+                    color: Styles.drg_colorSecondary,
+                    // borderRadius: BorderRadius.only(
+                    //   topLeft: Radius.circular(50),
+                    //   bottomLeft: Radius.circular(50),
+                    // ),
                   ),
-                  subtitle: Text(
-                    "Board resolution: ${surveySetDokumentSnapshot.data['resolution']} \nCreated: ${formatDate(surveySetDokumentSnapshot['created'].toDate(), [
-                      dd,
-                      '. ',
-                      MM,
-                      ' ',
-                      yyyy,
-                      ', ',
-                      HH,
-                      ':',
-                      nn
-                    ])}",
-                    style: Styles.drg_textListContent,
-                  )),
+                  child: ListTile(
+                      onTap: () {
+                        surveySetsBloc.setCurrentPrismSurveySetById(
+                            id: surveySetDokumentSnapshot.documentID);
+                        Navigator.pushNamed(context, '/surveysetscaffold',
+                            arguments: {
+                              "id": "${surveySetDokumentSnapshot.documentID}"
+                            });
+                      },
+                      title: Text(
+                        "${surveySetDokumentSnapshot.data['name']}",
+                        style: TextStyle(
+                          color: Styles.drgColorTextMediumLight,
+                          fontFamily: 'Bitter',
+                          fontSize: Styles.drg_fontSizeMediumHeadline,
+                          // fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      subtitle: Text(
+                        "Board resolution: ${surveySetDokumentSnapshot.data['resolution']} \nCreated: ${formatDate(surveySetDokumentSnapshot['created'].toDate(), [
+                          dd,
+                          '. ',
+                          MM,
+                          ' ',
+                          yyyy,
+                          ', ',
+                          HH,
+                          ':',
+                          nn
+                        ])}",
+                        style: Styles.drg_textListContent,
+                      )),
+                ),
+              ),
             ),
           );
         },

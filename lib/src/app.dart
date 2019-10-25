@@ -50,6 +50,7 @@ class App extends StatelessWidget {
         navigatorKey: navigatorKey,
         onGenerateRoute: RouteGenerator.generateRoute,
         theme: ThemeData(
+          canvasColor: Styles.drg_colorSecondary, 
           fontFamily: 'Barlow',
           bottomAppBarTheme: BottomAppBarTheme(color: Styles.drg_colorGreen),
           accentColor: Colors.orangeAccent[300],
