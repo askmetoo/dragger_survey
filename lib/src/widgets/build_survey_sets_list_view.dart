@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:date_format/date_format.dart';
 
 class BuildSurveySetsListView extends StatefulWidget {
@@ -469,24 +470,10 @@ class BuildListOfSets extends StatelessWidget {
                         color: Styles.drgColorTextMediumLight,
                         fontFamily: 'Bitter',
                         fontSize: Styles.drg_fontSizeMediumHeadline,
-                        // fontStyle: FontStyle.normal,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    subtitle: Text(
-                      "Board resolution: ${surveySetDokumentSnapshot.data['resolution']} \nCreated: ${formatDate(surveySetDokumentSnapshot['created'].toDate(), [
-                        dd,
-                        '. ',
-                        MM,
-                        ' ',
-                        yyyy,
-                        ', ',
-                        HH,
-                        ':',
-                        nn
-                      ])}",
-                      style: Styles.drg_textListContent,
-                    ),
+                    subtitle: Text( "Resolution: ${surveySetDokumentSnapshot.data['resolution']} \n${ timeago.format( DateTime.now().subtract( DateTime.now().difference( surveySetDokumentSnapshot['created'].toDate())))}"),
               ),
             ),
           ),
