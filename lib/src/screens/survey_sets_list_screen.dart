@@ -78,7 +78,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
             body: Column(
               children: <Widget>[
                 BuildTeamsDropdownButton(),
-                buildFilterSort(context: context),
+                BuildFilterSort(),
                 Expanded(
                   child: BuildSurveySetsListView(),
                 ),
@@ -171,32 +171,132 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
         });
   }
 
-  Widget buildFilterSort({BuildContext context}) {
-    // ignore: unused_local_variable
-    String _selectedTeamId;
-    bool _sortByDate = true;
+  // Widget buildFilterSort({BuildContext context}) {
+  //   // ignore: unused_local_variable
+  //   String _selectedTeamId;
+  //   bool _sortByDate = true;
 
+  //   final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
+  //   FirebaseUser _user = Provider.of<FirebaseUser>(context);
+
+  //   Future<QuerySnapshot> teamsQuery = teamBloc
+  //       .getTeamsQueryByArray(
+  //         fieldName: 'users',
+  //         arrayValue: _user?.uid,
+  //       )
+  //       .catchError((err) => log(
+  //           "ERROR in BuildTeamsDropdownButton getTeamsQueryByArray: $err"));
+
+  //   if (teamsQuery == null) {
+  //     return Text("No Team Snapshot");
+  //   }
+
+  //   return FutureBuilder<QuerySnapshot>(
+  //       future: teamsQuery,
+  //       builder: (BuildContext context,
+  //           AsyncSnapshot<QuerySnapshot> teamsListSnapshot) {
+  //         if (teamsListSnapshot.connectionState != ConnectionState.done ||
+  //             !teamsListSnapshot.hasData) {
+  //           return Center(
+  //             child: Container(
+  //               constraints: BoxConstraints(maxWidth: 200),
+  //               child: AspectRatio(
+  //                 aspectRatio: 1,
+  //                 child: CircularProgressIndicator(),
+  //               ),
+  //             ),
+  //           );
+  //         } else if (teamsListSnapshot.data.documents.isEmpty) {
+  //           return Container();
+  //         }
+
+  //         return SingleChildScrollView(
+  //           scrollDirection: Axis.vertical,
+  //           child: Padding(
+  //             padding: const EdgeInsets.symmetric(horizontal: 16),
+  //             child: Container(
+  //               child: SizedBox(
+  //                 height: 40,
+  //                 child: Row(
+  //                   crossAxisAlignment: CrossAxisAlignment.center,
+  //                   children: <Widget>[
+  //                     Text(
+  //                       "## Survey Sets ",
+  //                       style: TextStyle(fontSize: Styles.drg_fontSizeHintText),
+  //                     ),
+  //                     Spacer(
+  //                       flex: 1,
+  //                     ),
+  //                     DropdownButton(
+  //                       icon: Icon(
+  //                         Icons.sort,
+  //                         size: 18,
+  //                       ),
+  //                       // hint: Text(
+  //                       //   _sortByDate ? 'By Date ' : 'By Name ',
+  //                       //   style:
+  //                       //       TextStyle(fontSize: Styles.drg_fontSizeHintText),
+  //                       // ),
+  //                       isDense: true,
+  //                       isExpanded: false,
+  //                       value: _sortByDate,
+  //                       onChanged: (bool newValue) {
+  //                         log("In SurveySetsListScreen newValue: $newValue");
+  //                         bool _newSortByDateValue = newValue;
+  //                         _sortByDate = newValue;
+  //                         // setState(() {
+  //                         //   _sortByDate = _newSortByDateValue;
+  //                         // });
+  //                       },
+  //                       items: [
+  //                         DropdownMenuItem(
+  //                           value: true,
+  //                           child: Text('By Date'),
+  //                         ),
+  //                         DropdownMenuItem(
+  //                           value: false,
+  //                           child: Text('By Name'),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                     Spacer(
+  //                       flex: 8,
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         );
+  //       });
+  // }
+}
+
+class BuildFilterSort extends StatefulWidget {
+  @override
+  _BuildFilterSortState createState() => _BuildFilterSortState();
+}
+
+class _BuildFilterSortState extends State<BuildFilterSort> {
+  String _selectedTeamId;
+  bool _sortByDate = true;
+
+  @override
+  Widget build(BuildContext context) {
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
     FirebaseUser _user = Provider.of<FirebaseUser>(context);
 
-    Future<QuerySnapshot> teamsQuery = teamBloc
-        .getTeamsQueryByArray(
-          fieldName: 'users',
-          arrayValue: _user?.uid,
-        )
-        .catchError((err) => log(
-            "ERROR in BuildTeamsDropdownButton getTeamsQueryByArray: $err"));
-
-    if (teamsQuery == null) {
-      return Text("No Team Snapshot");
-    }
-
     return FutureBuilder<QuerySnapshot>(
-        future: teamsQuery,
+        future: teamBloc
+            .getTeamsQueryByArray(
+              fieldName: 'users',
+              arrayValue: _user?.uid,
+            )
+            .catchError((err) => log(
+                "ERROR in BuildTeamsDropdownButton getTeamsQueryByArray: $err")),
         builder: (BuildContext context,
             AsyncSnapshot<QuerySnapshot> teamsListSnapshot) {
-          if (teamsListSnapshot.connectionState != ConnectionState.done ||
-              !teamsListSnapshot.hasData) {
+          if (teamsListSnapshot.connectionState != ConnectionState.done) {
             return Center(
               child: Container(
                 constraints: BoxConstraints(maxWidth: 200),
@@ -206,10 +306,13 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                 ),
               ),
             );
+          }
+          if (!teamsListSnapshot.hasData) {
+            return Text("No Team Snapshot");
           } else if (teamsListSnapshot.data.documents.isEmpty) {
             return Container();
           }
-
+          //TODO: implement sorting logic.
           return SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Padding(
@@ -241,10 +344,9 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                         isExpanded: false,
                         value: _sortByDate,
                         onChanged: (bool newValue) {
-                          log("In SurveySetsListScreen newValue: $newValue");
-                          bool _newSortByDateValue = newValue;
+                          log("In BuildFilterSort newValue: $newValue");
                           setState(() {
-                            _sortByDate = _newSortByDateValue;
+                            _sortByDate = newValue;
                           });
                         },
                         items: [
