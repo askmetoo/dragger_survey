@@ -28,6 +28,7 @@ class _TeamFormState extends State<TeamForm> {
   // Optional
   String _description = "";
   dynamic _users = [];
+  // ignore: unused_field
   dynamic _prismSurveySets = [];
 
   // When edited
@@ -45,6 +46,7 @@ class _TeamFormState extends State<TeamForm> {
   FocusNode sixthFocus;
 
   // loaded from db by id
+  // ignore: unused_field
   DocumentSnapshot _selectedTeam;
 
   @override

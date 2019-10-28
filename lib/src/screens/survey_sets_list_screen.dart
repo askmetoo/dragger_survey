@@ -172,6 +172,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
   }
 
   Widget buildFilterSort({BuildContext context}) {
+    // ignore: unused_local_variable
     String _selectedTeamId;
     bool _sortByDate = true;
 

@@ -258,7 +258,6 @@ class OldLoginScreen extends StatelessWidget {
   }
 
   Widget _openSurveyListButton({BuildContext context}) {
-    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
     return OutlineButton(
       splashColor: Styles.drg_colorSecondary,
       onPressed: () async {

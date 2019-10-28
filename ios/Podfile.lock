@@ -146,11 +146,11 @@ PODS:
     - Reachability
   - leveldb-library (1.22)
   - MTBBarcodeScanner (5.0.11)
-  - nanopb (0.3.901):
-    - nanopb/decode (= 0.3.901)
-    - nanopb/encode (= 0.3.901)
-  - nanopb/decode (0.3.901)
-  - nanopb/encode (0.3.901)
+  - nanopb (0.3.9011):
+    - nanopb/decode (= 0.3.9011)
+    - nanopb/encode (= 0.3.9011)
+  - nanopb/decode (0.3.9011)
+  - nanopb/encode (0.3.9011)
   - path_provider (0.0.1):
     - Flutter
   - Protobuf (3.10.0)
@@ -249,7 +249,7 @@ SPEC CHECKSUMS:
   keyboard_visibility: 96a24de806fe6823c3ad956c01ba2ec6d056616f
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
-  nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
+  nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
   Protobuf: a4dc852ad69c027ca2166ed287b856697814375b
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
@@ -257,4 +257,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 81d9101721a74b9b88ddd9e9dfe15eec968bc82e
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.7.1

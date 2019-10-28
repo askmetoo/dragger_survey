@@ -33,9 +33,11 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
     final applicationDirectory = await getApplicationDocumentsDirectory();
 
     // External storage directory: /storage/emulated/0
+    // ignore: unused_local_variable
     final externalDirectory = await getExternalStorageDirectory();
 
     // Application temporary directory: /data/user/0/{package_name}/cache
+    // ignore: unused_local_variable
     final tempDirectory = await getTemporaryDirectory();
 
     return applicationDirectory.path;
@@ -150,7 +152,6 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
                           testValue.radius += 3;
                           return true;
                         }
-                        ;
                         return false;
                       });
                       newData.forEach((newDoc) => log(

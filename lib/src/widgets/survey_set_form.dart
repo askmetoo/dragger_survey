@@ -28,9 +28,11 @@ class _SurveySetFormState extends State<SurveySetForm> {
   String _description = "";
   String _xDescription = "";
   String _yDescription = "";
+  // ignore: unused_field
   dynamic _prismSurveys = [];
 
   // When edited
+  // ignore: unused_field
   DateTime _edited;
 
   // Meta information

@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/screens/screens.dart';
 import 'package:dragger_survey/src/styles.dart';
-import 'package:dragger_survey/src/widgets/widgets.dart' hide SimpleDialog;
+import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:icon_shadow/icon_shadow.dart';
 import 'package:provider/provider.dart';
@@ -127,7 +127,7 @@ class _DraggerScreenState extends State<DraggerScreen> {
               yLabel: _yName,
             ),
             Text(
-                "Granularity: ${matrixGranularityBloc.matrixGranularity} \n$_xName: ${prismSurveyBloc.rowIndex +1} - $_yName: ${prismSurveyBloc.colIndex +1}"),
+                "Granularity: ${matrixGranularityBloc.matrixGranularity} \n$_xName: ${prismSurveyBloc.rowIndex + 1} - $_yName: ${prismSurveyBloc.colIndex + 1}"),
             DraggerBoardButtonRow(
               formKey: _formKey,
               currentSurveySet: surveySet?.documentID,
@@ -145,7 +145,6 @@ class _DraggerScreenState extends State<DraggerScreen> {
 
     _askedPersonController.text =
         prismSurveyBloc.currentAskedPerson ?? 'Anonymous';
-
 
     await showDialog(
         context: context,
@@ -170,7 +169,9 @@ class _DraggerScreenState extends State<DraggerScreen> {
                       child: TextField(
                         onTap: () {
                           print('Editing stated $widget');
-                          _askedPersonController.selection = TextSelection(baseOffset: 0, extentOffset: _askedPersonController.text.length);
+                          _askedPersonController.selection = TextSelection(
+                              baseOffset: 0,
+                              extentOffset: _askedPersonController.text.length);
                         },
                         controller: _askedPersonController,
                         onSubmitted: (value) {

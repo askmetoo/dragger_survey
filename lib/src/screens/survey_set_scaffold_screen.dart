@@ -29,7 +29,8 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
   @override
   Widget build(BuildContext context) {
     final PrismSurveyBloc surveyBloc = Provider.of<PrismSurveyBloc>(context);
-    final PrismSurveySetBloc surveySetBloc = Provider.of<PrismSurveySetBloc>(context);
+    final PrismSurveySetBloc surveySetBloc =
+        Provider.of<PrismSurveySetBloc>(context);
     return Scaffold(
       backgroundColor: Styles.drg_colorAppBackground,
       endDrawer: UserDrawer(),
@@ -55,7 +56,6 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
         ),
         tooltip: "Add new Survey",
         onPressed: () {
-          // TODO: set current survey set title
           surveyBloc.currentAskedPerson = 'Anonymous';
           surveySetBloc.setCurrentPrismSurveySetId(id: arg['id']);
           Navigator.pushNamed(context, '/draggerscaffold');

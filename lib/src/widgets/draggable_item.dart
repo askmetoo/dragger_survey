@@ -17,7 +17,9 @@ class DraggableItem extends StatefulWidget {
 class _DraggableItemState extends State<DraggableItem> {
   int rowIdx;
   int colIdx;
+  // ignore: unused_field
   double _top;
+  // ignore: unused_field
   double _left;
 
   final String _dragData = "Meine Meinung";
@@ -109,8 +111,8 @@ class _DraggableItemState extends State<DraggableItem> {
                     widget.matrixBoardPositon.dx -
                     (_draggableSize / 7) +
                     10,
-                    // (_draggableSize / 2.98) +
-                    // 10,
+                // (_draggableSize / 2.98) +
+                // 10,
                 drag.offset.dy - (_draggableSize / .5)
                 // drag.offset.dy - (_draggableSize / .739)
                 // widget.matrixBoardPositon.dy -
