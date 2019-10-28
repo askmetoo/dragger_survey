@@ -39,7 +39,15 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
             AsyncSnapshot<QuerySnapshot> teamsListSnapshot) {
           if (teamsListSnapshot.connectionState == ConnectionState.done) {
             if (!teamsListSnapshot.hasData) {
-              return CircularProgressIndicator();
+              return Center(
+                child: Container(
+                  constraints: BoxConstraints(maxWidth: 200),
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              );
             } else if (teamsListSnapshot.data.documents.isEmpty) {
               return Container();
             }

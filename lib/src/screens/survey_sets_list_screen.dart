@@ -6,6 +6,7 @@ import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
 class SurveySetsListScreen extends StatefulWidget {
@@ -64,10 +65,6 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
               ),
             );
           }
-          // else if (teamsSnapshot.data.documents.isNotEmpty) {
-          //   teamBloc.setCurrentSelectedTeamId(
-          //       teamsSnapshot?.data?.documents[0].documentID);
-          // }
 
           return Scaffold(
             backgroundColor: Styles.drg_colorAppBackground,
@@ -81,6 +78,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
             body: Column(
               children: <Widget>[
                 BuildTeamsDropdownButton(),
+                buildFilterSort(context: context),
                 Expanded(
                   child: BuildSurveySetsListView(),
                 ),
@@ -169,6 +167,104 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                               });
                         },
                       ),
+          );
+        });
+  }
+
+  Widget buildFilterSort({BuildContext context}) {
+    String _selectedTeamId;
+    bool _sortByDate = true;
+
+    final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
+    FirebaseUser _user = Provider.of<FirebaseUser>(context);
+
+    Future<QuerySnapshot> teamsQuery = teamBloc
+        .getTeamsQueryByArray(
+          fieldName: 'users',
+          arrayValue: _user?.uid,
+        )
+        .catchError((err) => log(
+            "ERROR in BuildTeamsDropdownButton getTeamsQueryByArray: $err"));
+
+    if (teamsQuery == null) {
+      return Text("No Team Snapshot");
+    }
+
+    return FutureBuilder<QuerySnapshot>(
+        future: teamsQuery,
+        builder: (BuildContext context,
+            AsyncSnapshot<QuerySnapshot> teamsListSnapshot) {
+          if (teamsListSnapshot.connectionState != ConnectionState.done ||
+              !teamsListSnapshot.hasData) {
+            return Center(
+              child: Container(
+                constraints: BoxConstraints(maxWidth: 200),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            );
+          } else if (teamsListSnapshot.data.documents.isEmpty) {
+            return Container();
+          }
+
+          return SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Container(
+                child: SizedBox(
+                  height: 40,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "## Survey Sets ",
+                        style: TextStyle(fontSize: Styles.drg_fontSizeHintText),
+                      ),
+                      Spacer(
+                        flex: 1,
+                      ),
+                      DropdownButton(
+                        icon: Icon(
+                          Icons.sort,
+                          size: 18,
+                        ),
+                        // hint: Text(
+                        //   _sortByDate ? 'By Date ' : 'By Name ',
+                        //   style:
+                        //       TextStyle(fontSize: Styles.drg_fontSizeHintText),
+                        // ),
+                        isDense: true,
+                        isExpanded: false,
+                        value: _sortByDate,
+                        onChanged: (bool newValue) {
+                          log("In SurveySetsListScreen newValue: $newValue");
+                          bool _newSortByDateValue = newValue;
+                          setState(() {
+                            _sortByDate = _newSortByDateValue;
+                          });
+                        },
+                        items: [
+                          DropdownMenuItem(
+                            value: true,
+                            child: Text('By Date'),
+                          ),
+                          DropdownMenuItem(
+                            value: false,
+                            child: Text('By Name'),
+                          ),
+                        ],
+                      ),
+                      Spacer(
+                        flex: 8,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           );
         });
   }
