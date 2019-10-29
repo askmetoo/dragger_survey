@@ -8,7 +8,7 @@ class Loader extends StatelessWidget {
       height: 250,
       child: Center(
         child: Container(
-          constraints: BoxConstraints(maxWidth: 200),
+          constraints: BoxConstraints(maxWidth: 100),
           child: AspectRatio(
             aspectRatio: 1,
             child: CircularProgressIndicator(),

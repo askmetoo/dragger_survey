@@ -43,7 +43,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
         if (teamsSnapshot.connectionState != ConnectionState.done) {
           return Center(
             child: Container(
-              constraints: BoxConstraints(maxWidth: 200),
+              constraints: BoxConstraints(maxWidth: 100),
               child: AspectRatio(
                 aspectRatio: 1,
                 child: CircularProgressIndicator(),
@@ -86,7 +86,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
               if (!surveySetSnapshot.hasData) {
                 return Center(
                   child: Container(
-                    constraints: BoxConstraints(maxWidth: 200),
+                    constraints: BoxConstraints(maxWidth: 100),
                     child: AspectRatio(
                       aspectRatio: 1,
                       child: CircularProgressIndicator(),

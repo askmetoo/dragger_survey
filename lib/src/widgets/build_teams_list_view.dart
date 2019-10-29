@@ -28,7 +28,7 @@ Widget buildTeamsListView({BuildContext context}) {
               if (!teamsListSnapshot.hasData) {
                 return Center(
                   child: Container(
-                    constraints: BoxConstraints(maxWidth: 200),
+                    constraints: BoxConstraints(maxWidth: 100),
                     child: AspectRatio(
                       aspectRatio: 1,
                       child: CircularProgressIndicator(),
@@ -39,7 +39,7 @@ Widget buildTeamsListView({BuildContext context}) {
               if (!signInSnapshot.hasData) {
                 return Center(
                   child: Container(
-                    constraints: BoxConstraints(maxWidth: 200),
+                    constraints: BoxConstraints(maxWidth: 100),
                     child: AspectRatio(
                       aspectRatio: 1,
                       child: CircularProgressIndicator(),

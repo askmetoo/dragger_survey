@@ -124,7 +124,7 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
                                       return Center(
                                         child: Container(
                                           constraints:
-                                              BoxConstraints(maxWidth: 200),
+                                              BoxConstraints(maxWidth: 100),
                                           child: AspectRatio(
                                             aspectRatio: 1,
                                             child: CircularProgressIndicator(),
