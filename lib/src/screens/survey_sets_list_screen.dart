@@ -278,6 +278,7 @@ class BuildFilterSort extends StatefulWidget {
 }
 
 class _BuildFilterSortState extends State<BuildFilterSort> {
+  // ignore: unused_field
   String _selectedTeamId;
   bool _sortByDate = true;
 
