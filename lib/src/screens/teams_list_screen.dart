@@ -21,10 +21,10 @@ class TeamsListScreen extends StatelessWidget {
             if (!snapshot.hasData) {
               return Center(
                 child: Container(
-                  constraints: BoxConstraints(maxWidth: 100),
+                  constraints: BoxConstraints(maxWidth: 50),
                   child: AspectRatio(
                     aspectRatio: 1,
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(strokeWidth: 10,),
                   ),
                 ),
               );

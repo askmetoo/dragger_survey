@@ -47,20 +47,20 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
           if (teamsSnapshot.connectionState != ConnectionState.done) {
             return Center(
               child: Container(
-                constraints: BoxConstraints(maxWidth: 100),
+                constraints: BoxConstraints(maxWidth: 50),
                 child: AspectRatio(
                   aspectRatio: 1,
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(strokeWidth: 10,),
                 ),
               ),
             );
           } else if (!teamsSnapshot.hasData) {
             return Center(
               child: Container(
-                constraints: BoxConstraints(maxWidth: 100),
+                constraints: BoxConstraints(maxWidth: 50),
                 child: AspectRatio(
                   aspectRatio: 1,
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(strokeWidth: 10,),
                 ),
               ),
             );
@@ -199,10 +199,10 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
   //             !teamsListSnapshot.hasData) {
   //           return Center(
   //             child: Container(
-  //               constraints: BoxConstraints(maxWidth: 100),
+  //               constraints: BoxConstraints(maxWidth: 50),
   //               child: AspectRatio(
   //                 aspectRatio: 1,
-  //                 child: CircularProgressIndicator(),
+  //                 child: CircularProgressIndicator(strokeWidth: 10,),
   //               ),
   //             ),
   //           );
@@ -299,10 +299,10 @@ class _BuildFilterSortState extends State<BuildFilterSort> {
           if (teamsListSnapshot.connectionState != ConnectionState.done) {
             return Center(
               child: Container(
-                constraints: BoxConstraints(maxWidth: 100),
+                constraints: BoxConstraints(maxWidth: 50),
                 child: AspectRatio(
                   aspectRatio: 1,
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(strokeWidth: 10,),
                 ),
               ),
             );
@@ -312,7 +312,6 @@ class _BuildFilterSortState extends State<BuildFilterSort> {
           } else if (teamsListSnapshot.data.documents.isEmpty) {
             return Container();
           }
-          //TODO: implement sorting logic.
           return SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Padding(

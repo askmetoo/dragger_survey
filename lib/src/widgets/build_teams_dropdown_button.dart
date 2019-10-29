@@ -41,10 +41,10 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
             if (!teamsListSnapshot.hasData) {
               return Center(
                 child: Container(
-                  constraints: BoxConstraints(maxWidth: 100),
+                  constraints: BoxConstraints(maxWidth: 50),
                   child: AspectRatio(
                     aspectRatio: 1,
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(strokeWidth: 10,),
                   ),
                 ),
               );
@@ -209,10 +209,10 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
             aspectRatio: 1,
             child: Center(
               child: Container(
-                constraints: BoxConstraints(maxWidth: 100),
+                constraints: BoxConstraints(maxWidth: 50),
                 child: AspectRatio(
                   aspectRatio: 1,
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(strokeWidth: 10,),
                 ),
               ),
             ),
@@ -224,10 +224,10 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
     if (!teamsListSnapshot.hasData) {
       return Center(
         child: Container(
-          constraints: BoxConstraints(maxWidth: 100),
+          constraints: BoxConstraints(maxWidth: 50),
           child: AspectRatio(
             aspectRatio: 1,
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(strokeWidth: 10,),
           ),
         ),
       );

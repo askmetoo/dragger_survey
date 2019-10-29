@@ -56,6 +56,19 @@ class Collection<T> {
     return ref.where(fieldName, isEqualTo: fieldValue).getDocuments();
   }
 
+  Future<QuerySnapshot> getDocumentsByQueryOrderByField(
+      {@required String fieldName,
+      @required String fieldValue,
+      @required String orderField,
+      bool descending}) async {
+    return ref
+        .where(fieldName, isEqualTo: fieldValue)
+        .orderBy(orderField, descending: descending)
+        .getDocuments()
+        .catchError((e) =>
+            log("ERROR in db.dart getDocumentsByQueryOrderByField: $e"));
+  }
+
   Future<QuerySnapshot> getDocumentsByQuerySortByCreatedAsc(
       {String fieldName, String fieldValue}) async {
     return ref

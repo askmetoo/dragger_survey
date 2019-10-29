@@ -19,7 +19,7 @@ class DraggerScaffoldScreen extends StatelessWidget {
         builder: (BuildContext context,
             AsyncSnapshot<DocumentSnapshot> currentSurveySnapshot) {
           if (currentSurveySnapshot.connectionState != ConnectionState.done) {
-            return CircularProgressIndicator();
+            return CircularProgressIndicator(strokeWidth: 10,);
           }
             return Scaffold(
               backgroundColor: Styles.drg_colorAppBackground,

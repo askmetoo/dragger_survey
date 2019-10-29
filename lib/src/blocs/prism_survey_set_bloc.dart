@@ -55,6 +55,12 @@ class PrismSurveySetBloc extends ChangeNotifier {
         .getDocumentsByQuery(fieldName: fieldName, fieldValue: fieldValue);
   }
 
+  Future<QuerySnapshot> getPrismSurveySetQueryOrderByField(
+      {@required String fieldName, @required String fieldValue, @required String orderField, bool descending = false}) {
+    return Collection<PrismSurveySet>(path: 'surveySets')
+        .getDocumentsByQueryOrderByField(fieldName: fieldName, fieldValue: fieldValue, orderField: orderField, descending: descending);
+  }
+
   Future<DocumentSnapshot> getPrismSurveySetById({id}) async {
     DocumentSnapshot returnValue;
     returnValue =

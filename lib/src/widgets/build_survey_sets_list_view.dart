@@ -43,10 +43,10 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
         if (teamsSnapshot.connectionState != ConnectionState.done) {
           return Center(
             child: Container(
-              constraints: BoxConstraints(maxWidth: 100),
+              constraints: BoxConstraints(maxWidth: 50),
               child: AspectRatio(
                 aspectRatio: 1,
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(strokeWidth: 10,),
               ),
             ),
           );
@@ -71,10 +71,14 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
         }
 
         return FutureBuilder<QuerySnapshot>(
+          // TODO: implement sorting by date and name
           future: surveySetsBloc
-              .getPrismSurveySetQuery(
+              .getPrismSurveySetQueryOrderByField(
                   fieldName: 'createdByTeam',
-                  fieldValue: teamBloc?.currentSelectedTeamId)
+                  fieldValue: teamBloc?.currentSelectedTeamId,
+                  orderField: 'created',
+                  descending: true
+                  )
               .catchError((err) => log(
                   "ERROR in BuildSurveySetsListView getPrismSurveySetQuery: $err")),
           builder: (BuildContext context,
@@ -86,10 +90,10 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
               if (!surveySetSnapshot.hasData) {
                 return Center(
                   child: Container(
-                    constraints: BoxConstraints(maxWidth: 100),
+                    constraints: BoxConstraints(maxWidth: 50),
                     child: AspectRatio(
                       aspectRatio: 1,
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator(strokeWidth: 10,),
                     ),
                   ),
                 );
@@ -384,7 +388,7 @@ class BuildListOfSets extends StatelessWidget {
       children: surveySetSnapshot.data.documents.map(
         (DocumentSnapshot surveySetDokumentSnapshot) {
           if (!(surveySetSnapshot.connectionState == ConnectionState.done)) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator(strokeWidth: 10,));
           }
           if (!surveySetDokumentSnapshot.exists) {
             Text("surveySetDokumentSnapshot does not exist");

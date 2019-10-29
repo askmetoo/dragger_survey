@@ -82,7 +82,7 @@ class OldLoginScreen extends StatelessWidget {
             return Center(
               child: AspectRatio(
                 aspectRatio: 1,
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(strokeWidth: 10,),
               ),
             );
           }
@@ -112,11 +112,11 @@ class OldLoginScreen extends StatelessWidget {
           if (currentUserSnapshot.connectionState == ConnectionState.none ||
               currentUserSnapshot.connectionState == ConnectionState.waiting ||
               currentUserSnapshot.connectionState == ConnectionState.active)
-            CircularProgressIndicator();
+            CircularProgressIndicator(strokeWidth: 10,);
 
           if (currentUserSnapshot.connectionState == ConnectionState.done) {
             if (!currentUserSnapshot.hasData) {
-              CircularProgressIndicator();
+              CircularProgressIndicator(strokeWidth: 10,);
             }
             log("In LoginScreen value of 'currentUserSnapshot': ${currentUserSnapshot?.data?.displayName}");
             log("In LoginScreen value of 'loggedIn': $loggedIn");
