@@ -7,6 +7,20 @@ import 'package:flutter/material.dart';
 class PrismSurveySetBloc extends ChangeNotifier {
   Future<DocumentSnapshot> _currentPrismSurveySetFuture;
   String _currentPrismSurveySetId;
+  String _orderField = 'created';
+  bool _descendingOrder = true;
+
+  get orderField => _orderField;
+  get descendingOrder => _descendingOrder;
+
+  set orderField(orderField) {
+    _orderField = orderField;
+    notifyListeners();
+  }
+  set descendingOrder(descendingOrder) {
+    _descendingOrder = descendingOrder;
+    notifyListeners();
+  }
 
   Future<DocumentSnapshot> get currentPrismSurveySet async {
     if (_currentPrismSurveySetFuture == null) {

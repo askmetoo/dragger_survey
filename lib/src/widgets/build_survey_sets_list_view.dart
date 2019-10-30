@@ -25,7 +25,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
           arrayValue: user?.uid,
         )
         .catchError((err) => log(
-            "ERROR in BuildTeamsDropdownButton getTeamsQueryByArray: $err"));
+            "ERROR in BuildSurveySetsListView queryTeamsForUser: $err"));
     return teamsQuery;
   }
 
@@ -76,8 +76,8 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
               .getPrismSurveySetQueryOrderByField(
                   fieldName: 'createdByTeam',
                   fieldValue: teamBloc?.currentSelectedTeamId,
-                  orderField: 'created',
-                  descending: true
+                  orderField: teamBloc.orderField,
+                  descending: teamBloc.descendingOrder
                   )
               .catchError((err) => log(
                   "ERROR in BuildSurveySetsListView getPrismSurveySetQuery: $err")),

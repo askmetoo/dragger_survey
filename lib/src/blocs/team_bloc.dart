@@ -7,12 +7,26 @@ import 'package:flutter/material.dart';
 
 class TeamBloc extends ChangeNotifier {
   bool updatingTeamData = false;
+  String _orderField = 'created';
+  bool _descendingOrder = true;
 
   DocumentSnapshot currentSelectedTeam;
   String currentSelectedTeamId;
 
   DocumentSnapshot getCurrentSelectedTeam() => currentSelectedTeam;
   String getCurrentSelectedTeamId() => currentSelectedTeamId;
+
+  get orderField => _orderField;
+  get descendingOrder => _descendingOrder;
+
+  set orderField(orderField) {
+    _orderField = orderField;
+    notifyListeners();
+  }
+  set descendingOrder(descendingOrder) {
+    _descendingOrder = descendingOrder;
+    notifyListeners();
+  }
 
   setCurrentSelectedTeam(DocumentSnapshot selectedTeam) async {
     currentSelectedTeam = selectedTeam;
@@ -57,9 +71,6 @@ class TeamBloc extends ChangeNotifier {
   }
 
   updateTeamArrayFieldByIdWithFieldAndValue({id, field, value}) async {
-    log("--------> In TeamBloc updateTeamArrayFieldByIdWithFieldAndValue - value of id: $id");
-    log("--------> In TeamBloc updateTeamArrayFieldByIdWithFieldAndValue - value of field: $field");
-    log("--------> In TeamBloc updateTeamArrayFieldByIdWithFieldAndValue - value of value: $value");
     Collection(path: "teams").updateArrayInDocumentByIdWithFieldAndValue(
       id: id,
       field: field,
