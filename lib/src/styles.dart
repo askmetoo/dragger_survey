@@ -43,7 +43,7 @@ class Styles {
     fontFamily: 'Barlow',
     fontSize: Styles.drg_fontSizeCopyText,
     fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w700,
   );
   static const drg_textFieldContent = TextStyle(
     fontSize: Styles.drg_fontSizeFieldContentText,

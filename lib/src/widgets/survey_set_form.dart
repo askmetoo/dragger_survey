@@ -124,8 +124,11 @@ class _SurveySetFormState extends State<SurveySetForm> {
 
             decoration: InputDecoration(
               labelStyle: TextStyle(
-                  color: Styles.drg_colorPrimary,
-                  fontSize: Styles.drg_fontSizeFloatingLabel),
+                color: Styles.drg_colorPrimary,
+                fontSize: Styles.drg_fontSizeFloatingLabel,
+                fontWeight: FontWeight.w700,
+              ),
+              isDense: true,
               labelText: "Survey Name",
               hintStyle: TextStyle(fontSize: Styles.drg_fontSizeHintText),
               hintText: "A meaningful name",
@@ -149,6 +152,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
+              isDense: true,
               labelStyle: TextStyle(color: Styles.drg_colorPrimary),
               labelText: "Survey set description",
               hintText: "The description of the prism survey",
@@ -163,7 +167,11 @@ class _SurveySetFormState extends State<SurveySetForm> {
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
-              labelStyle: TextStyle(color: Styles.drg_colorPrimary),
+              labelStyle: TextStyle(
+                color: Styles.drg_colorPrimary,
+                fontWeight: FontWeight.w700,
+              ),
+              isDense: true,
               labelText: "Label for x-axis",
               hintText: "Should be easy to understand",
             ),
@@ -184,6 +192,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
               labelStyle: TextStyle(color: Styles.drg_colorPrimary),
+              isDense: true,
               labelText: "X-axis desciption",
               hintText: "What does the x-axis stand for",
             ),
@@ -197,7 +206,11 @@ class _SurveySetFormState extends State<SurveySetForm> {
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
-              labelStyle: TextStyle(color: Styles.drg_colorPrimary),
+              labelStyle: TextStyle(
+                color: Styles.drg_colorPrimary,
+                fontWeight: FontWeight.w700,
+              ),
+              isDense: true,
               labelText: "Label for y-axis",
               hintText: "Should be easy to understand",
             ),
@@ -215,6 +228,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
               labelStyle: TextStyle(color: Styles.drg_colorPrimary),
+              isDense: true,
               labelText: "Y-axis desciption",
               hintText: "What does the y-axis stand for",
             ),

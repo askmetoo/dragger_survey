@@ -115,7 +115,13 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: Text("Create new Team"),
+                                title: Text(
+                                  "Create new Team",
+                                  style: TextStyle(
+                                    fontFamily: 'Bitter',
+                                    fontWeight: FontWeight.w200,
+                                  ),
+                                ),
                                 content: CreateTeamForm(),
                                 elevation: 10,
                                 shape: RoundedRectangleBorder(
