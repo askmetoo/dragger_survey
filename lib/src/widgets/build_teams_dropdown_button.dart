@@ -108,51 +108,15 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                     color: Styles.drg_colorSecondary,
                   ),
                   elevation: 12,
-                  hint: teamBloc?.currentSelectedTeam?.documentID == null
-                      ? Text(
-                          "Please Select a Team",
-                          style: TextStyle(
-                            color: Styles.drg_colorText.withOpacity(.8),
-                            fontFamily: 'Bitter',
-                            fontWeight: FontWeight.w700,
-                          ),
-                        )
-                      : RichText(
-                          overflow: TextOverflow.clip,
-                          maxLines: 1,
-                          text: TextSpan(
-                            text: "",
-                            style: TextStyle(
-                                color: Styles.drg_colorText, fontSize: 20),
-                            children: [
-                              TextSpan(
-                                text: teamBloc
-                                            ?.currentSelectedTeam?.documentID !=
-                                        null
-                                    ? "${teamBloc?.currentSelectedTeam?.data['name']}"
-                                    : 'No selected team',
-                                style: TextStyle(
-                                  color: Styles.drg_colorText,
-                                  fontSize:
-                                      _selectedTeam?.data != null ? 26 : 20,
-                                  fontFamily: _selectedTeam?.data != null
-                                      ? 'SonsieOne'
-                                      : 'Bitter',
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              TextSpan(
-                                text: _selectedTeam?.data != null
-                                    ? "\n${_selectedTeam.data['description']}"
-                                    : "\nTeam has no description",
-                                style: TextStyle(
-                                  color: Styles.drg_colorText,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                  hint: Text(
+                    "Please Select a Team",
+                    style: TextStyle(
+                        color: Styles.drg_colorText.withOpacity(.8),
+                        fontFamily: 'Bitter',
+                        fontWeight: FontWeight.w700,
+                        height: 2.5),
+                    maxLines: 1,
+                  ),
                   items:
                       widget.teamsSnapshot.data.documents.map<DropdownMenuItem>(
                     (team) {
