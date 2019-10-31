@@ -126,11 +126,15 @@ class _DraggerScreenState extends State<DraggerScreen> {
               xLabel: _xName,
               yLabel: _yName,
             ),
-            Text(
-                "Granularity: ${matrixGranularityBloc.matrixGranularity} \n$_xName: ${prismSurveyBloc.rowIndex + 1} - $_yName: ${prismSurveyBloc.colIndex + 1}"),
             DraggerBoardButtonRow(
               formKey: _formKey,
               currentSurveySet: surveySet?.documentID,
+            ),
+            Text(
+              "Granularity: ${matrixGranularityBloc.matrixGranularity} \n$_xName: ${prismSurveyBloc.rowIndex + 1} \n$_yName: ${prismSurveyBloc.colIndex + 1}",
+              style: TextStyle(
+                color: Styles.drg_colorAppBackgroundMedium.withOpacity(.8),
+              ),
             ),
           ],
         ),

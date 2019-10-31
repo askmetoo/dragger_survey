@@ -401,7 +401,6 @@ class BuildListOfSets extends StatelessWidget {
           if (!surveySetDokumentSnapshot.exists) {
             Text("surveySetDokumentSnapshot does not exist");
           }
-          // TODO:
           return FutureBuilder<QuerySnapshot>(
               future: surveyBloc.getPrismSurveyQuery(
                   fieldName: 'surveySet',
