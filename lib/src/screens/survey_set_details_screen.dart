@@ -239,6 +239,14 @@ class SurveySetDetailsScreen extends StatelessWidget {
         context: context,
         builder: (context) {
           return SimpleDialog(
+            shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(3),
+                                    bottomLeft: Radius.circular(20),
+                                    bottomRight: Radius.circular(20),
+                                  ),
+                                ),
             backgroundColor: Styles.drg_colorSecondaryDeepDark,
             title: Text(
               "Edit Survey Metadata",
