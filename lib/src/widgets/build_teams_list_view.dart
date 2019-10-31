@@ -31,7 +31,9 @@ Widget buildTeamsListView({BuildContext context}) {
                     constraints: BoxConstraints(maxWidth: 50),
                     child: AspectRatio(
                       aspectRatio: 1,
-                      child: CircularProgressIndicator(strokeWidth: 10,),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 10,
+                      ),
                     ),
                   ),
                 );
@@ -42,13 +44,16 @@ Widget buildTeamsListView({BuildContext context}) {
                     constraints: BoxConstraints(maxWidth: 50),
                     child: AspectRatio(
                       aspectRatio: 1,
-                      child: CircularProgressIndicator(strokeWidth: 10,),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 10,
+                      ),
                     ),
                   ),
                 );
               }
 
               return ListView(
+                  padding: EdgeInsets.only(bottom: 90),
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
                   children: teamsListSnapshot.data.documents
