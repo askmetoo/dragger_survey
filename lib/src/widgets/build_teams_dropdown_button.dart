@@ -73,16 +73,16 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
     //   }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: Container(
         child: SizedBox(
-          height: 60,
+          height: 66,
           // Check if more than 2 teams in db for this user build dropdown button to select a team
           child: widget.teamsSnapshot.data.documents.length < 2
               ? buildTeamText(teamsListSnapshot: widget.teamsSnapshot)
               : DropdownButton(
                   isExpanded: true,
-                  isDense: true,
+                  isDense: false,
                   value: _selectedTeamId,
                   onChanged: (value) {
                     String _selectedTeamId = value;
@@ -114,7 +114,7 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                         color: Styles.drg_colorText.withOpacity(.8),
                         fontFamily: 'Bitter',
                         fontWeight: FontWeight.w700,
-                        height: 2.5),
+                        height: 3),
                     maxLines: 1,
                   ),
                   items:
@@ -134,15 +134,13 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                               ),
                             ),
                             width: double.infinity,
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 1),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
                                   height: 33,
-                                  padding: EdgeInsetsDirectional.only(top: 8),
+                                  padding: EdgeInsetsDirectional.only(top: 6),
                                   child: Text(
                                     "${team['name']}\n",
                                     textAlign: TextAlign.start,
@@ -158,7 +156,7 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                 Container(
                                   height: 28,
                                   child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 4.0),
+                                    padding: EdgeInsets.only(bottom: 0.0),
                                     child: Text(
                                       team['description'] != ''
                                           ? "${team['description']}"
@@ -168,12 +166,12 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                       softWrap: true,
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
-                                        color:
-                                            Styles.drg_colorSecondaryDeepDark,
-                                        fontFamily: 'Bitter',
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 14,
-                                      ),
+                                          color:
+                                              Styles.drg_colorSecondaryDeepDark,
+                                          fontFamily: 'Bitter',
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 14,
+                                          height: 1),
                                     ),
                                   ),
                                 ),
