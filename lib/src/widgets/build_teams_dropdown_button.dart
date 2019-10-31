@@ -7,6 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class BuildTeamsDropdownButton extends StatefulWidget {
+  final AsyncSnapshot<QuerySnapshot> teamsSnapshot;
+
+  BuildTeamsDropdownButton({this.teamsSnapshot}) : super();
   @override
   _BuildTeamsDropdownButtonState createState() =>
       _BuildTeamsDropdownButtonState();
@@ -21,6 +24,19 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
     FirebaseUser _user = Provider.of<FirebaseUser>(context);
 
+    if (teamBloc?.getCurrentSelectedTeamId() != null) {
+      setState(() {
+        _selectedTeamId = teamBloc.getCurrentSelectedTeamId();
+      });
+    }
+
+    if (teamBloc?.getCurrentSelectedTeam()?.documentID != null) {
+      setState(() {
+        _selectedTeamId = teamBloc.getCurrentSelectedTeam().documentID;
+        _selectedTeam = teamBloc.getCurrentSelectedTeam();
+      });
+    }
+
     Future<QuerySnapshot> teamsQuery = teamBloc
         .getTeamsQueryByArray(
           fieldName: 'users',
@@ -33,172 +49,169 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
       return Text("No Team Snapshot");
     }
 
-    return FutureBuilder<QuerySnapshot>(
-        future: teamsQuery,
-        builder: (BuildContext context,
-            AsyncSnapshot<QuerySnapshot> teamsListSnapshot) {
-          if (teamsListSnapshot.connectionState == ConnectionState.done) {
-            if (!teamsListSnapshot.hasData) {
-              return Center(
-                child: Container(
-                  constraints: BoxConstraints(maxWidth: 50),
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 10,
-                    ),
-                  ),
-                ),
-              );
-            } else if (teamsListSnapshot.data.documents.isEmpty) {
-              return Container();
-            }
+    log("In BuildTeamsDropdownButton value of widget.teamsSnapshot.data.documents.first.documentID: ${widget.teamsSnapshot.data.documents.first.documentID}");
 
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-              child: Container(
-                child: SizedBox(
-                  height: 60,
-                  // Check if more than 2 teams in db for this user build dropdown button to select a team
-                  child: teamsListSnapshot.data.documents.length < 2
-                      ? buildTeamText(teamsListSnapshot: teamsListSnapshot)
-                      : DropdownButton(
-                          isExpanded: true,
-                          isDense: false,
-                          value: _selectedTeamId,
-                          onChanged: (value) {
-                            String _selectedTeamId = value;
-                            log("------> In BuildTeamsDropdownButton onChanged selected team value: $_selectedTeamId");
-                            teamBloc.setCurrentSelectedTeamId(_selectedTeamId);
-                            setState(() {
-                              _selectedTeamId = _selectedTeamId;
-                            });
-                            teamBloc
-                                .getTeamById(id: _selectedTeamId)
-                                .then((returnedTeam) {
-                              teamBloc.setCurrentSelectedTeam(returnedTeam);
-                              setState(() {
-                                _selectedTeam = returnedTeam;
-                              });
-                            });
-                          },
-                          iconSize: 46,
-                          icon: Icon(
-                            Icons.people,
-                            color: Styles.drg_colorSecondary,
+    // return FutureBuilder<QuerySnapshot>(
+    //     future: teamsQuery,
+    //     builder: (BuildContext context,
+    //         AsyncSnapshot<QuerySnapshot> teamsListSnapshot) {
+    // if (teamsListSnapshot.connectionState == ConnectionState.done) {
+    //   if (!teamsListSnapshot.hasData) {
+    //     return Center(
+    //       child: Container(
+    //         constraints: BoxConstraints(maxWidth: 50),
+    //         child: AspectRatio(
+    //           aspectRatio: 1,
+    //           child: CircularProgressIndicator(
+    //             strokeWidth: 10,
+    //           ),
+    //         ),
+    //       ),
+    //     );
+    //   } else if (teamsListSnapshot.data.documents.isEmpty) {
+    //     return Container();
+    //   }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      child: Container(
+        child: SizedBox(
+          height: 60,
+          // Check if more than 2 teams in db for this user build dropdown button to select a team
+          child: widget.teamsSnapshot.data.documents.length < 2
+              ? buildTeamText(teamsListSnapshot: widget.teamsSnapshot)
+              : DropdownButton(
+                  isExpanded: true,
+                  isDense: false,
+                  value: _selectedTeamId,
+                  onChanged: (value) {
+                    String _selectedTeamId = value;
+                    log("------> In BuildTeamsDropdownButton onChanged selected team value: $_selectedTeamId");
+                    teamBloc.setCurrentSelectedTeamId(_selectedTeamId);
+                    setState(() {
+                      _selectedTeamId = _selectedTeamId;
+                    });
+                    teamBloc
+                        .getTeamById(id: _selectedTeamId)
+                        .then((returnedTeam) {
+                      teamBloc.setCurrentSelectedTeam(returnedTeam);
+                      teamBloc
+                          .setCurrentSelectedTeamId(returnedTeam.documentID);
+                      setState(() {
+                        _selectedTeam = returnedTeam;
+                      });
+                    });
+                  },
+                  iconSize: 46,
+                  icon: Icon(
+                    Icons.people,
+                    color: Styles.drg_colorSecondary,
+                  ),
+                  elevation: 12,
+                  hint: teamBloc?.currentSelectedTeam?.documentID == null
+                      ? Text(
+                          "Please Select a Team",
+                          style: TextStyle(
+                            color: Styles.drg_colorText.withOpacity(.8),
+                            fontFamily: 'Bitter',
+                            fontWeight: FontWeight.w700,
                           ),
-                          elevation: 12,
-                          hint: teamBloc?.currentSelectedTeam?.documentID ==
-                                  null
-                              ? Text(
-                                  "Please Select a Team",
-                                  style: TextStyle(
-                                    color: Styles.drg_colorText.withOpacity(.8),
-                                    fontFamily: 'Bitter',
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                )
-                              : RichText(
-                                  overflow: TextOverflow.clip,
-                                  maxLines: 1,
-                                  text: TextSpan(
-                                    text: "",
-                                    style: TextStyle(
-                                        color: Styles.drg_colorText,
-                                        fontSize: 20),
-                                    children: [
-                                      TextSpan(
-                                        text: teamBloc?.currentSelectedTeam
-                                                    ?.documentID !=
-                                                null
-                                            ? "${teamBloc?.currentSelectedTeam?.data['name']}"
-                                            : 'No selected team',
-                                        style: TextStyle(
-                                          color: Styles.drg_colorText,
-                                          fontSize: _selectedTeam?.data != null
-                                              ? 26
-                                              : 20,
-                                          fontFamily:
-                                              _selectedTeam?.data != null
-                                                  ? 'SonsieOne'
-                                                  : 'Bitter',
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: _selectedTeam?.data != null
-                                            ? "\n${_selectedTeam.data['description']}"
-                                            : "\nTeam has no description",
-                                        style: TextStyle(
-                                          color: Styles.drg_colorText,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                        )
+                      : RichText(
+                          overflow: TextOverflow.clip,
+                          maxLines: 1,
+                          text: TextSpan(
+                            text: "",
+                            style: TextStyle(
+                                color: Styles.drg_colorText, fontSize: 20),
+                            children: [
+                              TextSpan(
+                                text: teamBloc
+                                            ?.currentSelectedTeam?.documentID !=
+                                        null
+                                    ? "${teamBloc?.currentSelectedTeam?.data['name']}"
+                                    : 'No selected team',
+                                style: TextStyle(
+                                  color: Styles.drg_colorText,
+                                  fontSize:
+                                      _selectedTeam?.data != null ? 26 : 20,
+                                  fontFamily: _selectedTeam?.data != null
+                                      ? 'SonsieOne'
+                                      : 'Bitter',
+                                  fontWeight: FontWeight.w600,
                                 ),
-                          items: teamsListSnapshot.data.documents
-                              .map<DropdownMenuItem>(
-                            (team) {
-                              return DropdownMenuItem(
-                                value: team.documentID,
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        height: 24,
-                                        child: Text(
-                                          "${team['name']}\n",
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: Styles.drg_colorText
-                                                .withOpacity(0.8),
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w900,
-                                            fontFamily: 'Bitter',
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        height: 52,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 18.0),
-                                          child: Text(
-                                            team['description'] != ''
-                                                ? "${team['description']}"
-                                                : 'Team has no description',
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                            softWrap: true,
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                              color: Styles
-                                                  .drg_colorSecondaryDeepDark,
-                                              fontFamily: 'Bitter',
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                              ),
+                              TextSpan(
+                                text: _selectedTeam?.data != null
+                                    ? "\n${_selectedTeam.data['description']}"
+                                    : "\nTeam has no description",
+                                style: TextStyle(
+                                  color: Styles.drg_colorText,
+                                  fontSize: 14,
                                 ),
-                              );
-                            },
-                          ).toList(),
+                              ),
+                            ],
+                          ),
                         ),
+                  items:
+                      widget.teamsSnapshot.data.documents.map<DropdownMenuItem>(
+                    (team) {
+                      return DropdownMenuItem(
+                        value: team.documentID,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 24,
+                                child: Text(
+                                  "${team['name']}\n",
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    color:
+                                        Styles.drg_colorText.withOpacity(0.8),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w900,
+                                    fontFamily: 'Bitter',
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: 52,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 18.0),
+                                  child: Text(
+                                    team['description'] != ''
+                                        ? "${team['description']}"
+                                        : 'Team has no description',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    softWrap: true,
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      color: Styles.drg_colorSecondaryDeepDark,
+                                      fontFamily: 'Bitter',
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ).toList(),
                 ),
-              ),
-            );
-          }
-          return Container();
-        });
+        ),
+      ),
+    );
   }
+  //         return Container();
+  //       });
+  // }
 
   Widget buildTeamText({AsyncSnapshot<QuerySnapshot> teamsListSnapshot}) {
     DocumentSnapshot teamDoc;

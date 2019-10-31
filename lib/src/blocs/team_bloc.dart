@@ -13,8 +13,13 @@ class TeamBloc extends ChangeNotifier {
   DocumentSnapshot currentSelectedTeam;
   String currentSelectedTeamId;
 
-  DocumentSnapshot getCurrentSelectedTeam() => currentSelectedTeam;
-  String getCurrentSelectedTeamId() => currentSelectedTeamId;
+  DocumentSnapshot getCurrentSelectedTeam() {
+    return currentSelectedTeam;
+  }
+
+  String getCurrentSelectedTeamId() {
+    return currentSelectedTeamId;
+  }
 
   get orderField => _orderField;
   get descendingOrder => _descendingOrder;
@@ -23,6 +28,7 @@ class TeamBloc extends ChangeNotifier {
     _orderField = orderField;
     notifyListeners();
   }
+
   set descendingOrder(descendingOrder) {
     _descendingOrder = descendingOrder;
     notifyListeners();
@@ -50,8 +56,9 @@ class TeamBloc extends ChangeNotifier {
 
   Future<QuerySnapshot> getTeamsQueryByArray(
       {String fieldName, String arrayValue}) async {
-    return await Collection<Team>(path: 'teams')
+    QuerySnapshot _queriedTeam = await Collection<Team>(path: 'teams')
         .getDocumentsByQueryArray(fieldName: fieldName, arrayValue: arrayValue);
+    return _queriedTeam;
   }
 
   addTeamToDb({Map<String, dynamic> team}) {

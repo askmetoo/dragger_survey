@@ -24,8 +24,8 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
           fieldName: 'users',
           arrayValue: user?.uid,
         )
-        .catchError((err) => log(
-            "ERROR in BuildSurveySetsListView queryTeamsForUser: $err"));
+        .catchError((err) =>
+            log("ERROR in BuildSurveySetsListView queryTeamsForUser: $err"));
     return teamsQuery;
   }
 
@@ -46,7 +46,9 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
               constraints: BoxConstraints(maxWidth: 50),
               child: AspectRatio(
                 aspectRatio: 1,
-                child: CircularProgressIndicator(strokeWidth: 10,),
+                child: CircularProgressIndicator(
+                  strokeWidth: 10,
+                ),
               ),
             ),
           );
@@ -77,8 +79,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                   fieldName: 'createdByTeam',
                   fieldValue: teamBloc?.currentSelectedTeamId,
                   orderField: teamBloc.orderField,
-                  descending: teamBloc.descendingOrder
-                  )
+                  descending: teamBloc.descendingOrder)
               .catchError((err) => log(
                   "ERROR in BuildSurveySetsListView getPrismSurveySetQuery: $err")),
           builder: (BuildContext context,
@@ -93,7 +94,9 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                     constraints: BoxConstraints(maxWidth: 50),
                     child: AspectRatio(
                       aspectRatio: 1,
-                      child: CircularProgressIndicator(strokeWidth: 10,),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 10,
+                      ),
                     ),
                   ),
                 );
@@ -388,7 +391,10 @@ class BuildListOfSets extends StatelessWidget {
       children: surveySetSnapshot.data.documents.map(
         (DocumentSnapshot surveySetDokumentSnapshot) {
           if (!(surveySetSnapshot.connectionState == ConnectionState.done)) {
-            return Center(child: CircularProgressIndicator(strokeWidth: 10,));
+            return Center(
+                child: CircularProgressIndicator(
+              strokeWidth: 10,
+            ));
           }
           if (!surveySetDokumentSnapshot.exists) {
             Text("surveySetDokumentSnapshot does not exist");

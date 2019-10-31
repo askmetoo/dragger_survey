@@ -103,82 +103,99 @@ Widget buildTeamsListView({BuildContext context}) {
                           },
                         ),
                       ],
-                      child: ListTile(
-                        isThreeLine: false,
-                        dense: true,
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        trailing: IconButton(
-                          key: Key(teamId),
-                          icon: Icon(Icons.edit),
-                          onPressed: () async {
-                            teamBloc.currentSelectedTeamId = teamId;
+                      child: Container(
+                        margin: EdgeInsets.only(left: 14, bottom: 1, top: 1),
+                        color: Styles.drg_colorSecondary.withOpacity(0),
+                        child: ClipRRect(
+                          clipBehavior: Clip.antiAlias,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(65),
+                            bottomLeft: Radius.circular(65),
+                          ),
+                          child: Container(
+                            padding: EdgeInsets.only(left: 24, bottom: 4),
+                            decoration: BoxDecoration(
+                              color: Styles.drg_colorSecondary.withOpacity(.7),
+                            ),
+                            child: ListTile(
+                              isThreeLine: false,
+                              dense: true,
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              trailing: IconButton(
+                                key: Key(teamId),
+                                icon: Icon(Icons.edit),
+                                onPressed: () async {
+                                  teamBloc.currentSelectedTeamId = teamId;
 
-                            print("Edit button pressed in teams");
+                                  print("Edit button pressed in teams");
 
-                            Navigator.pushNamed(
-                              context,
-                              '/teammanager',
-                              arguments: {"id": "$teamId"},
-                            );
-                            // showDialog(
-                            //   context: context,
-                            //   builder: (BuildContext context) {
-                            //     log("In BuildTeamsListView showDialog value of documentSnapshot.documentID: $teamId");
-                            //     return AlertDialog(
-                            //       title: Text("Edit Team"),
-                            //       content: TeamForm(
-                            //         id: teamId,
-                            //       ),
-                            //       elevation: 10,
-                            //       shape: RoundedRectangleBorder(
-                            //         borderRadius: BorderRadius.only(
-                            //           topLeft: Radius.circular(20),
-                            //           topRight: Radius.circular(3),
-                            //           bottomLeft: Radius.circular(20),
-                            //           bottomRight: Radius.circular(20),
-                            //         ),
-                            //       ),
-                            //       backgroundColor: Styles.drg_colorSecondary,
-                            //       contentTextStyle:
-                            //           TextStyle(color: Styles.drg_colorText),
-                            //     );
-                            //   },
-                            // );
-                          },
-                        ),
-                        onTap: () {
-                          log("In BuildTeamListView ListTile onTap - teamId: $teamId");
-                          Navigator.pushNamed(context, '/surveysetslist',
-                              arguments: "$teamId");
-                        },
-                        title: Text(
-                          "${teamDocumentSnapshot['name']}",
-                          style: Styles.drg_textListTitle,
-                        ),
-                        subtitle: Text(
-                          """id: $teamId \nCreated: ${formatDate(teamDocumentSnapshot['created'].toDate(), [
-                            dd,
-                            '. ',
-                            MM,
-                            ' ',
-                            yyyy,
-                            ', ',
-                            HH,
-                            ':',
-                            nn
-                          ])} \nLast edited: ${teamDocumentSnapshot['edited'] != null ? formatDate(teamDocumentSnapshot['edited'].toDate(), [
-                              dd,
-                              '. ',
-                              MM,
-                              ' ',
-                              yyyy,
-                              ', ',
-                              HH,
-                              ':',
-                              nn
-                            ]) : ''} \nby ${signInSnapshot.data.displayName}""",
-                          style: Styles.drg_textListContent,
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/teammanager',
+                                    arguments: {"id": "$teamId"},
+                                  );
+                                  // showDialog(
+                                  //   context: context,
+                                  //   builder: (BuildContext context) {
+                                  //     log("In BuildTeamsListView showDialog value of documentSnapshot.documentID: $teamId");
+                                  //     return AlertDialog(
+                                  //       title: Text("Edit Team"),
+                                  //       content: TeamForm(
+                                  //         id: teamId,
+                                  //       ),
+                                  //       elevation: 10,
+                                  //       shape: RoundedRectangleBorder(
+                                  //         borderRadius: BorderRadius.only(
+                                  //           topLeft: Radius.circular(20),
+                                  //           topRight: Radius.circular(3),
+                                  //           bottomLeft: Radius.circular(20),
+                                  //           bottomRight: Radius.circular(20),
+                                  //         ),
+                                  //       ),
+                                  //       backgroundColor: Styles.drg_colorSecondary,
+                                  //       contentTextStyle:
+                                  //           TextStyle(color: Styles.drg_colorText),
+                                  //     );
+                                  //   },
+                                  // );
+                                },
+                              ),
+                              onTap: () {
+                                log("In BuildTeamListView ListTile onTap - teamId: $teamId");
+                                Navigator.pushNamed(context, '/surveysetslist',
+                                    arguments: "$teamId");
+                              },
+                              title: Text(
+                                "${teamDocumentSnapshot['name']}",
+                                style: Styles.drg_textListTitle,
+                              ),
+                              subtitle: Text(
+                                """id: $teamId \nCreated: ${formatDate(teamDocumentSnapshot['created'].toDate(), [
+                                  dd,
+                                  '. ',
+                                  MM,
+                                  ' ',
+                                  yyyy,
+                                  ', ',
+                                  HH,
+                                  ':',
+                                  nn
+                                ])} \nLast edited: ${teamDocumentSnapshot['edited'] != null ? formatDate(teamDocumentSnapshot['edited'].toDate(), [
+                                    dd,
+                                    '. ',
+                                    MM,
+                                    ' ',
+                                    yyyy,
+                                    ', ',
+                                    HH,
+                                    ':',
+                                    nn
+                                  ]) : ''} \nby ${signInSnapshot.data.displayName}""",
+                                style: Styles.drg_textListContent,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     );

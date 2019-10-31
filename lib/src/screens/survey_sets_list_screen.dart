@@ -49,7 +49,9 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                 constraints: BoxConstraints(maxWidth: 50),
                 child: AspectRatio(
                   aspectRatio: 1,
-                  child: CircularProgressIndicator(strokeWidth: 10,),
+                  child: CircularProgressIndicator(
+                    strokeWidth: 10,
+                  ),
                 ),
               ),
             );
@@ -59,12 +61,14 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                 constraints: BoxConstraints(maxWidth: 50),
                 child: AspectRatio(
                   aspectRatio: 1,
-                  child: CircularProgressIndicator(strokeWidth: 10,),
+                  child: CircularProgressIndicator(
+                    strokeWidth: 10,
+                  ),
                 ),
               ),
             );
           }
-
+          log("In SurveySetsListScreen value of teamsSnapshot.data.documents.first.documentID: ${teamsSnapshot.data.documents.first.documentID}");
           return Scaffold(
             backgroundColor: Styles.drg_colorAppBackground,
             endDrawer: UserDrawer(),
@@ -76,7 +80,9 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
             ),
             body: Column(
               children: <Widget>[
-                BuildTeamsDropdownButton(),
+                BuildTeamsDropdownButton(
+                  teamsSnapshot: teamsSnapshot,
+                ),
                 BuildFilterSort(),
                 Expanded(
                   child: BuildSurveySetsListView(),
@@ -85,50 +91,52 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
-            floatingActionButton:
-                (teamBloc?.currentSelectedTeam?.documentID == null &&
-                        teamsSnapshot.data.documents.length < 1)
-                    ? teamsSnapshot.data.documents.isEmpty
-                        ? FloatingActionButton.extended(
-                            backgroundColor: Styles.drg_colorSecondary,
-                            icon: Icon(
-                              Icons.people,
-                              color: Styles.drg_colorText.withOpacity(.8),
-                            ),
-                            label: Text(
-                              'Create new Team',
-                              style: TextStyle(
-                                color: Styles.drg_colorText.withOpacity(0.8),
-                              ),
-                            ),
-                            onPressed: () {
-                              print(
-                                  "In SurveySetsListScreen 'Create new Team' button pressed");
-                              teamBloc.updatingTeamData = false;
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text("Create new Team"),
-                                    content: CreateTeamForm(),
-                                    elevation: 10,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20),
-                                        topRight: Radius.circular(3),
-                                        bottomLeft: Radius.circular(20),
-                                        bottomRight: Radius.circular(20),
-                                      ),
-                                    ),
-                                    backgroundColor: Styles.drg_colorSecondary,
-                                    contentTextStyle:
-                                        TextStyle(color: Styles.drg_colorText),
-                                  );
-                                },
+            floatingActionButton: (teamBloc?.currentSelectedTeam?.documentID ==
+                        null &&
+                    teamsSnapshot.data.documents.length < 1)
+                ? teamsSnapshot.data.documents.isEmpty
+                    ? FloatingActionButton.extended(
+                        backgroundColor: Styles.drg_colorSecondary,
+                        icon: Icon(
+                          Icons.people,
+                          color: Styles.drg_colorText.withOpacity(.8),
+                        ),
+                        label: Text(
+                          'Create new Team',
+                          style: TextStyle(
+                            color: Styles.drg_colorText.withOpacity(0.8),
+                          ),
+                        ),
+                        onPressed: () {
+                          print(
+                              "In SurveySetsListScreen 'Create new Team' button pressed");
+                          teamBloc.updatingTeamData = false;
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("Create new Team"),
+                                content: CreateTeamForm(),
+                                elevation: 10,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(3),
+                                    bottomLeft: Radius.circular(20),
+                                    bottomRight: Radius.circular(20),
+                                  ),
+                                ),
+                                backgroundColor: Styles.drg_colorSecondary,
+                                contentTextStyle:
+                                    TextStyle(color: Styles.drg_colorText),
                               );
                             },
-                          )
-                        : null
+                          );
+                        },
+                      )
+                    : null
+                : teamBloc?.currentSelectedTeam?.documentID == null
+                    ? null
                     : FloatingActionButton.extended(
                         elevation: 12,
                         backgroundColor: Styles.drg_colorSecondary,
@@ -169,6 +177,4 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
           );
         });
   }
-
 }
-
