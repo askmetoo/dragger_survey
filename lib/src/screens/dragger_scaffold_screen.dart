@@ -19,16 +19,28 @@ class DraggerScaffoldScreen extends StatelessWidget {
         builder: (BuildContext context,
             AsyncSnapshot<DocumentSnapshot> currentSurveySnapshot) {
           if (currentSurveySnapshot.connectionState != ConnectionState.done) {
-            return CircularProgressIndicator(strokeWidth: 10,);
-          }
-            return Scaffold(
-              backgroundColor: Styles.drg_colorAppBackground,
-              appBar: AppBar(
-                title: currentSurveySnapshot.data != null ? Text("${currentSurveySnapshot?.data['name']}") : Text(''),
+            return Center(
+              child: Container(
+                constraints: BoxConstraints(maxWidth: 50),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 10,
+                  ),
+                ),
               ),
-              body: DraggerScreen(),
-              endDrawer: UserDrawer(),
             );
+          }
+          return Scaffold(
+            backgroundColor: Styles.drg_colorAppBackground,
+            appBar: AppBar(
+              title: currentSurveySnapshot.data != null
+                  ? Text("${currentSurveySnapshot?.data['name']}")
+                  : Text(''),
+            ),
+            body: DraggerScreen(),
+            endDrawer: UserDrawer(),
+          );
         });
   }
 }
