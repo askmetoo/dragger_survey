@@ -29,12 +29,11 @@ class ProfileScreen extends StatelessWidget {
         ),
         body: FlatButton(
           onPressed: () async {
+            Navigator.pushNamed(context, '/login');
             await signInBloc.logoutUser();
-            Navigator.of(context)
-                .pushNamedAndRemoveUntil('/', (route) => false);
           },
           color: Styles.drg_colorAttention,
-          child: Text("Logout"),
+          child: Text("Sign-Out"),
         ),
       );
     } else {
