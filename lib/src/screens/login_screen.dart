@@ -73,6 +73,9 @@ class _LoginScreenState extends State<LoginScreen> {
             _loggedIn = true;
           });
           signInBloc.createUserInDbIfNotExist(account: returnedUser);
+          await Navigator.pushNamedAndRemoveUntil(
+              context, '/surveysetslist', (_) => false);
+          // await Navigator.pushNamed(context, '/surveysetslist');
         }
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
@@ -91,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _openSurveyListButton({BuildContext context}) {
     return OutlineButton(
       splashColor: Styles.drg_colorSecondary,
-      onPressed: () async {
+      onPressed: () {
         Navigator.pushNamed(context, '/surveysetslist');
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
