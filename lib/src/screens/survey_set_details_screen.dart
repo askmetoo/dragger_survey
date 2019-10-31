@@ -72,7 +72,9 @@ class SurveySetDetailsScreen extends StatelessWidget {
             constraints: BoxConstraints(maxWidth: 50),
             child: AspectRatio(
               aspectRatio: 1,
-              child: CircularProgressIndicator(strokeWidth: 10,),
+              child: CircularProgressIndicator(
+                strokeWidth: 10,
+              ),
             ),
           ),
         );
@@ -140,41 +142,42 @@ class SurveySetDetailsScreen extends StatelessWidget {
                       ],
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Styles.drg_colorSecondary.withOpacity(.13),
-                          borderRadius: BorderRadius.only(topLeft: Radius.circular(40), bottomLeft: Radius.circular(40),)
-                        ),
+                            color: Styles.drg_colorSecondary.withOpacity(.13),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40),
+                              bottomLeft: Radius.circular(40),
+                            )),
                         margin: EdgeInsets.only(bottom: 2),
                         child: ListTile(
                           dense: true,
-                            leading: Icon(Icons.person),
-                            title: RichText(
-                              text: TextSpan(
-                                text: "${document.data['askedPerson']} ",
-                                style: TextStyle(
-                                  color: Styles.drg_colorText,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: "was asked ",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w200,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: timeago.format(DateTime.now()
-                                        .subtract(DateTime.now().difference(
-                                            document.data['created']
-                                                .toDate()))),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w200,
-                                    ),
-                                  )
-                                ],
+                          leading: Icon(Icons.person),
+                          title: RichText(
+                            text: TextSpan(
+                              text: "${document.data['askedPerson']} ",
+                              style: TextStyle(
+                                color: Styles.drg_colorText,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
                               ),
+                              children: [
+                                TextSpan(
+                                  text: "was asked ",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w200,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: timeago.format(DateTime.now().subtract(
+                                      DateTime.now().difference(
+                                          document.data['created'].toDate()))),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w200,
+                                  ),
+                                )
+                              ],
                             ),
                           ),
+                        ),
                       ),
                     ),
                   );
@@ -255,8 +258,14 @@ class SurveySetDetailsScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       FormBuilderTextField(
+                        autofocus: true,
+                        style: TextStyle(
+                          color: Styles.drg_colorSecondary,
+                        ),
                         attribute: "askedPerson",
-                        decoration: InputDecoration(labelText: "Asked Person"),
+                        decoration: InputDecoration(
+                          labelText: "Asked Person",
+                        ),
                         validators: [
                           FormBuilderValidators.max(45),
                         ],
