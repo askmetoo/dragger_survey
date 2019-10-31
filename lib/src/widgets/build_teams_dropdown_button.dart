@@ -44,7 +44,9 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                   constraints: BoxConstraints(maxWidth: 50),
                   child: AspectRatio(
                     aspectRatio: 1,
-                    child: CircularProgressIndicator(strokeWidth: 10,),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 10,
+                    ),
                   ),
                 ),
               );
@@ -212,7 +214,9 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                 constraints: BoxConstraints(maxWidth: 50),
                 child: AspectRatio(
                   aspectRatio: 1,
-                  child: CircularProgressIndicator(strokeWidth: 10,),
+                  child: CircularProgressIndicator(
+                    strokeWidth: 10,
+                  ),
                 ),
               ),
             ),
@@ -227,7 +231,9 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
           constraints: BoxConstraints(maxWidth: 50),
           child: AspectRatio(
             aspectRatio: 1,
-            child: CircularProgressIndicator(strokeWidth: 10,),
+            child: CircularProgressIndicator(
+              strokeWidth: 10,
+            ),
           ),
         ),
       );

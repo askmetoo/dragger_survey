@@ -84,7 +84,8 @@ class AuthService {
         log("In AuthService createUserInFirestore account.uid == doc.data['providersUID']: ${account.uid == doc.documents.first.data['providersUID']}");
         print(
             "--------> In AuthService createUserInFirestore returned user doc: ${doc.documents.first.data['providersUID']}");
-        return doc.documents.first.data['providersUID'];
+        return doc.documents.first;
+        // return doc.documents.first.data['providersUID'];
       }
     }
 

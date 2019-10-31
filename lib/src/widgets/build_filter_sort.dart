@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:dragger_survey/src/styles.dart';
 
 class BuildFilterSort extends StatefulWidget {
   @override
@@ -20,7 +19,8 @@ class _BuildFilterSortState extends State<BuildFilterSort> {
   @override
   Widget build(BuildContext context) {
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
-    final PrismSurveySetBloc surveySetBloc = Provider.of<PrismSurveySetBloc>(context);
+    final PrismSurveySetBloc surveySetBloc =
+        Provider.of<PrismSurveySetBloc>(context);
     FirebaseUser _user = Provider.of<FirebaseUser>(context);
 
     return FutureBuilder<QuerySnapshot>(
@@ -39,7 +39,9 @@ class _BuildFilterSortState extends State<BuildFilterSort> {
                 constraints: BoxConstraints(maxWidth: 50),
                 child: AspectRatio(
                   aspectRatio: 1,
-                  child: CircularProgressIndicator(strokeWidth: 10,),
+                  child: CircularProgressIndicator(
+                    strokeWidth: 10,
+                  ),
                 ),
               ),
             );
@@ -87,8 +89,8 @@ class _BuildFilterSortState extends State<BuildFilterSort> {
                       surveySetBloc.descendingOrder = false;
                       break;
                     default:
-                    surveySetBloc.orderField = 'created';
-                    surveySetBloc.descendingOrder = true;
+                      surveySetBloc.orderField = 'created';
+                      surveySetBloc.descendingOrder = true;
                   }
                   setState(() {
                     _sortBy = newValue;
