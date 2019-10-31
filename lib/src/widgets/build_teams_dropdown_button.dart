@@ -82,7 +82,7 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
               ? buildTeamText(teamsListSnapshot: widget.teamsSnapshot)
               : DropdownButton(
                   isExpanded: true,
-                  isDense: false,
+                  isDense: true,
                   value: _selectedTeamId,
                   onChanged: (value) {
                     String _selectedTeamId = value;
@@ -123,46 +123,62 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                       return DropdownMenuItem(
                         value: team.documentID,
                         child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: 24,
-                                child: Text(
-                                  "${team['name']}\n",
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    color:
-                                        Styles.drg_colorText.withOpacity(0.8),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w900,
-                                    fontFamily: 'Bitter',
-                                  ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Styles.drg_colorAppBackground
+                                      .withOpacity(.6),
+                                  width: .5,
                                 ),
                               ),
-                              Container(
-                                height: 52,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 18.0),
+                            ),
+                            width: double.infinity,
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 1),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  height: 33,
+                                  padding: EdgeInsetsDirectional.only(top: 8),
                                   child: Text(
-                                    team['description'] != ''
-                                        ? "${team['description']}"
-                                        : 'Team has no description',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                    softWrap: true,
+                                    "${team['name']}\n",
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
-                                      color: Styles.drg_colorSecondaryDeepDark,
+                                      color:
+                                          Styles.drg_colorText.withOpacity(0.8),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w900,
                                       fontFamily: 'Bitter',
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14,
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                Container(
+                                  height: 28,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 4.0),
+                                    child: Text(
+                                      team['description'] != ''
+                                          ? "${team['description']}"
+                                          : 'Team has no description',
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      softWrap: true,
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        color:
+                                            Styles.drg_colorSecondaryDeepDark,
+                                        fontFamily: 'Bitter',
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );
