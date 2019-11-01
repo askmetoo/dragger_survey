@@ -54,6 +54,56 @@ class _DraggerScreenState extends State<DraggerScreen> {
     if (prismSurveySetBloc.currentPrismSurveySet == null) {
       log("In Dragger Screen prismSurveySetBloc.currentPrismSurveySet == null: ${prismSurveySetBloc.currentPrismSurveySet == null}");
     }
+
+    return (MediaQuery.of(context).orientation == Orientation.portrait)
+        ? BuildPortraitLayout(
+            xName: _xName,
+            yName: _yName,
+            formKey: _formKey,
+            surveySet: surveySet,
+            matrixGranularityBloc: matrixGranularityBloc,
+            prismSurveyBloc: prismSurveyBloc,
+          )
+        : BuildLandscapeLayout(
+            xName: _xName,
+            yName: _yName,
+            formKey: _formKey,
+            surveySet: surveySet,
+            matrixGranularityBloc: matrixGranularityBloc,
+            prismSurveyBloc: prismSurveyBloc,
+          );
+
+    // Container(
+    //     // height: double.infinity,
+    //     color: Styles.drg_colorGreen,
+    //     width: double.infinity,
+    //   );
+  }
+}
+
+class BuildPortraitLayout extends StatelessWidget {
+  const BuildPortraitLayout({
+    Key key,
+    @required String xName,
+    @required String yName,
+    @required GlobalKey<FormState> formKey,
+    @required this.surveySet,
+    @required this.matrixGranularityBloc,
+    @required this.prismSurveyBloc,
+  })  : _xName = xName,
+        _yName = yName,
+        _formKey = formKey,
+        super(key: key);
+
+  final String _xName;
+  final String _yName;
+  final GlobalKey<FormState> _formKey;
+  final DocumentSnapshot surveySet;
+  final MatrixGranularityBloc matrixGranularityBloc;
+  final PrismSurveyBloc prismSurveyBloc;
+
+  @override
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Padding(
@@ -62,66 +112,7 @@ class _DraggerScreenState extends State<DraggerScreen> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(left: 12.0),
-              child: SizedBox(
-                height: 40,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: Tooltip(
-                            message: "Asked person or role",
-                            child: IconShadowWidget(
-                              Icon(
-                                Icons.person,
-                                color: Styles.drg_colorLighterGreen,
-                                size: 30,
-                              ),
-                              shadowColor: Styles.drg_colorText,
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            _builduildAskedPersonDialog(
-                              context: context,
-                              prismSurveyBloc: prismSurveyBloc,
-                            );
-                          },
-                          child: Container(
-                            width: 250,
-                            child: Text(
-                              prismSurveyBloc?.currentAskedPerson,
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.w700,
-                                color: Styles.drg_colorSecondary,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.edit),
-                      onPressed: () {
-                        _builduildAskedPersonDialog(
-                          context: context,
-                          prismSurveyBloc: prismSurveyBloc,
-                        );
-                      },
-                      color: Styles.drg_colorSecondary.withOpacity(.6),
-                      iconSize: 20,
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            BuildAskedPersonDropdown(),
             BuildBoard(
               xLabel: _xName,
               yLabel: _yName,
@@ -135,6 +126,174 @@ class _DraggerScreenState extends State<DraggerScreen> {
               style: TextStyle(
                 color: Styles.drg_colorAppBackgroundMedium.withOpacity(.8),
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class BuildLandscapeLayout extends StatelessWidget {
+  const BuildLandscapeLayout({
+    Key key,
+    @required String xName,
+    @required String yName,
+    @required GlobalKey<FormState> formKey,
+    @required this.surveySet,
+    @required this.matrixGranularityBloc,
+    @required this.prismSurveyBloc,
+  })  : _xName = xName,
+        _yName = yName,
+        _formKey = formKey,
+        super(key: key);
+
+  final String _xName;
+  final String _yName;
+  final GlobalKey<FormState> _formKey;
+  final DocumentSnapshot surveySet;
+  final MatrixGranularityBloc matrixGranularityBloc;
+  final PrismSurveyBloc prismSurveyBloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Styles.drg_colorSecondaryDeepDark,
+      // height: double.infinity,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              width: (MediaQuery.of(context).size.width / 4),
+              color: Styles.drg_colorYellowGreen,
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  BuildAskedPersonDropdown(),
+                  DraggerBoardButtonRow(
+                    formKey: _formKey,
+                    currentSurveySet: surveySet?.documentID,
+                  ),
+                  Text(
+                    "Granularity: ${matrixGranularityBloc.matrixGranularity} \n$_xName: ${prismSurveyBloc.rowIndex + 1} \n$_yName: ${prismSurveyBloc.colIndex + 1}",
+                    style: TextStyle(
+                      color:
+                          Styles.drg_colorAppBackgroundMedium.withOpacity(.8),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: 1400,
+              color: Styles.drg_colorAttention,
+            ),
+          ],
+        ),
+      ),
+
+      // child: Row(
+      //   // mainAxisSize: MainAxisSize.max,
+      //   mainAxisAlignment: MainAxisAlignment.start,
+      //   children: <Widget>[
+      //     Container(
+      //       color: Styles.drg_colorGreen,
+      //       width: 200,
+      //       // width: (MediaQuery.of(context).size.width / 2),
+      //       child: Column(
+      //         mainAxisSize: MainAxisSize.max,
+      //         mainAxisAlignment: MainAxisAlignment.start,
+      //         children: <Widget>[
+      //           // BuildAskedPersonDropdown(),
+      //           // DraggerBoardButtonRow(
+      //           //   formKey: _formKey,
+      //           //   currentSurveySet: surveySet?.documentID,
+      //           // ),
+      //           Text(
+      //             "Granularity: ${matrixGranularityBloc.matrixGranularity} \n$_xName: ${prismSurveyBloc.rowIndex + 1} \n$_yName: ${prismSurveyBloc.colIndex + 1}",
+      //             style: TextStyle(
+      //               color:
+      //                   Styles.drg_colorAppBackgroundMedium.withOpacity(.8),
+      //             ),
+      //           ),
+      //         ],
+      //       ),
+      //     ),
+      //     BuildBoard(
+      //       xLabel: _xName,
+      //       yLabel: _yName,
+      //     ),
+      //   ],
+      // ),
+    );
+  }
+}
+
+class BuildAskedPersonDropdown extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final PrismSurveyBloc prismSurveyBloc =
+        Provider.of<PrismSurveyBloc>(context);
+
+    return Padding(
+      padding: EdgeInsets.only(left: 12.0),
+      child: SizedBox(
+        height: 40,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(right: 8.0),
+                  child: Tooltip(
+                    message: "Asked person or role",
+                    child: IconShadowWidget(
+                      Icon(
+                        Icons.person,
+                        color: Styles.drg_colorLighterGreen,
+                        size: 30,
+                      ),
+                      shadowColor: Styles.drg_colorText,
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    _builduildAskedPersonDialog(
+                      context: context,
+                      prismSurveyBloc: prismSurveyBloc,
+                    );
+                  },
+                  child: Container(
+                    width: 250,
+                    child: Text(
+                      prismSurveyBloc?.currentAskedPerson,
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                        color: Styles.drg_colorSecondary,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () {
+                _builduildAskedPersonDialog(
+                  context: context,
+                  prismSurveyBloc: prismSurveyBloc,
+                );
+              },
+              color: Styles.drg_colorSecondary.withOpacity(.6),
+              iconSize: 20,
             ),
           ],
         ),
@@ -172,7 +331,6 @@ class _DraggerScreenState extends State<DraggerScreen> {
                       key: _formKey,
                       child: TextField(
                         onTap: () {
-                          print('Editing stated $widget');
                           _askedPersonController.selection = TextSelection(
                               baseOffset: 0,
                               extentOffset: _askedPersonController.text.length);

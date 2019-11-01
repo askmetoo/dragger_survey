@@ -15,12 +15,10 @@ class MatrixBoard extends StatefulWidget {
 
 class _MatrixBoardState extends State<MatrixBoard> {
   final double aspectratioValue = 1;
-  // final double aspectratioValue = .98;
   int gridLength;
 
   // *** Part of getting board position on the screen *** //
   GlobalKey _matrixBoardKey = GlobalKey();
-  // Size _matrixBoardSize = Size(0, 0);
   Offset _matrixBoardPosition = Offset(0, 0);
 
   @override
@@ -42,6 +40,9 @@ class _MatrixBoardState extends State<MatrixBoard> {
     final DraggableItemBloc draggableBloc =
         Provider.of<DraggableItemBloc>(context);
 
+    double mqWidth = MediaQuery.of(context).size.width;
+    Orientation mqOrientation = MediaQuery.of(context).orientation;
+
     final grid = List<List<List<int>>>.generate(
       granularitybloc.matrixGranularity,
       (column) {
@@ -59,6 +60,11 @@ class _MatrixBoardState extends State<MatrixBoard> {
         Stack(
           children: <Widget>[
             Container(
+              margin: EdgeInsets.only(
+                  left: (mqWidth >= 768.0 &&
+                          mqOrientation == Orientation.landscape)
+                      ? 520
+                      : 0),
               key: _matrixBoardKey,
               child: BuildMatrixBoard(
                 gridLength: gridLength,
@@ -67,11 +73,35 @@ class _MatrixBoardState extends State<MatrixBoard> {
                 draggableItemPositon: draggableItemPositon,
               ),
             ),
-            BuildXLabel(
-              xLabel: widget.xLabel,
+            Container(
+              margin: EdgeInsets.only(
+                left:
+                    (mqWidth >= 768.0 && mqOrientation == Orientation.landscape)
+                        ? 640
+                        : 0,
+                top:
+                    (mqWidth >= 768.0 && mqOrientation == Orientation.landscape)
+                        ? 200
+                        : 0,
+              ),
+              child: BuildXLabel(
+                xLabel: widget.xLabel,
+              ),
             ),
-            BuildYLabel(
-              yLabel: widget.yLabel,
+            Container(
+              margin: EdgeInsets.only(
+                left:
+                    (mqWidth >= 768.0 && mqOrientation == Orientation.landscape)
+                        ? 520
+                        : 0,
+                top:
+                    (mqWidth >= 768.0 && mqOrientation == Orientation.landscape)
+                        ? 110
+                        : 0,
+              ),
+              child: BuildYLabel(
+                yLabel: widget.yLabel,
+              ),
             ),
             // BuildGoalItem(),
             DraggableItem(
@@ -79,23 +109,9 @@ class _MatrixBoardState extends State<MatrixBoard> {
             ),
           ],
         ),
-        // Text(
-        //     "MatrixBoard size: ${_matrixBoardSize.width} x ${_matrixBoardSize.height} (h x w)"),
-        // Text(
-        //     "MatrixBoard position: ${_matrixBoardPosition.dx} / ${_matrixBoardPosition.dy} (x / y)"),
       ],
     );
   }
-
-  // *** Get position of board on the screen *** //
-  // _getMatrixBoardSize() {
-  //   final RenderBox matrixBoardRenderBox =
-  //       _matrixBoardKey.currentContext.findRenderObject();
-  //   final matrixBoardSize = matrixBoardRenderBox.size;
-  //   setState(() {
-  //     _matrixBoardSize = matrixBoardSize;
-  //   });
-  // }
 
   _getMatrixBoardPosition() {
     final RenderBox matrixBoardRenderBox =

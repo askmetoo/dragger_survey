@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 import '../blocs/draggable_item_bloc.dart';
 
 class DraggableItem extends StatefulWidget {
-  final Offset initialPosition = Offset(20, 60);
   final Offset matrixBoardPositon;
+
   DraggableItem({this.matrixBoardPositon}) : super();
 
   @override
@@ -25,14 +25,22 @@ class _DraggableItemState extends State<DraggableItem> {
   final String _dragData = "Meine Meinung";
   final double _draggableSize = 70.0;
   final double _draggableFeedbackSize = 80.0;
+  double _mqWidth;
+  Orientation _mqOrientation;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     // final DraggableItemBloc draggableBloc =
     //     Provider.of<DraggableItemBloc>(context);
-    // draggableBloc.setInitialDraggableItemPostion(
-    // position: widget.initialPosition);
+    // draggableBloc.mqWidth = MediaQuery.of(context).size.width;
+    // draggableBloc.mqOrientation = MediaQuery.of(context).orientation;
+    // draggableBloc.initBoard();
   }
 
   @override
@@ -40,18 +48,12 @@ class _DraggableItemState extends State<DraggableItem> {
     final DraggableItemBloc draggableBloc =
         Provider.of<DraggableItemBloc>(context);
 
-    log("draggableItemPositon.dx: ${draggableBloc.draggableItemPositon.dx}");
-    log("draggableItemPositon.dy: ${draggableBloc.draggableItemPositon.dy}");
-    log("draggableItemPositon.dx + widget.matrixBoardPositon.dx: ${draggableBloc.draggableItemPositon.dx + widget.matrixBoardPositon.dx}");
-    log("draggableItemPositon.dy + widget.matrixBoardPositon.dy: ${draggableBloc.draggableItemPositon.dy + widget.matrixBoardPositon.dy}");
+    _mqWidth = MediaQuery.of(context).size.width;
+    _mqOrientation = MediaQuery.of(context).orientation;
 
     return Positioned(
       left: draggableBloc.draggableItemPositon.dx,
       top: draggableBloc.draggableItemPositon.dy,
-      // left: draggableBloc.draggableItemPositon.dx - 10,
-      // top: draggableBloc.draggableItemPositon.dy + 220,
-      // left: draggableBloc.draggableItemPositon.dx - 10,
-      // top: draggableBloc.draggableItemPositon.dy - _draggableSize - 10,
       child: Draggable<String>(
         data: _dragData,
         child: Container(
@@ -105,20 +107,35 @@ class _DraggableItemState extends State<DraggableItem> {
         onDragStarted: () {},
         onDragCompleted: () {},
         onDragEnd: (drag) {
-          draggableBloc.setNewDraggableItemPositon(
-            position: Offset(
-                drag.offset.dx +
-                    widget.matrixBoardPositon.dx -
-                    (_draggableSize / 7) +
-                    10,
-                // (_draggableSize / 2.98) +
-                // 10,
-                drag.offset.dy - (_draggableSize / .5)
-                // drag.offset.dy - (_draggableSize / .739)
-                // widget.matrixBoardPositon.dy -
-                // (_draggableSize / .219),
-                ),
-          );
+          if (_mqWidth >= 768.0 && _mqOrientation == Orientation.landscape) {
+            draggableBloc.setNewDraggableItemPositon(
+              position: Offset(
+                  drag.offset.dx +
+                      widget.matrixBoardPositon.dx -
+                      (_draggableSize / 3) +
+                      10,
+                  drag.offset.dy - (_draggableSize / .87)),
+            );
+          } else if (_mqWidth >= 710.0 &&
+              _mqOrientation == Orientation.portrait) {
+            draggableBloc.setNewDraggableItemPositon(
+              position: Offset(
+                  drag.offset.dx +
+                      widget.matrixBoardPositon.dx -
+                      (_draggableSize / 7) +
+                      10,
+                  drag.offset.dy - (_draggableSize / .5)),
+            );
+          } else {
+            draggableBloc.setNewDraggableItemPositon(
+              position: Offset(
+                  drag.offset.dx +
+                      widget.matrixBoardPositon.dx -
+                      (_draggableSize / 7) +
+                      10,
+                  drag.offset.dy - (_draggableSize / .5)),
+            );
+          }
         },
         onDraggableCanceled: (Velocity velocity, Offset offset) {
           draggableBloc.setNewDraggableItemPositon(position: offset);

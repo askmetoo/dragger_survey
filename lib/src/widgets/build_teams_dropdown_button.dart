@@ -51,27 +51,6 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
 
     log("In BuildTeamsDropdownButton value of widget.teamsSnapshot.data.documents.first.documentID: ${widget.teamsSnapshot.data.documents.first.documentID}");
 
-    // return FutureBuilder<QuerySnapshot>(
-    //     future: teamsQuery,
-    //     builder: (BuildContext context,
-    //         AsyncSnapshot<QuerySnapshot> teamsListSnapshot) {
-    // if (teamsListSnapshot.connectionState == ConnectionState.done) {
-    //   if (!teamsListSnapshot.hasData) {
-    //     return Center(
-    //       child: Container(
-    //         constraints: BoxConstraints(maxWidth: 50),
-    //         child: AspectRatio(
-    //           aspectRatio: 1,
-    //           child: CircularProgressIndicator(
-    //             strokeWidth: 10,
-    //           ),
-    //         ),
-    //       ),
-    //     );
-    //   } else if (teamsListSnapshot.data.documents.isEmpty) {
-    //     return Container();
-    //   }
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: Container(
@@ -97,9 +76,13 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                       teamBloc.setCurrentSelectedTeam(returnedTeam);
                       teamBloc
                           .setCurrentSelectedTeamId(returnedTeam.documentID);
-                      setState(() {
-                        _selectedTeam = returnedTeam;
-                      });
+                      if (!this.mounted) {
+                        return;
+                      } else {
+                        setState(() {
+                          _selectedTeam = returnedTeam;
+                        });
+                      }
                     });
                   },
                   iconSize: 46,
