@@ -408,14 +408,17 @@ class BuildListOfSets extends StatelessWidget {
               builder: (context, surveysSnapshot) {
                 if (surveysSnapshot.connectionState != ConnectionState.done) {
                   return Center(
-                    child: Container(
-                      width: double.infinity,
-                      constraints: BoxConstraints(
-                        // maxWidth: 50,
-                        maxHeight: 2,
-                      ),
-                      child: LinearProgressIndicator(
-                        backgroundColor: Styles.drg_colorAppBackgroundLight,
+                    child: SizedBox(
+                      height: .5,
+                      child: Container(
+                        width: double.infinity,
+                        child: LinearProgressIndicator(
+                          backgroundColor: Styles.drg_colorAppBackgroundMedium
+                              .withOpacity(.4),
+                          valueColor: AlwaysStoppedAnimation<Color>(Styles
+                              .drg_colorAppBackgroundLight
+                              .withOpacity(.4)),
+                        ),
                       ),
                     ),
                   );
