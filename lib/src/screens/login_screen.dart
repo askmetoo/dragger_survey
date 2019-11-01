@@ -75,7 +75,6 @@ class _LoginScreenState extends State<LoginScreen> {
           signInBloc.createUserInDbIfNotExist(account: returnedUser);
           await Navigator.pushNamedAndRemoveUntil(
               context, '/surveysetslist', (_) => false);
-          // await Navigator.pushNamed(context, '/surveysetslist');
         }
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
