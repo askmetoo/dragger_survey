@@ -158,39 +158,41 @@ class BuildLandscapeLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Styles.drg_colorSecondaryDeepDark,
-      // height: double.infinity,
       child: Padding(
         padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Container(
-              width: (MediaQuery.of(context).size.width / 4),
-              color: Styles.drg_colorYellowGreen,
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  BuildAskedPersonDropdown(),
-                  DraggerBoardButtonRow(
-                    formKey: _formKey,
-                    currentSurveySet: surveySet?.documentID,
-                  ),
-                  Text(
-                    "Granularity: ${matrixGranularityBloc.matrixGranularity} \n$_xName: ${prismSurveyBloc.rowIndex + 1} \n$_yName: ${prismSurveyBloc.colIndex + 1}",
-                    style: TextStyle(
-                      color:
-                          Styles.drg_colorAppBackgroundMedium.withOpacity(.8),
-                    ),
-                  ),
-                ],
+            Expanded(
+              flex: 6,
+              child: BuildBoard(
+                xLabel: _xName,
+                yLabel: _yName,
               ),
             ),
-            Container(
-              width: 1400,
-              color: Styles.drg_colorAttention,
+            Expanded(
+              flex: 4,
+              child: Container(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    BuildAskedPersonDropdown(),
+                    DraggerBoardButtonRow(
+                      formKey: _formKey,
+                      currentSurveySet: surveySet?.documentID,
+                    ),
+                    Text(
+                      "Granularity: ${matrixGranularityBloc.matrixGranularity} \n$_xName: ${prismSurveyBloc.rowIndex + 1} \n$_yName: ${prismSurveyBloc.colIndex + 1}",
+                      style: TextStyle(
+                        color:
+                            Styles.drg_colorAppBackgroundMedium.withOpacity(.8),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
@@ -242,6 +244,7 @@ class BuildAskedPersonDropdown extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(left: 12.0),
       child: SizedBox(
+        width: double.infinity,
         height: 40,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -270,15 +273,12 @@ class BuildAskedPersonDropdown extends StatelessWidget {
                       prismSurveyBloc: prismSurveyBloc,
                     );
                   },
-                  child: Container(
-                    width: 250,
-                    child: Text(
-                      prismSurveyBloc?.currentAskedPerson,
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700,
-                        color: Styles.drg_colorSecondary,
-                      ),
+                  child: Text(
+                    prismSurveyBloc?.currentAskedPerson,
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                      color: Styles.drg_colorSecondary,
                     ),
                   ),
                 ),
