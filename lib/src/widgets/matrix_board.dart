@@ -15,12 +15,10 @@ class MatrixBoard extends StatefulWidget {
 
 class _MatrixBoardState extends State<MatrixBoard> {
   final double aspectratioValue = 1;
-  // final double aspectratioValue = .98;
   int gridLength;
 
   // *** Part of getting board position on the screen *** //
   GlobalKey _matrixBoardKey = GlobalKey();
-  // Size _matrixBoardSize = Size(0, 0);
   Offset _matrixBoardPosition = Offset(0, 0);
 
   @override
@@ -30,7 +28,6 @@ class _MatrixBoardState extends State<MatrixBoard> {
   }
 
   _onBuildCompleted(_) {
-    // _getMatrixBoardSize();
     _getMatrixBoardPosition();
   }
 
@@ -54,41 +51,38 @@ class _MatrixBoardState extends State<MatrixBoard> {
       gridLength = grid.length;
     });
 
-    return Stack(
-      children: <Widget>[
-        Container(
-          key: _matrixBoardKey,
-          child: BuildMatrixBoard(
-            gridLength: gridLength,
-            aspectratioValue: aspectratioValue,
-            grid: grid,
-            draggableItemPositon: draggableItemPositon,
-          ),
+    return Container(
+      padding: EdgeInsets.only(top: 0),
+      alignment: Alignment.topLeft,
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: Stack(
+          children: <Widget>[
+            Container(
+              key: _matrixBoardKey,
+              child: BuildMatrixBoard(
+                gridLength: gridLength,
+                aspectratioValue: aspectratioValue,
+                grid: grid,
+                draggableItemPositon: draggableItemPositon,
+              ),
+            ),
+            BuildXLabel(
+              xLabel: widget.xLabel,
+            ),
+            BuildYLabel(
+              yLabel: widget.yLabel,
+            ),
+            DraggableItem(
+              matrixBoardPositon: _matrixBoardPosition,
+            ),
+          ],
         ),
-        BuildXLabel(
-          xLabel: widget.xLabel,
-        ),
-        BuildYLabel(
-          yLabel: widget.yLabel,
-        ),
-        // BuildGoalItem(),
-        DraggableItem(
-          matrixBoardPositon: _matrixBoardPosition,
-        ),
-      ],
+      ),
     );
   }
 
   // *** Get position of board on the screen *** //
-  // _getMatrixBoardSize() {
-  //   final RenderBox matrixBoardRenderBox =
-  //       _matrixBoardKey.currentContext.findRenderObject();
-  //   final matrixBoardSize = matrixBoardRenderBox.size;
-  //   setState(() {
-  //     _matrixBoardSize = matrixBoardSize;
-  //   });
-  // }
-
   _getMatrixBoardPosition() {
     final RenderBox matrixBoardRenderBox =
         _matrixBoardKey.currentContext.findRenderObject();
@@ -125,7 +119,7 @@ class _BuildMatrixBoardState extends State<BuildMatrixBoard> {
         Provider.of<DraggableItemBloc>(context);
 
     return Padding(
-      padding: const EdgeInsets.all(0.0),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
       child: RotatedBox(
         quarterTurns: 3,
         child: AspectRatio(
@@ -154,11 +148,6 @@ class _BuildMatrixBoardState extends State<BuildMatrixBoard> {
                       color: Colors.brown.shade900.withOpacity(.3))
                 ],
                 color: Styles.drg_colorAppBackgroundLight,
-                // color: Colors.orange.shade200,
-              ),
-              margin: EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 20,
               ),
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -210,20 +199,19 @@ class _BuildXLabelState extends State<BuildXLabel> {
   @override
   Widget build(BuildContext context) {
     double mqWidth = MediaQuery.of(context).size.width;
-    Orientation mqOrientation = MediaQuery.of(context).orientation;
+    // Orientation mqOrientation = MediaQuery.of(context).orientation;
 
     bool isBigScreen = mqWidth > 786;
-    // TODO: Container needed?
-    return Container(
-      // margin: isBigScreen ? EdgeInsets.only(top: 310, left: 150) : null,
-      padding: EdgeInsets.only(left: 55, bottom: 10),
-      // height: 389,
-      // width: 354,
-      child: Align(
-        alignment: Alignment.bottomCenter,
+    return Positioned(
+      right: 0,
+      left: 0,
+      bottom: 24,
+      child: Container(
+        constraints: BoxConstraints(maxWidth: 2000),
         child: Text(
           "${widget.xLabel}",
           textAlign: TextAlign.center,
+          textWidthBasis: TextWidthBasis.parent,
           style: TextStyle(
               color: Colors.black54.withOpacity(.5),
               fontSize: isBigScreen ? 22 : 16,
@@ -254,13 +242,11 @@ class _BuildYLabelState extends State<BuildYLabel> {
 
     bool isBigScreen = mqWidth > 786;
 
-    return Container(
-      margin: isBigScreen ? EdgeInsets.only(top: 170) : null,
-      padding: EdgeInsets.only(left: 25),
-      height: 384,
-      width: 388,
-      child: Align(
-        alignment: Alignment.centerLeft,
+    return Positioned(
+      top: 0,
+      left: 24,
+      bottom: 0,
+      child: Container(
         child: RotatedBox(
           quarterTurns: 3,
           child: Text(
