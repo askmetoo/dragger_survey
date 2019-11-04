@@ -54,35 +54,27 @@ class _MatrixBoardState extends State<MatrixBoard> {
       gridLength = grid.length;
     });
 
-    return Column(
+    return Stack(
       children: <Widget>[
-        Stack(
-          children: <Widget>[
-            Container(
-              key: _matrixBoardKey,
-              child: BuildMatrixBoard(
-                gridLength: gridLength,
-                aspectratioValue: aspectratioValue,
-                grid: grid,
-                draggableItemPositon: draggableItemPositon,
-              ),
-            ),
-            BuildXLabel(
-              xLabel: widget.xLabel,
-            ),
-            BuildYLabel(
-              yLabel: widget.yLabel,
-            ),
-            // BuildGoalItem(),
-            DraggableItem(
-              matrixBoardPositon: _matrixBoardPosition,
-            ),
-          ],
+        Container(
+          key: _matrixBoardKey,
+          child: BuildMatrixBoard(
+            gridLength: gridLength,
+            aspectratioValue: aspectratioValue,
+            grid: grid,
+            draggableItemPositon: draggableItemPositon,
+          ),
         ),
-        // Text(
-        //     "MatrixBoard size: ${_matrixBoardSize.width} x ${_matrixBoardSize.height} (h x w)"),
-        // Text(
-        //     "MatrixBoard position: ${_matrixBoardPosition.dx} / ${_matrixBoardPosition.dy} (x / y)"),
+        BuildXLabel(
+          xLabel: widget.xLabel,
+        ),
+        BuildYLabel(
+          yLabel: widget.yLabel,
+        ),
+        // BuildGoalItem(),
+        DraggableItem(
+          matrixBoardPositon: _matrixBoardPosition,
+        ),
       ],
     );
   }
@@ -221,12 +213,12 @@ class _BuildXLabelState extends State<BuildXLabel> {
     Orientation mqOrientation = MediaQuery.of(context).orientation;
 
     bool isBigScreen = mqWidth > 786;
-
+    // TODO: Container needed?
     return Container(
-      margin: isBigScreen ? EdgeInsets.only(top: 310, left: 150) : null,
+      // margin: isBigScreen ? EdgeInsets.only(top: 310, left: 150) : null,
       padding: EdgeInsets.only(left: 55, bottom: 10),
-      height: 389,
-      width: 354,
+      // height: 389,
+      // width: 354,
       child: Align(
         alignment: Alignment.bottomCenter,
         child: Text(
