@@ -73,7 +73,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 )
               : _singInButton(context: context),
-          Text("ConnectionStatus")
         ],
       ),
     );
