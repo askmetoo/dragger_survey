@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +26,18 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Opacity(
+                opacity: .73,
+                              child: SizedBox(
+                  height: 170,
+                  width: double.infinity,
+                    child: FlareActor(
+                  'assets/dragger_flag_anim.flr',
+                  fit: BoxFit.contain,
+                  animation: 'dragger-flag-anim',
+
+                )),
+              ),
               Image(
                 image: AssetImage('assets/dragger-logo.png'),
               ),
