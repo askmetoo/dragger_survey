@@ -80,7 +80,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                   orderField: surveySetsBloc.orderField,
                   // orderField: teamBloc.orderField,
                   descending: surveySetsBloc.descendingOrder)
-                  // descending: teamBloc.descendingOrder)
+              // descending: teamBloc.descendingOrder)
               .catchError((err) => log(
                   "ERROR in BuildSurveySetsListView getPrismSurveySetQuery: $err")),
           builder: (BuildContext context,
@@ -146,6 +146,11 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
         children: <Widget>[
           Spacer(
             flex: 8,
+          ),
+          Icon(
+            Icons.announcement,
+            size: 80,
+            color: Styles.drg_colorSecondary,
           ),
           Container(
             height: 24,
@@ -246,6 +251,11 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
         children: <Widget>[
           Spacer(
             flex: 8,
+          ),
+          Icon(
+            Icons.announcement,
+            size: 80,
+            color: Styles.drg_colorSecondary,
           ),
           Text(
             "Before you      ",
