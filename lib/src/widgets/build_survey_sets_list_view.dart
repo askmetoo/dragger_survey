@@ -330,6 +330,11 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
           Spacer(
             flex: 8,
           ),
+          Icon(
+            Icons.announcement,
+            size: 80,
+            color: Styles.drg_colorSecondary,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
