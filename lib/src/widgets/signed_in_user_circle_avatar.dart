@@ -19,11 +19,16 @@ class SignedInUserCircleAvatar extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.all(8),
                   child: CircleAvatar(
-                    backgroundColor: Styles.drg_colorDarkerGreen,
-                    backgroundImage: snapshot.data?.uid != null
-                        ? NetworkImage(snapshot.data.photoUrl)
-                        // ? CachedNetworkImageProvider(snapshot.data.photoUrl)
-                        : null,
+                    backgroundColor: Styles.drg_colorSecondary,
+                    radius: 50,
+                                      child: CircleAvatar(
+                                        radius: 18,
+                      backgroundColor: Styles.drg_colorDarkerGreen,
+                      backgroundImage: snapshot.data?.uid != null
+                          ? NetworkImage(snapshot.data.photoUrl)
+                          // ? CachedNetworkImageProvider(snapshot.data.photoUrl)
+                          : null,
+                    ),
                   ),
                 ));
           }
