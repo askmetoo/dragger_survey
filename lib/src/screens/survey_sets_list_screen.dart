@@ -83,7 +83,6 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                 BuildTeamsDropdownButton(
                   teamsSnapshot: teamsSnapshot,
                 ),
-                BuildFilterSort(),
                 Expanded(
                   child: BuildSurveySetsListView(),
                 ),

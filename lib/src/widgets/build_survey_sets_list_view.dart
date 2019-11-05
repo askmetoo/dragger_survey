@@ -73,13 +73,14 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
         }
 
         return FutureBuilder<QuerySnapshot>(
-          // TODO: implement sorting by date and name
           future: surveySetsBloc
               .getPrismSurveySetQueryOrderByField(
                   fieldName: 'createdByTeam',
                   fieldValue: teamBloc?.currentSelectedTeamId,
-                  orderField: teamBloc.orderField,
-                  descending: teamBloc.descendingOrder)
+                  orderField: surveySetsBloc.orderField,
+                  // orderField: teamBloc.orderField,
+                  descending: surveySetsBloc.descendingOrder)
+                  // descending: teamBloc.descendingOrder)
               .catchError((err) => log(
                   "ERROR in BuildSurveySetsListView getPrismSurveySetQuery: $err")),
           builder: (BuildContext context,
