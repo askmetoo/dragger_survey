@@ -147,7 +147,7 @@ Widget buildTeamsListView({BuildContext context}) {
                                 style: Styles.drg_textListTitle,
                               ),
                               subtitle: Text(
-                                """id: $teamId \nCreated: ${formatDate(teamDocumentSnapshot['created'].toDate(), [
+                                """Created: ${formatDate(teamDocumentSnapshot['created'].toDate(), [
                                   dd,
                                   '. ',
                                   MM,
