@@ -28,21 +28,30 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               Opacity(
                 opacity: .73,
-                              child: SizedBox(
-                  height: 170,
-                  width: double.infinity,
+                child: SizedBox(
+                    height: MediaQuery.of(context).orientation ==
+                            Orientation.portrait
+                        ? 170
+                        : 90,
+                    width: double.infinity,
                     child: FlareActor(
-                  'assets/dragger_flag_anim.flr',
-                  fit: BoxFit.contain,
-                  animation: 'dragger-flag-anim',
-
-                )),
-              ),
-              Image(
-                image: AssetImage('assets/dragger-logo.png'),
+                      'assets/dragger_flag_anim.flr',
+                      fit: BoxFit.contain,
+                      animation: 'dragger-flag-anim',
+                    )),
               ),
               SizedBox(
-                height: 50,
+                height: MediaQuery.of(context).orientation ==
+                            Orientation.portrait
+                        ? 180 : 140,
+                child: Image(
+                  image: AssetImage('assets/dragger-logo.png'),
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).orientation ==
+                            Orientation.portrait
+                        ? 50 : 5,
               ),
               buildLoginPart(context),
             ],
