@@ -141,40 +141,62 @@ class SurveySetDetailsScreen extends StatelessWidget {
                         ),
                       ],
                       child: Container(
-                        decoration: BoxDecoration(
-                            color: Styles.drg_colorSecondary.withOpacity(.13),
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(40),
-                              bottomLeft: Radius.circular(40),
-                            )),
-                        margin: EdgeInsets.only(bottom: 2),
-                        child: ListTile(
-                          dense: true,
-                          leading: Icon(Icons.person),
-                          title: RichText(
-                            text: TextSpan(
-                              text: "${document.data['askedPerson']} ",
-                              style: TextStyle(
-                                color: Styles.drg_colorText,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                        margin: EdgeInsets.only(left: 14, bottom: 1, top: 1),
+                        color: Styles.drg_colorSecondary.withOpacity(0),
+                        // margin: EdgeInsets.only(bottom: 2),
+                        // decoration: BoxDecoration(
+                        //     color: Styles.drg_colorSecondary.withOpacity(.13),
+                        //     borderRadius: BorderRadius.only(
+                        //       topLeft: Radius.circular(40),
+                        //       bottomLeft: Radius.circular(40),
+                        //     )),
+                        child: ClipRRect(
+                          clipBehavior: Clip.antiAlias,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(65),
+                            bottomLeft: Radius.circular(65),
+                          ),
+                          child: Container(
+                            padding: EdgeInsets.only(left: 16, bottom: 4),
+                            decoration: BoxDecoration(
+                              color: Styles.drg_colorSecondary.withOpacity(.4),
+                            ),
+                            child: ListTile(
+                              dense: true,
+                              leading: Icon(
+                                Icons.person,
+                                color: Styles.drg_colorSecondary,
+                                size: 36,
                               ),
-                              children: [
-                                TextSpan(
-                                  text: "was asked ",
+                              title: RichText(
+                                text: TextSpan(
+                                  text: ("${document.data['askedPerson']} ")
+                                      .toUpperCase(),
                                   style: TextStyle(
-                                    fontWeight: FontWeight.w200,
+                                    color: Styles.drg_colorText,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: .7,
                                   ),
+                                  children: [
+                                    TextSpan(
+                                      text: "was asked ",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: timeago.format(DateTime.now()
+                                          .subtract(DateTime.now().difference(
+                                              document.data['created']
+                                                  .toDate()))),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    )
+                                  ],
                                 ),
-                                TextSpan(
-                                  text: timeago.format(DateTime.now().subtract(
-                                      DateTime.now().difference(
-                                          document.data['created'].toDate()))),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w200,
-                                  ),
-                                )
-                              ],
+                              ),
                             ),
                           ),
                         ),
@@ -240,13 +262,13 @@ class SurveySetDetailsScreen extends StatelessWidget {
         builder: (context) {
           return SimpleDialog(
             shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(20),
-                                    topRight: Radius.circular(3),
-                                    bottomLeft: Radius.circular(20),
-                                    bottomRight: Radius.circular(20),
-                                  ),
-                                ),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(3),
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
+            ),
             backgroundColor: Styles.drg_colorSecondaryDeepDark,
             title: Text(
               "Edit Survey Metadata",
