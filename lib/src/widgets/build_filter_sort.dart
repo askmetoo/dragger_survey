@@ -52,120 +52,119 @@ class _BuildFilterSortState extends State<BuildFilterSort> {
           } else if (teamsListSnapshot.data.documents.isEmpty) {
             return Container();
           }
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Container(
-                width: 20,
-                alignment: Alignment.centerLeft,
-                child: PopupMenuButton<int>(
-                  onSelected: (int value) {
-                    log("Value: $value");
-                    switch (value) {
-                      case 1:
-                        surveySetBloc.orderField = 'created';
-                        surveySetBloc.descendingOrder = true;
-                        break;
-                      case 2:
-                        surveySetBloc.orderField = 'created';
-                        surveySetBloc.descendingOrder = false;
-                        break;
-                      case 3:
-                        surveySetBloc.orderField = 'name';
-                        surveySetBloc.descendingOrder = true;
-                        break;
-                      case 4:
-                        surveySetBloc.orderField = 'name';
-                        surveySetBloc.descendingOrder = false;
-                        break;
-                      default:
-                        surveySetBloc.orderField = 'created';
-                        surveySetBloc.descendingOrder = true;
-                    }
-                    setState(() {
-                      _sortBy = value;
-                    });
-                  },
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      value: 1,
-                      child: Text('Sort by date, descending'),
-                    ),
-                    PopupMenuItem(
-                      value: 2,
-                      child: Text('Sort by date, ascending'),
-                    ),
-                    PopupMenuItem(
-                      value: 3,
-                      child: Text('Sort by name, descending'),
-                    ),
-                    PopupMenuItem(
-                      value: 4,
-                      child: Text('Sort by name, ascending'),
-                    ),
-                  ],
-                  icon: Icon(
-                    Icons.sort,
-                    size: 32,
-                    color: Styles.drg_colorSecondary,
+          return Container(
+              padding: EdgeInsets.only(right: 0),
+              margin: EdgeInsets.only(left: 26, right: 0),
+              width: 48,
+              alignment: Alignment.centerRight,
+              child: PopupMenuButton<int>(
+                onSelected: (int value) {
+                  log("Value: $value");
+                  switch (value) {
+                    case 1:
+                      surveySetBloc.orderField = 'created';
+                      surveySetBloc.descendingOrder = true;
+                      break;
+                    case 2:
+                      surveySetBloc.orderField = 'created';
+                      surveySetBloc.descendingOrder = false;
+                      break;
+                    case 3:
+                      surveySetBloc.orderField = 'name';
+                      surveySetBloc.descendingOrder = true;
+                      break;
+                    case 4:
+                      surveySetBloc.orderField = 'name';
+                      surveySetBloc.descendingOrder = false;
+                      break;
+                    default:
+                      surveySetBloc.orderField = 'created';
+                      surveySetBloc.descendingOrder = true;
+                  }
+                  setState(() {
+                    _sortBy = value;
+                  });
+                },
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: 1,
+                    child: Text('Sort by date, descending'),
                   ),
-                )
-                // child: DropdownButton(
-                //   underline: Container(),
-                //   icon: Icon(
-                //     Icons.sort,
-                //     size: 18,
-                //   ),
-                //   isDense: true,
-                //   isExpanded: false,
-                //   // value: _sortBy,
-                //   onChanged: (newValue) {
-                //     log("In BuildFilterSort newValue: $newValue");
-                //     switch (newValue) {
-                //       case 1:
-                //         surveySetBloc.orderField = 'created';
-                //         surveySetBloc.descendingOrder = true;
-                //         break;
-                //       case 2:
-                //         surveySetBloc.orderField = 'created';
-                //         surveySetBloc.descendingOrder = false;
-                //         break;
-                //       case 3:
-                //         surveySetBloc.orderField = 'name';
-                //         surveySetBloc.descendingOrder = true;
-                //         break;
-                //       case 4:
-                //         surveySetBloc.orderField = 'name';
-                //         surveySetBloc.descendingOrder = false;
-                //         break;
-                //       default:
-                //         surveySetBloc.orderField = 'created';
-                //         surveySetBloc.descendingOrder = true;
-                //     }
-                //     setState(() {
-                //       _sortBy = newValue;
-                //     });
-                //   },
-                //   items: [
-                //     DropdownMenuItem(
-                //       value: 1,
-                //       child: Text('By date, descending'),
-                //     ),
-                //     DropdownMenuItem(
-                //       value: 2,
-                //       child: Text('By date, ascending'),
-                //     ),
-                //     DropdownMenuItem(
-                //       value: 3,
-                //       child: Text('By name, descending'),
-                //     ),
-                //     DropdownMenuItem(
-                //       value: 4,
-                //       child: Text('By name, ascending'),
-                //     ),
-                //   ],
-                // ),
+                  PopupMenuItem(
+                    value: 2,
+                    child: Text('Sort by date, ascending'),
+                  ),
+                  PopupMenuItem(
+                    value: 3,
+                    child: Text('Sort by name, descending'),
+                  ),
+                  PopupMenuItem(
+                    value: 4,
+                    child: Text('Sort by name, ascending'),
+                  ),
+                ],
+                icon: Icon(
+                  Icons.sort,
+                  size: 32,
+                  color: Styles.drg_colorSecondary,
                 ),
-          );
+              )
+              // child: DropdownButton(
+              //   underline: Container(),
+              //   icon: Icon(
+              //     Icons.sort,
+              //     size: 18,
+              //   ),
+              //   isDense: true,
+              //   isExpanded: false,
+              //   // value: _sortBy,
+              //   onChanged: (newValue) {
+              //     log("In BuildFilterSort newValue: $newValue");
+              //     switch (newValue) {
+              //       case 1:
+              //         surveySetBloc.orderField = 'created';
+              //         surveySetBloc.descendingOrder = true;
+              //         break;
+              //       case 2:
+              //         surveySetBloc.orderField = 'created';
+              //         surveySetBloc.descendingOrder = false;
+              //         break;
+              //       case 3:
+              //         surveySetBloc.orderField = 'name';
+              //         surveySetBloc.descendingOrder = true;
+              //         break;
+              //       case 4:
+              //         surveySetBloc.orderField = 'name';
+              //         surveySetBloc.descendingOrder = false;
+              //         break;
+              //       default:
+              //         surveySetBloc.orderField = 'created';
+              //         surveySetBloc.descendingOrder = true;
+              //     }
+              //     setState(() {
+              //       _sortBy = newValue;
+              //     });
+              //   },
+              //   items: [
+              //     DropdownMenuItem(
+              //       value: 1,
+              //       child: Text('By date, descending'),
+              //     ),
+              //     DropdownMenuItem(
+              //       value: 2,
+              //       child: Text('By date, ascending'),
+              //     ),
+              //     DropdownMenuItem(
+              //       value: 3,
+              //       child: Text('By name, descending'),
+              //     ),
+              //     DropdownMenuItem(
+              //       value: 4,
+              //       child: Text('By name, ascending'),
+              //     ),
+              //   ],
+              // ),
+              );
         });
   }
 }
