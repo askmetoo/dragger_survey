@@ -18,8 +18,6 @@ class SurveySetDetailsScreen extends StatelessWidget {
     final PrismSurveySetBloc surveySetsBloc =
         Provider.of<PrismSurveySetBloc>(context);
 
-    log("In SurveySetDetailsScreen - id: $surveySetId");
-
     return FutureBuilder<DocumentSnapshot>(
       future: surveySetsBloc.getPrismSurveySetById(id: surveySetId),
       builder: (BuildContext context,
@@ -39,7 +37,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  buildMetaHeader(surveySetsSnapshot: surveySetsSnapshot),
+                  buildMetaHeader(context: context, surveySetsSnapshot: surveySetsSnapshot),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                     child: Text("Surveys made:"),
@@ -143,13 +141,6 @@ class SurveySetDetailsScreen extends StatelessWidget {
                       child: Container(
                         margin: EdgeInsets.only(left: 14, bottom: 1, top: 1),
                         color: Styles.drg_colorSecondary.withOpacity(0),
-                        // margin: EdgeInsets.only(bottom: 2),
-                        // decoration: BoxDecoration(
-                        //     color: Styles.drg_colorSecondary.withOpacity(.13),
-                        //     borderRadius: BorderRadius.only(
-                        //       topLeft: Radius.circular(40),
-                        //       bottomLeft: Radius.circular(40),
-                        //     )),
                         child: ClipRRect(
                           clipBehavior: Clip.antiAlias,
                           borderRadius: BorderRadius.only(
@@ -211,37 +202,52 @@ class SurveySetDetailsScreen extends StatelessWidget {
     }
   }
 
-  buildMetaHeader({surveySetsSnapshot}) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
-      child: Column(
-        children: <Widget>[
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "${surveySetsSnapshot?.data['name']}",
-              style: TextStyle(
-                  fontSize: Styles.drg_fontSizeMediumHeadline,
-                  fontFamily: 'Bitter',
-                  fontWeight: FontWeight.w700),
-            ),
+  buildMetaHeader({context, surveySetsSnapshot}) {
+
+    final UserBloc userBloc = Provider.of<UserBloc>(context);
+
+    return FutureBuilder<QuerySnapshot>(
+      future: userBloc.getUsersQuery(fieldName: 'providersUID', fieldValue: surveySetsSnapshot?.data['createdByUser']),
+      builder: (context, userSnapshot) {
+        if (userSnapshot.connectionState != ConnectionState.done) {
+          return CircularProgressIndicator();
+        }
+        if (!userSnapshot.hasData) {
+          log("In SurveySetDetailsScreen - userSnapshot has no data");
+          return Container();
+        }
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "${surveySetsSnapshot?.data['name']}",
+                  style: TextStyle(
+                      fontSize: Styles.drg_fontSizeMediumHeadline,
+                      fontFamily: 'Bitter',
+                      fontWeight: FontWeight.w700),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text("${surveySetsSnapshot.data['description']}",
+                    style: TextStyle(
+                        fontSize: Styles.drg_fontSizesubHeadline,
+                        fontWeight: FontWeight.w500)),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Granularity: ${surveySetsSnapshot.data['resolution']} \nThis set was created by ${userSnapshot?.data?.documents[0].data['displayName']}",
+                  style: TextStyle(fontSize: Styles.drg_fontSizeCopyText),
+                ),
+              ),
+            ],
           ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text("${surveySetsSnapshot.data['description']}",
-                style: TextStyle(
-                    fontSize: Styles.drg_fontSizesubHeadline,
-                    fontWeight: FontWeight.w500)),
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Granularity: ${surveySetsSnapshot.data['resolution']} \nCreated by User ID: ${surveySetsSnapshot.data['createdByUser']} \nUser displayName: TODO",
-              style: TextStyle(fontSize: Styles.drg_fontSizeCopyText),
-            ),
-          ),
-        ],
-      ),
+        );
+      }
     );
   }
 
