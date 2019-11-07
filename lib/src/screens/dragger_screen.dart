@@ -4,6 +4,7 @@ import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/screens/screens.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:icon_shadow/icon_shadow.dart';
 import 'package:provider/provider.dart';
@@ -72,12 +73,6 @@ class _DraggerScreenState extends State<DraggerScreen> {
             matrixGranularityBloc: matrixGranularityBloc,
             prismSurveyBloc: prismSurveyBloc,
           );
-
-    // Container(
-    //     // height: double.infinity,
-    //     color: Styles.drg_colorGreen,
-    //     width: double.infinity,
-    //   );
   }
 }
 
@@ -471,6 +466,10 @@ class BuildBoard extends StatelessWidget {
         MatrixBoard(
           xLabel: xLabel,
           yLabel: yLabel,
+        ),
+        CircleAvatar(
+          radius: 80,
+          child: FlareActor('assets/rotating_arrows_anim.flr', fit: BoxFit.contain, animation: 'dancing_arrows',),
         ),
       ],
     );
