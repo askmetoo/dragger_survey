@@ -17,12 +17,12 @@ class SignedInUserCircleAvatar extends StatelessWidget {
                   Scaffold.of(context).openEndDrawer();
                 },
                 child: Container(
-                  padding: EdgeInsets.all(8),
+                  padding: EdgeInsets.all(7),
                   child: CircleAvatar(
                     backgroundColor: Styles.drg_colorSecondary,
-                    radius: 50,
-                                      child: CircleAvatar(
-                                        radius: 18,
+                    radius: 20,
+                    child: CircleAvatar(
+                      radius: 18,
                       backgroundColor: Styles.drg_colorDarkerGreen,
                       backgroundImage: snapshot.data?.uid != null
                           ? NetworkImage(snapshot.data.photoUrl)

@@ -52,6 +52,8 @@ class _UserDrawerState extends State<UserDrawer> {
               SizedBox(
                 height: 160,
                 child: DrawerHeader(
+                  padding:
+                      EdgeInsets.only(top: 8, left: 16, right: 10, bottom: 0),
                   child: Container(
                     alignment: Alignment.topLeft,
                     child: Row(
@@ -64,7 +66,7 @@ class _UserDrawerState extends State<UserDrawer> {
                               SignedInUserCircleAvatar(),
                               Text(
                                 '${signInSnapshot.data.displayName}',
-                                textAlign: TextAlign.start,
+                                textAlign: TextAlign.center,
                               ),
                             ],
                           ),
@@ -83,7 +85,7 @@ class _UserDrawerState extends State<UserDrawer> {
                     ),
                   ),
                   decoration: BoxDecoration(
-                    color: Styles.drg_colorSecondary,
+                    color: Styles.drg_colorPrimary.withAlpha(100),
                   ),
                 ),
               ),
