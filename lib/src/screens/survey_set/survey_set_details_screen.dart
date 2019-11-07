@@ -210,7 +210,17 @@ class SurveySetDetailsScreen extends StatelessWidget {
       future: userBloc.getUsersQuery(fieldName: 'providersUID', fieldValue: surveySetsSnapshot?.data['createdByUser']),
       builder: (context, userSnapshot) {
         if (userSnapshot.connectionState != ConnectionState.done) {
-          return CircularProgressIndicator();
+          return Center(
+              child: Container(
+                constraints: BoxConstraints(maxWidth: 50),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 10,
+                  ),
+                ),
+              ),
+            );
         }
         if (!userSnapshot.hasData) {
           log("In SurveySetDetailsScreen - userSnapshot has no data");

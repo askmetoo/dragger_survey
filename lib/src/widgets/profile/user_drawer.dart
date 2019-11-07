@@ -43,7 +43,17 @@ class _UserDrawerState extends State<UserDrawer> {
       builder:
           (BuildContext context, AsyncSnapshot<FirebaseUser> signInSnapshot) {
         if (signInSnapshot.connectionState != ConnectionState.done) {
-          return CircularProgressIndicator();
+          return Center(
+            child: Container(
+              constraints: BoxConstraints(maxWidth: 50),
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: CircularProgressIndicator(
+                  strokeWidth: 10,
+                ),
+              ),
+            ),
+          );
         }
         return Drawer(
           child: ListView(

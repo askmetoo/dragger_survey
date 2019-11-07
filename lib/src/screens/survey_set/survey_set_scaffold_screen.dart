@@ -41,8 +41,18 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
             fieldName: 'surveySet', fieldValue: arg['id']),
         builder: (context, surveyIDsSnapshot) {
           if (surveyIDsSnapshot.connectionState != ConnectionState.done) {
-            // TODO:
-            return CircularProgressIndicator();
+            return Center(
+              child: Container(
+                constraints: BoxConstraints(maxWidth: 50),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 10,
+                  ),
+                ),
+              ),
+            );
+            ;
           } else if (!surveyIDsSnapshot.hasData) {
             return Container();
           }
