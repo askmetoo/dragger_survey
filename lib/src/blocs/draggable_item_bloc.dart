@@ -19,6 +19,10 @@ class DraggableItemBloc extends ChangeNotifier {
     return _draggableItemPosition;
   }
 
+  Offset get initialPosition {
+    return _initialPosition;
+  }
+
   set initialPosition(Offset position) {
     _initialPosition = position;
     notifyListeners();

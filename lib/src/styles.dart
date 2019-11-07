@@ -58,6 +58,7 @@ class Styles {
   static const Color drg_colorSecondaryDeepDark = Color(0xff583c00);
   static const Color drg_colorText = Color(0xff0e2431);
   static const Color drg_colorTextMediumDark = Color(0xff465761);
+  static const Color drg_matrixBackgound = Color(0xffFFCA79);
   static Color drgColorTextMediumLight = drg_colorText.withOpacity(0.8);
 
   static const Color drg_colorYellowGreen = Color(0xffffff7f);

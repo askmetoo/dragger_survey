@@ -1,6 +1,7 @@
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -65,6 +66,19 @@ class _MatrixBoardState extends State<MatrixBoard> {
                 aspectratioValue: aspectratioValue,
                 grid: grid,
                 draggableItemPositon: draggableItemPositon,
+              ),
+            ),
+            Positioned(
+              left: draggableBloc.initialPosition.dx - 24,
+              top: draggableBloc.initialPosition.dy - 24,
+              child: CircleAvatar(
+                radius: 60,
+                child: FlareActor(
+                  'assets/dancing_arrows_ani.flr',
+                  fit: BoxFit.contain,
+                  animation: 'dancing_arrows',
+                  color: Styles.drg_colorContrast,
+                ),
               ),
             ),
             BuildXLabel(

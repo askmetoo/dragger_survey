@@ -433,14 +433,6 @@ class BuildBoard extends StatelessWidget {
           xLabel: xLabel,
           yLabel: yLabel,
         ),
-        CircleAvatar(
-          radius: 80,
-          child: FlareActor(
-            'assets/rotating_arrows_anim.flr',
-            fit: BoxFit.contain,
-            animation: 'dancing_arrows',
-          ),
-        ),
       ],
     );
   }
