@@ -17,6 +17,7 @@ class PrismSurveySetBloc extends ChangeNotifier {
     _orderField = orderField;
     notifyListeners();
   }
+
   set descendingOrder(descendingOrder) {
     _descendingOrder = descendingOrder;
     notifyListeners();
@@ -40,14 +41,14 @@ class PrismSurveySetBloc extends ChangeNotifier {
 
   String setCurrentPrismSurveySetId({@required id}) {
     _currentPrismSurveySetId = id;
-    notifyListeners();
+    // notifyListeners();
     return _currentPrismSurveySetId;
   }
 
   Future<DocumentSnapshot> setCurrentPrismSurveySetById({@required id}) async {
     _currentPrismSurveySetFuture = getPrismSurveySetById(id: id);
     log("In PrismSurveySetBloc setCurrentPrismSurveySetById returned _currentPrismSurveySet is ${_currentPrismSurveySetFuture.then((val) => val.documentID)}");
-    notifyListeners();
+    // notifyListeners();
     return _currentPrismSurveySetFuture;
   }
 
@@ -70,9 +71,16 @@ class PrismSurveySetBloc extends ChangeNotifier {
   }
 
   Future<QuerySnapshot> getPrismSurveySetQueryOrderByField(
-      {@required String fieldName, @required String fieldValue, @required String orderField, bool descending = false}) {
+      {@required String fieldName,
+      @required String fieldValue,
+      @required String orderField,
+      bool descending = false}) {
     return Collection<PrismSurveySet>(path: 'surveySets')
-        .getDocumentsByQueryOrderByField(fieldName: fieldName, fieldValue: fieldValue, orderField: orderField, descending: descending);
+        .getDocumentsByQueryOrderByField(
+            fieldName: fieldName,
+            fieldValue: fieldValue,
+            orderField: orderField,
+            descending: descending);
   }
 
   Future<DocumentSnapshot> getPrismSurveySetById({id}) async {
