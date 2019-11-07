@@ -99,7 +99,9 @@ class _DraggableItemState extends State<DraggableItem> {
           height: _draggableFeedbackSize,
           child: Center(),
         ),
-        onDragStarted: () {},
+        onDragStarted: () {
+          draggableBloc.setStartedDragging(true);
+        },
         onDragCompleted: () {},
         onDragEnd: (drag) {
           if (_mqWidth >= 768.0 && _mqOrientation == Orientation.landscape) {

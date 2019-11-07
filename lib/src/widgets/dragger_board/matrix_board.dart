@@ -68,19 +68,7 @@ class _MatrixBoardState extends State<MatrixBoard> {
                 draggableItemPositon: draggableItemPositon,
               ),
             ),
-            Positioned(
-              left: draggableBloc.initialPosition.dx - 24,
-              top: draggableBloc.initialPosition.dy - 24,
-              child: CircleAvatar(
-                radius: 60,
-                child: FlareActor(
-                  'assets/dancing_arrows_ani.flr',
-                  fit: BoxFit.contain,
-                  animation: 'dancing_arrows',
-                  color: Styles.drg_colorContrast,
-                ),
-              ),
-            ),
+            draggableBloc.startedDragging ? Container() : BuildRotatingArrows(),
             BuildXLabel(
               xLabel: widget.xLabel,
             ),
@@ -107,6 +95,30 @@ class _MatrixBoardState extends State<MatrixBoard> {
     });
   }
   // *** =============================================== *** //
+}
+
+class BuildRotatingArrows extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final DraggableItemBloc draggableBloc =
+        Provider.of<DraggableItemBloc>(context);
+
+    return Positioned(
+      left: draggableBloc.initialPosition.dx - 24,
+      top: draggableBloc.initialPosition.dy - 24,
+      child: CircleAvatar(
+        backgroundColor: Colors.transparent,
+        radius: 60,
+        child: FlareActor(
+          'assets/dancing_arrows_ani.flr',
+          fit: BoxFit.contain,
+          animation: 'dancing_arrows',
+          isPaused: false,
+          // color: Styles.drg_colorContrast,
+        ),
+      ),
+    );
+  }
 }
 
 class BuildMatrixBoard extends StatefulWidget {
@@ -140,6 +152,7 @@ class _BuildMatrixBoardState extends State<BuildMatrixBoard> {
           aspectRatio: widget.aspectratioValue,
           child: GestureDetector(
             onDoubleTap: () {
+              draggableBloc.setStartedDragging(false);
               draggableBloc.resetDraggableItemPositon();
             },
             child: Container(
