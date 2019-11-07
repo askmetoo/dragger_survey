@@ -5,7 +5,7 @@ import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../styles.dart';
+import '../../styles.dart';
 
 class DraggerScaffoldScreen extends StatelessWidget {
   @override

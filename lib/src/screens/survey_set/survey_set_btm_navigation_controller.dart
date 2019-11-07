@@ -4,17 +4,19 @@ import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:dragger_survey/src/screens/screens.dart';
 
-import '../styles.dart';
+import '../../styles.dart';
 
 class SurveySetBtmNavigationController extends StatefulWidget {
   final Map<String, dynamic> arguments;
   SurveySetBtmNavigationController({Key key, this.arguments}) : super(key: key);
 
   @override
-  _SurveySetBtmNavigationControllerState createState() => _SurveySetBtmNavigationControllerState(arguments);
+  _SurveySetBtmNavigationControllerState createState() =>
+      _SurveySetBtmNavigationControllerState(arguments);
 }
 
-class _SurveySetBtmNavigationControllerState extends State<SurveySetBtmNavigationController> {
+class _SurveySetBtmNavigationControllerState
+    extends State<SurveySetBtmNavigationController> {
   Map<String, dynamic> args;
   static String _id;
 
@@ -32,10 +34,8 @@ class _SurveySetBtmNavigationControllerState extends State<SurveySetBtmNavigatio
     SurveySetDetailsScreen(
       key: PageStorageKey('SurveySetDetailsScreen'),
       surveySetId: _id,
-      ),
-    DraggerScreen(
-      key: PageStorageKey('DraggerScreen')
     ),
+    DraggerScreen(key: PageStorageKey('DraggerScreen')),
     SurveySetGraphsScreen(
       key: PageStorageKey('SurveySetGraphsScreen'),
     )
@@ -65,22 +65,19 @@ class _SurveySetBtmNavigationControllerState extends State<SurveySetBtmNavigatio
           icon: Icon(Icons.dvr),
         ),
         BottomNavigationBarItem(
-            icon: Icon(Icons.apps),
-            title: Text('Dragger Board'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.show_chart),
-            title: Text('Graphs'),
-          ),
+          icon: Icon(Icons.apps),
+          title: Text('Dragger Board'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.show_chart),
+          title: Text('Graphs'),
+        ),
       ],
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       endDrawer: UserDrawer(),
       appBar: AppBar(

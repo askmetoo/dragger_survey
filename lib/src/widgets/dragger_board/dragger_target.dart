@@ -1,6 +1,6 @@
 import 'package:dragger_survey/src/blocs/prism_survey_bloc.dart';
 import 'package:flutter/material.dart';
-import '../blocs/draggable_item_bloc.dart';
+import '../../blocs/draggable_item_bloc.dart';
 
 class DraggerTaget extends StatefulWidget {
   final int index;

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
-import 'package:dragger_survey/src/screens/splash_screen.dart';
+import 'package:dragger_survey/src/screens/login/splash_screen.dart';
 
 class TeamsListScreen extends StatelessWidget {
   @override
@@ -24,7 +24,9 @@ class TeamsListScreen extends StatelessWidget {
                   constraints: BoxConstraints(maxWidth: 50),
                   child: AspectRatio(
                     aspectRatio: 1,
-                    child: CircularProgressIndicator(strokeWidth: 10,),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 10,
+                    ),
                   ),
                 ),
               );

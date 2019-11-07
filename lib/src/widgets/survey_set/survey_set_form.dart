@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
-import 'package:dragger_survey/src/widgets/select_granularity.dart';
+import 'package:dragger_survey/src/widgets/dragger_board/select_granularity.dart';
 
 class SurveySetForm extends StatefulWidget {
   @override

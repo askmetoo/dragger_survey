@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../blocs/draggable_item_bloc.dart';
+import '../../blocs/draggable_item_bloc.dart';
 
 class DraggableItem extends StatefulWidget {
   final Offset matrixBoardPositon;

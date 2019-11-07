@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../styles.dart';
+import 'package:dragger_survey/src/styles.dart';
 
 buildNoDataAvailable() {
   return Column(
