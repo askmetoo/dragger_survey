@@ -192,40 +192,6 @@ class BuildLandscapeLayout extends StatelessWidget {
           ],
         ),
       ),
-
-      // child: Row(
-      //   // mainAxisSize: MainAxisSize.max,
-      //   mainAxisAlignment: MainAxisAlignment.start,
-      //   children: <Widget>[
-      //     Container(
-      //       color: Styles.drg_colorGreen,
-      //       width: 200,
-      //       // width: (MediaQuery.of(context).size.width / 2),
-      //       child: Column(
-      //         mainAxisSize: MainAxisSize.max,
-      //         mainAxisAlignment: MainAxisAlignment.start,
-      //         children: <Widget>[
-      //           // BuildAskedPersonDropdown(),
-      //           // DraggerBoardButtonRow(
-      //           //   formKey: _formKey,
-      //           //   currentSurveySet: surveySet?.documentID,
-      //           // ),
-      //           Text(
-      //             "Granularity: ${matrixGranularityBloc.matrixGranularity} \n$_xName: ${prismSurveyBloc.rowIndex + 1} \n$_yName: ${prismSurveyBloc.colIndex + 1}",
-      //             style: TextStyle(
-      //               color:
-      //                   Styles.drg_colorAppBackgroundMedium.withOpacity(.8),
-      //             ),
-      //           ),
-      //         ],
-      //       ),
-      //     ),
-      //     BuildBoard(
-      //       xLabel: _xName,
-      //       yLabel: _yName,
-      //     ),
-      //   ],
-      // ),
     );
   }
 }
@@ -469,7 +435,11 @@ class BuildBoard extends StatelessWidget {
         ),
         CircleAvatar(
           radius: 80,
-          child: FlareActor('assets/rotating_arrows_anim.flr', fit: BoxFit.contain, animation: 'dancing_arrows',),
+          child: FlareActor(
+            'assets/rotating_arrows_anim.flr',
+            fit: BoxFit.contain,
+            animation: 'dancing_arrows',
+          ),
         ),
       ],
     );
