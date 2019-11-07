@@ -36,11 +36,6 @@ class _DraggableItemState extends State<DraggableItem> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // final DraggableItemBloc draggableBloc =
-    //     Provider.of<DraggableItemBloc>(context);
-    // draggableBloc.mqWidth = MediaQuery.of(context).size.width;
-    // draggableBloc.mqOrientation = MediaQuery.of(context).orientation;
-    // draggableBloc.initBoard();
   }
 
   @override

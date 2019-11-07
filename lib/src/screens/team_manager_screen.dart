@@ -34,7 +34,6 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
     try {
       String barcode = await BarcodeScanner.scan();
       setState(() => this._scanedBarcode = barcode);
-      log("QRQRQRQRQRQR------> Scanned QR-Code/Barcode String: $_scanedBarcode");
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text("Code sucessfully scanned."),
         backgroundColor: Styles.drg_colorLighterGreen,
