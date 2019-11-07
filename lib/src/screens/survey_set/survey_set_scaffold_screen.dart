@@ -34,7 +34,7 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
         Provider.of<PrismSurveySetBloc>(context);
 
     surveySetBloc.currentPrismSurveySet.then((val) =>
-        print("ooooooo===============> val.data.length: ${val.data.length}"));
+        print("ooooooo===============> val.data.length: ${val?.data?.length}"));
 
     return FutureBuilder<QuerySnapshot>(
         future: surveyBloc.getPrismSurveyQuery(
@@ -81,25 +81,28 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
                   Navigator.pushNamed(context, '/draggerscaffold');
                 },
               ),
-              bottomNavigationBar: !moreSurveyThanOne ? null : BottomNavigationBar(
-                type: BottomNavigationBarType.fixed,
-                key: ValueKey(arg.hashCode),
-                items: const <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                    title: Text('Details'),
-                    icon: Icon(Icons.dvr),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.show_chart),
-                    title: Text('Graphs'),
-                  ),
-                ],
-                currentIndex: _selectedIndex,
-                backgroundColor: Styles.drg_colorSecondary,
-                unselectedItemColor: Styles.drg_colorAppBackground,
-                selectedItemColor: Styles.drg_colorContrast,
-                onTap: (int index) => setState(() => _selectedIndex = index),
-              ));
+              bottomNavigationBar: !moreSurveyThanOne
+                  ? null
+                  : BottomNavigationBar(
+                      type: BottomNavigationBarType.fixed,
+                      key: ValueKey(arg.hashCode),
+                      items: const <BottomNavigationBarItem>[
+                        BottomNavigationBarItem(
+                          title: Text('Details'),
+                          icon: Icon(Icons.dvr),
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.show_chart),
+                          title: Text('Graphs'),
+                        ),
+                      ],
+                      currentIndex: _selectedIndex,
+                      backgroundColor: Styles.drg_colorSecondary,
+                      unselectedItemColor: Styles.drg_colorAppBackground,
+                      selectedItemColor: Styles.drg_colorContrast,
+                      onTap: (int index) =>
+                          setState(() => _selectedIndex = index),
+                    ));
         });
   }
 
