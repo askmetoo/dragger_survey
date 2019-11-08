@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/screens/screens.dart';
 import 'package:dragger_survey/src/styles.dart';
@@ -93,18 +94,30 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
               ),
               bottomNavigationBar: !moreSurveyThanOne
                   ? null
-                  : BottomNavigationBar(
-                      type: BottomNavigationBarType.fixed,
+                  : CurvedNavigationBar(
+                      color: Styles.drg_colorDarkerGreen,
+                      // type: BottomNavigationBarType.fixed,
                       key: ValueKey(arg.hashCode),
-                      items: const <BottomNavigationBarItem>[
-                        BottomNavigationBarItem(
-                          title: Text('Details'),
-                          icon: Icon(Icons.dvr),
+                      items: <Widget>[
+                        Container(
+                          child: Column(
+                            children: <Widget>[
+                              Icon(Icons.dvr),
+                              Text(
+                                'Details',
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            ],
+                          ),
                         ),
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.show_chart),
-                          title: Text('Graphs'),
-                        ),
+                        // BottomNavigationBarItem(
+                        //   title: Text('Details'),
+                        //   icon: Icon(Icons.dvr),
+                        // ),
+                        // BottomNavigationBarItem(
+                        //   icon: Icon(Icons.show_chart),
+                        //   title: Text('Graphs'),
+                        // ),
                       ],
                       currentIndex: _selectedIndex,
                       backgroundColor: Styles.drg_colorSecondary,
