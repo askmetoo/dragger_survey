@@ -267,6 +267,10 @@ class SurveyScatterPlotChart extends StatelessWidget {
           desiredMinTickCount: granularity?.toInt() ?? 3,
         ),
       ),
+      // TODO:
+      defaultRenderer: charts.PointRendererConfig(customSymbolRenderers: {
+        'circle': charts.CircleSymbolRenderer(isSolid: true),
+      }),
       behaviors: [
         charts.ChartTitle('$xLabel',
             behaviorPosition: charts.BehaviorPosition.bottom,
