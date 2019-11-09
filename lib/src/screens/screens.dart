@@ -12,3 +12,4 @@ export 'how_to/how_to_screen.dart';
 export 'survey_set/survey_set_btm_navigation_controller.dart';
 export 'dragger_board/dragger_scaffold_screen.dart';
 export 'team/team_manager_screen.dart';
+export 'intro_views/intro_views.dart';

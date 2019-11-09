@@ -41,17 +41,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     )),
               ),
               SizedBox(
-                height: MediaQuery.of(context).orientation ==
-                            Orientation.portrait
-                        ? 180 : 140,
+                height:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? 180
+                        : 140,
                 child: Image(
                   image: AssetImage('assets/dragger-logo.png'),
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).orientation ==
-                            Orientation.portrait
-                        ? 50 : 5,
+                height:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? 50
+                        : 5,
               ),
               buildLoginPart(context),
             ],
@@ -95,7 +97,12 @@ class _LoginScreenState extends State<LoginScreen> {
           });
           signInBloc.createUserInDbIfNotExist(account: returnedUser);
           await Navigator.pushNamedAndRemoveUntil(
-              context, '/surveysetslist', (_) => false);
+            context,
+            '/introviews',
+            (_) => false,
+          );
+          // await Navigator.pushNamedAndRemoveUntil(
+          //     context, '/surveysetslist', (_) => false);
         }
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),

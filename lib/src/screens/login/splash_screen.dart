@@ -39,7 +39,6 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void navigateToHomeScreen() {
-    /// Push home screen and replace (close/exit) splash screen.
     Navigator.pushNamed(context, '/login');
   }
 }

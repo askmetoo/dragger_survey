@@ -50,8 +50,6 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
       return Text("No Team Snapshot");
     }
 
-    log("In BuildTeamsDropdownButton value of widget.teamsSnapshot.data.documents.first.documentID: ${widget.teamsSnapshot.data.documents.first.documentID}");
-
     return SizedBox(
       // height: 80,
       child: Padding(

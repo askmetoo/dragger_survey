@@ -68,7 +68,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
               ),
             );
           }
-          log("In SurveySetsListScreen value of teamsSnapshot.data.documents.first.documentID: ${teamsSnapshot.data.documents.first.documentID}");
+
           return Scaffold(
             backgroundColor: Styles.drg_colorAppBackground,
             endDrawer: UserDrawer(),
@@ -80,9 +80,12 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
             ),
             body: Column(
               children: <Widget>[
-                BuildTeamsDropdownButton(
-                  teamsSnapshot: teamsSnapshot,
-                ),
+                teamsSnapshot.data == null ||
+                        teamsSnapshot.data.documents.isEmpty
+                    ? Container()
+                    : BuildTeamsDropdownButton(
+                        teamsSnapshot: teamsSnapshot,
+                      ),
                 Expanded(
                   child: BuildSurveySetsListView(),
                 ),

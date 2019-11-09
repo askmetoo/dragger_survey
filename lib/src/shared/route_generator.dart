@@ -5,6 +5,12 @@ import 'package:page_transition/page_transition.dart';
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case '/introviews':
+        return PageTransition(
+          duration: Duration(milliseconds: 400),
+          child: IntroViews(),
+          type: PageTransitionType.fade,
+        );
       case '/draggerboard':
         return PageTransition(
           duration: Duration(milliseconds: 400),
