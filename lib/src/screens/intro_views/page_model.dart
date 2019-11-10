@@ -10,7 +10,7 @@ final PageViewModel teamPage = PageViewModel(
   ),
   bubbleBackgroundColor: Styles.drg_colorAppBackground,
   body: Text(
-    'Start with building a team - even if you start as only member in the team. Later on, it is easy to invite others as members.',
+    'Before your first survey, prepare your set-up with building a team - even if you start as the only member of the team. Later on, it is easy to invite others.',
   ),
   title: Text(
     'Build a Team',
@@ -45,7 +45,7 @@ final PageViewModel invitePage = PageViewModel(
   ),
   bubbleBackgroundColor: Styles.drg_colorAppBackground,
   body: Text(
-    'Start with building a team - even if you are at first the only member. Later, you can invite others by QR code in their profile.',
+    'After the a team is provided with name and description, you can invite others as members by scanning a QR code in their profile page.',
   ),
   title: Text(
     'Invite Team Members',
@@ -80,7 +80,7 @@ final PageViewModel setPage = PageViewModel(
   ),
   bubbleBackgroundColor: Styles.drg_colorAppBackground,
   body: Text(
-    'Collect a buch of quick surveys in a Survey Set to get quick insights to two specific metrics with the granularity you strive for.',
+    'Collect a buch of quick surveys in a set of surveys - a Survey Set - to get quick insights to two specific metrics with the granularity you think is the best.',
   ),
   title: Text(
     'Gather Quick Feedback in a Survey Set',
@@ -115,7 +115,7 @@ final PageViewModel surveyPage = PageViewModel(
   ),
   bubbleBackgroundColor: Styles.drg_colorAppBackground,
   body: Text(
-    'After a Survey Set is created, you can make your surveys on a finger tip. \nThe surveyed person then only drags a chip to a desired position on the Dragger Board.',
+    'Once the Survey Set is created, you can survey people at a finger tip. \nThe asked person then only drags a chip to his desired position on the Dragger Board.',
   ),
   title: Text(
     'Surveying made easy and fast.',
@@ -150,7 +150,7 @@ final PageViewModel insightsPage = PageViewModel(
   ),
   bubbleBackgroundColor: Styles.drg_colorAppBackground,
   body: Text(
-    'After several surveys made you are able to get the resulst displayed as a Scattered Plot Chart or Graph over time',
+    'Eventally after several surveys made you can get the resulst displayed as a scattered plot chart or as graph over time',
   ),
   title: Text(
     'Get Insights with Graphs',
@@ -166,6 +166,41 @@ final PageViewModel insightsPage = PageViewModel(
   titleTextStyle: TextStyle(
     fontFamily: 'SonsieOne',
     color: Styles.drg_colorPrimary,
+    fontSize: 32,
+    height: 1.1,
+  ),
+  bodyTextStyle: TextStyle(
+    fontFamily: 'Barlow',
+    color: Styles.drg_colorPrimary,
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+  ),
+);
+
+final PageViewModel readyPage = PageViewModel(
+  pageColor: Styles.drg_colorSecondary,
+  bubble: Icon(
+    Icons.people,
+    color: Styles.drg_colorAppBackgroundLight,
+  ),
+  bubbleBackgroundColor: Styles.drg_colorAppBackground,
+  body: Text(
+    "Ready! Now it's time to explore the feedback of the people. Go out and listen!",
+  ),
+  title: Text(
+    'Start Dragging!',
+    textAlign: TextAlign.center,
+  ),
+  mainImage: Image.asset(
+    'assets/undraw_feedback_h2ft.png',
+    width: double.infinity,
+    alignment: Alignment.topCenter,
+    colorBlendMode: BlendMode.modulate,
+    color: Styles.drg_colorSecondary,
+  ),
+  titleTextStyle: TextStyle(
+    fontFamily: 'SonsieOne',
+    color: Colors.white,
     fontSize: 32,
     height: 1.1,
   ),

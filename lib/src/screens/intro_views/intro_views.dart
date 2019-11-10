@@ -13,6 +13,7 @@ class IntroViews extends StatelessWidget {
         setPage,
         surveyPage,
         insightsPage,
+        readyPage,
       ],
       onTapDoneButton: () async {
         // Navigator.pushNamed(context, '/surveysetslist');
