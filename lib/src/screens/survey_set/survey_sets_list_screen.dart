@@ -69,6 +69,28 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
             );
           }
 
+          bool teamsSnapshotDataIsNull = teamsSnapshot.data == null;
+          log("oooooo===========-------> teamsSnapshotDataIsNull: $teamsSnapshotDataIsNull");
+
+          int teamDocsLength = teamsSnapshot.data.documents.length;
+          log("oooooo===========-------> teamDocsLength: $teamDocsLength");
+
+          bool teamDocsLengthNotZero = teamsSnapshot.data.documents.length > 0;
+          log("oooooo===========-------> teamDocsLengthNotZero: $teamDocsLengthNotZero");
+
+          bool teamDocsIsEmpty = teamsSnapshot.data.documents.isEmpty;
+          log("oooooo===========-------> teamDocsIsEmpty: $teamDocsIsEmpty");
+
+          bool currSelectedTeamIdIsNotNull = teamDocsLengthNotZero &&
+              teamsSnapshot?.data?.documents[0]?.documentID != null;
+          log("oooooo===========-------> currSelectedTeamIdIsNotNull: $currSelectedTeamIdIsNotNull");
+
+          if (teamDocsLengthNotZero) {
+            String snapShotCurrSelectedTeamId =
+                teamsSnapshot.data.documents[0].documentID;
+            log("oooooo===========-------> snapShotCurrSelectedTeamId: $snapShotCurrSelectedTeamId");
+          }
+
           return Scaffold(
             backgroundColor: Styles.drg_colorAppBackground,
             endDrawer: UserDrawer(),
@@ -80,8 +102,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
             ),
             body: Column(
               children: <Widget>[
-                teamsSnapshot.data == null ||
-                        teamsSnapshot.data.documents.isEmpty
+                teamsSnapshotDataIsNull || teamDocsIsEmpty
                     ? Container()
                     : BuildTeamsDropdownButton(
                         teamsSnapshot: teamsSnapshot,
@@ -93,95 +114,93 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
-            floatingActionButton: (teamBloc?.currentSelectedTeam?.documentID ==
-                        null &&
-                    teamsSnapshot.data.documents.length < 1)
-                ? teamsSnapshot.data.documents.isEmpty
-                    ? FloatingActionButton.extended(
-                        backgroundColor: Styles.drg_colorSecondary,
-                        icon: Icon(
-                          Icons.people,
-                          color: Styles.drg_colorText.withOpacity(.8),
-                        ),
-                        label: Text(
-                          'Create new Team',
-                          style: TextStyle(
-                            color: Styles.drg_colorText.withOpacity(0.8),
-                          ),
-                        ),
-                        onPressed: () {
-                          print(
-                              "In SurveySetsListScreen 'Create new Team' button pressed");
-                          teamBloc.updatingTeamData = false;
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text(
-                                  "Create new Team",
-                                  style: TextStyle(
-                                    fontFamily: 'Bitter',
-                                    fontWeight: FontWeight.w200,
-                                  ),
+            floatingActionButton: currSelectedTeamIdIsNotNull
+                // && teamDocsLengthNotZero
+                // CREATE A NEW SURVEY
+                ? FloatingActionButton.extended(
+                    elevation: 12,
+                    backgroundColor: Styles.drg_colorSecondary,
+                    label: Text(
+                      "Create new survey set",
+                      style: TextStyle(
+                        color: Styles.drg_colorText.withOpacity(0.8),
+                      ),
+                    ),
+                    icon: Icon(
+                      Icons.library_add,
+                      color: Styles.drg_colorDarkerGreen,
+                    ),
+                    tooltip: "Add new Survey Set",
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(3),
+                                  bottomLeft: Radius.circular(20),
+                                  bottomRight: Radius.circular(20),
                                 ),
-                                content: CreateTeamForm(),
-                                elevation: 10,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(20),
-                                    topRight: Radius.circular(3),
-                                    bottomLeft: Radius.circular(20),
-                                    bottomRight: Radius.circular(20),
-                                  ),
-                                ),
-                                backgroundColor: Styles.drg_colorSecondary,
-                                contentTextStyle:
-                                    TextStyle(color: Styles.drg_colorText),
-                              );
-                            },
+                              ),
+                              title: Text("New survey set"),
+                              backgroundColor: Styles.drg_colorSecondary,
+                              contentTextStyle:
+                                  TextStyle(color: Styles.drg_colorText),
+                              content: SurveySetForm(),
+                            );
+                          });
+                    },
+                  )
+                :
+                // CREATE A NEW TEAM
+                FloatingActionButton.extended(
+                    backgroundColor: Styles.drg_colorSecondary,
+                    icon: Icon(
+                      Icons.people,
+                      color: Styles.drg_colorText.withOpacity(.8),
+                    ),
+                    label: Text(
+                      'Create new Team',
+                      style: TextStyle(
+                        color: Styles.drg_colorText.withOpacity(0.8),
+                      ),
+                    ),
+                    onPressed: () {
+                      print(
+                          "In SurveySetsListScreen 'Create new Team' button pressed");
+                      teamBloc.updatingTeamData = false;
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text(
+                              "Create new Team",
+                              style: TextStyle(
+                                fontFamily: 'Bitter',
+                                fontWeight: FontWeight.w200,
+                              ),
+                            ),
+                            content: CreateTeamForm(),
+                            elevation: 10,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(3),
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
+                            ),
+                            backgroundColor: Styles.drg_colorSecondary,
+                            contentTextStyle:
+                                TextStyle(color: Styles.drg_colorText),
                           );
                         },
-                      )
-                    : null
-                : teamBloc?.currentSelectedTeam?.documentID == null
-                    ? null
-                    : FloatingActionButton.extended(
-                        elevation: 12,
-                        backgroundColor: Styles.drg_colorSecondary,
-                        label: Text(
-                          "Create new survey set",
-                          style: TextStyle(
-                            color: Styles.drg_colorText.withOpacity(0.8),
-                          ),
-                        ),
-                        icon: Icon(
-                          Icons.library_add,
-                          color: Styles.drg_colorDarkerGreen,
-                        ),
-                        tooltip: "Add new Survey Set",
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  elevation: 10,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      topRight: Radius.circular(3),
-                                      bottomLeft: Radius.circular(20),
-                                      bottomRight: Radius.circular(20),
-                                    ),
-                                  ),
-                                  title: Text("New survey set"),
-                                  backgroundColor: Styles.drg_colorSecondary,
-                                  contentTextStyle:
-                                      TextStyle(color: Styles.drg_colorText),
-                                  content: SurveySetForm(),
-                                );
-                              });
-                        },
-                      ),
+                      );
+                    },
+                  ),
           );
         });
   }
