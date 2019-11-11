@@ -338,7 +338,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
-              "  You are not            \na Member of \n           a Team      ",
+              "       You are not            \n  a Member of \n           any Team      ",
               style: TextStyle(
                 fontFamily: 'SonsieOne',
                 fontSize: 34,
