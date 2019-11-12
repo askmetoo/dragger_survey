@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/styles.dart';
+import 'package:expandable/expandable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -142,24 +143,25 @@ class _SurveySetFormState extends State<SurveySetForm> {
             },
             onSaved: (value) => _name = value,
           ),
-          TextFormField(
-            minLines: 1,
-            maxLines: 4,
-            maxLength: 180,
-            focusNode: secondFocus,
-            onEditingComplete: () =>
-                FocusScope.of(context).requestFocus(thirdFocus),
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-              isDense: true,
-              labelStyle: TextStyle(color: Styles.drg_colorPrimary),
-              labelText: "Survey set description",
-              hintText: "The description of the prism survey",
-            ),
-            // initialValue: attribute,
-            onSaved: (value) => _description = value,
-          ),
+          
+          // TextFormField(
+          //   minLines: 1,
+          //   maxLines: 4,
+          //   maxLength: 180,
+          //   focusNode: secondFocus,
+          //   onEditingComplete: () =>
+          //       FocusScope.of(context).requestFocus(thirdFocus),
+          //   textInputAction: TextInputAction.next,
+          //   keyboardType: TextInputType.text,
+          //   decoration: InputDecoration(
+          //     isDense: true,
+          //     labelStyle: TextStyle(color: Styles.drg_colorPrimary),
+          //     labelText: "Survey set description",
+          //     hintText: "The description of the prism survey",
+          //   ),
+          // initialValue: attribute,
+          // onSaved: (value) => _description = value,
+          // ),
           TextFormField(
             focusNode: thirdFocus,
             onEditingComplete: () =>
@@ -184,21 +186,21 @@ class _SurveySetFormState extends State<SurveySetForm> {
             },
             onSaved: (value) => _xName = value,
           ),
-          TextFormField(
-            focusNode: fourthFocus,
-            onEditingComplete: () =>
-                FocusScope.of(context).requestFocus(fifthFocus),
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-              labelStyle: TextStyle(color: Styles.drg_colorPrimary),
-              isDense: true,
-              labelText: "X-axis desciption",
-              hintText: "What does the x-axis stand for",
-            ),
-            // initialValue: attribute,
-            onSaved: (value) => _xDescription = value,
-          ),
+          // TextFormField(
+          //   focusNode: fourthFocus,
+          //   onEditingComplete: () =>
+          //       FocusScope.of(context).requestFocus(fifthFocus),
+          //   textInputAction: TextInputAction.next,
+          //   keyboardType: TextInputType.text,
+          //   decoration: InputDecoration(
+          //     labelStyle: TextStyle(color: Styles.drg_colorPrimary),
+          //     isDense: true,
+          //     labelText: "X-axis desciption",
+          //     hintText: "What does the x-axis stand for",
+          //   ),
+          //   // initialValue: attribute,
+          //   onSaved: (value) => _xDescription = value,
+          // ),
           TextFormField(
             focusNode: fifthFocus,
             onEditingComplete: () =>
@@ -222,18 +224,19 @@ class _SurveySetFormState extends State<SurveySetForm> {
             },
             onSaved: (value) => _yName = value,
           ),
-          TextFormField(
-            focusNode: sixthFocus,
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-              labelStyle: TextStyle(color: Styles.drg_colorPrimary),
-              isDense: true,
-              labelText: "Y-axis desciption",
-              hintText: "What does the y-axis stand for",
-            ),
-            onSaved: (value) => _yDescription = value,
-          ),
+          // TextFormField(
+          //   focusNode: sixthFocus,
+          //   textInputAction: TextInputAction.next,
+          //   keyboardType: TextInputType.text,
+          //   decoration: InputDecoration(
+          //     labelStyle: TextStyle(color: Styles.drg_colorPrimary),
+          //     isDense: true,
+          //     labelText: "Y-axis desciption",
+          //     hintText: "What does the y-axis stand for",
+          //   ),
+          //   onSaved: (value) => _yDescription = value,
+          // ),
+          BuildAnimatedTextFieldsColumn(),
           _buildFormButtons(
             context: context,
             formKey: formKey,
@@ -377,5 +380,109 @@ class _SurveySetFormState extends State<SurveySetForm> {
 
       formKey.currentState.save();
     }
+  }
+}
+
+class BuildAnimatedTextFieldsColumn extends StatefulWidget {
+  @override
+  _BuildAnimatedTextFieldsColumnState createState() =>
+      _BuildAnimatedTextFieldsColumnState();
+}
+
+class _BuildAnimatedTextFieldsColumnState
+    extends State<BuildAnimatedTextFieldsColumn> with TickerProviderStateMixin {
+  double _animatedHeight = 24;
+  bool _resized = false;
+  var _color = Colors.blue;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        if (_resized) {
+          log("Animated box tapped in _resized");
+          setState(() {
+            _resized = false;
+            _animatedHeight = 24;
+            _color = Colors.blue;
+          });
+        } else {
+          log("Animated box tapped in NOT _resized");
+          setState(() {
+            _resized = true;
+            _animatedHeight = 100;
+            _color = Colors.amber;
+          });
+        }
+      },
+      child: AnimatedSize(
+        child: Container(
+          padding: EdgeInsets.only(top: 8),
+          height: _animatedHeight,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  "Add further descriptions",
+                  style: TextStyle(
+                    height: 1.2,
+                  ),
+                ),
+                TextFormField(
+                  minLines: 1,
+                  maxLines: 4,
+                  maxLength: 180,
+                  // focusNode: secondFocus,
+                  // onEditingComplete: () =>
+                  //     FocusScope.of(context).requestFocus(thirdFocus),
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    labelStyle: TextStyle(color: Styles.drg_colorPrimary),
+                    labelText: "Survey set description",
+                    hintText: "The description of the prism survey",
+                  ),
+                  // onSaved: (value) => _description = value,
+                ),
+                TextFormField(
+                  // focusNode: fourthFocus,
+                  // onEditingComplete: () =>
+                  //     FocusScope.of(context).requestFocus(fifthFocus),
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    labelStyle: TextStyle(color: Styles.drg_colorPrimary),
+                    isDense: true,
+                    labelText: "X-axis desciption",
+                    hintText: "What does the x-axis stand for",
+                  ),
+                  // initialValue: attribute,
+                  // onSaved: (value) => _xDescription = value,
+                ),
+                TextFormField(
+                  // focusNode: sixthFocus,
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    labelStyle: TextStyle(color: Styles.drg_colorPrimary),
+                    isDense: true,
+                    labelText: "Y-axis desciption",
+                    hintText: "What does the y-axis stand for",
+                  ),
+                  // onSaved: (value) => _yDescription = value,
+                ),
+              ],
+            ),
+          ),
+        ),
+        vsync: this,
+        duration: Duration(milliseconds: 400),
+      ),
+    );
   }
 }
