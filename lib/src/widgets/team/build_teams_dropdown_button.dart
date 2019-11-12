@@ -38,20 +38,20 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
       });
     }
 
-    Future<QuerySnapshot> teamsQuery = teamBloc
-        .getTeamsQueryByArray(
+    Stream<QuerySnapshot> streamTeamsQuery = teamBloc
+        .streamTeamsQueryByArray(
           fieldName: 'users',
           arrayValue: _user?.uid,
         )
-        .catchError((err) => log(
+        .handleError((err) => log(
             "ERROR in BuildTeamsDropdownButton getTeamsQueryByArray: $err"));
 
-    if (teamsQuery == null) {
+    if (streamTeamsQuery == null) {
       return Text("No Team Snapshot");
     }
 
+
     return SizedBox(
-      // height: 80,
       child: Padding(
         padding: const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 0),
         child: Row(
@@ -192,7 +192,7 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
   Widget buildTeamText({AsyncSnapshot<QuerySnapshot> teamsListSnapshot}) {
     DocumentSnapshot teamDoc;
 
-    if (teamsListSnapshot.connectionState != ConnectionState.done) {
+    if (teamsListSnapshot.connectionState != ConnectionState.active) {
       return Center(
         child: Container(
           constraints: BoxConstraints(maxWidth: 80),

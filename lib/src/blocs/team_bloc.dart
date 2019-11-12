@@ -61,6 +61,14 @@ class TeamBloc extends ChangeNotifier {
     return _queriedTeam;
   }
 
+  Stream<QuerySnapshot> streamTeamsQueryByArray(
+      {String fieldName, String arrayValue}) {
+    Stream<QuerySnapshot> _queriedTeam = Collection<Team>(path: 'teams')
+        .streamDocumentsByQueryArray(
+            fieldName: fieldName, arrayValue: arrayValue);
+    return _queriedTeam;
+  }
+
   addTeamToDb({Map<String, dynamic> team}) {
     Collection(path: "teams").createDocumentWithObject(object: team);
     notifyListeners();

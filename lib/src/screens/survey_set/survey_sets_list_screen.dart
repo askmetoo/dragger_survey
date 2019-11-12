@@ -17,14 +17,14 @@ class SurveySetsListScreen extends StatefulWidget {
 }
 
 class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
-  Future<QuerySnapshot> queryTeamsForUser(
-      {TeamBloc teamBloc, FirebaseUser user}) async {
-    QuerySnapshot teamsQuery = await teamBloc
-        .getTeamsQueryByArray(
+  Stream<QuerySnapshot> streamQueryTeamsForUser(
+      {TeamBloc teamBloc, FirebaseUser user}) {
+    Stream<QuerySnapshot> teamsQuery = teamBloc
+        .streamTeamsQueryByArray(
           fieldName: 'users',
           arrayValue: user?.uid,
         )
-        .catchError((err) => log(
+        .handleError((err) => log(
             "ERROR in BuildTeamsDropdownButton getTeamsQueryByArray: $err"));
     return teamsQuery;
   }
@@ -39,11 +39,13 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
       log("In SurveySetsListScreen - User is not signed in!");
     }
 
-    return FutureBuilder<QuerySnapshot>(
-        future: queryTeamsForUser(teamBloc: teamBloc, user: user),
+    return StreamBuilder<QuerySnapshot>(
+        stream: streamQueryTeamsForUser(teamBloc: teamBloc, user: user),
         builder:
             (BuildContext context, AsyncSnapshot<QuerySnapshot> teamsSnapshot) {
-          if (teamsSnapshot.connectionState != ConnectionState.done) {
+
+          log("oooooo===========-------> teamsSnapshot.connectionState: ${teamsSnapshot.connectionState}");
+          if (teamsSnapshot.connectionState != ConnectionState.active) {
             return Center(
               child: Container(
                 constraints: BoxConstraints(maxWidth: 50),
@@ -55,19 +57,20 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                 ),
               ),
             );
-          } else if (!teamsSnapshot.hasData) {
-            return Center(
-              child: Container(
-                constraints: BoxConstraints(maxWidth: 50),
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 10,
-                  ),
-                ),
-              ),
-            );
-          }
+          } 
+          // else if (!teamsSnapshot.hasData) {
+          //   return Center(
+          //     child: Container(
+          //       constraints: BoxConstraints(maxWidth: 50),
+          //       child: AspectRatio(
+          //         aspectRatio: 1,
+          //         child: CircularProgressIndicator(
+          //           strokeWidth: 10,
+          //         ),
+          //       ),
+          //     ),
+          //   );
+          // }
 
           bool teamsSnapshotDataIsNull = teamsSnapshot.data == null;
           log("oooooo===========-------> teamsSnapshotDataIsNull: $teamsSnapshotDataIsNull");

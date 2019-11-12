@@ -94,6 +94,11 @@ class Collection<T> {
     return ref.where(fieldName, arrayContains: arrayValue).getDocuments();
   }
 
+  Stream<QuerySnapshot> streamDocumentsByQueryArray(
+      {String fieldName, String arrayValue}) {
+    return ref.where(fieldName, arrayContains: arrayValue).snapshots();
+  }
+
   Future<DocumentSnapshot> getDocument(id) async {
     try {
       DocumentSnapshot _doc = await ref.document('$id').get();
