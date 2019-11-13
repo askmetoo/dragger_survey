@@ -20,34 +20,37 @@ class SelectGranularity extends StatelessWidget {
     );
     final _granularityArray = MatrixGranularityBloc.GRANULARITY;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Text(
-          "Select granularity ",
-          style: Styles.drg_selectButton,
-        ),
-        Spacer(),
-        DropdownButton(
-          isDense: true,
-          key: this.formkey,
-          style: _textStyle,
-          value: granularityBloc.matrixGranularity,
-          onChanged: (int newValue) {
-            log("In SelectGranularity DropdownButton onChanged newValue: $newValue");
-            granularityBloc.setNewGranularity(granularity: newValue);
-          },
-          items: _granularityArray.map<DropdownMenuItem<int>>((int value) {
-            log("--->In selectGranularity value: $value");
-            return DropdownMenuItem<int>(
-              key: formkey,
-              value: value,
-              child: Text("$value"),
-            );
-          }).toList(),
-        )
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            "Select granularity ",
+            style: Styles.drg_selectButton,
+          ),
+          Spacer(),
+          DropdownButton(
+            isDense: true,
+            key: this.formkey,
+            style: _textStyle,
+            value: granularityBloc.matrixGranularity,
+            onChanged: (int newValue) {
+              log("In SelectGranularity DropdownButton onChanged newValue: $newValue");
+              granularityBloc.setNewGranularity(granularity: newValue);
+            },
+            items: _granularityArray.map<DropdownMenuItem<int>>((int value) {
+              // log("--->In selectGranularity value: $value");
+              return DropdownMenuItem<int>(
+                key: formkey,
+                value: value,
+                child: Text("$value"),
+              );
+            }).toList(),
+          )
+        ],
+      ),
     );
   }
 }

@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/styles.dart';
-import 'package:expandable/expandable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -115,128 +114,95 @@ class _SurveySetFormState extends State<SurveySetForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SelectGranularity(),
-          TextFormField(
-            focusNode: firstFocus,
-            onEditingComplete: () =>
-                FocusScope.of(context).requestFocus(secondFocus),
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.text,
-            style: Styles.drg_textFieldContent,
-
-            decoration: InputDecoration(
-              labelStyle: TextStyle(
-                color: Styles.drg_colorPrimary,
-                fontSize: Styles.drg_fontSizeFloatingLabel,
-                fontWeight: FontWeight.w700,
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            child: TextFormField(
+              focusNode: firstFocus,
+              onEditingComplete: () =>
+                  FocusScope.of(context).requestFocus(secondFocus),
+              textInputAction: TextInputAction.next,
+              keyboardType: TextInputType.text,
+              style: Styles.drg_textFieldContent,
+              decoration: InputDecoration(
+                labelStyle: TextStyle(
+                  color: Styles.drg_colorPrimary,
+                  fontSize: Styles.drg_fontSizeFloatingLabel,
+                  fontWeight: FontWeight.w700,
+                ),
+                isDense: true,
+                labelText: "Survey Name",
+                hintStyle: TextStyle(fontSize: Styles.drg_fontSizeHintText),
+                hintText: "A meaningful name",
               ),
-              isDense: true,
-              labelText: "Survey Name",
-              hintStyle: TextStyle(fontSize: Styles.drg_fontSizeHintText),
-              hintText: "A meaningful name",
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Please enter a name';
+                }
+                return null;
+              },
+              onSaved: (value) => _name = value,
             ),
-            // initialValue: attribute,
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'Please enter a name';
-              }
-              return null;
-            },
-            onSaved: (value) => _name = value,
           ),
-          
-          // TextFormField(
-          //   minLines: 1,
-          //   maxLines: 4,
-          //   maxLength: 180,
-          //   focusNode: secondFocus,
-          //   onEditingComplete: () =>
-          //       FocusScope.of(context).requestFocus(thirdFocus),
-          //   textInputAction: TextInputAction.next,
-          //   keyboardType: TextInputType.text,
-          //   decoration: InputDecoration(
-          //     isDense: true,
-          //     labelStyle: TextStyle(color: Styles.drg_colorPrimary),
-          //     labelText: "Survey set description",
-          //     hintText: "The description of the prism survey",
-          //   ),
-          // initialValue: attribute,
-          // onSaved: (value) => _description = value,
-          // ),
-          TextFormField(
-            focusNode: thirdFocus,
-            onEditingComplete: () =>
-                FocusScope.of(context).requestFocus(fourthFocus),
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-              labelStyle: TextStyle(
-                color: Styles.drg_colorPrimary,
-                fontWeight: FontWeight.w700,
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            child: TextFormField(
+              focusNode: secondFocus,
+              onEditingComplete: () =>
+                  FocusScope.of(context).requestFocus(thirdFocus),
+              textInputAction: TextInputAction.next,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                labelStyle: TextStyle(
+                  fontSize: Styles.drg_fontSizeFloatingLabel,
+                  color: Styles.drg_colorPrimary,
+                  fontWeight: FontWeight.w700,
+                ),
+                isDense: true,
+                labelText: "Label for x-axis",
+                hintText: "Should be easy to understand",
               ),
-              isDense: true,
-              labelText: "Label for x-axis",
-              hintText: "Should be easy to understand",
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Please enter a label';
+                }
+                return null;
+              },
+              onSaved: (value) => _xName = value,
             ),
-            // initialValue: attribute,
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'Please enter a label';
-              }
-              return null;
-            },
-            onSaved: (value) => _xName = value,
           ),
-          // TextFormField(
-          //   focusNode: fourthFocus,
-          //   onEditingComplete: () =>
-          //       FocusScope.of(context).requestFocus(fifthFocus),
-          //   textInputAction: TextInputAction.next,
-          //   keyboardType: TextInputType.text,
-          //   decoration: InputDecoration(
-          //     labelStyle: TextStyle(color: Styles.drg_colorPrimary),
-          //     isDense: true,
-          //     labelText: "X-axis desciption",
-          //     hintText: "What does the x-axis stand for",
-          //   ),
-          //   // initialValue: attribute,
-          //   onSaved: (value) => _xDescription = value,
-          // ),
-          TextFormField(
-            focusNode: fifthFocus,
-            onEditingComplete: () =>
-                FocusScope.of(context).requestFocus(sixthFocus),
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-              labelStyle: TextStyle(
-                color: Styles.drg_colorPrimary,
-                fontWeight: FontWeight.w700,
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            child: TextFormField(
+              focusNode: thirdFocus,
+              onEditingComplete: () {
+                FocusScope.of(context).requestFocus(fourthFocus);
+              },
+              textInputAction: TextInputAction.next,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                labelStyle: TextStyle(
+                  fontSize: Styles.drg_fontSizeFloatingLabel,
+                  color: Styles.drg_colorPrimary,
+                  fontWeight: FontWeight.w700,
+                ),
+                isDense: true,
+                labelText: "Label for y-axis",
+                hintText: "Should be easy to understand",
               ),
-              isDense: true,
-              labelText: "Label for y-axis",
-              hintText: "Should be easy to understand",
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Please enter a label';
+                }
+                return null;
+              },
+              onSaved: (value) => _yName = value,
             ),
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'Please enter a label';
-              }
-              return null;
-            },
-            onSaved: (value) => _yName = value,
           ),
-          // TextFormField(
-          //   focusNode: sixthFocus,
-          //   textInputAction: TextInputAction.next,
-          //   keyboardType: TextInputType.text,
-          //   decoration: InputDecoration(
-          //     labelStyle: TextStyle(color: Styles.drg_colorPrimary),
-          //     isDense: true,
-          //     labelText: "Y-axis desciption",
-          //     hintText: "What does the y-axis stand for",
-          //   ),
-          //   onSaved: (value) => _yDescription = value,
-          // ),
-          BuildAnimatedTextFieldsColumn(),
+          BuildAnimatedTextFieldsColumn(
+            fourthFocus,
+            fifthFocus,
+            sixthFocus,
+          ),
           _buildFormButtons(
             context: context,
             formKey: formKey,
@@ -307,7 +273,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
     Map<String, dynamic> surveySet = {
       "created": _created,
       "name": _name,
-      "description": _description,
+      "description": prismSurveySetBloc.description,
       "resolution": granularityBloc.matrixGranularity,
       "xName": _xName,
       "xDescription": _xDescription,
@@ -325,7 +291,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
     print("Values sent to bloc:");
     print("_created: $_created");
     print("_name: $_name");
-    print("_description: $_description");
+    print("_description: ${prismSurveySetBloc.description}");
     print("_resolution: $_resolution");
     print("_xName: $_xName");
     print("_xDescription: $_xDescription");
@@ -346,11 +312,17 @@ class _SurveySetFormState extends State<SurveySetForm> {
   void _submitButtonOnPressed({formKey}) {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
+    final PrismSurveySetBloc prismSurveySetBloc =
+        Provider.of<PrismSurveySetBloc>(context);
 
     if (formKey.currentState.validate()) {
       log("1b) ----> In SurveySetForm _submitButtonOnPressed - has been validated.");
 
       log("1b-b ----> teamBloc.currentSelectedTeamId: ${teamBloc.currentSelectedTeamId}");
+
+      _description = prismSurveySetBloc.description;
+      _xDescription = prismSurveySetBloc.xDescription;
+      _yDescription = prismSurveySetBloc.yDescription;
 
       signInBloc.currentUser.then((currentUserValue) {
         log("current team: ${teamBloc?.currentSelectedTeam?.documentID}");
@@ -384,6 +356,14 @@ class _SurveySetFormState extends State<SurveySetForm> {
 }
 
 class BuildAnimatedTextFieldsColumn extends StatefulWidget {
+  final FocusNode fourthFocus, fifthFocus, sixthFocus;
+
+  BuildAnimatedTextFieldsColumn(
+    this.fourthFocus,
+    this.fifthFocus,
+    this.sixthFocus,
+  ) : super();
+
   @override
   _BuildAnimatedTextFieldsColumnState createState() =>
       _BuildAnimatedTextFieldsColumnState();
@@ -391,98 +371,159 @@ class BuildAnimatedTextFieldsColumn extends StatefulWidget {
 
 class _BuildAnimatedTextFieldsColumnState
     extends State<BuildAnimatedTextFieldsColumn> with TickerProviderStateMixin {
-  double _animatedHeight = 24;
+  double _animatedHeight = 40;
   bool _resized = false;
-  var _color = Colors.blue;
+  double _angle = 0;
 
   @override
   Widget build(BuildContext context) {
+    final PrismSurveySetBloc prismSurveySetBloc =
+        Provider.of<PrismSurveySetBloc>(context);
+
     return GestureDetector(
       onTap: () {
-        if (_resized) {
-          log("Animated box tapped in _resized");
-          setState(() {
-            _resized = false;
-            _animatedHeight = 24;
-            _color = Colors.blue;
-          });
-        } else {
-          log("Animated box tapped in NOT _resized");
-          setState(() {
-            _resized = true;
-            _animatedHeight = 100;
-            _color = Colors.amber;
-          });
-        }
+        onTapAnimatedSizeAction();
       },
-      child: AnimatedSize(
-        child: Container(
-          padding: EdgeInsets.only(top: 8),
-          height: _animatedHeight,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  "Add further descriptions",
-                  style: TextStyle(
-                    height: 1.2,
+      child: Container(
+        margin: EdgeInsetsDirectional.only(top: 8),
+        child: AnimatedSize(
+          alignment: Alignment.topLeft,
+          child: Container(
+            height: _animatedHeight,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Flexible(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 8.0, left: 2),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Flexible(
+                            flex: 2,
+                            child: Transform.rotate(
+                              angle: _angle,
+                              child: Icon(
+                                Icons.keyboard_arrow_right,
+                                color: Styles.drg_colorText,
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            flex: 18,
+                            child: Text(
+                              "Add further descriptions",
+                              style: TextStyle(
+                                fontSize: Styles.drg_fontSizeFloatingLabel,
+                                fontWeight: FontWeight.w600,
+                                color: Styles.drg_colorPrimary,
+                                height: 1.5,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-                TextFormField(
-                  minLines: 1,
-                  maxLines: 4,
-                  maxLength: 180,
-                  // focusNode: secondFocus,
-                  // onEditingComplete: () =>
-                  //     FocusScope.of(context).requestFocus(thirdFocus),
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    labelStyle: TextStyle(color: Styles.drg_colorPrimary),
-                    labelText: "Survey set description",
-                    hintText: "The description of the prism survey",
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    child: TextFormField(
+                      minLines: 1,
+                      maxLines: 4,
+                      maxLength: 180,
+                      focusNode: widget.fourthFocus,
+                      onEditingComplete: () => FocusScope.of(context)
+                          .requestFocus(widget.fifthFocus),
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        labelStyle: TextStyle(
+                          fontSize: Styles.drg_fontSizeFloatingLabel,
+                          color: Styles.drg_colorPrimary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        labelText: "Survey set description",
+                        hintText: "The description of the prism survey",
+                      ),
+
+                      onChanged: (value) {
+                        prismSurveySetBloc.setDescription(value);
+                      },
+                    ),
                   ),
-                  // onSaved: (value) => _description = value,
-                ),
-                TextFormField(
-                  // focusNode: fourthFocus,
-                  // onEditingComplete: () =>
-                  //     FocusScope.of(context).requestFocus(fifthFocus),
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    labelStyle: TextStyle(color: Styles.drg_colorPrimary),
-                    isDense: true,
-                    labelText: "X-axis desciption",
-                    hintText: "What does the x-axis stand for",
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    child: TextFormField(
+                      focusNode: widget.fifthFocus,
+                      onEditingComplete: () => FocusScope.of(context)
+                          .requestFocus(widget.sixthFocus),
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(
+                          fontSize: Styles.drg_fontSizeFloatingLabel,
+                          color: Styles.drg_colorPrimary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        isDense: true,
+                        labelText: "X-axis desciption",
+                        hintText: "What does the x-axis stand for",
+                      ),
+                      // initialValue: attribute,
+                      onChanged: (value) {
+                        prismSurveySetBloc.setXDescription(value);
+                      },
+                    ),
                   ),
-                  // initialValue: attribute,
-                  // onSaved: (value) => _xDescription = value,
-                ),
-                TextFormField(
-                  // focusNode: sixthFocus,
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    labelStyle: TextStyle(color: Styles.drg_colorPrimary),
-                    isDense: true,
-                    labelText: "Y-axis desciption",
-                    hintText: "What does the y-axis stand for",
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    child: TextFormField(
+                      focusNode: widget.sixthFocus,
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(
+                            fontSize: Styles.drg_fontSizeFloatingLabel,
+                            color: Styles.drg_colorPrimary,
+                            fontWeight: FontWeight.w700),
+                        isDense: true,
+                        labelText: "Y-axis desciption",
+                        hintText: "What does the y-axis stand for",
+                      ),
+                      onChanged: (value) =>
+                          prismSurveySetBloc.setYDescription(value),
+                    ),
                   ),
-                  // onSaved: (value) => _yDescription = value,
-                ),
-              ],
+                ],
+              ),
             ),
           ),
+          vsync: this,
+          duration: Duration(milliseconds: 400),
         ),
-        vsync: this,
-        duration: Duration(milliseconds: 400),
       ),
     );
+  }
+
+  void onTapAnimatedSizeAction() {
+    if (_resized) {
+      log("Animated box tapped in _resized");
+      setState(() {
+        _resized = false;
+        _animatedHeight = 40;
+        _angle = 0;
+      });
+    } else {
+      log("Animated box tapped in NOT _resized");
+      setState(() {
+        _resized = true;
+        _animatedHeight = 240;
+        _angle = 1.5;
+      });
+    }
   }
 }

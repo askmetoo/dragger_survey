@@ -6,12 +6,18 @@ import 'package:flutter/material.dart';
 
 class PrismSurveySetBloc extends ChangeNotifier {
   Future<DocumentSnapshot> _currentPrismSurveySetFuture;
+  String _description = '';
+  String _xDescription = '';
+  String _yDescription = '';
   String _currentPrismSurveySetId;
   String _orderField = 'created';
   bool _descendingOrder = true;
 
   get orderField => _orderField;
   get descendingOrder => _descendingOrder;
+  get description => _description;
+  get xDescription => _xDescription;
+  get yDescription => _yDescription;
 
   set orderField(orderField) {
     _orderField = orderField;
@@ -20,6 +26,24 @@ class PrismSurveySetBloc extends ChangeNotifier {
 
   set descendingOrder(descendingOrder) {
     _descendingOrder = descendingOrder;
+    notifyListeners();
+  }
+
+  setDescription(description) {
+    log("In PrismSurveySetBloc - setDescription: $description");
+    _description = description;
+    notifyListeners();
+  }
+
+  setXDescription(xDescription) {
+    log("In PrismSurveySetBloc - setXDescription: $xDescription");
+    _xDescription = xDescription;
+    notifyListeners();
+  }
+
+  setYDescription(yDescription) {
+    log("In PrismSurveySetBloc - setYDescription: $yDescription");
+    _yDescription = yDescription;
     notifyListeners();
   }
 

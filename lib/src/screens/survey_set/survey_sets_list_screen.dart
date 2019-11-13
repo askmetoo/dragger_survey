@@ -43,7 +43,6 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
         stream: streamQueryTeamsForUser(teamBloc: teamBloc, user: user),
         builder:
             (BuildContext context, AsyncSnapshot<QuerySnapshot> teamsSnapshot) {
-
           log("oooooo===========-------> teamsSnapshot.connectionState: ${teamsSnapshot.connectionState}");
           if (teamsSnapshot.connectionState != ConnectionState.active) {
             return Center(
@@ -57,7 +56,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                 ),
               ),
             );
-          } 
+          }
           // else if (!teamsSnapshot.hasData) {
           //   return Center(
           //     child: Container(
@@ -139,6 +138,16 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
+                              titleTextStyle: TextStyle(
+                                fontFamily: 'Bitter',
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                color: Styles.drg_colorText.withOpacity(.8),
+                              ),
+                              titlePadding: EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 8),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 4),
                               elevation: 10,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.only(
