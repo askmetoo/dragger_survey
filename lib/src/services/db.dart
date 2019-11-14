@@ -65,8 +65,8 @@ class Collection<T> {
         .where(fieldName, isEqualTo: fieldValue)
         .orderBy(orderField, descending: descending)
         .getDocuments()
-        .catchError((e) =>
-            log("ERROR in db.dart getDocumentsByQueryOrderByField: $e"));
+        .catchError(
+            (e) => log("ERROR in db.dart getDocumentsByQueryOrderByField: $e"));
   }
 
   Future<QuerySnapshot> getDocumentsByQuerySortByCreatedAsc(
@@ -192,7 +192,29 @@ class Collection<T> {
   }
 
   deleteById(id) {
-    ref.document('$id').delete();
+    log(">>>>>>>-------------------> Delete document by ID: $id");
+    ref.document('$id').delete().catchError((err) => debugPrint("ERROR in DB - Method deleteById(): $err"));
+  }
+
+  Future<QuerySnapshot> deleteDocumentsChildrenByQuery(
+      {String fieldName, String fieldValue}) async {
+    var returnedDocuments = await ref.where(fieldName, isEqualTo: fieldValue).getDocuments()
+        .then((documents) {
+          documents.documents.forEach((document) async {
+            await deleteById(document.documentID);
+          });
+          log(">>>>>>>-------------------> Delete document by ID: $fieldValue");
+          return;
+        }).catchError((err) => debugPrint("ERROR in DB - Method deleteDocumentsChildrenByQuery(): $err"));
+    return returnedDocuments;
+
+    // returnedDocuments.documents.forEach((DocumentSnapshot document) {
+    //   idsList.add(document.documentID);
+    // });
+
+    // idsList.forEach((id) {
+    //   deleteById(id);
+    // });
   }
 }
 

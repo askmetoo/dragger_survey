@@ -64,9 +64,6 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
           teamBloc.getTeamById(id: teamsSnapshot.data.documents[0].documentID);
         }
 
-        log("In BuildSurveySetsListView - value of teamsSnapshot.data.documents.length: ${teamsSnapshot.data.documents.length}");
-        log("In BuildSurveySetsListView - value of team ID teamsSnapshot.data.documents[0].documentID: ${teamsSnapshot.data.documents[0].documentID}");
-
         if (teamBloc?.currentSelectedTeam?.documentID == null &&
             teamsSnapshot.data.documents.length != 1) {
           return buildChooseATeamBeforeYouStartText();
@@ -85,7 +82,6 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                   "ERROR in BuildSurveySetsListView getPrismSurveySetQuery: $err")),
           builder: (BuildContext context,
               AsyncSnapshot<QuerySnapshot> surveySetSnapshot) {
-            log("In BuildSurveySetsListView value of teamBloc?.getCurrentSelectedTeamId(): ${teamBloc?.getCurrentSelectedTeamId()}");
             final connectionStatus = Provider.of<ConnectivityStatus>(context);
 
             if (surveySetSnapshot.connectionState == ConnectionState.done) {
@@ -110,7 +106,6 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                       fontSize: 20, color: Styles.drg_colorSecondaryDeepDark),
                 );
               }
-              log("In BuildSurveySetsListView build - surveySetSnapshot.data.documents.isEmpty: ${surveySetSnapshot.data.documents.isEmpty}");
               if (surveySetSnapshot.data.documents.isEmpty) {
                 return buildNoSurveySetsAvailableText();
               }
@@ -466,8 +461,14 @@ class BuildListOfSets extends StatelessWidget {
                       icon: Icons.delete,
                       onTap: () {
                         log("In BuildSurveySesListView ListView Dismissible Item name: ${surveySetDokumentSnapshot.data['name']}, id: ${surveySetDokumentSnapshot.documentID} is dismissed'");
-                        surveySetsBloc.deletePrismSurveySetById(
-                            id: surveySetDokumentSnapshot.documentID);
+
+                        surveySetsBloc.deletePrismSurveySetByIdAndSurveys(
+                          id: surveySetDokumentSnapshot.documentID,
+                        );
+                        surveySetsBloc.deletePrismSurveySetById(id: surveySetDokumentSnapshot.documentID);
+
+                        // surveySetsBloc.deletePrismSurveySetById(
+                        //     id: surveySetDokumentSnapshot.documentID);
 
                         Scaffold.of(context).showSnackBar(
                           SnackBar(

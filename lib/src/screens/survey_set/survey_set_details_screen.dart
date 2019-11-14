@@ -117,7 +117,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
                           color: Styles.drg_colorAttention,
                           icon: Icons.delete,
                           onTap: () {
-                            log("In SurveySetDetailsScreen Slidable 'Delete': ${document.documentID}");
+                            // log("In SurveySetDetailsScreen Slidable 'Delete': ${document.documentID}");
                             surveyBloc.deletePrismSurveyById(
                                 id: document.documentID);
                             surveyBloc.currentAskedPerson = null;
@@ -125,7 +125,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
                         ),
                         IconSlideAction(
                           caption: 'Edit',
-                          color: Styles.drg_colorLighterGreen,
+                          color: Styles.drg_colorSuccess,
                           icon: Icons.edit,
                           onTap: () {
                             log("In SurveySetDetailsScreen Slidable 'Edit': ${document.documentID}");

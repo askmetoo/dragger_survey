@@ -36,7 +36,7 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
       setState(() => this._scanedBarcode = barcode);
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text("Code sucessfully scanned."),
-        backgroundColor: Styles.drg_colorLighterGreen,
+        backgroundColor: Styles.drg_colorSuccess,
       ));
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
@@ -241,7 +241,7 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
                 }
                 Scaffold.of(context).showSnackBar(SnackBar(
                   content: Text("User added to team!"),
-                  backgroundColor: Styles.drg_colorLighterGreen,
+                  backgroundColor: Styles.drg_colorSuccess,
                 ));
                 return null;
               },

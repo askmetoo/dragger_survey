@@ -1,4 +1,5 @@
 import 'package:dragger_survey/src/blocs/blocs.dart';
+import 'package:dragger_survey/src/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,9 +7,13 @@ import 'package:provider/provider.dart';
 class DraggerBoardButtonRow extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final String currentSurveySet;
+  final String xLabel;
+  final String yLabel;
   const DraggerBoardButtonRow({
     this.formKey,
     @required this.currentSurveySet,
+    @required this.xLabel,
+    @required this.yLabel,
     Key key,
   }) : super(key: key);
 
@@ -35,13 +40,14 @@ class DraggerBoardButtonRow extends StatelessWidget {
               color: Colors.orangeAccent,
               textColor: Color(0xff662d00),
               child: Text("Ergebnis speichern"),
-              onPressed: () {
-                Scaffold.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                        'Processing data \n${prismSurveyBloc.created} \n${prismSurveyBloc.rowIndex} \n${prismSurveyBloc.colIndex} \n${prismSurveyBloc.currentAskedPerson}'),
-                  ),
-                );
+              onPressed: () async {
+                // Scaffold.of(context).showSnackBar(
+                //   SnackBar(
+                //     content: Text(
+                //       'Processing data \n${prismSurveyBloc.created} \n${prismSurveyBloc.rowIndex} \n${prismSurveyBloc.colIndex} \n${prismSurveyBloc.currentAskedPerson}',
+                //     ),
+                //   ),
+                // );
                 Map<String, dynamic> survey = {
                   "created": prismSurveyBloc.created,
                   "askedPerson": prismSurveyBloc.currentAskedPerson,
@@ -53,8 +59,17 @@ class DraggerBoardButtonRow extends StatelessWidget {
                   "yValue": prismSurveyBloc.colIndex,
                 };
                 prismSurveyBloc.addPrismSurveyToDb(survey: survey);
-                draggableItemBloc.resetDraggableItemPositon();
+                  Scaffold.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Your answer has been sucessfully saved:'),
+                        backgroundColor: Styles.drg_colorSuccess,
+                      ),
+                  );
+                await Future.delayed(const Duration(milliseconds: 1200), () {});
                 Navigator.of(context).pop();
+                Future.delayed(const Duration(milliseconds: 1200), () {
+                  draggableItemBloc.resetDraggableItemPositon();
+                });
               },
             ),
           ),

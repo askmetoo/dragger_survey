@@ -51,10 +51,11 @@ class Styles {
     color: Styles.drg_colorDarkerGreen,
   );
 
-  static const Color drg_colorAttention = Color(0xffff0200);
   static const Color drg_colorContrast = Color(0xff119da4);
   static const Color drg_colorPrimary = Color(0xffc66400);
   static const Color drg_colorSecondary = Color(0xfff7b71d);
+  static const Color drg_colorAttention = Color(0xffff0200);
+  static const Color drg_colorSuccess = Color(0xffafa939);
   static const Color drg_colorSecondaryDeepDark = Color(0xff583c00);
   static const Color drg_colorText = Color(0xff0e2431);
   static const Color drg_colorTextMediumDark = Color(0xff465761);
@@ -62,7 +63,6 @@ class Styles {
   static Color drgColorTextMediumLight = drg_colorText.withOpacity(0.8);
 
   static const Color drg_colorYellowGreen = Color(0xffffff7f);
-  static const Color drg_colorLighterGreen = Color(0xffafa939);
   static const Color drg_colorGreen = Color(0xff2b580c);
   static const Color drg_colorDarkerGreen = Color(0xff2f4a36);
 

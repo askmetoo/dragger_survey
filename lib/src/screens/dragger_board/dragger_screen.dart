@@ -4,7 +4,6 @@ import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/screens/screens.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
-import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:icon_shadow/icon_shadow.dart';
 import 'package:provider/provider.dart';
@@ -115,6 +114,8 @@ class BuildPortraitLayout extends StatelessWidget {
             DraggerBoardButtonRow(
               formKey: _formKey,
               currentSurveySet: surveySet?.documentID,
+              xLabel: _xName,
+              yLabel: _yName,
             ),
             Text(
               "Granularity: ${matrixGranularityBloc.matrixGranularity} \n$_xName: ${prismSurveyBloc.rowIndex + 1} \n$_yName: ${prismSurveyBloc.colIndex + 1}",
@@ -220,7 +221,7 @@ class BuildAskedPersonDropdown extends StatelessWidget {
                     child: IconShadowWidget(
                       Icon(
                         Icons.person,
-                        color: Styles.drg_colorLighterGreen,
+                        color: Styles.drg_colorSuccess,
                         size: 30,
                       ),
                       shadowColor: Styles.drg_colorText,
@@ -307,7 +308,7 @@ class BuildAskedPersonDropdown extends StatelessWidget {
                             isDense: true,
                             labelText: "Role or name",
                             labelStyle:
-                                TextStyle(color: Styles.drg_colorLighterGreen)),
+                                TextStyle(color: Styles.drg_colorSuccess)),
                       ),
                     ),
                     Padding(

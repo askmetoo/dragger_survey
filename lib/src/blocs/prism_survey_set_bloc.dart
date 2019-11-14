@@ -122,6 +122,12 @@ class PrismSurveySetBloc extends ChangeNotifier {
     return returnValue;
   }
 
+  Future<QuerySnapshot> deletePrismSurveySetByIdAndSurveys({id}) async {
+    QuerySnapshot returnedValue = await Collection<PrismSurvey>(path: 'surveys').deleteDocumentsChildrenByQuery(fieldName: 'surveySet', fieldValue: id);
+    notifyListeners();
+    return returnedValue;
+  }
+
   Future<PrismSurveySet> getPrismSurveySetByUser({userId}) {
     return null;
   }
