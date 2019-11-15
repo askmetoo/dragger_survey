@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dragger_survey/src/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -60,14 +62,14 @@ class RouteGenerator {
           type: PageTransitionType.fade,
         );
         break;
-      case '/teammanager':
-        var _id = settings.arguments;
-        return PageTransition(
-          duration: Duration(milliseconds: 400),
-          child: TeamManagerScreen(arguments: _id),
-          type: PageTransitionType.fade,
-        );
-        break;
+      // case '/teammanager':
+      //   var _id = settings.arguments;
+      //   return PageTransition(
+      //     duration: Duration(milliseconds: 400),
+      //     child: TeamManagerScreen(arguments: _id),
+      //     type: PageTransitionType.fade,
+      //   );
+      //   break;
       case '/howto':
         return PageTransition(
           duration: Duration(milliseconds: 400),
@@ -83,9 +85,12 @@ class RouteGenerator {
         );
         break;
       case '/profile':
+        // var _id = settings.arguments;
+        // log("In RouteGenerator - valou of /profile route settings.arguments: ${settings.arguments}");
         return PageTransition(
           duration: Duration(milliseconds: 400),
           child: ProfileScreen(),
+          // child: ProfileScreen(arguments: {'id': _id}),
           type: PageTransitionType.fade,
         );
         break;

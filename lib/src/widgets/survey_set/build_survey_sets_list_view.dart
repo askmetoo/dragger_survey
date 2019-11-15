@@ -75,9 +75,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                   fieldName: 'createdByTeam',
                   fieldValue: teamBloc?.currentSelectedTeamId,
                   orderField: surveySetsBloc.orderField,
-                  // orderField: teamBloc.orderField,
                   descending: surveySetsBloc.descendingOrder)
-              // descending: teamBloc.descendingOrder)
               .catchError((err) => log(
                   "ERROR in BuildSurveySetsListView getPrismSurveySetQuery: $err")),
           builder: (BuildContext context,
@@ -401,6 +399,7 @@ class BuildListOfSets extends StatelessWidget {
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(bottom: 90),
       physics: BouncingScrollPhysics(),
+      
       children: surveySetSnapshot.data.documents.map(
         (DocumentSnapshot surveySetDokumentSnapshot) {
           if (!(surveySetSnapshot.connectionState == ConnectionState.done)) {

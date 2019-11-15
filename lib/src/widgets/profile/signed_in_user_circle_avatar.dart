@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SignedInUserCircleAvatar extends StatelessWidget {
+  final double radiusSmall;
+  
+  SignedInUserCircleAvatar({this.radiusSmall = 18}) : super();
+
   @override
   Widget build(BuildContext context) {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
@@ -12,6 +16,9 @@ class SignedInUserCircleAvatar extends StatelessWidget {
         future: signInBloc.currentUser,
         builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
+            
+            double radiusBig = radiusSmall + 2;
+
             return GestureDetector(
                 onTap: () {
                   Scaffold.of(context).openEndDrawer();
@@ -20,9 +27,9 @@ class SignedInUserCircleAvatar extends StatelessWidget {
                   padding: EdgeInsets.all(7),
                   child: CircleAvatar(
                     backgroundColor: Styles.drg_colorSecondary,
-                    radius: 20,
+                    radius: radiusBig,
                     child: CircleAvatar(
-                      radius: 18,
+                      radius: radiusSmall,
                       backgroundColor: Styles.drg_colorDarkerGreen,
                       backgroundImage: snapshot.data?.uid != null
                           ? NetworkImage(snapshot.data.photoUrl)
