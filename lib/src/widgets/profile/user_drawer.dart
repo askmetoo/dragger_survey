@@ -100,6 +100,14 @@ class _UserDrawerState extends State<UserDrawer> {
                 ),
               ),
               ListTile(
+                leading: Icon(Icons.account_circle),
+                title: Text('Profil settings'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/profile');
+                },
+              ),
+              ListTile(
                 leading: Icon(Icons.people),
                 title: Text('Manage Teams'),
                 onTap: () {
