@@ -114,8 +114,6 @@ class BuildPortraitLayout extends StatelessWidget {
             DraggerBoardButtonRow(
               formKey: _formKey,
               currentSurveySet: surveySet?.documentID,
-              xLabel: _xName,
-              yLabel: _yName,
             ),
             Text(
               "Granularity: ${matrixGranularityBloc.matrixGranularity} \n$_xName: ${prismSurveyBloc.rowIndex + 1} \n$_yName: ${prismSurveyBloc.colIndex + 1}",

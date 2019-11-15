@@ -7,13 +7,13 @@ import 'package:provider/provider.dart';
 class DraggerBoardButtonRow extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final String currentSurveySet;
-  final String xLabel;
-  final String yLabel;
+  // final String xLabel;
+  // final String yLabel;
   const DraggerBoardButtonRow({
     this.formKey,
     @required this.currentSurveySet,
-    @required this.xLabel,
-    @required this.yLabel,
+    // @required this.xLabel,
+    // @required this.yLabel,
     Key key,
   }) : super(key: key);
 
