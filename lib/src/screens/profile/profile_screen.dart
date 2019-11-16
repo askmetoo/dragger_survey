@@ -3,11 +3,15 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
+import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:dragger_survey/src/styles.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../screens.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -16,13 +20,14 @@ class ProfileScreen extends StatelessWidget {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
     final UserBloc userBloc = Provider.of<UserBloc>(context);
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
+    final PrismSurveySetBloc surveySetBloc = Provider.of<PrismSurveySetBloc>(context);
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
 
-    void _showDialog({@required id}) {
+    void _showDialog({@required userId}) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -44,14 +49,58 @@ class ProfileScreen extends StatelessWidget {
                 child: Text("Yes, please"),
                 color: Styles.drg_colorAttention,
                 elevation: 4,
-                onPressed: () {
-                  // Remove User
-                  // Remove Users Teams 
-                  // Remove each teams Survey Sets and their Surveys
-                  // Remove User from other teams
-                  teamBloc.deleteUserFromTeamsArrayById(id: id);
+                onPressed: () async {
 
-                  // Navigator.of(context).pop();
+                  QuerySnapshot teamsFromUser;
+                  QuerySnapshot surveySetsByUser;
+
+                  // 1) Find all Teams created by USER
+                  teamsFromUser = await teamBloc.getTeamsQuery(fieldName: 'createdByUser', fieldValue: userId);
+                  teamsFromUser.documents.forEach((team) {
+                    print("-----> Teams user is member ID: ${team.documentID}");
+                  });
+
+                  teamsFromUser.documents.forEach((team) async {
+                    log("In ProfileScreen - delete Team with ID ${team.documentID}");
+
+                    // 2) find all SurveySets from Team
+                    surveySetsByUser = await surveySetBloc.getPrismSurveySetQuery(fieldName: 'createdByTeam', fieldValue: team.documentID);
+
+                    // 3) Remove each teams Survey Sets and every Sets Surveys
+                    surveySetsByUser.documents.forEach((surveySet) async {
+                      log("In ProfileScreen - delete PrismSurveySet with ID ${surveySet.documentID}");
+
+                      // First find remove the SURVEYS
+                      await surveySetBloc.deleteAllSurveysFromSurveySetById(surveySetId: surveySet.documentID);
+                      // Then find remove the SET itself
+                      await surveySetBloc.deletePrismSurveySetById(surveySetId: surveySet.documentID);
+                    });
+
+                  });
+
+                  // 4) Find and remove all TEAMS from this User
+                  await teamBloc.getTeamsQuery(fieldName: 'createdByUser', fieldValue: userId)
+                                .then((QuerySnapshot teams) {
+                                  teams.documents.forEach((team) {
+                                    print("-----> Teams user is member ID: ${team..documentID}");
+                                    teamBloc.deleteTeamById(id: team.documentID);
+                                  });
+                                });
+                  // teamsFromUser.documents.forEach((team) {
+                  //   print("-----> Teams user is member ID: ${team.documentID}");
+                  //   teamBloc.deleteTeamById(id: team.documentID);
+                  // });
+
+                  // TODO: Fix remove MEMBER from TEAM Array - this solution empties the team data
+                  // // Remove USER FROM all TEAMS he is MEMBER in
+                  // teamBloc.deleteUserFromTeamsArrayById(id: userId);
+
+                  // Remove USER
+                  userBloc.deleteUserByIdQuery(id: userId);
+
+                  Navigator.pop(context, true);
+                  Navigator.pushNamed(context, '/login');
+                  signInBloc.logoutUser();
                 },
               ),
             ],
@@ -75,6 +124,9 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
           );
+        }
+        if(user == null) {
+          return Container();
         }
         return FutureBuilder<QuerySnapshot>(
             future: userBloc.getUsersQuery(
@@ -162,9 +214,10 @@ class ProfileScreen extends StatelessWidget {
                             color: Styles.drg_colorPrimary,
                             textColor: Colors.white,
                             onPressed: () {
-                              log("!!!-----> In ProfileScreen button 'Delete Account' pressed");
-                              _showDialog(id: signinSnapshot.data.uid);
-                              // Navigator.of(context).pop();
+                              log("!!!-----> In ProfileScreen button 'Delete Account' pressed with signinSnapshot.data.uid: ${signinSnapshot.data.uid}");
+                              if (signinSnapshot.data.uid != null) {
+                                _showDialog(userId: signinSnapshot.data.uid);
+                              }
                             },
                           ),
                         ),

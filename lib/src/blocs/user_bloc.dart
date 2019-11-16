@@ -46,6 +46,12 @@ class UserBloc extends ChangeNotifier {
     });
   }
 
+  deleteUserByIdQuery({id}) {
+    Collection<Team>(path: 'users').deleteDocumentsChildrenByQuery(fieldName: 'providersUID', fieldValue: id);
+    notifyListeners();
+  }
+
+
   deleteUserById({id}) {
     Collection<Team>(path: 'users').deleteById(id);
     notifyListeners();

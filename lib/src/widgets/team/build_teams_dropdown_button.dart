@@ -71,25 +71,39 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                         value: _selectedTeamId,
                         onChanged: (value) {
                           String _selectedTeamId = value;
-                          log("------> In BuildTeamsDropdownButton onChanged selected team value: $_selectedTeamId");
                           teamBloc.setCurrentSelectedTeamId(_selectedTeamId);
                           setState(() {
                             _selectedTeamId = _selectedTeamId;
                           });
-                          teamBloc
-                              .getTeamById(id: _selectedTeamId)
-                              .then((returnedTeam) {
-                            teamBloc.setCurrentSelectedTeam(returnedTeam);
-                            teamBloc.setCurrentSelectedTeamId(
-                                returnedTeam.documentID);
-                            if (!this.mounted) {
+
+                          teamBloc.streamTeamById(id: _selectedTeamId).listen((team) {
+                            teamBloc.setCurrentSelectedTeam(team);
+                            teamBloc.setCurrentSelectedTeamId(team.documentID);
+                            if(this.mounted) {
                               return;
                             } else {
                               setState(() {
-                                _selectedTeam = returnedTeam;
+                                _selectedTeam = team;
                               });
                             }
                           });
+
+
+                          // TODO: delete if the above stream works correctly
+                          // teamBloc
+                          //     .getTeamById(id: _selectedTeamId)
+                          //     .then((returnedTeam) {
+                          //   teamBloc.setCurrentSelectedTeam(returnedTeam);
+                          //   teamBloc.setCurrentSelectedTeamId(
+                          //       returnedTeam.documentID);
+                          //   if (!this.mounted) {
+                          //     return;
+                          //   } else {
+                          //     setState(() {
+                          //       _selectedTeam = returnedTeam;
+                          //     });
+                          //   }
+                          // });
                         },
                         iconSize: 42,
                         icon: Icon(

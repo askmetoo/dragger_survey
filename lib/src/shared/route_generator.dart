@@ -62,14 +62,14 @@ class RouteGenerator {
           type: PageTransitionType.fade,
         );
         break;
-      // case '/teammanager':
-      //   var _id = settings.arguments;
-      //   return PageTransition(
-      //     duration: Duration(milliseconds: 400),
-      //     child: TeamManagerScreen(arguments: _id),
-      //     type: PageTransitionType.fade,
-      //   );
-      //   break;
+      case '/teammanager':
+        var _id = settings.arguments;
+        return PageTransition(
+          duration: Duration(milliseconds: 400),
+          child: TeamManagerScreen(arguments: _id),
+          type: PageTransitionType.fade,
+        );
+        break;
       case '/howto':
         return PageTransition(
           duration: Duration(milliseconds: 400),

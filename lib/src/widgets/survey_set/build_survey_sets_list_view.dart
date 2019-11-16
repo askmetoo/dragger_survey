@@ -461,13 +461,10 @@ class BuildListOfSets extends StatelessWidget {
                       onTap: () {
                         log("In BuildSurveySesListView ListView Dismissible Item name: ${surveySetDokumentSnapshot.data['name']}, id: ${surveySetDokumentSnapshot.documentID} is dismissed'");
 
-                        surveySetsBloc.deletePrismSurveySetByIdAndSurveys(
-                          id: surveySetDokumentSnapshot.documentID,
+                        surveySetsBloc.deleteAllSurveysFromSurveySetById(
+                          surveySetId: surveySetDokumentSnapshot.documentID,
                         );
-                        surveySetsBloc.deletePrismSurveySetById(id: surveySetDokumentSnapshot.documentID);
-
-                        // surveySetsBloc.deletePrismSurveySetById(
-                        //     id: surveySetDokumentSnapshot.documentID);
+                        surveySetsBloc.deletePrismSurveySetById(surveySetId: surveySetDokumentSnapshot.documentID);
 
                         Scaffold.of(context).showSnackBar(
                           SnackBar(

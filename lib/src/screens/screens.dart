@@ -8,6 +8,7 @@ export 'survey_set/survey_set_graphs_screen.dart';
 export 'survey_set/survey_set_scaffold_screen.dart';
 export 'survey_set/survey_sets_list_screen.dart';
 export 'team/teams_list_screen.dart';
+export 'team/team_manager_screen.dart';
 export 'how_to/how_to_screen.dart';
 export 'survey_set/survey_set_btm_navigation_controller.dart';
 export 'dragger_board/dragger_scaffold_screen.dart';

@@ -115,15 +115,15 @@ class PrismSurveySetBloc extends ChangeNotifier {
     return returnValue;
   }
 
-  Future<DocumentSnapshot> deletePrismSurveySetById({id}) {
+  Future<DocumentSnapshot> deletePrismSurveySetById({surveySetId}) {
     var returnValue =
-        Collection<PrismSurveySet>(path: 'surveySets').deleteById(id);
+        Collection<PrismSurveySet>(path: 'surveySets').deleteById(surveySetId);
     notifyListeners();
     return returnValue;
   }
 
-  Future<QuerySnapshot> deletePrismSurveySetByIdAndSurveys({id}) async {
-    QuerySnapshot returnedValue = await Collection<PrismSurvey>(path: 'surveys').deleteDocumentsChildrenByQuery(fieldName: 'surveySet', fieldValue: id);
+  Future<QuerySnapshot> deleteAllSurveysFromSurveySetById({surveySetId}) async {
+    QuerySnapshot returnedValue = await Collection<PrismSurvey>(path: 'surveys').deleteDocumentsChildrenByQuery(fieldName: 'surveySet', fieldValue: surveySetId);
     notifyListeners();
     return returnedValue;
   }

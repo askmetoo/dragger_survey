@@ -25,7 +25,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
           arrayValue: user?.uid,
         )
         .handleError((err) => log(
-            "ERROR in BuildTeamsDropdownButton getTeamsQueryByArray: $err"));
+            "ERROR in _SurveySetsListScreenState getTeamsQueryByArray: $err"));
     return teamsQuery;
   }
 
@@ -117,7 +117,6 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
             floatingActionButton: currSelectedTeamIdIsNotNull
-                // && teamDocsLengthNotZero
                 // CREATE A NEW SURVEY
                 ? FloatingActionButton.extended(
                     elevation: 12,

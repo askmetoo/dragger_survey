@@ -94,8 +94,7 @@ class Collection<T> {
     return ref.where(fieldName, arrayContains: arrayValue).getDocuments();
   }
 
-  void deleteItemsFromDocumentsArrayById(
-      {String fieldName, String id}) async {
+  void deleteItemsFromDocumentsArrayById({String fieldName, String id}) async {
     QuerySnapshot documentsSnapshot =
         await ref.where(fieldName, arrayContains: id).getDocuments();
 
@@ -103,7 +102,7 @@ class Collection<T> {
       String _documentID = document.documentID;
       DocumentReference docRef = ref.document('$_documentID');
       DocumentSnapshot _doc = await docRef.get();
-      
+
       List<dynamic> _usersList = _doc.data[fieldName].toList();
 
       // remove desired items from array
@@ -209,6 +208,9 @@ class Collection<T> {
   Stream<QuerySnapshot> streamDocuments() {
     return ref.snapshots();
   }
+  Stream<DocumentSnapshot> streamDocumentById(id) {
+    return ref.document('$id').snapshots();
+  }
 
   Stream<List<T>> streamData() {
     return ref
@@ -216,34 +218,43 @@ class Collection<T> {
         .map((list) => list.documents.map((doc) => Global.models[T] as T));
   }
 
+  deleteQueryById({fieldName, id}) {
+    ref.where(fieldName, arrayContains: id).getDocuments().then((documents) {
+      documents.documents.forEach((doc) {
+        deleteById(doc.documentID);
+      });
+    });
+  }
+
   deleteById(id) {
-    log(">>>>>>>-------------------> Delete document by ID: $id");
+    print(">>>>>>>-------------------> Delete document by ID: $id");
     ref.document('$id').delete().catchError(
-        (err) => debugPrint("ERROR in DB - Method deleteById(): $err"));
+          (err) => debugPrint("ERROR in DB - Method deleteById(): $err"),
+        );
   }
 
   Future<QuerySnapshot> deleteDocumentsChildrenByQuery(
       {String fieldName, String fieldValue}) async {
-    var returnedDocuments = await ref
-        .where(fieldName, isEqualTo: fieldValue)
-        .getDocuments()
-        .then((documents) {
-      documents.documents.forEach((document) async {
-        await deleteById(document.documentID);
-      });
-      log(">>>>>>>-------------------> Delete document by ID: $fieldValue");
-      return;
-    }).catchError((err) => debugPrint(
-            "ERROR in DB - Method deleteDocumentsChildrenByQuery(): $err"));
+
+    QuerySnapshot returnedDocuments =
+        // 1) find all documents where the fieldnames value is equal to field value
+        await ref.where(fieldName, isEqualTo: fieldValue).getDocuments().then(
+      (documents) {
+        documents.documents.forEach(
+          (document) async {
+            // 2) For each returned documents Id find and delete a document 
+            await deleteById(document.documentID);
+          },
+        );
+        log(">>>>>>>-------------------> Delete document by ID: $fieldValue");
+        return documents;
+      },
+    ).catchError(
+      (err) => debugPrint(
+        "ERROR in DB - Method deleteDocumentsChildrenByQuery(): $err",
+      ),
+    );
     return returnedDocuments;
-
-    // returnedDocuments.documents.forEach((DocumentSnapshot document) {
-    //   idsList.add(document.documentID);
-    // });
-
-    // idsList.forEach((id) {
-    //   deleteById(id);
-    // });
   }
 }
 

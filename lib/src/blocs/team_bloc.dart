@@ -103,6 +103,10 @@ class TeamBloc extends ChangeNotifier {
     return Collection<Team>(path: 'teams').getDocument(id);
   }
 
+  Stream<DocumentSnapshot> streamTeamById({id}) {
+    return Collection<Team>(path: 'teams').streamDocumentById(id);
+  }
+
   deleteTeamById({id}) {
     Collection<Team>(path: 'teams').deleteById(id);
     notifyListeners();

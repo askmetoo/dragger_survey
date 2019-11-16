@@ -119,7 +119,7 @@ Widget buildTeamsListView({BuildContext context}) {
                               onPressed: () async {
                                 teamBloc.currentSelectedTeamId = teamId;
 
-                                print("Edit button pressed in teams");
+                                print("Edit button pressed in teams, teamId: $teamId");
 
                                 Navigator.pushNamed(
                                   context,
