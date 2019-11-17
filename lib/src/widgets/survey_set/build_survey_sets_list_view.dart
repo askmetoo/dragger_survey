@@ -2,9 +2,11 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/enums/connectivity_status.dart';
+import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -122,6 +124,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                       child: BuildListOfSets(
                     surveySetsBloc: surveySetsBloc,
                     surveySetSnapshot: surveySetSnapshot,
+                    user: _user,
                   )),
                 ],
               );
@@ -386,20 +389,23 @@ class BuildListOfSets extends StatelessWidget {
     Key key,
     @required this.surveySetsBloc,
     @required this.surveySetSnapshot,
+    @required this.user,
   }) : super(key: key);
 
+  final FirebaseUser user;
   final PrismSurveySetBloc surveySetsBloc;
   final AsyncSnapshot<QuerySnapshot> surveySetSnapshot;
 
   @override
   Widget build(BuildContext context) {
     final PrismSurveyBloc surveyBloc = Provider.of<PrismSurveyBloc>(context);
+    final PrismSurveySetBloc surveySetBloc =
+        Provider.of<PrismSurveySetBloc>(context);
 
     return ListView(
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(bottom: 90),
       physics: BouncingScrollPhysics(),
-      
       children: surveySetSnapshot.data.documents.map(
         (DocumentSnapshot surveySetDokumentSnapshot) {
           if (!(surveySetSnapshot.connectionState == ConnectionState.done)) {
@@ -455,6 +461,20 @@ class BuildListOfSets extends StatelessWidget {
                     //   },
                     // ),
                     IconSlideAction(
+                      caption: 'Edit',
+                      color: Styles.drg_colorSuccess,
+                      icon: Icons.edit,
+                      onTap: () {
+                        _buildSurveySetEditDialog(
+                          context,
+                          documentID: surveySetDokumentSnapshot.documentID,
+                          surveySetBloc: surveySetBloc,
+                          surveySetsSnapshot: surveySetDokumentSnapshot,
+                          user: user,
+                        );
+                      },
+                    ),
+                    IconSlideAction(
                       caption: 'Delete',
                       color: Styles.drg_colorAttention,
                       icon: Icons.delete,
@@ -464,7 +484,8 @@ class BuildListOfSets extends StatelessWidget {
                         surveySetsBloc.deleteAllSurveysFromSurveySetById(
                           surveySetId: surveySetDokumentSnapshot.documentID,
                         );
-                        surveySetsBloc.deletePrismSurveySetById(surveySetId: surveySetDokumentSnapshot.documentID);
+                        surveySetsBloc.deletePrismSurveySetById(
+                            surveySetId: surveySetDokumentSnapshot.documentID);
 
                         Scaffold.of(context).showSnackBar(
                           SnackBar(
@@ -530,5 +551,172 @@ class BuildListOfSets extends StatelessWidget {
         },
       ).toList(),
     );
+  }
+
+  void _buildSurveySetEditDialog(BuildContext context,
+      {@required String documentID,
+      @required PrismSurveySetBloc surveySetBloc,
+      @required DocumentSnapshot surveySetsSnapshot,
+      @required FirebaseUser user,
+      }) async {
+    log("In BuildSurveySetListView - _buildSurveyEditDialog 'Edit': $documentID");
+
+    final GlobalKey<FormBuilderState> _formSurveySetEditKey =
+        GlobalKey<FormBuilderState>();
+
+    FocusNode firstFocus;
+    FocusNode secondFocus;
+    FocusNode thirdFocus;
+    FocusNode fourthFocus;
+
+    if(surveySetsSnapshot.data == null) {
+      log("In BuildSurveySetListView - no data in surveySetsSnapshot.data, value: ${surveySetsSnapshot.data}");
+    }
+
+    await showDialog(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(3),
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
+            ),
+            backgroundColor: Styles.drg_colorSecondaryDeepDark,
+            title: Text(
+              "Edit Survey Set Metadata",
+              style: TextStyle(
+                fontFamily: 'Bitter',
+                color: Styles.drg_colorSecondary,
+              ),
+            ),
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: FormBuilder(
+                  autovalidate: true,
+                  key: _formSurveySetEditKey,
+                  initialValue: {
+                    'name': surveySetsSnapshot.data['name'],
+                    'xName': surveySetsSnapshot.data['xName'],
+                    'yName': surveySetsSnapshot.data['yName'],
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      FormBuilderTextField(
+                        autofocus: true,
+                        focusNode: firstFocus,
+                        onEditingComplete: () =>
+                            FocusScope.of(context).requestFocus(secondFocus),
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.text,
+                        style: TextStyle(
+                          color: Styles.drg_colorSecondary,
+                          fontWeight: FontWeight.w600
+                        ),
+                        attribute: "name",
+                        decoration: InputDecoration(
+                          labelText: "Team name",
+                          labelStyle: TextStyle(color: Styles.drg_colorAppBackgroundMedium),
+                        ),
+                        validators: [
+                          FormBuilderValidators.max(32),
+                          FormBuilderValidators.min(3),
+                        ],
+                      ),
+                      FormBuilderTextField(
+                        autofocus: true,
+                        focusNode: secondFocus,
+                        onEditingComplete: () =>
+                            FocusScope.of(context).requestFocus(thirdFocus),
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.text,
+                        style: TextStyle(
+                          color: Styles.drg_colorSecondary,
+                          fontWeight: FontWeight.w600
+                        ),
+                        attribute: "xName",
+                        decoration: InputDecoration(
+                          labelText: "Label for x axis",
+                          labelStyle: TextStyle(color: Styles.drg_colorAppBackgroundMedium),
+                        ),
+                        validators: [
+                          FormBuilderValidators.max(32),
+                          FormBuilderValidators.min(3),
+                        ],
+                      ),
+                      FormBuilderTextField(
+                        autofocus: true,
+                        focusNode: thirdFocus,
+                        onEditingComplete: () =>
+                            FocusScope.of(context).requestFocus(fourthFocus),
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.text,
+                        style: TextStyle(
+                          color: Styles.drg_colorSecondary,
+                          fontWeight: FontWeight.w600
+                        ),
+                        attribute: "yName",
+                        decoration: InputDecoration(
+                          labelText: "Label for y axis",
+                          labelStyle: TextStyle(color: Styles.drg_colorAppBackgroundMedium),
+                        ),
+                        validators: [
+                          FormBuilderValidators.max(32),
+                          FormBuilderValidators.min(3),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 12.0),
+                        child: FlatButton(
+                              child: Text("Speichern"),
+                              color: Styles.drg_colorSecondary,
+                              onPressed: () {
+                                log("In _buildSurveySetEditDialog - onPressed 'Speichern'");
+                                if (_formSurveySetEditKey.currentState
+                                    .saveAndValidate()) {
+                                  log("In _buildSurveySetEditDialog - after saveAndValidate()");
+                                  log("_formSurveySetEditKey.text: ${_formSurveySetEditKey.currentState.value['name']}");
+                                  surveySetBloc.updatePrismSurveySetById(
+                                    field: 'name',
+                                    id: documentID,
+                                    value: _formSurveySetEditKey.currentState.value['name'],
+                                  );
+                                  surveySetBloc.updatePrismSurveySetById(
+                                    field: 'xName',
+                                    id: documentID,
+                                    value: _formSurveySetEditKey.currentState.value['xName'],
+                                  );
+                                  surveySetBloc.updatePrismSurveySetById(
+                                    field: 'yName',
+                                    id: documentID,
+                                    value: _formSurveySetEditKey.currentState.value['yName'],
+                                  );
+                                  surveySetBloc.updatePrismSurveySetById(
+                                    field: 'lastEditedByUser',
+                                    id: documentID,
+                                    value: DateTime.now().toUtc(),
+                                  );
+                                  surveySetBloc.updatePrismSurveySetById(
+                                    field: 'lastEditedByUserName',
+                                    id: documentID,
+                                    value: user.displayName,
+                                  );
+                                }
+                                Navigator.pop(context);
+                              },
+                            ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
   }
 }

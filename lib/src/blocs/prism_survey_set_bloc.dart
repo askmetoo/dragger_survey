@@ -115,6 +115,16 @@ class PrismSurveySetBloc extends ChangeNotifier {
     return returnValue;
   }
 
+  updatePrismSurveySetById({id, field, value}) async {
+    try {
+      await Collection(path: "surveySets").updateDocumentByIdWithFieldAndValue(
+          id: id, field: field, value: value);
+      notifyListeners();
+    } catch (err) {
+      log("ERROR in PrismSurveySetBloc - updatePrismSurveySetById, error: $err");
+    }
+  }
+
   Future<DocumentSnapshot> deletePrismSurveySetById({surveySetId}) {
     var returnValue =
         Collection<PrismSurveySet>(path: 'surveySets').deleteById(surveySetId);

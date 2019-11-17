@@ -37,7 +37,8 @@ class SurveySetDetailsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  buildMetaHeader(context: context, surveySetsSnapshot: surveySetsSnapshot),
+                  buildMetaHeader(
+                      context: context, surveySetsSnapshot: surveySetsSnapshot),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                     child: Text("Surveys made:"),
@@ -113,28 +114,26 @@ class SurveySetDetailsScreen extends StatelessWidget {
                       actionExtentRatio: 0.25,
                       secondaryActions: <Widget>[
                         IconSlideAction(
-                          caption: 'Delete',
-                          color: Styles.drg_colorAttention,
-                          icon: Icons.delete,
-                          onTap: () {
-                            // log("In SurveySetDetailsScreen Slidable 'Delete': ${document.documentID}");
-                            surveyBloc.deletePrismSurveyById(
-                                id: document.documentID);
-                            surveyBloc.currentAskedPerson = null;
-                          },
-                        ),
-                        IconSlideAction(
                           caption: 'Edit',
                           color: Styles.drg_colorSuccess,
                           icon: Icons.edit,
                           onTap: () {
-                            log("In SurveySetDetailsScreen Slidable 'Edit': ${document.documentID}");
                             _buildSurveyEditDialog(
                               context,
                               documentID: document.documentID,
                               surveyBloc: surveyBloc,
                               askedPerson: document.data['askedPerson'],
                             );
+                          },
+                        ),
+                        IconSlideAction(
+                          caption: 'Delete',
+                          color: Styles.drg_colorAttention,
+                          icon: Icons.delete,
+                          onTap: () {
+                            surveyBloc.deletePrismSurveyById(
+                                id: document.documentID);
+                            surveyBloc.currentAskedPerson = null;
                           },
                         ),
                       ],
@@ -203,14 +202,15 @@ class SurveySetDetailsScreen extends StatelessWidget {
   }
 
   buildMetaHeader({context, surveySetsSnapshot}) {
-
     final UserBloc userBloc = Provider.of<UserBloc>(context);
 
     return FutureBuilder<QuerySnapshot>(
-      future: userBloc.getUsersQuery(fieldName: 'providersUID', fieldValue: surveySetsSnapshot?.data['createdByUser']),
-      builder: (context, userSnapshot) {
-        if (userSnapshot.connectionState != ConnectionState.done) {
-          return Center(
+        future: userBloc.getUsersQuery(
+            fieldName: 'providersUID',
+            fieldValue: surveySetsSnapshot?.data['createdByUser']),
+        builder: (context, userSnapshot) {
+          if (userSnapshot.connectionState != ConnectionState.done) {
+            return Center(
               child: Container(
                 constraints: BoxConstraints(maxWidth: 50),
                 child: AspectRatio(
@@ -221,44 +221,43 @@ class SurveySetDetailsScreen extends StatelessWidget {
                 ),
               ),
             );
-        }
-        if (!userSnapshot.hasData) {
-          log("In SurveySetDetailsScreen - userSnapshot has no data");
-          return Container();
-        }
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            children: <Widget>[
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "${surveySetsSnapshot?.data['name']}",
-                  style: TextStyle(
-                      fontSize: Styles.drg_fontSizeMediumHeadline,
-                      fontFamily: 'Bitter',
-                      fontWeight: FontWeight.w700),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text("${surveySetsSnapshot.data['description']}",
+          }
+          if (!userSnapshot.hasData) {
+            log("In SurveySetDetailsScreen - userSnapshot has no data");
+            return Container();
+          }
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "${surveySetsSnapshot?.data['name']}",
                     style: TextStyle(
-                        fontSize: Styles.drg_fontSizesubHeadline,
-                        fontWeight: FontWeight.w500)),
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Granularity: ${surveySetsSnapshot.data['resolution']} \nThis set was created by ${userSnapshot?.data?.documents[0].data['displayName']}",
-                  style: TextStyle(fontSize: Styles.drg_fontSizeCopyText),
+                        fontSize: Styles.drg_fontSizeMediumHeadline,
+                        fontFamily: 'Bitter',
+                        fontWeight: FontWeight.w700),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        );
-      }
-    );
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text("${surveySetsSnapshot.data['description']}",
+                      style: TextStyle(
+                          fontSize: Styles.drg_fontSizesubHeadline,
+                          fontWeight: FontWeight.w500)),
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Granularity: ${surveySetsSnapshot.data['resolution']} \nThis set was created by ${userSnapshot?.data?.documents[0].data['displayName']}",
+                    style: TextStyle(fontSize: Styles.drg_fontSizeCopyText),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   void _buildSurveyEditDialog(
@@ -268,10 +267,8 @@ class SurveySetDetailsScreen extends StatelessWidget {
     @required String askedPerson,
   }) async {
     log("In SurveySetDetailsScreen _buildSurveyEditDialog 'Edit': $documentID");
-    // final GlobalKey<FormState> _formSurveyEditKey = GlobalKey<FormState>();
     final GlobalKey<FormBuilderState> _formSurveyEditKey =
         GlobalKey<FormBuilderState>();
-    // TextEditingController _surveyEditController = TextEditingController();
 
     await showDialog(
         context: context,
@@ -295,7 +292,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
             ),
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 26),
+                padding: EdgeInsets.symmetric(horizontal: 16),
                 child: FormBuilder(
                   key: _formSurveyEditKey,
                   initialValue: {'askedPerson': askedPerson ?? 'Anonymous'},
