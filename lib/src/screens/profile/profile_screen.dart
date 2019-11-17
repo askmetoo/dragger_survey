@@ -3,15 +3,12 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
-import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:dragger_survey/src/styles.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../screens.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -86,14 +83,9 @@ class ProfileScreen extends StatelessWidget {
                                     teamBloc.deleteTeamById(id: team.documentID);
                                   });
                                 });
-                  // teamsFromUser.documents.forEach((team) {
-                  //   print("-----> Teams user is member ID: ${team.documentID}");
-                  //   teamBloc.deleteTeamById(id: team.documentID);
-                  // });
 
-                  // TODO: Fix remove MEMBER from TEAM Array - this solution empties the team data
-                  // // Remove USER FROM all TEAMS he is MEMBER in
-                  // teamBloc.deleteUserFromTeamsArrayById(id: userId);
+                  // Remove USER FROM all TEAMS he is MEMBER in
+                  teamBloc.deleteUserFromTeamsArrayById(id: userId);
 
                   // Remove USER
                   userBloc.deleteUserByIdQuery(id: userId);

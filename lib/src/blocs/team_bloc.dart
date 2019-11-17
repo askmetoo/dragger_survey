@@ -94,9 +94,10 @@ class TeamBloc extends ChangeNotifier {
     notifyListeners();
   }
 
-  deleteUserFromTeamsArrayById({id}) {
-    Collection(path: "teams").deleteItemsFromDocumentsArrayById(fieldName: 'users', id: id);
+  Future<QuerySnapshot> deleteUserFromTeamsArrayById({id}) async{
+    QuerySnapshot returnedValue = await Collection(path: "teams").deleteItemsFromDocumentsArrayById(fieldName: 'users', id: id);
     notifyListeners();
+    return returnedValue;
   }
 
   Future<DocumentSnapshot> getTeamById({id}) {

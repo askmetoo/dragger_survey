@@ -94,24 +94,40 @@ class Collection<T> {
     return ref.where(fieldName, arrayContains: arrayValue).getDocuments();
   }
 
-  void deleteItemsFromDocumentsArrayById({String fieldName, String id}) async {
+  Future deleteItemsFromDocumentsArrayById({String fieldName, String id}) async {
+
+    // 1) Find all documents where 'fieldname' array contains id
     QuerySnapshot documentsSnapshot =
         await ref.where(fieldName, arrayContains: id).getDocuments();
 
-    documentsSnapshot.documents.forEach((document) async {
+    // 2) For each document of documentsSnapshot...
+    documentsSnapshot.documents.forEach((DocumentSnapshot document) async {
+
+      // 3) ...extract the document ID
       String _documentID = document.documentID;
-      DocumentReference docRef = ref.document('$_documentID');
-      DocumentSnapshot _doc = await docRef.get();
+      // 4) ...get the document by ID...
+      DocumentSnapshot _documentSnapshot = await ref.document('$_documentID').get();
+      // DocumentSnapshot _doc = await docRef.get();
+      List<dynamic> _usersList;
 
-      List<dynamic> _usersList = _doc.data[fieldName].toList();
-
-      // remove desired items from array
-      _usersList.removeWhere((value) => value.toString() == id);
-
-      FieldValue newArray = FieldValue.arrayUnion(_usersList);
       try {
-        ref.document('$_documentID').setData({'$fieldName': newArray});
+        // 5) extract the user array...
+        _usersList = _documentSnapshot.data[fieldName].toList();
+        // List<dynamic> _usersList = _doc.data[fieldName].toList();
+      } catch (err) {
+        log("ERROR in DB deleteItemsFromDocumentsArrayById - _doc[fieldName].toList(), error: $err"); 
+      }
+
+      // 6) ...remove desired items from array...
+      _usersList.removeWhere((arrayItem) => arrayItem.toString() == id);
+
+      // 7) ...replace array in snapshot...
+      _documentSnapshot.data[fieldName] = _usersList;
+
+      try {
         log("--> 1)   In DB - deleted arrayValue: $id from doc id: $_documentID");
+        // ...replace document data with snapshot data
+        return ref.document('$_documentID').setData(_documentSnapshot.data);
       } catch (error) {
         print('Error occured while updating data: $error');
       }

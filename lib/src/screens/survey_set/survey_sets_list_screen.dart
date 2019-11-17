@@ -43,7 +43,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
         stream: streamQueryTeamsForUser(teamBloc: teamBloc, user: user),
         builder:
             (BuildContext context, AsyncSnapshot<QuerySnapshot> teamsSnapshot) {
-          log("oooooo===========-------> teamsSnapshot.connectionState: ${teamsSnapshot.connectionState}");
+          // log("oooooo===========-------> teamsSnapshot.connectionState: ${teamsSnapshot.connectionState}");
           if (teamsSnapshot.connectionState != ConnectionState.active) {
             return Center(
               child: Container(
@@ -72,26 +72,26 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
           // }
 
           bool teamsSnapshotDataIsNull = teamsSnapshot.data == null;
-          log("oooooo===========-------> teamsSnapshotDataIsNull: $teamsSnapshotDataIsNull");
+          // log("oooooo===========-------> teamsSnapshotDataIsNull: $teamsSnapshotDataIsNull");
 
-          int teamDocsLength = teamsSnapshot.data.documents.length;
-          log("oooooo===========-------> teamDocsLength: $teamDocsLength");
+          // int teamDocsLength = teamsSnapshot.data.documents.length;
+          // // log("oooooo===========-------> teamDocsLength: $teamDocsLength");
 
           bool teamDocsLengthNotZero = teamsSnapshot.data.documents.length > 0;
-          log("oooooo===========-------> teamDocsLengthNotZero: $teamDocsLengthNotZero");
+          // log("oooooo===========-------> teamDocsLengthNotZero: $teamDocsLengthNotZero");
 
           bool teamDocsIsEmpty = teamsSnapshot.data.documents.isEmpty;
-          log("oooooo===========-------> teamDocsIsEmpty: $teamDocsIsEmpty");
+          // log("oooooo===========-------> teamDocsIsEmpty: $teamDocsIsEmpty");
 
           bool currSelectedTeamIdIsNotNull = teamDocsLengthNotZero &&
               teamsSnapshot?.data?.documents[0]?.documentID != null;
-          log("oooooo===========-------> currSelectedTeamIdIsNotNull: $currSelectedTeamIdIsNotNull");
+          // log("oooooo===========-------> currSelectedTeamIdIsNotNull: $currSelectedTeamIdIsNotNull");
 
-          if (teamDocsLengthNotZero) {
-            String snapShotCurrSelectedTeamId =
-                teamsSnapshot.data.documents[0].documentID;
-            log("oooooo===========-------> snapShotCurrSelectedTeamId: $snapShotCurrSelectedTeamId");
-          }
+          // if (teamDocsLengthNotZero) {
+          //   String snapShotCurrSelectedTeamId =
+          //       teamsSnapshot.data.documents[0].documentID;
+          //   // log("oooooo===========-------> snapShotCurrSelectedTeamId: $snapShotCurrSelectedTeamId");
+          // }
 
           return Scaffold(
             backgroundColor: Styles.drg_colorAppBackground,
