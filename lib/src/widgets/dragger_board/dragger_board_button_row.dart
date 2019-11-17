@@ -65,9 +65,9 @@ class DraggerBoardButtonRow extends StatelessWidget {
                         backgroundColor: Styles.drg_colorSuccess,
                       ),
                   );
-                await Future.delayed(const Duration(milliseconds: 1200), () {});
+                await Future.delayed(const Duration(milliseconds: 800), () {});
                 Navigator.of(context).pop();
-                Future.delayed(const Duration(milliseconds: 1200), () {
+                Future.delayed(const Duration(milliseconds: 800), () {
                   draggableItemBloc.resetDraggableItemPositon();
                 });
               },
