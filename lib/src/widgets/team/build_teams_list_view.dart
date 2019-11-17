@@ -75,20 +75,23 @@ Widget buildTeamsListView({BuildContext context}) {
                         caption: 'Delete',
                         color: Styles.drg_colorAttention,
                         icon: Icons.delete,
-                        onTap: () {
+                        onTap: () async {
+                          bool teamDeleted = false;
                           log("In BuildTeamListView ListView Dismissible Item name: ${teamDocumentSnapshot.data['name']}, id: ${teamDocumentSnapshot.documentID} is dismissed'");
-                          teamBloc.deleteTeamById(
+                          teamDeleted = await teamBloc.deleteTeamByIdOnlyIfUserIsOwner(
                             id: teamDocumentSnapshot.documentID,
+                            currentUserId: signInSnapshot.data.uid,
                           );
 
                           Scaffold.of(context).showSnackBar(
                             SnackBar(
-                              backgroundColor: Styles.drg_colorAttention,
+                              backgroundColor: teamDeleted ? Styles.drg_colorSuccess : Styles.drg_colorAttention,
                               elevation: 20,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(40)),
-                              content: Text(
-                                  "${teamDocumentSnapshot.data['name']} has been deleted."),
+                              content: teamDeleted 
+                                        ? Text("${teamDocumentSnapshot.data['name']} has been deleted!") 
+                                        : Text("You cannot delete the team, you aren't the owner!"),
                             ),
                           );
                         },

@@ -108,8 +108,28 @@ class TeamBloc extends ChangeNotifier {
     return Collection<Team>(path: 'teams').streamDocumentById(id);
   }
 
-  deleteTeamById({id}) {
-    Collection<Team>(path: 'teams').deleteById(id);
+  Future<bool> deleteTeamByIdOnlyIfUserIsOwner({@required id, @required currentUserId}) async {
+
+    DocumentSnapshot _team = await Collection<Team>(path: 'teams').getDocument(id);
+
+    String ownerId = _team.data['createdByUser'];
+
+
+    if (currentUserId != ownerId) {
+      log("In TeamBloc - deleteTeamByIdOnlyIfUserIsOwner - currentUserId is not equal to ownerId");
+      log("In TeamBloc - deleteTeamByIdOnlyIfUserIsOwner - team not deleted!");
+      return false;
+    } 
+    if(currentUserId == null || currentUserId == '') {
+      log("In TeamBloc - deleteTeamByIdOnlyIfUserIsOwner - currentUserId is: $currentUserId");
+      log("In TeamBloc - deleteTeamByIdOnlyIfUserIsOwner - team not deleted!");
+      return false;
+    }
+
+    log("In TeamBloc - deleteTeamByIdOnlyIfUserIsOwner - 'currentUserId == ownerId'? ${currentUserId == ownerId}");
+    await Collection<Team>(path: 'teams').deleteById(id);
     notifyListeners();
+    log("In TeamBloc - deleteTeamByIdOnlyIfUserIsOwner - team has been deleted!");
+    return true;
   }
 }
