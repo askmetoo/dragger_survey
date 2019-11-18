@@ -16,6 +16,14 @@ Widget buildTeamsListView({BuildContext context}) {
   final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
   final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
 
+  _buildInitials({String name}){
+    List splittedName = name.split(' ');
+    String firstLetter = splittedName[0][0];
+    String secondLetter = splittedName.length > 1 ? splittedName[1][0] : splittedName[0][1];
+    String initials = ("$firstLetter$secondLetter").toUpperCase();
+    return initials;
+  }
+
   return FutureBuilder<FirebaseUser>(
     future: signInBloc.currentUser,
     builder: (context, signInSnapshot) {
@@ -116,7 +124,7 @@ Widget buildTeamsListView({BuildContext context}) {
                             isThreeLine: false,
                             dense: true,
                             contentPadding: EdgeInsets.only(
-                                left: 10, right: 10, top: 0, bottom: 2),
+                                left: 10, right: 10, bottom: 2),
                             trailing: IconButton(
                               key: Key(teamId),
                               icon: Icon(Icons.edit),
@@ -137,16 +145,18 @@ Widget buildTeamsListView({BuildContext context}) {
                               Navigator.pushNamed(context, '/surveysetslist',
                                   arguments: "$teamId");
                             },
-                            leading: RoundedLetter(
-                              // TODO: Get 2 letters or center 1
-                              text: teamDocumentSnapshot['name'] == null ? 'Dragger' : "${teamDocumentSnapshot['name']}",
-                              fontColor: Styles.drg_colorSecondary,
-                              shapeType: ShapeType.circle,
-                              shapeColor: Styles.drg_colorContrast,
-                              borderColor: Styles.drg_colorPrimary,
-                              shapeSize: 48,
-                              fontSize: 20,
-                              borderWidth: 2,
+                            leading: Padding(
+                              padding: EdgeInsets.only(right: 8.0),
+                              child: RoundedLetter(
+                                text: _buildInitials(name: teamDocumentSnapshot['name']),
+                                fontColor: Styles.drg_colorSecondary,
+                                shapeType: ShapeType.circle,
+                                shapeColor: Styles.drg_colorPrimary,
+                                borderColor: Styles.drg_colorSecondary,
+                                shapeSize: 44,
+                                fontSize: 22,
+                                borderWidth: 4,
+                              ),
                             ),
                             title: Text(
                               "${teamDocumentSnapshot['name']}",
