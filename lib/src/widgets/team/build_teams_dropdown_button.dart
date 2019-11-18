@@ -1,11 +1,14 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
+import 'package:dragger_survey/src/shared/shared.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rounded_letter/rounded_letter.dart';
+import 'package:rounded_letter/shape_type.dart';
 
 class BuildTeamsDropdownButton extends StatefulWidget {
   final AsyncSnapshot<QuerySnapshot> teamsSnapshot;
@@ -87,23 +90,6 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                               });
                             }
                           });
-
-
-                          // TODO: delete if the above stream works correctly
-                          // teamBloc
-                          //     .getTeamById(id: _selectedTeamId)
-                          //     .then((returnedTeam) {
-                          //   teamBloc.setCurrentSelectedTeam(returnedTeam);
-                          //   teamBloc.setCurrentSelectedTeamId(
-                          //       returnedTeam.documentID);
-                          //   if (!this.mounted) {
-                          //     return;
-                          //   } else {
-                          //     setState(() {
-                          //       _selectedTeam = returnedTeam;
-                          //     });
-                          //   }
-                          // });
                         },
                         iconSize: 42,
                         icon: Icon(
@@ -137,51 +123,68 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                     ),
                                   ),
                                   width: double.infinity,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        // height: 22,
-                                        padding: EdgeInsetsDirectional.only(
-                                            top: 6, bottom: 0),
-                                        child: Text(
-                                          "${team['name']}",
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: Styles.drg_colorText
-                                                .withOpacity(0.8),
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w900,
-                                            fontFamily: 'Bitter',
-                                            height: .7,
-                                          ),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 12.0),
+                                        child: RoundedLetter(
+                                          text: buildInitials(
+                                              name: team['name']),
+                                          fontColor: Styles.drg_colorSecondary,
+                                          shapeType: ShapeType.circle,
+                                          shapeColor: Styles.drg_colorPrimary,
+                                          shapeSize: 34,
+                                          fontSize: 15,
+                                          borderWidth: 2,
                                         ),
                                       ),
-                                      Container(
-                                        height: 38,
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              bottom: 0.0, right: 4),
-                                          child: Text(
-                                            team['description'] != ''
-                                                ? "${team['description']}"
-                                                : 'Team has no description',
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                            softWrap: true,
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                                color: Styles
-                                                    .drg_colorSecondaryDeepDark
-                                                    .withOpacity(.8),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsetsDirectional.only(
+                                                top: 6, bottom: 0),
+                                            child: Text(
+                                              "${team['name']}",
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                color: Styles.drg_colorText
+                                                    .withOpacity(0.8),
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w900,
                                                 fontFamily: 'Bitter',
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 14,
-                                                height: 1.5),
+                                                height: .7,
+                                              ),
+                                            ),
                                           ),
-                                        ),
+                                          Container(
+                                            height: 38,
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                  bottom: 0.0, right: 4),
+                                              child: Text(
+                                                team['description'] != ''
+                                                    ? "${team['description']}"
+                                                    : 'Team has no description',
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                softWrap: true,
+                                                textAlign: TextAlign.start,
+                                                style: TextStyle(
+                                                    color: Styles
+                                                        .drg_colorSecondaryDeepDark
+                                                        .withOpacity(.8),
+                                                    fontFamily: 'Bitter',
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 14,
+                                                    height: 1.5),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
