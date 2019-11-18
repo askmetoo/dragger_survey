@@ -16,10 +16,11 @@ Widget buildTeamsListView({BuildContext context}) {
   final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
   final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
 
-  _buildInitials({String name}){
+  _buildInitials({String name}) {
     List splittedName = name.split(' ');
     String firstLetter = splittedName[0][0];
-    String secondLetter = splittedName.length > 1 ? splittedName[1][0] : splittedName[0][1];
+    String secondLetter =
+        splittedName.length > 1 ? splittedName[1][0] : splittedName[0][1];
     String initials = ("$firstLetter$secondLetter").toUpperCase();
     return initials;
   }
@@ -57,7 +58,7 @@ Widget buildTeamsListView({BuildContext context}) {
                     .map((teamDocumentSnapshot) {
                   String teamId = teamDocumentSnapshot.documentID;
 
-                  if(teamDocumentSnapshot.data == null) {
+                  if (teamDocumentSnapshot.data == null) {
                     return Container();
                   }
                   return Slidable(
@@ -88,20 +89,25 @@ Widget buildTeamsListView({BuildContext context}) {
                         onTap: () async {
                           bool teamDeleted = false;
                           log("In BuildTeamListView ListView Dismissible Item name: ${teamDocumentSnapshot.data['name']}, id: ${teamDocumentSnapshot.documentID} is dismissed'");
-                          teamDeleted = await teamBloc.deleteTeamByIdOnlyIfUserIsOwner(
+                          teamDeleted =
+                              await teamBloc.deleteTeamByIdOnlyIfUserIsOwner(
                             id: teamDocumentSnapshot.documentID,
                             currentUserId: signInSnapshot.data.uid,
                           );
 
                           Scaffold.of(context).showSnackBar(
                             SnackBar(
-                              backgroundColor: teamDeleted ? Styles.drg_colorSuccess : Styles.drg_colorAttention,
+                              backgroundColor: teamDeleted
+                                  ? Styles.drg_colorSuccess
+                                  : Styles.drg_colorAttention,
                               elevation: 20,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(40)),
-                              content: teamDeleted 
-                                        ? Text("${teamDocumentSnapshot.data['name']} has been deleted!") 
-                                        : Text("You cannot delete the team, you aren't the owner!"),
+                              content: teamDeleted
+                                  ? Text(
+                                      "${teamDocumentSnapshot.data['name']} has been deleted!")
+                                  : Text(
+                                      "You cannot delete the team, you aren't the owner!"),
                             ),
                           );
                         },
@@ -123,15 +129,16 @@ Widget buildTeamsListView({BuildContext context}) {
                           child: ListTile(
                             isThreeLine: false,
                             dense: true,
-                            contentPadding: EdgeInsets.only(
-                                left: 10, right: 10, bottom: 2),
+                            contentPadding:
+                                EdgeInsets.only(left: 10, right: 10, bottom: 2),
                             trailing: IconButton(
                               key: Key(teamId),
                               icon: Icon(Icons.edit),
                               onPressed: () async {
                                 teamBloc.currentSelectedTeamId = teamId;
 
-                                print("Edit button pressed in BuildTeamsListView, teamId: $teamId");
+                                print(
+                                    "Edit button pressed in BuildTeamsListView, teamId: $teamId");
 
                                 Navigator.pushNamed(
                                   context,
@@ -148,7 +155,8 @@ Widget buildTeamsListView({BuildContext context}) {
                             leading: Padding(
                               padding: EdgeInsets.only(right: 8.0),
                               child: RoundedLetter(
-                                text: _buildInitials(name: teamDocumentSnapshot['name']),
+                                text: _buildInitials(
+                                    name: teamDocumentSnapshot['name']),
                                 fontColor: Styles.drg_colorSecondary,
                                 shapeType: ShapeType.circle,
                                 shapeColor: Styles.drg_colorPrimary,
@@ -158,22 +166,24 @@ Widget buildTeamsListView({BuildContext context}) {
                                 borderWidth: 4,
                               ),
                             ),
-                            title: Text(
-                              "${teamDocumentSnapshot['name']}",
-                              style: Styles.drg_textListTitle,
+                            title: Tooltip(
+                              message: "Team name and count of members",
+                              child: RichText(
+                                text: TextSpan(
+                                    text: "${teamDocumentSnapshot['name']} ",
+                                    style: Styles.drg_textListTitle,
+                                    children: [
+                                      TextSpan(
+                                          text:
+                                              "(${teamDocumentSnapshot['users'].length})",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 14)),
+                                    ]),
+                              ),
                             ),
                             subtitle: Text(
-                              """Created: ${teamDocumentSnapshot['created'] != null ? formatDate(teamDocumentSnapshot['created'].toDate(), [
-                                dd,
-                                '. ',
-                                MM,
-                                ' ',
-                                yyyy,
-                                ', ',
-                                HH,
-                                ':',
-                                nn
-                              ]) : ''} \nLast edited: ${teamDocumentSnapshot['edited'] != null ? formatDate(teamDocumentSnapshot['edited'].toDate(), [
+                              """Created: ${teamDocumentSnapshot['created'] != null ? formatDate(teamDocumentSnapshot['created'].toDate(), [dd, '. ', MM, ' ', yyyy, ', ', HH, ':', nn]) : ''} \nLast edited: ${teamDocumentSnapshot['edited'] != null ? formatDate(teamDocumentSnapshot['edited'].toDate(), [
                                   dd,
                                   '. ',
                                   MM,
