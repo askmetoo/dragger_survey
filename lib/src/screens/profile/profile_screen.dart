@@ -80,7 +80,9 @@ class ProfileScreen extends StatelessWidget {
                                 .then((QuerySnapshot teams) {
                                   teams.documents.forEach((team) {
                                     print("-----> Teams user is member ID: ${team..documentID}");
-                                    teamBloc.deleteTeamByIdOnlyIfUserIsOwner(id: team.documentID);
+                                    teamBloc.deleteTeamByIdOnlyIfUserIsOwner(
+                                      id: team.documentID,
+                                      currentUserId: userId);
                                   });
                                 });
 

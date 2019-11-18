@@ -154,6 +154,8 @@ PODS:
     - Flutter
   - Protobuf (3.10.0)
   - Reachability (3.2)
+  - rounded_letter (0.0.1):
+    - Flutter
   - share (0.5.2):
     - Flutter
 
@@ -167,6 +169,7 @@ DEPENDENCIES:
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - rounded_letter (from `.symlinks/plugins/rounded_letter/ios`)
   - share (from `.symlinks/plugins/share/ios`)
 
 SPEC REPOS:
@@ -215,6 +218,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_sign_in/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
+  rounded_letter:
+    :path: ".symlinks/plugins/rounded_letter/ios"
   share:
     :path: ".symlinks/plugins/share/ios"
 
@@ -252,6 +257,7 @@ SPEC CHECKSUMS:
   path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
   Protobuf: a4dc852ad69c027ca2166ed287b856697814375b
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
+  rounded_letter: cbb4b1e91ea0af844108972d027af35d4c927e4f
   share: bae0a282aab4483288913fc4dc0b935d4b491f2e
 
 PODFILE CHECKSUM: 3dbe063e9c90a5d7c9e4e76e70a821b9e2c1d271

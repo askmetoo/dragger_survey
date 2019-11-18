@@ -7,6 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
+import 'package:rounded_letter/rounded_letter.dart';
+import 'package:rounded_letter/shape_type.dart';
 
 import '../../styles.dart';
 
@@ -98,7 +100,7 @@ Widget buildTeamsListView({BuildContext context}) {
                       ),
                     ],
                     child: Container(
-                      margin: EdgeInsets.only(left: 14, bottom: 1, top: 1),
+                      margin: EdgeInsets.only(left: 16, bottom: 1, top: 1),
                       color: Styles.drg_colorSecondary.withOpacity(0),
                       child: ClipRRect(
                         clipBehavior: Clip.antiAlias,
@@ -107,22 +109,21 @@ Widget buildTeamsListView({BuildContext context}) {
                           bottomLeft: Radius.circular(65),
                         ),
                         child: Container(
-                          padding: EdgeInsets.only(left: 24, bottom: 4),
                           decoration: BoxDecoration(
                             color: Styles.drg_colorSecondary.withOpacity(.7),
                           ),
                           child: ListTile(
                             isThreeLine: false,
                             dense: true,
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
+                            contentPadding: EdgeInsets.only(
+                                left: 10, right: 10, top: 0, bottom: 2),
                             trailing: IconButton(
                               key: Key(teamId),
                               icon: Icon(Icons.edit),
                               onPressed: () async {
                                 teamBloc.currentSelectedTeamId = teamId;
 
-                                print("Edit button pressed in teams, teamId: $teamId");
+                                print("Edit button pressed in BuildTeamsListView, teamId: $teamId");
 
                                 Navigator.pushNamed(
                                   context,
@@ -136,6 +137,17 @@ Widget buildTeamsListView({BuildContext context}) {
                               Navigator.pushNamed(context, '/surveysetslist',
                                   arguments: "$teamId");
                             },
+                            leading: RoundedLetter(
+                              // TODO: Get 2 letters or center 1
+                              text: teamDocumentSnapshot['name'] == null ? 'Dragger' : "${teamDocumentSnapshot['name']}",
+                              fontColor: Styles.drg_colorSecondary,
+                              shapeType: ShapeType.circle,
+                              shapeColor: Styles.drg_colorContrast,
+                              borderColor: Styles.drg_colorPrimary,
+                              shapeSize: 48,
+                              fontSize: 20,
+                              borderWidth: 2,
+                            ),
                             title: Text(
                               "${teamDocumentSnapshot['name']}",
                               style: Styles.drg_textListTitle,
