@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
+import 'package:dragger_survey/src/shared/shared.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -15,15 +16,6 @@ import '../../styles.dart';
 Widget buildTeamsListView({BuildContext context}) {
   final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
   final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
-
-  _buildInitials({String name}) {
-    List splittedName = name.split(' ');
-    String firstLetter = splittedName[0][0];
-    String secondLetter =
-        splittedName.length > 1 ? splittedName[1][0] : splittedName[0][1];
-    String initials = ("$firstLetter$secondLetter").toUpperCase();
-    return initials;
-  }
 
   return FutureBuilder<FirebaseUser>(
     future: signInBloc.currentUser,
@@ -155,7 +147,7 @@ Widget buildTeamsListView({BuildContext context}) {
                             leading: Padding(
                               padding: EdgeInsets.only(right: 8.0),
                               child: RoundedLetter(
-                                text: _buildInitials(
+                                text: buildInitials(
                                     name: teamDocumentSnapshot['name']),
                                 fontColor: Styles.drg_colorSecondary,
                                 shapeType: ShapeType.circle,
@@ -206,3 +198,5 @@ Widget buildTeamsListView({BuildContext context}) {
     },
   );
 }
+
+
