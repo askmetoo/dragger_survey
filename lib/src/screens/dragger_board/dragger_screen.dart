@@ -44,12 +44,8 @@ class _DraggerScreenState extends State<DraggerScreen> {
         Provider.of<PrismSurveyBloc>(context);
     final PrismSurveySetBloc prismSurveySetBloc =
         Provider.of<PrismSurveySetBloc>(context);
-    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
+    
 
-    if (signInBloc.currentUser == null) {
-      print("User is not signed in!");
-      return SplashScreen();
-    } else {}
 
     if (prismSurveySetBloc.currentPrismSurveySet == null) {
       log("In Dragger Screen prismSurveySetBloc.currentPrismSurveySet == null: ${prismSurveySetBloc.currentPrismSurveySet == null}");
@@ -98,6 +94,9 @@ class BuildPortraitLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DraggableItemBloc draggableItemBloc =
+        Provider.of<DraggableItemBloc>(context);
+
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Padding(
@@ -111,15 +110,17 @@ class BuildPortraitLayout extends StatelessWidget {
               xLabel: _xName,
               yLabel: _yName,
             ),
-            DraggerBoardButtonRow(
+            DraggerBoardButtons(
               formKey: _formKey,
               currentSurveySet: surveySet?.documentID,
             ),
-            Text(
-              "Granularity: ${matrixGranularityBloc.matrixGranularity} \n$_xName: ${prismSurveyBloc.rowIndex + 1} \n$_yName: ${prismSurveyBloc.colIndex + 1}",
+            if (draggableItemBloc.startedDragging) Text(
+              "$_xName: ${prismSurveyBloc.rowIndex + 1}     |     $_yName: ${prismSurveyBloc.colIndex + 1}\nGranularity: ${matrixGranularityBloc.matrixGranularity}",
               style: TextStyle(
                 color: Styles.drg_colorAppBackgroundMedium.withOpacity(.8),
+                height: 1.5
               ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
@@ -173,7 +174,7 @@ class BuildLandscapeLayout extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     BuildAskedPersonDropdown(),
-                    DraggerBoardButtonRow(
+                    DraggerBoardButtons(
                       formKey: _formKey,
                       currentSurveySet: surveySet?.documentID,
                     ),
@@ -392,10 +393,8 @@ class _BuildAskedRoleFormState extends State<BuildAskedRoleForm> {
                     ),
                     filled: true,
                     fillColor: Colors.white60,
-                    // labelText: "Role or name",
                     hintText: "Name or Role of asked person.",
                     labelStyle: TextStyle(color: Styles.drg_colorAppBackground),
-                    // focusColor: Colors.white,
                     errorStyle: TextStyle(
                         fontSize: 14,
                         color: Colors.white60,

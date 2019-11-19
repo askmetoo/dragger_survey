@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';

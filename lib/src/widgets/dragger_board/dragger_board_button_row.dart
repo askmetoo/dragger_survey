@@ -4,12 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class DraggerBoardButtonRow extends StatelessWidget {
+class DraggerBoardButtons extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final String currentSurveySet;
   // final String xLabel;
   // final String yLabel;
-  const DraggerBoardButtonRow({
+  const DraggerBoardButtons({
     this.formKey,
     @required this.currentSurveySet,
     // @required this.xLabel,
@@ -37,17 +37,12 @@ class DraggerBoardButtonRow extends StatelessWidget {
             child: FlatButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
-              color: Colors.orangeAccent,
-              textColor: Color(0xff662d00),
-              child: Text("Ergebnis speichern"),
-              onPressed: () async {
-                // Scaffold.of(context).showSnackBar(
-                //   SnackBar(
-                //     content: Text(
-                //       'Processing data \n${prismSurveyBloc.created} \n${prismSurveyBloc.rowIndex} \n${prismSurveyBloc.colIndex} \n${prismSurveyBloc.currentAskedPerson}',
-                //     ),
-                //   ),
-                // );
+              color: Styles.drg_colorSecondary,
+              textColor: Styles.drg_colorPrimary,
+              child: Text("Save result"),
+              disabledColor: Styles.drg_colorAppBackgroundMedium.withOpacity(.4),
+              disabledTextColor: Styles.drg_colorPrimary,
+              onPressed: draggableItemBloc.startedDragging ? () async {
                 Map<String, dynamic> survey = {
                   "created": prismSurveyBloc.created,
                   "askedPerson": prismSurveyBloc.currentAskedPerson,
@@ -70,11 +65,20 @@ class DraggerBoardButtonRow extends StatelessWidget {
                 Future.delayed(const Duration(milliseconds: 800), () {
                   draggableItemBloc.resetDraggableItemPositon();
                 });
-              },
+              } : null,
             ),
           ),
-          Container(
-            height: 30,
+          SizedBox(
+            width: double.infinity,
+            child: FlatButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              textColor: Styles.drg_colorSecondaryDeepDark.withOpacity(.8),
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
           ),
         ],
       ),
