@@ -43,7 +43,7 @@ class TeamsListScreen extends StatelessWidget {
                 actions: <Widget>[
                   SignedInUserCircleAvatar(),
                 ],
-                title: Text("Your Teams"),
+                title: Text("You're memder of these teams"),
               ),
               body: buildTeamsListView(
                 context: context,

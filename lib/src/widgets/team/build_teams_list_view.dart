@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/shared/shared.dart';
+import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -119,76 +120,77 @@ Widget buildTeamsListView({BuildContext context}) {
                             color: Styles.drg_colorSecondary.withOpacity(.7),
                           ),
                           child: ListTile(
-                            isThreeLine: false,
-                            dense: true,
-                            contentPadding:
-                                EdgeInsets.only(left: 10, right: 10, bottom: 2),
-                            trailing: IconButton(
-                              key: Key(teamId),
-                              icon: Icon(Icons.edit),
-                              onPressed: () async {
-                                teamBloc.currentSelectedTeamId = teamId;
+                              isThreeLine: false,
+                              dense: true,
+                              contentPadding:
+                                  EdgeInsets.only(left: 10, right: 10, bottom: 2),
+                              trailing: IconButton(
+                                key: Key(teamId),
+                                icon: Icon(Icons.edit),
+                                onPressed: () async {
+                                  teamBloc.currentSelectedTeamId = teamId;
 
-                                print(
-                                    "Edit button pressed in BuildTeamsListView, teamId: $teamId");
+                                  print(
+                                      "Edit button pressed in BuildTeamsListView, teamId: $teamId");
 
-                                Navigator.pushNamed(
-                                  context,
-                                  '/teammanager',
-                                  arguments: {"id": "$teamId"},
-                                );
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/teammanager',
+                                    arguments: {"id": "$teamId"},
+                                  );
+                                },
+                              ),
+                              onTap: () {
+                                log("In BuildTeamListView ListTile onTap - teamId: $teamId");
+                                Navigator.pushNamed(context, '/surveysetslist',
+                                    arguments: "$teamId");
                               },
-                            ),
-                            onTap: () {
-                              log("In BuildTeamListView ListTile onTap - teamId: $teamId");
-                              Navigator.pushNamed(context, '/surveysetslist',
-                                  arguments: "$teamId");
-                            },
-                            leading: Padding(
-                              padding: EdgeInsets.only(right: 12.0),
-                              child: RoundedLetter(
-                                text: buildInitials(
-                                    name: teamDocumentSnapshot['name']),
-                                fontColor: Styles.drg_colorSecondary,
-                                shapeType: ShapeType.circle,
-                                shapeColor: Styles.drg_colorPrimary,
-                                borderColor: Styles.drg_colorSecondary,
-                                shapeSize: 44,
-                                fontSize: 22,
-                                borderWidth: 4,
+                              leading: Padding(
+                                  padding: EdgeInsets.only(right: 12.0),
+                                  child: AvatarWithBadge(),
+                                  // child: RoundedLetter(
+                                  //   text: buildInitials(
+                                  //       name: teamDocumentSnapshot['name']),
+                                  //   fontColor: Styles.drg_colorSecondary,
+                                  //   shapeType: ShapeType.circle,
+                                  //   shapeColor: Styles.drg_colorPrimary,
+                                  //   borderColor: Styles.drg_colorSecondary,
+                                  //   shapeSize: 44,
+                                  //   fontSize: 22,
+                                  //   borderWidth: 4,
+                                  // ),
+                                ),
+                              title: Tooltip(
+                                message: "Team name and count of members",
+                                child: RichText(
+                                  text: TextSpan(
+                                      text: "${teamDocumentSnapshot['name']} ",
+                                      style: Styles.drg_textListTitle,
+                                      children: [
+                                        TextSpan(
+                                            text:
+                                                "(${teamDocumentSnapshot['users'].length})",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 14)),
+                                      ]),
+                                ),
+                              ),
+                              subtitle: Text(
+                                """Created: ${teamDocumentSnapshot['created'] != null ? formatDate(teamDocumentSnapshot['created'].toDate(), [dd, '. ', MM, ' ', yyyy, ', ', HH, ':', nn]) : ''} \nLast edited: ${teamDocumentSnapshot['edited'] != null ? formatDate(teamDocumentSnapshot['edited'].toDate(), [
+                                    dd,
+                                    '. ',
+                                    MM,
+                                    ' ',
+                                    yyyy,
+                                    ', ',
+                                    HH,
+                                    ':',
+                                    nn
+                                  ]) : ''} \nby ${signInSnapshot.data.displayName}""",
+                                style: Styles.drg_textListContent,
                               ),
                             ),
-                            title: Tooltip(
-                              message: "Team name and count of members",
-                              child: RichText(
-                                text: TextSpan(
-                                    text: "${teamDocumentSnapshot['name']} ",
-                                    style: Styles.drg_textListTitle,
-                                    children: [
-                                      TextSpan(
-                                          text:
-                                              "(${teamDocumentSnapshot['users'].length})",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 14)),
-                                    ]),
-                              ),
-                            ),
-                            subtitle: Text(
-                              """Created: ${teamDocumentSnapshot['created'] != null ? formatDate(teamDocumentSnapshot['created'].toDate(), [dd, '. ', MM, ' ', yyyy, ', ', HH, ':', nn]) : ''} \nLast edited: ${teamDocumentSnapshot['edited'] != null ? formatDate(teamDocumentSnapshot['edited'].toDate(), [
-                                  dd,
-                                  '. ',
-                                  MM,
-                                  ' ',
-                                  yyyy,
-                                  ', ',
-                                  HH,
-                                  ':',
-                                  nn
-                                ]) : ''} \nby ${signInSnapshot.data.displayName}""",
-                              style: Styles.drg_textListContent,
-                            ),
-                          ),
                         ),
                       ),
                     ),
@@ -199,4 +201,70 @@ Widget buildTeamsListView({BuildContext context}) {
   );
 }
 
+class AvatarWithBadge extends StatelessWidget {
+  Widget badge;
+  Widget avatar;
+  double badgeSize;
+  double badgeBorderWidht;
+  double avatarSize;
+  double avatarBorderWidht;
 
+  AvatarWithBadge({
+    this.badge,
+    this.avatar,
+    this.badgeSize = 30,
+    this.badgeBorderWidht = 2,
+    this.avatarSize = 52,
+    this.avatarBorderWidht = 2,
+  }) : super();
+
+  @override
+  Widget build(BuildContext context) {
+    Widget defaultBadge = SizedBox(
+      child: RoundedLetter(
+        text: buildInitials(name: "John Doe"),
+        fontColor: Styles.drg_colorPrimary,
+        shapeType: ShapeType.circle,
+        shapeColor: Styles.drg_colorSecondary,
+        borderColor: Styles.drg_colorPrimary,
+        shapeSize: badgeSize - (badgeBorderWidht * 2),
+        fontSize: (badgeSize / 2) - badgeBorderWidht,
+        borderWidth: badgeBorderWidht,
+      ),
+    );
+
+    Widget defaultAvatar = SizedBox(
+      child: RoundedLetter(
+        text: buildInitials(name: "Dragger"),
+        fontColor: Styles.drg_colorPrimary,
+        shapeType: ShapeType.circle,
+        shapeColor: Styles.drg_colorSecondary,
+        borderColor: Styles.drg_colorPrimary,
+        shapeSize: avatarSize - (avatarBorderWidht * 2),
+        fontSize: (avatarSize / 2) - avatarBorderWidht,
+        borderWidth: avatarBorderWidht,
+      ),
+    );
+
+    return Container(
+      child: SizedBox(
+        width: avatarSize + (badgeSize / 4),
+        height: 80,
+        child: Stack(
+          children: <Widget>[
+            Positioned(
+              top: 0,
+              left: 0,
+              child: avatar != null ? avatar : defaultAvatar,
+            ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: badge != null ? badge : defaultBadge,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
