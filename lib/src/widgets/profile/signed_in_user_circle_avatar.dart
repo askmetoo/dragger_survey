@@ -7,8 +7,9 @@ import 'package:provider/provider.dart';
 
 class SignedInUserCircleAvatar extends StatelessWidget {
   final double radiusSmall;
+  final bool letterPadding;
 
-  SignedInUserCircleAvatar({this.radiusSmall = 18}) : super();
+  SignedInUserCircleAvatar({this.radiusSmall = 18, this.letterPadding = true}) : super();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class SignedInUserCircleAvatar extends StatelessWidget {
               Scaffold.of(context).openEndDrawer();
             },
             child: Container(
-              padding: EdgeInsets.all(7),
+              padding: EdgeInsets.all(letterPadding ? radiusSmall / 3 : 0),
               child: CircleAvatar(
                 backgroundColor: Styles.drg_colorSecondary,
                 radius: radiusBig,

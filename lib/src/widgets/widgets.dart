@@ -14,3 +14,4 @@ export 'survey_set/build_survey_sets_list_view.dart';
 export 'team/build_teams_dropdown_button.dart';
 export 'common/build_no_data_available.dart';
 export 'common/build_filter_sort.dart';
+export 'profile/signed_in_user_circle_avatar.dart';
