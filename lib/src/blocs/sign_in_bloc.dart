@@ -8,7 +8,7 @@ class SignInBloc extends ChangeNotifier {
   final AuthService authService = AuthService();
 
   Future<FirebaseUser> get currentUser async {
-    FirebaseUser _user = (await authService.getCurrentUser());
+    FirebaseUser _user = await authService.getCurrentUser();
     return _user;
   }
 

@@ -16,6 +16,7 @@ import '../../styles.dart';
 
 Widget buildTeamsListView({BuildContext context}) {
   final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
+  final UserBloc userBloc = Provider.of<UserBloc>(context);
   final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
 
   return FutureBuilder<FirebaseUser>(
@@ -119,94 +120,119 @@ Widget buildTeamsListView({BuildContext context}) {
                           decoration: BoxDecoration(
                             color: Styles.drg_colorSecondary.withOpacity(.7),
                           ),
-                          child: ListTile(
-                            isThreeLine: false,
-                            dense: true,
-                            contentPadding:
-                                EdgeInsets.only(left: 10, right: 10, bottom: 2),
-                            trailing: IconButton(
-                              key: Key(teamId),
-                              icon: Icon(Icons.edit),
-                              onPressed: () async {
-                                teamBloc.currentSelectedTeamId = teamId;
+                          child: FutureBuilder<QuerySnapshot>(
+                              future: userBloc.getUsersQuery(
+                                  fieldName: 'providersUID',
+                                  fieldValue: teamDocumentSnapshot['createdByUser'],
+                                  ),
+                              builder: (context, userSnapshot) {
 
-                                print(
-                                    "Edit button pressed in BuildTeamsListView, teamId: $teamId");
+                                ImageProvider ownerPhotoUrl;
 
-                                Navigator.pushNamed(
-                                  context,
-                                  '/teammanager',
-                                  arguments: {"id": "$teamId"},
-                                );
-                              },
-                            ),
-                            onTap: () {
-                              log("In BuildTeamListView ListTile onTap - teamId: $teamId");
-                              Navigator.pushNamed(context, '/surveysetslist',
-                                  arguments: "$teamId");
-                            },
-                            leading: Padding(
-                              padding: EdgeInsets.only(right: 12.0),
-                              child: AvatarWithBadge(
-                                avatar: RoundedLetter(
-                                  text: buildInitials(
-                                      name: teamDocumentSnapshot['name']),
-                                  fontColor: Styles.drg_colorSecondary,
-                                  shapeType: ShapeType.circle,
-                                  shapeColor: Styles.drg_colorPrimary,
-                                  borderColor: Styles.drg_colorSecondary,
-                                  shapeSize: 44,
-                                  fontSize: 22,
-                                  borderWidth: 4,
-                                ),
-                                avatarSize: 56,
-                                badge: SignedInUserCircleAvatar(radiusSmall: 12, letterPadding: false,),
-                                avatarBorderWidht: 2,
-                                badgeBorderWidht: 2,
-                              ),
-                              // child: RoundedLetter(
-                              //   text: buildInitials(
-                              //       name: teamDocumentSnapshot['name']),
-                              //   fontColor: Styles.drg_colorSecondary,
-                              //   shapeType: ShapeType.circle,
-                              //   shapeColor: Styles.drg_colorPrimary,
-                              //   borderColor: Styles.drg_colorSecondary,
-                              //   shapeSize: 44,
-                              //   fontSize: 22,
-                              //   borderWidth: 4,
-                              // ),
-                            ),
-                            title: Tooltip(
-                              message: "Team name and count of members",
-                              child: RichText(
-                                text: TextSpan(
-                                    text: "${teamDocumentSnapshot['name']} ",
-                                    style: Styles.drg_textListTitle,
-                                    children: [
-                                      TextSpan(
+                                if (userSnapshot.connectionState !=
+                                        ConnectionState.done ||
+                                    userSnapshot.data == null) {
+                                  ownerPhotoUrl = null;
+                                } else {
+                                  ownerPhotoUrl = NetworkImage(userSnapshot.data.documents[0]['photoUrl']);
+                                }
+
+                                return ListTile(
+                                  isThreeLine: false,
+                                  dense: true,
+                                  contentPadding: EdgeInsets.only(
+                                      left: 10, right: 10, bottom: 2),
+                                  trailing: IconButton(
+                                    key: Key(teamId),
+                                    icon: Icon(Icons.edit),
+                                    onPressed: () async {
+                                      teamBloc.currentSelectedTeamId = teamId;
+
+                                      print(
+                                          "Edit button pressed in BuildTeamsListView, teamId: $teamId");
+
+                                      Navigator.pushNamed(
+                                        context,
+                                        '/teammanager',
+                                        arguments: {"id": "$teamId"},
+                                      );
+                                    },
+                                  ),
+                                  onTap: () {
+                                    log("In BuildTeamListView ListTile onTap - teamId: $teamId");
+                                    Navigator.pushNamed(
+                                        context, '/surveysetslist',
+                                        arguments: "$teamId");
+                                  },
+                                  leading: Padding(
+                                    padding: EdgeInsets.only(right: 12.0),
+                                    child: AvatarWithBadge(
+                                      avatar: RoundedLetter(
+                                        text: buildInitials(
+                                            name: teamDocumentSnapshot['name']),
+                                        fontColor: Styles.drg_colorSecondary,
+                                        shapeType: ShapeType.circle,
+                                        shapeColor: Styles.drg_colorPrimary,
+                                        borderColor: Styles.drg_colorSecondary,
+                                        shapeSize: 44,
+                                        fontSize: 22,
+                                        borderWidth: 4,
+                                      ),
+                                      avatarSize: 56,
+                                      badge: SignedInUserCircleAvatar(
+                                        radiusSmall: 12,
+                                        letterPadding: false,
+                                        backgroundImage: ownerPhotoUrl,
+                                        // useSignedInUserPhoto: false,
+                                      ),
+                                      avatarBorderWidht: 2,
+                                      badgeBorderWidht: 2,
+                                    ),
+                                    // child: RoundedLetter(
+                                    //   text: buildInitials(
+                                    //       name: teamDocumentSnapshot['name']),
+                                    //   fontColor: Styles.drg_colorSecondary,
+                                    //   shapeType: ShapeType.circle,
+                                    //   shapeColor: Styles.drg_colorPrimary,
+                                    //   borderColor: Styles.drg_colorSecondary,
+                                    //   shapeSize: 44,
+                                    //   fontSize: 22,
+                                    //   borderWidth: 4,
+                                    // ),
+                                  ),
+                                  title: Tooltip(
+                                    message: "Team name and count of members",
+                                    child: RichText(
+                                      text: TextSpan(
                                           text:
-                                              "(${teamDocumentSnapshot['users'].length})",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 14)),
-                                    ]),
-                              ),
-                            ),
-                            subtitle: Text(
-                              """Created: ${teamDocumentSnapshot['created'] != null ? formatDate(teamDocumentSnapshot['created'].toDate(), [dd, '. ', MM, ' ', yyyy, ', ', HH, ':', nn]) : ''} \nLast edited: ${teamDocumentSnapshot['edited'] != null ? formatDate(teamDocumentSnapshot['edited'].toDate(), [
-                                  dd,
-                                  '. ',
-                                  MM,
-                                  ' ',
-                                  yyyy,
-                                  ', ',
-                                  HH,
-                                  ':',
-                                  nn
-                                ]) : ''} \nby ${signInSnapshot.data.displayName}""",
-                              style: Styles.drg_textListContent,
-                            ),
-                          ),
+                                              "${teamDocumentSnapshot['name']} ",
+                                          style: Styles.drg_textListTitle,
+                                          children: [
+                                            TextSpan(
+                                                text:
+                                                    "(${teamDocumentSnapshot['users'].length})",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 14)),
+                                          ]),
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    """Created: ${teamDocumentSnapshot['created'] != null ? formatDate(teamDocumentSnapshot['created'].toDate(), [dd, '. ', MM, ' ', yyyy, ', ', HH, ':', nn]) : ''} \nLast edited: ${teamDocumentSnapshot['edited'] != null ? formatDate(teamDocumentSnapshot['edited'].toDate(), [
+                                        dd,
+                                        '. ',
+                                        MM,
+                                        ' ',
+                                        yyyy,
+                                        ', ',
+                                        HH,
+                                        ':',
+                                        nn
+                                      ]) : ''} \nby ${signInSnapshot.data.displayName}""",
+                                    style: Styles.drg_textListContent,
+                                  ),
+                                );
+                              }),
                         ),
                       ),
                     ),
