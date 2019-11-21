@@ -122,20 +122,29 @@ Widget buildTeamsListView({BuildContext context}) {
                           ),
                           child: FutureBuilder<QuerySnapshot>(
                               future: userBloc.getUsersQuery(
-                                  fieldName: 'providersUID',
-                                  fieldValue: teamDocumentSnapshot['createdByUser'],
-                                  ),
+                                fieldName: 'providersUID',
+                                fieldValue:
+                                    teamDocumentSnapshot['createdByUser'],
+                              ),
                               builder: (context, userSnapshot) {
-
-                                ImageProvider ownerPhotoUrl;
+                                log("teamDocumentSnapshot['createdByUser']: ${teamDocumentSnapshot['createdByUser']}");
 
                                 if (userSnapshot.connectionState !=
-                                        ConnectionState.done ||
-                                    userSnapshot.data == null) {
-                                  ownerPhotoUrl = null;
-                                } else {
-                                  ownerPhotoUrl = NetworkImage(userSnapshot.data.documents[0]['photoUrl']);
+                                    ConnectionState.done) {
+                                  log("userSnapshot.connectionState: ${userSnapshot.connectionState}");
+                                  return Loader();
+                                } else if (userSnapshot.data == null) {
+                                  log("userSnapshot.connectionState: ${userSnapshot.connectionState}");
+                                  // log("userSnapshot.data == null: ${userSnapshot.data == null}");
                                 }
+                                print(
+                                    "---> userSnapshot.data.documents[0]['photoUrl']: ${userSnapshot.data.documents[0]['photoUrl']}");
+                                // log("In BuildTeamListView - value of teamDocumentSnapshot['createdByUser']: ${teamDocumentSnapshot['createdByUser']}");
+                                // log("In BuildTeamListView - value of userSnapshot.data.documents: ${userSnapshot.data.documents != null ? userSnapshot.data.documents : ''}");
+                                // print(
+                                //     "In BuildTeamListView - value of userSnapshot.data.documents[0].data['photoUrl']: ${userSnapshot.data.documents[0].data['photoUrl']}");
+                                // print(
+                                //     "In BuildTeamListView - value of ownerPhotoUrl: $ownerPhotoUrl");
 
                                 return ListTile(
                                   isThreeLine: false,
@@ -148,8 +157,8 @@ Widget buildTeamsListView({BuildContext context}) {
                                     onPressed: () async {
                                       teamBloc.currentSelectedTeamId = teamId;
 
-                                      print(
-                                          "Edit button pressed in BuildTeamsListView, teamId: $teamId");
+                                      // print(
+                                      //     "Edit button pressed in BuildTeamsListView, teamId: $teamId");
 
                                       Navigator.pushNamed(
                                         context,
@@ -159,7 +168,7 @@ Widget buildTeamsListView({BuildContext context}) {
                                     },
                                   ),
                                   onTap: () {
-                                    log("In BuildTeamListView ListTile onTap - teamId: $teamId");
+                                    // log("In BuildTeamListView ListTile onTap - teamId: $teamId");
                                     Navigator.pushNamed(
                                         context, '/surveysetslist',
                                         arguments: "$teamId");
@@ -182,7 +191,8 @@ Widget buildTeamsListView({BuildContext context}) {
                                       badge: SignedInUserCircleAvatar(
                                         radiusSmall: 12,
                                         letterPadding: false,
-                                        backgroundImage: ownerPhotoUrl,
+                                        photoUrl: userSnapshot.data.documents[0]
+                                            ['photoUrl'],
                                         // useSignedInUserPhoto: false,
                                       ),
                                       avatarBorderWidht: 2,

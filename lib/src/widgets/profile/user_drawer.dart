@@ -55,12 +55,15 @@ class _UserDrawerState extends State<UserDrawer> {
             ),
           );
         }
+        MediaQueryData mq = MediaQuery.of(context);
+
         return Drawer(
+          elevation: 10,
           child: ListView(
             padding: EdgeInsets.all(0),
             children: <Widget>[
               SizedBox(
-                height: 160,
+                // height: 160,
                 child: DrawerHeader(
                   padding:
                       EdgeInsets.only(top: 8, left: 16, right: 10, bottom: 0),
@@ -68,12 +71,15 @@ class _UserDrawerState extends State<UserDrawer> {
                     alignment: Alignment.topLeft,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Expanded(
                           flex: 5,
                           child: Column(
                             children: <Widget>[
-                              SignedInUserCircleAvatar(),
+                              SignedInUserCircleAvatar(
+                                radiusSmall: 30,
+                              ),
                               Text(
                                 '${signInSnapshot.data.displayName}',
                                 textAlign: TextAlign.center,
