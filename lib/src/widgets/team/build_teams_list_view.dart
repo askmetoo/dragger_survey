@@ -23,14 +23,14 @@ Widget buildTeamsListView({BuildContext context}) {
   return FutureBuilder<FirebaseUser>(
     future: signInBloc.currentUser,
     builder: (context, signInSnapshot) {
-      return FutureBuilder<QuerySnapshot>(
-          future: teamBloc.getTeamsQueryByArray(
+      return StreamBuilder<QuerySnapshot>(
+          stream: teamBloc.streamTeamsQueryByArray(
             fieldName: 'users',
             arrayValue: signInSnapshot?.data?.uid,
           ),
           builder: (BuildContext context,
               AsyncSnapshot<QuerySnapshot> teamsListSnapshot) {
-            if (teamsListSnapshot.connectionState != ConnectionState.done ||
+            if (teamsListSnapshot.connectionState != ConnectionState.active ||
                 !teamsListSnapshot.hasData) {
               return Center(
                 child: Container(
