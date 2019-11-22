@@ -92,7 +92,6 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
                 if (teamSnapshot.connectionState == ConnectionState.active) {
                   List userIds = teamSnapshot.data.data['users'];
                   String ownerId = teamSnapshot.data.data['createdByUser'];
-                  String currentUserId = signInSnapshot?.data?.uid;
 
                   return SingleChildScrollView(
                     child: Padding(
@@ -100,7 +99,6 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          // Text("Team Manager args: $args"),
                           TeamForm(
                             id: args['id'],
                           ),
@@ -115,7 +113,6 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
                               children: userIds.map((memberId) {
-                                log("ooo------------> memberId: $memberId");
                                 return Container(
                                   color: Styles.drg_colorAppBackground
                                       .withOpacity(.2),
@@ -174,7 +171,6 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
                                                   color:
                                                       Styles.drg_colorAttention,
                                                   onTap: () {
-                                                    log("In TeamManagerScreen members list - delete user id: $memberId");
                                                     List modifiableList =
                                                         new List();
                                                     List usersOfTeam =
@@ -183,13 +179,9 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
                                                     modifiableList
                                                         .addAll(usersOfTeam);
 
-                                                    print(
-                                                        "In TeamManagerScreen value of members list: $modifiableList");
                                                     modifiableList
                                                         .remove(memberId);
                                                     modifiableList.join(',');
-                                                    print(
-                                                        "In TeamManagerScreen value after removal of members list: $modifiableList");
                                                     teamBloc
                                                         .updateTeamByIdWithFieldAndValue(
                                                             id: args['id'],
@@ -234,7 +226,6 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
                 String splittedString = _scanedBarcode.split(';')[1].trim();
                 String returnIdString =
                     splittedString.substring(4, splittedString.length - 4);
-                log("---------------> In TeamManagerScreen - value of returnIdString: $returnIdString");
                 bool userExists =
                     await userBloc.checkIfUserExists(id: returnIdString);
                 if (userExists) {
