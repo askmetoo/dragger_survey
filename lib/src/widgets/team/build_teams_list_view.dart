@@ -8,6 +8,7 @@ import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_letter/rounded_letter.dart';
 import 'package:rounded_letter/shape_type.dart';
@@ -51,6 +52,8 @@ Widget buildTeamsListView({BuildContext context}) {
                 children: teamsListSnapshot.data.documents
                     .map((teamDocumentSnapshot) {
                   String teamId = teamDocumentSnapshot.documentID;
+                  String teamOwner = teamDocumentSnapshot['createdByUser'];
+                  String currentUser = signInSnapshot?.data?.uid;
 
                   if (teamDocumentSnapshot.data == null) {
                     return Container();
@@ -76,36 +79,62 @@ Widget buildTeamsListView({BuildContext context}) {
                       //     log("In SurveySetDetailsScreen Slidable 'More..'");
                       //   },
                       // ),
-                      IconSlideAction(
-                        caption: 'Delete',
-                        color: Styles.drg_colorAttention,
-                        icon: Icons.delete,
-                        onTap: () async {
-                          bool teamDeleted = false;
-                          log("In BuildTeamListView ListView Dismissible Item name: ${teamDocumentSnapshot.data['name']}, id: ${teamDocumentSnapshot.documentID} is dismissed'");
-                          teamDeleted =
-                              await teamBloc.deleteTeamByIdOnlyIfUserIsOwner(
-                            id: teamDocumentSnapshot.documentID,
-                            currentUserId: signInSnapshot.data.uid,
-                          );
+                      if (teamOwner == currentUser)
+                        IconSlideAction(
+                          caption: 'Delete',
+                          color: Styles.drg_colorAttention,
+                          icon: Icons.delete,
+                          onTap: () async {
+                            bool teamDeleted = false;
+                            bool deleteTeam = await buildAlertDialog(context, title: "Do you really want to quit your memberschip?", confirmText: "Yes", declinedText: "No");
+                            // log("In BuildTeamListView ListView Dismissible Item name: ${teamDocumentSnapshot.data['name']}, id: ${teamDocumentSnapshot.documentID} is dismissed'");
+                            // log("-------------------> In BuildTeamsListView - value of teamOwner: $teamOwner");
+                            // log("-------------------> In BuildTeamsListView - value of currentUser: $currentUser");
+                            log("-------------------> In BuildTeamsListView - teamOwner == currentUser: ${teamOwner == currentUser}");
 
-                          Scaffold.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: teamDeleted
-                                  ? Styles.drg_colorSuccess
-                                  : Styles.drg_colorAttention,
-                              elevation: 20,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(40)),
-                              content: teamDeleted
-                                  ? Text(
-                                      "${teamDocumentSnapshot.data['name']} has been deleted!")
-                                  : Text(
-                                      "You cannot delete the team, you aren't the owner!"),
-                            ),
-                          );
-                        },
-                      ),
+
+                            if (teamOwner == currentUser) {
+                              log("XXXXX-----> In BuildTeamsListView - ${teamDocumentSnapshot.data['name']} deleted.");
+                              // teamDeleted =
+                              //     await teamBloc.deleteTeamByIdOnlyIfUserIsOwner(
+                              //       id: teamDocumentSnapshot.documentID,
+                              //       currentUserId: signInSnapshot.data.uid,
+                              //     );
+                            } else {
+                              log("!!!!-----> In BuildTeamsListView - You are not meber of ${teamDocumentSnapshot.data['name']} and not alowed to delete this team!");
+                            }
+
+                            Scaffold.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: teamDeleted
+                                    ? Styles.drg_colorSuccess
+                                    : Styles.drg_colorAttention,
+                                elevation: 20,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(40)),
+                                content: teamDeleted
+                                    ? Text(
+                                        "${teamDocumentSnapshot.data['name']} has been deleted!")
+                                    : Text(
+                                        "You cannot delete the team, you aren't the owner!"),
+                              ),
+                            );
+                          },
+                        ),
+                      if (teamOwner != currentUser)
+                        IconSlideAction(
+                            caption: 'Quit',
+                            color: Styles.drg_colorSecondaryDeepDark
+                                .withOpacity(.2),
+                            icon: FontAwesomeIcons.walking,
+                            onTap: () async {
+                              bool quitMembership = await buildAlertDialog(context, title: "Do you really want to quit your memberschip?", confirmText: "Yes", declinedText: "No");
+                              if (quitMembership) {
+                                log("XXXXX-----> In BuildTeamsListView - QUIT MEMBERSHIP of ${teamDocumentSnapshot.data['name']}.");
+                              } else {
+                                log("XXXXX-----> In BuildTeamsListView - DECLINED TO QUIT MEMBERSHIP of ${teamDocumentSnapshot.data['name']}.");
+                              }
+                            },)
                     ],
                     child: Container(
                       margin: EdgeInsets.only(left: 16, bottom: 1, top: 1),
@@ -123,8 +152,8 @@ Widget buildTeamsListView({BuildContext context}) {
                           child: FutureBuilder<QuerySnapshot>(
                               future: userBloc.getUsersQuery(
                                 fieldName: 'providersUID',
-                                fieldValue:
-                                    teamDocumentSnapshot['createdByUser'],
+                                fieldValue: teamOwner,
+                                // teamDocumentSnapshot['createdByUser'],
                               ),
                               builder: (context, userSnapshot) {
                                 if (userSnapshot.connectionState !=
@@ -200,7 +229,11 @@ Widget buildTeamsListView({BuildContext context}) {
                                     // ),
                                   ),
                                   title: Tooltip(
-                                    message: "Team name and count of members",
+                                    message: teamDocumentSnapshot['users']
+                                                .length >
+                                            1
+                                        ? "The team '${teamDocumentSnapshot['name']}' has ${teamDocumentSnapshot['users'].length} members"
+                                        : "The team '${teamDocumentSnapshot['name']}' has one member",
                                     child: RichText(
                                       text: TextSpan(
                                           text:
@@ -238,6 +271,48 @@ Widget buildTeamsListView({BuildContext context}) {
                   );
                 }).toList());
           });
+    },
+  );
+}
+
+Future<bool> buildAlertDialog(
+  context, {
+  @required String title,
+  @required String confirmText,
+  @required String declinedText,
+}) async {
+  return await showDialog<bool>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Create new Team"),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: ()  {
+              Navigator.of(context).pop(false);
+              },
+            child: Text("$declinedText"),
+          ),
+          FlatButton(
+            color: Styles.drg_colorAttention,
+            onPressed: () {
+              Navigator.of(context).pop(true);
+            },
+            child: Text("$confirmText"),
+          ),
+        ],
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(3),
+            bottomLeft: Radius.circular(20),
+            bottomRight: Radius.circular(20),
+          ),
+        ),
+        backgroundColor: Styles.drg_colorSecondary,
+        contentTextStyle: TextStyle(color: Styles.drg_colorText),
+      );
     },
   );
 }
