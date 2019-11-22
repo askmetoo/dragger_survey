@@ -199,80 +199,81 @@ Widget buildTeamsListView({BuildContext context}) {
                                   return Loader();
                                 }
 
-                                return ListTile(
-                                  isThreeLine: false,
-                                  dense: true,
-                                  contentPadding: EdgeInsets.only(
-                                      left: 10, right: 10, bottom: 2),
-                                  trailing: IconButton(
-                                    key: Key(teamId),
-                                    icon: Icon(Icons.edit),
-                                    onPressed: () async {
-                                      teamBloc.currentSelectedTeamId = teamId;
+                                return Tooltip(
+                                  message: teamDocumentSnapshot['users']
+                                              .length >
+                                          1
+                                      ? "The team '${teamDocumentSnapshot['name']}' has ${teamDocumentSnapshot['users'].length} members"
+                                      : "The team '${teamDocumentSnapshot['name']}' has one member",
+                                  child: ListTile(
+                                    isThreeLine: false,
+                                    dense: true,
+                                    contentPadding: EdgeInsets.only(
+                                        left: 10, right: 10, bottom: 2),
+                                    trailing: IconButton(
+                                      key: Key(teamId),
+                                      icon: Icon(Icons.edit),
+                                      onPressed: () async {
+                                        teamBloc.currentSelectedTeamId = teamId;
 
-                                      Navigator.pushNamed(
-                                        context,
-                                        '/teammanager',
-                                        arguments: {"id": "$teamId"},
-                                      );
-                                    },
-                                  ),
-                                  onTap: () {
-                                    teamBloc.setCurrentSelectedTeamId(teamId);
-                                    Navigator.pushNamed(
-                                        context, '/surveysetslist',
-                                        arguments: "$teamId");
-                                  },
-                                  leading: Padding(
-                                    padding: EdgeInsets.only(right: 12.0),
-                                    child: Tooltip(
-                                      message:
-                                          "Team owner: ${userSnapshot.data.documents[0]['displayName']}",
-                                      child: AvatarWithBadge(
-                                        avatar: RoundedLetter(
-                                          text: buildInitials(
-                                              name:
-                                                  teamDocumentSnapshot['name']),
-                                          fontColor: Styles.drg_colorSecondary,
-                                          shapeType: ShapeType.circle,
-                                          shapeColor: Styles.drg_colorPrimary,
-                                          borderColor:
-                                              Styles.drg_colorSecondary,
-                                          shapeSize: 44,
-                                          fontSize: 22,
-                                          borderWidth: 4,
-                                        ),
-                                        avatarSize: 56,
-                                        badge: SignedInUserCircleAvatar(
-                                          radiusSmall: 12,
-                                          letterPadding: false,
-                                          photoUrl: userSnapshot
-                                              .data.documents[0]['photoUrl'],
-                                          // useSignedInUserPhoto: false,
-                                        ),
-                                        avatarBorderWidht: 2,
-                                        badgeBorderWidht: 2,
-                                      ),
+                                        Navigator.pushNamed(
+                                          context,
+                                          '/teammanager',
+                                          arguments: {"id": "$teamId"},
+                                        );
+                                      },
                                     ),
-                                    // child: RoundedLetter(
-                                    //   text: buildInitials(
-                                    //       name: teamDocumentSnapshot['name']),
-                                    //   fontColor: Styles.drg_colorSecondary,
-                                    //   shapeType: ShapeType.circle,
-                                    //   shapeColor: Styles.drg_colorPrimary,
-                                    //   borderColor: Styles.drg_colorSecondary,
-                                    //   shapeSize: 44,
-                                    //   fontSize: 22,
-                                    //   borderWidth: 4,
-                                    // ),
-                                  ),
-                                  title: Tooltip(
-                                    message: teamDocumentSnapshot['users']
-                                                .length >
-                                            1
-                                        ? "The team '${teamDocumentSnapshot['name']}' has ${teamDocumentSnapshot['users'].length} members"
-                                        : "The team '${teamDocumentSnapshot['name']}' has one member",
-                                    child: RichText(
+                                    onTap: () {
+                                      teamBloc.setCurrentSelectedTeamId(teamId);
+                                      Navigator.pushNamed(
+                                          context, '/surveysetslist',
+                                          arguments: "$teamId");
+                                    },
+                                    leading: Padding(
+                                      padding: EdgeInsets.only(right: 12.0),
+                                      child: Tooltip(
+                                        message:
+                                            "Team owner: ${userSnapshot.data.documents[0]['displayName']}",
+                                        child: AvatarWithBadge(
+                                          avatar: RoundedLetter(
+                                            text: buildInitials(
+                                                name: teamDocumentSnapshot[
+                                                    'name']),
+                                            fontColor:
+                                                Styles.drg_colorSecondary,
+                                            shapeType: ShapeType.circle,
+                                            shapeColor: Styles.drg_colorPrimary,
+                                            borderColor:
+                                                Styles.drg_colorSecondary,
+                                            shapeSize: 44,
+                                            fontSize: 22,
+                                            borderWidth: 4,
+                                          ),
+                                          avatarSize: 56,
+                                          badge: SignedInUserCircleAvatar(
+                                            radiusSmall: 12,
+                                            letterPadding: false,
+                                            photoUrl: userSnapshot
+                                                .data.documents[0]['photoUrl'],
+                                            // useSignedInUserPhoto: false,
+                                          ),
+                                          avatarBorderWidht: 2,
+                                          badgeBorderWidht: 2,
+                                        ),
+                                      ),
+                                      // child: RoundedLetter(
+                                      //   text: buildInitials(
+                                      //       name: teamDocumentSnapshot['name']),
+                                      //   fontColor: Styles.drg_colorSecondary,
+                                      //   shapeType: ShapeType.circle,
+                                      //   shapeColor: Styles.drg_colorPrimary,
+                                      //   borderColor: Styles.drg_colorSecondary,
+                                      //   shapeSize: 44,
+                                      //   fontSize: 22,
+                                      //   borderWidth: 4,
+                                      // ),
+                                    ),
+                                    title: RichText(
                                       text: TextSpan(
                                           text:
                                               "${teamDocumentSnapshot['name']} ",
@@ -286,16 +287,16 @@ Widget buildTeamsListView({BuildContext context}) {
                                                     fontSize: 14)),
                                           ]),
                                     ),
-                                  ),
-                                  subtitle: Text(
-                                    """Created: ${teamDocumentSnapshot['created'] != null ? formatDate(teamDocumentSnapshot['created'].toDate(), [dd, '. ', MM, ' ', yyyy]) : ''} \nEdited: ${teamDocumentSnapshot['edited'] != null ? formatDate(teamDocumentSnapshot['edited'].toDate(), [
-                                        dd,
-                                        '. ',
-                                        MM,
-                                        ' ',
-                                        yyyy,
-                                      ]) : 'Not yet.'} \nby ${signInSnapshot.data.displayName}""",
-                                    style: Styles.drg_textListContent,
+                                    subtitle: Text(
+                                      """Created: ${teamDocumentSnapshot['created'] != null ? formatDate(teamDocumentSnapshot['created'].toDate(), [dd, '. ', MM, ' ', yyyy]) : ''} \nEdited: ${teamDocumentSnapshot['edited'] != null ? formatDate(teamDocumentSnapshot['edited'].toDate(), [
+                                          dd,
+                                          '. ',
+                                          MM,
+                                          ' ',
+                                          yyyy,
+                                        ]) : 'Not yet.'} \nOwner: ${signInSnapshot.data.displayName}""",
+                                      style: Styles.drg_textListContent,
+                                    ),
                                   ),
                                 );
                               }),
