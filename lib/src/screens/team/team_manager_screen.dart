@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 
 import 'package:barcode_scan/barcode_scan.dart';
@@ -75,133 +76,144 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
   Widget build(BuildContext context) {
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
     final UserBloc userBloc = Provider.of<UserBloc>(context);
+    final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
 
     return Scaffold(
       backgroundColor: Styles.drg_colorSecondary,
       appBar: AppBar(
         title: Text("Team Details"),
       ),
-      body: FutureBuilder<DocumentSnapshot>(
-        future: teamBloc.getTeamById(id: args['id']),
-        builder: (context, AsyncSnapshot<DocumentSnapshot> teamSnapshot) {
-          if (teamSnapshot.connectionState == ConnectionState.done) {
-            List userIds = teamSnapshot.data.data['users'];
-            return SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    // Text("Team Manager args: $args"),
-                    TeamForm(
-                      id: args['id'],
-                    ),
-                    Divider(
-                      color: Styles.drg_colorAppBackground,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 12.0),
-                      child: Text("Team members:"),
-                    ),
-                    ListView(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        children: userIds.map((memberId) {
-                          log("ooo------------> memberId: $memberId");
-                          return Container(
-                            color:
-                                Styles.drg_colorAppBackground.withOpacity(.2),
-                            margin: EdgeInsets.only(bottom: 1),
-                            child: FutureBuilder<QuerySnapshot>(
-                                future: userBloc.getUsersQuery(
-                                    fieldName: 'providersUID',
-                                    fieldValue: memberId),
-                                builder: (context, userSnapshot) {
-                                  if (userSnapshot.connectionState ==
-                                      ConnectionState.done) {
-                                    if (!userSnapshot.hasData) {
-                                      return Center(
-                                        child: Container(
-                                          constraints:
-                                              BoxConstraints(maxWidth: 50),
-                                          child: AspectRatio(
-                                            aspectRatio: 1,
-                                            child: CircularProgressIndicator(strokeWidth: 10,),
-                                          ),
-                                        ),
-                                      );
-                                    }
-                                    print(
-                                        "oooooo In TeamManager list of Team Members vvv");
-                                    print(
-                                        "oooooo userSnapshot ----------> $userSnapshot");
-                                    print(
-                                        "oooooo hasData ----------> ${userSnapshot.hasData}");
-                                    print(
-                                        "oooooo data == null ----------> ${userSnapshot?.data == null}");
-                                    print(
-                                        "oooooo data.toString() ----------> ${userSnapshot?.data.toString()}");
-                                    print(
-                                        "oooooo first['displayName'] ----------> ${userSnapshot?.data?.documents?.first['displayName']}");
-                                    String userName = userSnapshot
-                                        ?.data?.documents?.first['displayName'];
+      body: FutureBuilder<FirebaseUser>(
+          future: signInBloc.currentUser,
+          builder: (context, signInSnapshot) {
+            return FutureBuilder<DocumentSnapshot>(
+              future: teamBloc.getTeamById(id: args['id']),
+              builder: (context, AsyncSnapshot<DocumentSnapshot> teamSnapshot) {
+                if (teamSnapshot.connectionState == ConnectionState.done) {
+                  List userIds = teamSnapshot.data.data['users'];
+                  String ownerId = teamSnapshot.data.data['createdByUser'];
+                  String currentUserId = signInSnapshot?.data?.uid;
 
-                                    return Slidable(
-                                      actionPane: SlidableBehindActionPane(),
-                                      actionExtentRatio: 0.2,
-                                      child: ListTile(
-                                        leading: CircleAvatar(
-                                          backgroundImage:
-                                              NetworkImage(userSnapshot?.data?.documents
-                                                ?.first['photoUrl'],),
-                                            //   CachedNetworkImageProvider(
-                                            // userSnapshot?.data?.documents
-                                            //     ?.first['photoUrl'],
-                                          // ),
-                                        ),
-                                        dense: true,
-                                        title: Text(userName),
-                                      ),
-                                      secondaryActions: <Widget>[
-                                        IconSlideAction(
-                                          caption: 'Delete',
-                                          icon: Icons.delete,
-                                          color: Styles.drg_colorAttention,
-                                          onTap: () {
-                                            log("In TeamManagerScreen members list - delete user id: $memberId");
-                                            List modifiableList = new List();
-                                            List usersOfTeam = teamSnapshot
-                                                ?.data?.data['users'];
-                                            modifiableList.addAll(usersOfTeam);
+                  return SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          // Text("Team Manager args: $args"),
+                          TeamForm(
+                            id: args['id'],
+                          ),
+                          Divider(
+                            color: Styles.drg_colorAppBackground,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 12.0),
+                            child: Text("Team members:"),
+                          ),
+                          ListView(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              children: userIds.map((memberId) {
+                                log("ooo------------> memberId: $memberId");
+                                return Container(
+                                  color: Styles.drg_colorAppBackground
+                                      .withOpacity(.2),
+                                  margin: EdgeInsets.only(bottom: 1),
+                                  child: FutureBuilder<QuerySnapshot>(
+                                      future: userBloc.getUsersQuery(
+                                          fieldName: 'providersUID',
+                                          fieldValue: memberId),
+                                      builder: (context, userSnapshot) {
+                                        if (userSnapshot.connectionState ==
+                                            ConnectionState.done) {
+                                          if (!userSnapshot.hasData) {
+                                            return Center(
+                                              child: Container(
+                                                constraints: BoxConstraints(
+                                                    maxWidth: 50),
+                                                child: AspectRatio(
+                                                  aspectRatio: 1,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    strokeWidth: 10,
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                          String userName = userSnapshot?.data
+                                              ?.documents?.first['displayName'];
 
-                                            print(
-                                                "In TeamManagerScreen value of members list: $modifiableList");
-                                            modifiableList.remove(memberId);
-                                            modifiableList.join(',');
-                                            print(
-                                                "In TeamManagerScreen value after removal of members list: $modifiableList");
-                                            teamBloc
-                                                .updateTeamByIdWithFieldAndValue(
-                                                    id: args['id'],
-                                                    field: 'users',
-                                                    value: modifiableList);
-                                          },
-                                        )
-                                      ],
-                                    );
-                                  }
-                                  return Container();
-                                }),
-                          );
-                        }).toList())
-                  ],
-                ),
-              ),
+                                          return Slidable(
+                                            actionPane:
+                                                SlidableBehindActionPane(),
+                                            actionExtentRatio: 0.2,
+                                            child: ListTile(
+                                              leading: CircleAvatar(
+                                                backgroundImage: NetworkImage(
+                                                  userSnapshot?.data?.documents
+                                                      ?.first['photoUrl'],
+                                                ),
+                                                //   CachedNetworkImageProvider(
+                                                // userSnapshot?.data?.documents
+                                                //     ?.first['photoUrl'],
+                                                // ),
+                                              ),
+                                              dense: true,
+                                              title: Text(
+                                                  "$userName ${ownerId == userSnapshot?.data?.documents?.first['providersUID'] ? ' (team owner)' : ''}"),
+                                            ),
+                                            secondaryActions: <Widget>[
+                                              if (ownerId !=
+                                                  userSnapshot?.data?.documents
+                                                      ?.first['providersUID'])
+                                                IconSlideAction(
+                                                  caption: 'Delete',
+                                                  icon: Icons.delete,
+                                                  color:
+                                                      Styles.drg_colorAttention,
+                                                  onTap: () {
+                                                    log("In TeamManagerScreen members list - delete user id: $memberId");
+                                                    List modifiableList =
+                                                        new List();
+                                                    List usersOfTeam =
+                                                        teamSnapshot?.data
+                                                            ?.data['users'];
+                                                    modifiableList
+                                                        .addAll(usersOfTeam);
+
+                                                    print(
+                                                        "In TeamManagerScreen value of members list: $modifiableList");
+                                                    modifiableList
+                                                        .remove(memberId);
+                                                    modifiableList.join(',');
+                                                    print(
+                                                        "In TeamManagerScreen value after removal of members list: $modifiableList");
+                                                    teamBloc
+                                                        .updateTeamByIdWithFieldAndValue(
+                                                            id: args['id'],
+                                                            field: 'users',
+                                                            value:
+                                                                modifiableList);
+                                                  },
+                                                )
+                                            ],
+                                          );
+                                        }
+                                        return Container();
+                                      }),
+                                );
+                              }).toList())
+                        ],
+                      ),
+                    ),
+                  );
+                }
+                return Container();
+              },
             );
-          }
-          return Container();
-        },
-      ),
+          }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FutureBuilder<DocumentSnapshot>(
           future: teamBloc.getTeamById(id: args['id']),
