@@ -130,7 +130,7 @@ Widget buildTeamsListView({BuildContext context}) {
                                 if (userSnapshot.connectionState !=
                                     ConnectionState.done) {
                                   return Loader();
-                                } 
+                                }
 
                                 return ListTile(
                                   isThreeLine: false,
@@ -158,28 +158,34 @@ Widget buildTeamsListView({BuildContext context}) {
                                   },
                                   leading: Padding(
                                     padding: EdgeInsets.only(right: 12.0),
-                                    child: AvatarWithBadge(
-                                      avatar: RoundedLetter(
-                                        text: buildInitials(
-                                            name: teamDocumentSnapshot['name']),
-                                        fontColor: Styles.drg_colorSecondary,
-                                        shapeType: ShapeType.circle,
-                                        shapeColor: Styles.drg_colorPrimary,
-                                        borderColor: Styles.drg_colorSecondary,
-                                        shapeSize: 44,
-                                        fontSize: 22,
-                                        borderWidth: 4,
+                                    child: Tooltip(
+                                      message:
+                                          "Team owner: ${userSnapshot.data.documents[0]['displayName']}",
+                                      child: AvatarWithBadge(
+                                        avatar: RoundedLetter(
+                                          text: buildInitials(
+                                              name:
+                                                  teamDocumentSnapshot['name']),
+                                          fontColor: Styles.drg_colorSecondary,
+                                          shapeType: ShapeType.circle,
+                                          shapeColor: Styles.drg_colorPrimary,
+                                          borderColor:
+                                              Styles.drg_colorSecondary,
+                                          shapeSize: 44,
+                                          fontSize: 22,
+                                          borderWidth: 4,
+                                        ),
+                                        avatarSize: 56,
+                                        badge: SignedInUserCircleAvatar(
+                                          radiusSmall: 12,
+                                          letterPadding: false,
+                                          photoUrl: userSnapshot
+                                              .data.documents[0]['photoUrl'],
+                                          // useSignedInUserPhoto: false,
+                                        ),
+                                        avatarBorderWidht: 2,
+                                        badgeBorderWidht: 2,
                                       ),
-                                      avatarSize: 56,
-                                      badge: SignedInUserCircleAvatar(
-                                        radiusSmall: 12,
-                                        letterPadding: false,
-                                        photoUrl: userSnapshot.data.documents[0]
-                                            ['photoUrl'],
-                                        // useSignedInUserPhoto: false,
-                                      ),
-                                      avatarBorderWidht: 2,
-                                      badgeBorderWidht: 2,
                                     ),
                                     // child: RoundedLetter(
                                     //   text: buildInitials(
