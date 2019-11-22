@@ -288,17 +288,13 @@ Widget buildTeamsListView({BuildContext context}) {
                                     ),
                                   ),
                                   subtitle: Text(
-                                    """Created: ${teamDocumentSnapshot['created'] != null ? formatDate(teamDocumentSnapshot['created'].toDate(), [dd, '. ', MM, ' ', yyyy, ', ', HH, ':', nn]) : ''} \nLast edited: ${teamDocumentSnapshot['edited'] != null ? formatDate(teamDocumentSnapshot['edited'].toDate(), [
+                                    """Created: ${teamDocumentSnapshot['created'] != null ? formatDate(teamDocumentSnapshot['created'].toDate(), [dd, '. ', MM, ' ', yyyy]) : ''} \nEdited: ${teamDocumentSnapshot['edited'] != null ? formatDate(teamDocumentSnapshot['edited'].toDate(), [
                                         dd,
                                         '. ',
                                         MM,
                                         ' ',
                                         yyyy,
-                                        ', ',
-                                        HH,
-                                        ':',
-                                        nn
-                                      ]) : ''} \nby ${signInSnapshot.data.displayName}""",
+                                      ]) : 'Not yet.'} \nby ${signInSnapshot.data.displayName}""",
                                     style: Styles.drg_textListContent,
                                   ),
                                 );
