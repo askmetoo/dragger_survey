@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dragger_survey/src/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';

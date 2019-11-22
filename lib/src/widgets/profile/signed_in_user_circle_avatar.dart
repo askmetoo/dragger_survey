@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/shared/shared.dart';
 import 'package:dragger_survey/src/styles.dart';

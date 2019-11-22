@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
-import 'package:dragger_survey/src/screens/screens.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -44,8 +43,6 @@ class _DraggerScreenState extends State<DraggerScreen> {
         Provider.of<PrismSurveyBloc>(context);
     final PrismSurveySetBloc prismSurveySetBloc =
         Provider.of<PrismSurveySetBloc>(context);
-    
-
 
     if (prismSurveySetBloc.currentPrismSurveySet == null) {
       log("In Dragger Screen prismSurveySetBloc.currentPrismSurveySet == null: ${prismSurveySetBloc.currentPrismSurveySet == null}");
@@ -114,14 +111,14 @@ class BuildPortraitLayout extends StatelessWidget {
               formKey: _formKey,
               currentSurveySet: surveySet?.documentID,
             ),
-            if (draggableItemBloc.startedDragging) Text(
-              "$_xName: ${prismSurveyBloc.rowIndex + 1}     |     $_yName: ${prismSurveyBloc.colIndex + 1}\nGranularity: ${matrixGranularityBloc.matrixGranularity}",
-              style: TextStyle(
-                color: Styles.drg_colorAppBackgroundMedium.withOpacity(.8),
-                height: 1.5
+            if (draggableItemBloc.startedDragging)
+              Text(
+                "$_xName: ${prismSurveyBloc.rowIndex + 1}     |     $_yName: ${prismSurveyBloc.colIndex + 1}\nGranularity: ${matrixGranularityBloc.matrixGranularity}",
+                style: TextStyle(
+                    color: Styles.drg_colorAppBackgroundMedium.withOpacity(.8),
+                    height: 1.5),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-            ),
           ],
         ),
       ),

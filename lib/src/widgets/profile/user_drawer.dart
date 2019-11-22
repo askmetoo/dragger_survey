@@ -24,6 +24,10 @@ class _UserDrawerState extends State<UserDrawer> {
   @override
   Widget build(BuildContext context) {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
+    final MediaQueryData mq = MediaQuery.of(context);
+    final double mqHeight = mq.size.height;
+    final bool mqIsPortrait = mq.orientation == Orientation.portrait;
+
     if (signInBloc.currentUser == null) {
       log("In user_drawer not currentUser data");
       Navigator.pushReplacement(
@@ -55,30 +59,36 @@ class _UserDrawerState extends State<UserDrawer> {
             ),
           );
         }
-        MediaQueryData mq = MediaQuery.of(context);
 
         return Drawer(
           elevation: 10,
-          child: ListView(
-            padding: EdgeInsets.all(0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              SizedBox(
-                // height: 160,
-                child: DrawerHeader(
-                  padding:
-                      EdgeInsets.only(top: 8, left: 16, right: 10, bottom: 0),
-                  child: Container(
-                    alignment: Alignment.topLeft,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Expanded(
-                          flex: 5,
+              DrawerHeader(
+                // padding:
+                //     EdgeInsets.only(top: 8, left: 16, right: 10, bottom: 0),
+                child: Container(
+                  alignment: Alignment.topLeft,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Expanded(
+                        flex: 4,
+                        child: SizedBox(
                           child: Column(
                             children: <Widget>[
-                              SignedInUserCircleAvatar(
-                                radiusSmall: 30,
+                              SizedBox(
+                                height: mqIsPortrait
+                                    ? mqHeight * .1
+                                    : mqHeight * .2,
+                                width: mqIsPortrait
+                                    ? mqHeight * .1
+                                    : mqHeight * .2,
+                                child: SignedInUserCircleAvatar(
+                                  radiusSmall: 30,
+                                ),
                               ),
                               Text(
                                 '${signInSnapshot.data.displayName}',
@@ -87,56 +97,65 @@ class _UserDrawerState extends State<UserDrawer> {
                             ],
                           ),
                         ),
-                        Spacer(
-                          flex: 1,
+                      ),
+                      Spacer(
+                        flex: 1,
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: QrImage(
+                          data:
+                              "${signInSnapshot.data.displayName}; ${Utils.createCryptoRandomString(2)}${signInSnapshot.data.uid}${Utils.createCryptoRandomString(2)}",
                         ),
-                        Expanded(
-                          flex: 3,
-                          child: QrImage(
-                            data:
-                                "${signInSnapshot.data.displayName}; ${Utils.createCryptoRandomString(2)}${signInSnapshot.data.uid}${Utils.createCryptoRandomString(2)}",
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  decoration: BoxDecoration(
-                    color: Styles.drg_colorPrimary.withAlpha(100),
+                      ),
+                    ],
                   ),
                 ),
+                decoration: BoxDecoration(
+                  color: Styles.drg_colorPrimary.withAlpha(100),
+                ),
               ),
-              ListTile(
-                leading: Icon(Icons.account_circle),
-                title: Text('Profil settings'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, '/profile');
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.people),
-                title: Text('Manage Teams'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, '/teams');
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.description),
-                title: Text('How-To'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, '/howto');
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.cancel),
-                title: Text('Sign-Out'),
-                onTap: () {
-                  Navigator.pop(context, true);
-                  Navigator.pushNamed(context, '/login');
-                  signInBloc.logoutUser();
-                },
+              SizedBox(
+                height: mqHeight * .4,
+                child: ListView(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.all(0),
+                  children: <Widget>[
+                    ListTile(
+                      leading: Icon(Icons.account_circle),
+                      title: Text('Profil settings'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, '/profile');
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.people),
+                      title: Text('Manage Teams'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, '/teams');
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.description),
+                      title: Text('How-To'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, '/howto');
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.cancel),
+                      title: Text('Sign-Out'),
+                      onTap: () {
+                        Navigator.pop(context, true);
+                        Navigator.pushNamed(context, '/login');
+                        signInBloc.logoutUser();
+                      },
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

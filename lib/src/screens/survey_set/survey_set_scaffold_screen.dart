@@ -52,7 +52,6 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
                 ),
               ),
             );
-            ;
           } else if (!surveyIDsSnapshot.hasData) {
             return Container();
           }

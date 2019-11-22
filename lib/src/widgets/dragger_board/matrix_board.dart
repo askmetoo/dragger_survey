@@ -265,8 +265,6 @@ class _BuildYLabelState extends State<BuildYLabel> {
   @override
   Widget build(BuildContext context) {
     double mqWidth = MediaQuery.of(context).size.width;
-    Orientation mqOrientation = MediaQuery.of(context).orientation;
-
     bool isBigScreen = mqWidth > 786;
 
     return Positioned(
