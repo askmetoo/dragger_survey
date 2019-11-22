@@ -27,14 +27,17 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
   Widget build(BuildContext context) {
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
     FirebaseUser _user = Provider.of<FirebaseUser>(context);
+    log("--------> In BuildTeamsDropdownButton");
 
     if (teamBloc?.getCurrentSelectedTeamId() != null) {
+      log("In BuildTeamsDropdownButton - value of teamBloc.getCurrentSelectedTeamId() IS NOT null: ${teamBloc.getCurrentSelectedTeamId()}");
       setState(() {
         _selectedTeamId = teamBloc.getCurrentSelectedTeamId();
       });
     }
 
     if (teamBloc?.getCurrentSelectedTeam()?.documentID != null) {
+      log("In BuildTeamsDropdownButton - value of teamBloc.getCurrentSelectedTeamId().documentID IS NOT null: ${teamBloc.getCurrentSelectedTeam().documentID}");
       setState(() {
         _selectedTeamId = teamBloc.getCurrentSelectedTeam().documentID;
         _selectedTeam = teamBloc.getCurrentSelectedTeam();
@@ -227,19 +230,11 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
     if (teamsListSnapshot.connectionState != ConnectionState.active) {
       return Center(
         child: Container(
-          constraints: BoxConstraints(maxWidth: 80),
+          constraints: BoxConstraints(maxWidth: 50),
           child: AspectRatio(
             aspectRatio: 1,
-            child: Center(
-              child: Container(
-                constraints: BoxConstraints(maxWidth: 50),
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 10,
-                  ),
-                ),
-              ),
+            child: CircularProgressIndicator(
+              strokeWidth: 10,
             ),
           ),
         ),

@@ -127,24 +127,10 @@ Widget buildTeamsListView({BuildContext context}) {
                                     teamDocumentSnapshot['createdByUser'],
                               ),
                               builder: (context, userSnapshot) {
-                                log("teamDocumentSnapshot['createdByUser']: ${teamDocumentSnapshot['createdByUser']}");
-
                                 if (userSnapshot.connectionState !=
                                     ConnectionState.done) {
-                                  log("userSnapshot.connectionState: ${userSnapshot.connectionState}");
                                   return Loader();
-                                } else if (userSnapshot.data == null) {
-                                  log("userSnapshot.connectionState: ${userSnapshot.connectionState}");
-                                  // log("userSnapshot.data == null: ${userSnapshot.data == null}");
-                                }
-                                print(
-                                    "---> userSnapshot.data.documents[0]['photoUrl']: ${userSnapshot.data.documents[0]['photoUrl']}");
-                                // log("In BuildTeamListView - value of teamDocumentSnapshot['createdByUser']: ${teamDocumentSnapshot['createdByUser']}");
-                                // log("In BuildTeamListView - value of userSnapshot.data.documents: ${userSnapshot.data.documents != null ? userSnapshot.data.documents : ''}");
-                                // print(
-                                //     "In BuildTeamListView - value of userSnapshot.data.documents[0].data['photoUrl']: ${userSnapshot.data.documents[0].data['photoUrl']}");
-                                // print(
-                                //     "In BuildTeamListView - value of ownerPhotoUrl: $ownerPhotoUrl");
+                                } 
 
                                 return ListTile(
                                   isThreeLine: false,
@@ -157,9 +143,6 @@ Widget buildTeamsListView({BuildContext context}) {
                                     onPressed: () async {
                                       teamBloc.currentSelectedTeamId = teamId;
 
-                                      // print(
-                                      //     "Edit button pressed in BuildTeamsListView, teamId: $teamId");
-
                                       Navigator.pushNamed(
                                         context,
                                         '/teammanager',
@@ -168,7 +151,7 @@ Widget buildTeamsListView({BuildContext context}) {
                                     },
                                   ),
                                   onTap: () {
-                                    // log("In BuildTeamListView ListTile onTap - teamId: $teamId");
+                                    teamBloc.setCurrentSelectedTeamId(teamId);
                                     Navigator.pushNamed(
                                         context, '/surveysetslist',
                                         arguments: "$teamId");
