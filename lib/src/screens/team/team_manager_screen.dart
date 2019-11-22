@@ -86,10 +86,10 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
       body: FutureBuilder<FirebaseUser>(
           future: signInBloc.currentUser,
           builder: (context, signInSnapshot) {
-            return FutureBuilder<DocumentSnapshot>(
-              future: teamBloc.getTeamById(id: args['id']),
+            return StreamBuilder<DocumentSnapshot>(
+              stream: teamBloc.streamTeamById(id: args['id']),
               builder: (context, AsyncSnapshot<DocumentSnapshot> teamSnapshot) {
-                if (teamSnapshot.connectionState == ConnectionState.done) {
+                if (teamSnapshot.connectionState == ConnectionState.active) {
                   List userIds = teamSnapshot.data.data['users'];
                   String ownerId = teamSnapshot.data.data['createdByUser'];
                   String currentUserId = signInSnapshot?.data?.uid;
