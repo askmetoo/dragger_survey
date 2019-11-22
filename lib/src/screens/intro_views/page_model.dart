@@ -1,6 +1,10 @@
+import 'dart:developer';
+
+import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intro_views_flutter/Models/page_view_model.dart';
+import 'package:provider/provider.dart';
 
 final PageViewModel teamPage = PageViewModel(
   pageColor: Styles.drg_colorSecondary,
@@ -9,8 +13,31 @@ final PageViewModel teamPage = PageViewModel(
     color: Styles.drg_colorAppBackgroundLight,
   ),
   bubbleBackgroundColor: Styles.drg_colorAppBackground,
-  body: Text(
-    'Before your first survey, prepare your set-up with building a team - even if you start as the only member of the team. Later on, it is easy to invite others.',
+  body: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: <Widget>[
+      Text(
+        'Before your first survey, prepare your set-up with building a team - even if you start as the only member of the team. Later on, it is easy to invite others.',
+      ),
+      StatefulBuilder(
+        builder: (BuildContext context, innerSetState) {
+          bool showIntroViewsAgain = false;
+          // showIntroViewsAgain = !showIntroViewsAgain;
+
+          return CheckboxListTile(
+            controlAffinity: ListTileControlAffinity.leading,
+            title: Text("Don't show intro slides again."),
+            value: !showIntroViewsAgain,
+            onChanged: (_) {
+              log("In PageModel 1 - value of CheckBox: $showIntroViewsAgain");
+              showIntroViewsAgain = !showIntroViewsAgain;
+              log("In PageModel 1 - value of showIntroViewsAgain: $showIntroViewsAgain");
+            },
+          );
+        },
+      ),
+    ],
   ),
   title: Text(
     'Build a Team',

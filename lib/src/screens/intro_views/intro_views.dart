@@ -16,13 +16,13 @@ class IntroViews extends StatelessWidget {
         readyPage,
       ],
       onTapDoneButton: () async {
-        // Navigator.pushNamed(context, '/surveysetslist');
         await Navigator.pushNamedAndRemoveUntil(
           context,
           '/surveysetslist',
           (_) => false,
         ); //MaterialPageRoute
       },
+      fullTransition: 150,
       columnMainAxisAlignment: MainAxisAlignment.center,
       showNextButton: false,
       showBackButton: false,
@@ -35,7 +35,7 @@ class IntroViews extends StatelessWidget {
           fontFamily: "Barlow",
         ),
       ),
-      pageButtonTextStyles: new TextStyle(
+      pageButtonTextStyles: TextStyle(
         color: Colors.white,
         fontSize: 12.0,
         fontFamily: "Barlow",
