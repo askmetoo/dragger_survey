@@ -82,6 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _singInButton({BuildContext context}) {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
+    final IntroViewsBloc introViewsBloc = Provider.of<IntroViewsBloc>(context);
 
     return OutlineButton(
       splashColor: Styles.drg_colorSecondary,
@@ -98,11 +99,9 @@ class _LoginScreenState extends State<LoginScreen> {
           signInBloc.createUserInDbIfNotExist(account: returnedUser);
           await Navigator.pushNamedAndRemoveUntil(
             context,
-            '/introviews',
+            introViewsBloc.showIntroViews ? '/introviews' : '/surveysetslist',
             (_) => false,
           );
-          // await Navigator.pushNamedAndRemoveUntil(
-          //     context, '/surveysetslist', (_) => false);
         }
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),

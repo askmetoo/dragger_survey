@@ -57,7 +57,10 @@ class _SignedInUserCircleAvatarState extends State<SignedInUserCircleAvatar> {
                       radius: widget.radiusSmall,
                       backgroundImage: widget.photoUrl != ''
                           ? NetworkImage(widget.photoUrl)
-                          : NetworkImage(signInSnapshot.data.photoUrl),
+                          : (signInSnapshot != null &&
+                                  signInSnapshot.data != null)
+                              ? NetworkImage(signInSnapshot?.data?.photoUrl)
+                              : null,
                     )
                   : CircleAvatar(
                       radius: widget.radiusSmall,

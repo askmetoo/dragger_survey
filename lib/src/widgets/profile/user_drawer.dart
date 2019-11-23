@@ -24,6 +24,8 @@ class _UserDrawerState extends State<UserDrawer> {
   @override
   Widget build(BuildContext context) {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
+    final IntroViewsBloc introViewsBloc =
+        Provider.of<IntroViewsBloc>(context, listen: false);
     final MediaQueryData mq = MediaQuery.of(context);
     final double mqHeight = mq.size.height;
     final bool mqIsPortrait = mq.orientation == Orientation.portrait;
@@ -144,6 +146,36 @@ class _UserDrawerState extends State<UserDrawer> {
                         Navigator.pop(context);
                         Navigator.pushNamed(context, '/howto');
                       },
+                    ),
+                    Consumer<IntroViewsBloc>(
+                      builder: (BuildContext context, introViews, child) {
+                        return ListTile(
+                          leading: introViewsBloc.showIntroViews
+                              ? Icon(Icons.check_box)
+                              : Icon(Icons.check_box_outline_blank),
+                          title: Text('Introviews'),
+                          onTap: () {
+                            bool currentValue = introViews.showIntroViews;
+                            bool newValue = currentValue ? false : true;
+                            introViews.setShowIntroViews(newValue);
+                            // Navigator.pop(context);
+                            // Navigator.pushNamed(context, '/howto');
+                          },
+                        );
+                      },
+                      // child: ListTile(
+                      //   leading: introViewsBloc.showIOntroViews
+                      //       ? Icon(Icons.check_box)
+                      //       : Icon(Icons.check_box_outline_blank),
+                      //   title: Text('Introviews'),
+                      //   onTap: () {
+                      //     bool currentValue = introViewsBloc.showIOntroViews;
+                      //     bool newValue = currentValue ? false : true;
+                      //     introViewsBloc.setShowIntroViews(newValue);
+                      //     // Navigator.pop(context);
+                      //     // Navigator.pushNamed(context, '/howto');
+                      //   },
+                      // ),
                     ),
                     ListTile(
                       leading: Icon(Icons.cancel),

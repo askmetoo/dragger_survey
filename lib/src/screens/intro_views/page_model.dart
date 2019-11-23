@@ -13,31 +13,8 @@ final PageViewModel teamPage = PageViewModel(
     color: Styles.drg_colorAppBackgroundLight,
   ),
   bubbleBackgroundColor: Styles.drg_colorAppBackground,
-  body: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: <Widget>[
-      Text(
-        'Before your first survey, prepare your set-up with building a team - even if you start as the only member of the team. Later on, it is easy to invite others.',
-      ),
-      StatefulBuilder(
-        builder: (BuildContext context, innerSetState) {
-          bool showIntroViewsAgain = false;
-          // showIntroViewsAgain = !showIntroViewsAgain;
-
-          return CheckboxListTile(
-            controlAffinity: ListTileControlAffinity.leading,
-            title: Text("Don't show intro slides again."),
-            value: !showIntroViewsAgain,
-            onChanged: (_) {
-              log("In PageModel 1 - value of CheckBox: $showIntroViewsAgain");
-              showIntroViewsAgain = !showIntroViewsAgain;
-              log("In PageModel 1 - value of showIntroViewsAgain: $showIntroViewsAgain");
-            },
-          );
-        },
-      ),
-    ],
+  body: Text(
+    'Before your first survey, prepare your set-up with building a team - even if you start as the only member of the team. Later on, it is easy to invite others.',
   ),
   title: Text(
     'Build a Team',

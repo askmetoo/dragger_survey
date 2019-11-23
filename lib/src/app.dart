@@ -16,9 +16,11 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        StreamProvider<FirebaseUser>.value(value: FirebaseAuth.instance.onAuthStateChanged),
+        StreamProvider<FirebaseUser>.value(
+            value: FirebaseAuth.instance.onAuthStateChanged),
         StreamProvider<ConnectivityStatus>(
-          builder: (context) => ConnectivityService().connectionStatusController.stream,
+          builder: (context) =>
+              ConnectivityService().connectionStatusController.stream,
         ),
         ChangeNotifierProvider<SignInBloc>.value(
           value: SignInBloc(),
@@ -43,14 +45,17 @@ class App extends StatelessWidget {
         ),
         ChangeNotifierProvider<FabBloc>.value(
           value: FabBloc(),
-        )
+        ),
+        ChangeNotifierProvider<IntroViewsBloc>.value(
+          value: IntroViewsBloc(),
+        ),
       ],
       child: MaterialApp(
         title: 'Dragger Survey',
         navigatorKey: navigatorKey,
         onGenerateRoute: RouteGenerator.generateRoute,
         theme: ThemeData(
-          canvasColor: Styles.drg_colorSecondary, 
+          canvasColor: Styles.drg_colorSecondary,
           fontFamily: 'Barlow',
           bottomAppBarTheme: BottomAppBarTheme(color: Styles.drg_colorGreen),
           accentColor: Styles.drg_colorContrast,
