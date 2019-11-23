@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/enums/connectivity_status.dart';
-import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -537,7 +536,7 @@ class BuildListOfSets extends StatelessWidget {
                             ),
                           ),
                           subtitle: Text(
-                            "No. of surveys: ${surveysSnapshot.data.documents.length}, Resolution: ${surveySetDokumentSnapshot.data['resolution']} \n${timeago.format(DateTime.now().subtract(DateTime.now().difference(surveySetDokumentSnapshot['created'].toDate())))}",
+                            "Surveys: ${surveysSnapshot.data.documents.length}, Resolution: ${surveySetDokumentSnapshot.data['resolution']}, \nCreation: ${timeago.format(DateTime.now().subtract(DateTime.now().difference(surveySetDokumentSnapshot['created'].toDate())))}, last Survey: ${timeago.format(DateTime.now().subtract(DateTime.now().difference(surveysSnapshot.data.documents.last['created'].toDate())))}",
                             style: TextStyle(
                               fontSize: 14,
                             ),
@@ -553,12 +552,13 @@ class BuildListOfSets extends StatelessWidget {
     );
   }
 
-  void _buildSurveySetEditDialog(BuildContext context,
-      {@required String documentID,
-      @required PrismSurveySetBloc surveySetBloc,
-      @required DocumentSnapshot surveySetsSnapshot,
-      @required FirebaseUser user,
-      }) async {
+  void _buildSurveySetEditDialog(
+    BuildContext context, {
+    @required String documentID,
+    @required PrismSurveySetBloc surveySetBloc,
+    @required DocumentSnapshot surveySetsSnapshot,
+    @required FirebaseUser user,
+  }) async {
     log("In BuildSurveySetListView - _buildSurveyEditDialog 'Edit': $documentID");
 
     final GlobalKey<FormBuilderState> _formSurveySetEditKey =
@@ -569,7 +569,7 @@ class BuildListOfSets extends StatelessWidget {
     FocusNode thirdFocus;
     FocusNode fourthFocus;
 
-    if(surveySetsSnapshot.data == null) {
+    if (surveySetsSnapshot.data == null) {
       log("In BuildSurveySetListView - no data in surveySetsSnapshot.data, value: ${surveySetsSnapshot.data}");
     }
 
@@ -615,13 +615,13 @@ class BuildListOfSets extends StatelessWidget {
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.text,
                         style: TextStyle(
-                          color: Styles.drg_colorSecondary,
-                          fontWeight: FontWeight.w600
-                        ),
+                            color: Styles.drg_colorSecondary,
+                            fontWeight: FontWeight.w600),
                         attribute: "name",
                         decoration: InputDecoration(
                           labelText: "Team name",
-                          labelStyle: TextStyle(color: Styles.drg_colorAppBackgroundMedium),
+                          labelStyle: TextStyle(
+                              color: Styles.drg_colorAppBackgroundMedium),
                         ),
                         validators: [
                           FormBuilderValidators.max(32),
@@ -636,13 +636,13 @@ class BuildListOfSets extends StatelessWidget {
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.text,
                         style: TextStyle(
-                          color: Styles.drg_colorSecondary,
-                          fontWeight: FontWeight.w600
-                        ),
+                            color: Styles.drg_colorSecondary,
+                            fontWeight: FontWeight.w600),
                         attribute: "xName",
                         decoration: InputDecoration(
                           labelText: "Label for x axis",
-                          labelStyle: TextStyle(color: Styles.drg_colorAppBackgroundMedium),
+                          labelStyle: TextStyle(
+                              color: Styles.drg_colorAppBackgroundMedium),
                         ),
                         validators: [
                           FormBuilderValidators.max(32),
@@ -657,13 +657,13 @@ class BuildListOfSets extends StatelessWidget {
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.text,
                         style: TextStyle(
-                          color: Styles.drg_colorSecondary,
-                          fontWeight: FontWeight.w600
-                        ),
+                            color: Styles.drg_colorSecondary,
+                            fontWeight: FontWeight.w600),
                         attribute: "yName",
                         decoration: InputDecoration(
                           labelText: "Label for y axis",
-                          labelStyle: TextStyle(color: Styles.drg_colorAppBackgroundMedium),
+                          labelStyle: TextStyle(
+                              color: Styles.drg_colorAppBackgroundMedium),
                         ),
                         validators: [
                           FormBuilderValidators.max(32),
@@ -673,43 +673,46 @@ class BuildListOfSets extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 12.0),
                         child: FlatButton(
-                              child: Text("Speichern"),
-                              color: Styles.drg_colorSecondary,
-                              onPressed: () {
-                                log("In _buildSurveySetEditDialog - onPressed 'Speichern'");
-                                if (_formSurveySetEditKey.currentState
-                                    .saveAndValidate()) {
-                                  log("In _buildSurveySetEditDialog - after saveAndValidate()");
-                                  log("_formSurveySetEditKey.text: ${_formSurveySetEditKey.currentState.value['name']}");
-                                  surveySetBloc.updatePrismSurveySetById(
-                                    field: 'name',
-                                    id: documentID,
-                                    value: _formSurveySetEditKey.currentState.value['name'],
-                                  );
-                                  surveySetBloc.updatePrismSurveySetById(
-                                    field: 'xName',
-                                    id: documentID,
-                                    value: _formSurveySetEditKey.currentState.value['xName'],
-                                  );
-                                  surveySetBloc.updatePrismSurveySetById(
-                                    field: 'yName',
-                                    id: documentID,
-                                    value: _formSurveySetEditKey.currentState.value['yName'],
-                                  );
-                                  surveySetBloc.updatePrismSurveySetById(
-                                    field: 'lastEditedByUser',
-                                    id: documentID,
-                                    value: DateTime.now().toUtc(),
-                                  );
-                                  surveySetBloc.updatePrismSurveySetById(
-                                    field: 'lastEditedByUserName',
-                                    id: documentID,
-                                    value: user.displayName,
-                                  );
-                                }
-                                Navigator.pop(context);
-                              },
-                            ),
+                          child: Text("Speichern"),
+                          color: Styles.drg_colorSecondary,
+                          onPressed: () {
+                            log("In _buildSurveySetEditDialog - onPressed 'Speichern'");
+                            if (_formSurveySetEditKey.currentState
+                                .saveAndValidate()) {
+                              log("In _buildSurveySetEditDialog - after saveAndValidate()");
+                              log("_formSurveySetEditKey.text: ${_formSurveySetEditKey.currentState.value['name']}");
+                              surveySetBloc.updatePrismSurveySetById(
+                                field: 'name',
+                                id: documentID,
+                                value: _formSurveySetEditKey
+                                    .currentState.value['name'],
+                              );
+                              surveySetBloc.updatePrismSurveySetById(
+                                field: 'xName',
+                                id: documentID,
+                                value: _formSurveySetEditKey
+                                    .currentState.value['xName'],
+                              );
+                              surveySetBloc.updatePrismSurveySetById(
+                                field: 'yName',
+                                id: documentID,
+                                value: _formSurveySetEditKey
+                                    .currentState.value['yName'],
+                              );
+                              surveySetBloc.updatePrismSurveySetById(
+                                field: 'lastEditedByUser',
+                                id: documentID,
+                                value: DateTime.now().toUtc(),
+                              );
+                              surveySetBloc.updatePrismSurveySetById(
+                                field: 'lastEditedByUserName',
+                                id: documentID,
+                                value: user.displayName,
+                              );
+                            }
+                            Navigator.pop(context);
+                          },
+                        ),
                       )
                     ],
                   ),
