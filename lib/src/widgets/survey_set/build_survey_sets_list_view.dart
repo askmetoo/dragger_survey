@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:date_format/date_format.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/enums/connectivity_status.dart';
 import 'package:dragger_survey/src/styles.dart';
@@ -81,8 +82,6 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                   "ERROR in BuildSurveySetsListView getPrismSurveySetQuery: $err")),
           builder: (BuildContext context,
               AsyncSnapshot<QuerySnapshot> surveySetSnapshot) {
-            final connectionStatus = Provider.of<ConnectivityStatus>(context);
-
             if (surveySetSnapshot.connectionState == ConnectionState.done) {
               if (!surveySetSnapshot.hasData) {
                 return Center(
@@ -98,13 +97,6 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                 );
               }
 
-              // if (connectionStatus == ConnectivityStatus.Offline) {
-              //   return Text(
-              //     "You are currently ${connectionStatus.toString().split('.')[1]}",
-              //     style: TextStyle(
-              //         fontSize: 20, color: Styles.drg_colorSecondaryDeepDark),
-              //   );
-              // }
               if (surveySetSnapshot.data.documents.isEmpty) {
                 return buildNoSurveySetsAvailableText();
               }
@@ -416,6 +408,7 @@ class BuildListOfSets extends StatelessWidget {
           if (!surveySetDokumentSnapshot.exists) {
             Text("surveySetDokumentSnapshot does not exist");
           }
+
           return FutureBuilder<QuerySnapshot>(
               future: surveyBloc.getPrismSurveyQuery(
                   fieldName: 'surveySet',
@@ -438,6 +431,45 @@ class BuildListOfSets extends StatelessWidget {
                     ),
                   );
                 }
+
+                String surveySetDisplayTime = DateTime.now().toString();
+                DateTime now = DateTime.now();
+
+                DateTime surveySetDateCreated =
+                    surveySetDokumentSnapshot['created'].toDate();
+                String suveySetDateCreatedString =
+                    formatDate(surveySetDateCreated, [dd, '.', mm, '.', yyyy]);
+                String differenceSurveySetTimeAgo = timeago.format(
+                  DateTime.now().subtract(
+                    DateTime.now().difference(
+                      surveySetDateCreated,
+                    ),
+                  ),
+                );
+                int surveySetDiffenrenceInDays =
+                    now.difference(surveySetDateCreated).inDays;
+
+                surveySetDisplayTime = surveySetDiffenrenceInDays > 2
+                    ? suveySetDateCreatedString
+                    : differenceSurveySetTimeAgo;
+                String surveyDisplayTime = DateTime.now().toString();
+                DateTime surveyDateCreated =
+                    surveysSnapshot.data.documents.last['created'].toDate();
+                String suveyDateCreatedString =
+                    formatDate(surveyDateCreated, [dd, '.', mm, '.', yyyy]);
+                String differenceSurveyTimeAgo = timeago.format(
+                  DateTime.now().subtract(
+                    DateTime.now().difference(
+                      surveyDateCreated,
+                    ),
+                  ),
+                );
+                int surveyDiffenrenceInDays =
+                    now.difference(surveyDateCreated).inDays;
+                surveyDisplayTime = surveyDiffenrenceInDays > 2
+                    ? suveyDateCreatedString
+                    : differenceSurveyTimeAgo;
+
                 return Slidable(
                   key: ValueKey(surveySetDokumentSnapshot.hashCode),
                   actionPane: SlidableBehindActionPane(),
@@ -536,7 +568,7 @@ class BuildListOfSets extends StatelessWidget {
                             ),
                           ),
                           subtitle: Text(
-                            "Surveys: ${surveysSnapshot.data.documents.length}, Resolution: ${surveySetDokumentSnapshot.data['resolution']}, \nCreation: ${timeago.format(DateTime.now().subtract(DateTime.now().difference(surveySetDokumentSnapshot['created'].toDate())))}, last Survey: ${surveysSnapshot.data.documents.length > 0 ? timeago.format(DateTime.now().subtract(DateTime.now().difference(surveysSnapshot.data.documents.last['created'].toDate()))) : ''}",
+                            "Surveys: ${surveysSnapshot.data.documents.length}, Resolution: ${surveySetDokumentSnapshot.data['resolution']}, \nCreation: $surveySetDisplayTime, last Survey: ${surveysSnapshot.data.documents.length > 0 ? surveyDisplayTime : ''}",
                             style: TextStyle(
                               fontSize: 14,
                             ),
