@@ -35,6 +35,7 @@ class Collection<T> {
   CollectionReference ref;
 
   Collection({this.path}) {
+    _db.settings(persistenceEnabled: true);
     ref = _db.collection(path);
   }
 
@@ -94,19 +95,19 @@ class Collection<T> {
     return ref.where(fieldName, arrayContains: arrayValue).getDocuments();
   }
 
-  Future deleteItemsFromDocumentsArrayById({String fieldName, String id}) async {
-
+  Future deleteItemsFromDocumentsArrayById(
+      {String fieldName, String id}) async {
     // 1) Find all documents where 'fieldname' array contains id
     QuerySnapshot documentsSnapshot =
         await ref.where(fieldName, arrayContains: id).getDocuments();
 
     // 2) For each document of documentsSnapshot...
     documentsSnapshot.documents.forEach((DocumentSnapshot document) async {
-
       // 3) ...extract the document ID
       String _documentID = document.documentID;
       // 4) ...get the document by ID...
-      DocumentSnapshot _documentSnapshot = await ref.document('$_documentID').get();
+      DocumentSnapshot _documentSnapshot =
+          await ref.document('$_documentID').get();
       // DocumentSnapshot _doc = await docRef.get();
       List<dynamic> _usersList;
 
@@ -115,7 +116,7 @@ class Collection<T> {
         _usersList = _documentSnapshot.data[fieldName].toList();
         // List<dynamic> _usersList = _doc.data[fieldName].toList();
       } catch (err) {
-        log("ERROR in DB deleteItemsFromDocumentsArrayById - _doc[fieldName].toList(), error: $err"); 
+        log("ERROR in DB deleteItemsFromDocumentsArrayById - _doc[fieldName].toList(), error: $err");
       }
 
       // 6) ...remove desired items from array...
@@ -224,6 +225,7 @@ class Collection<T> {
   Stream<QuerySnapshot> streamDocuments() {
     return ref.snapshots();
   }
+
   Stream<DocumentSnapshot> streamDocumentById(id) {
     return ref.document('$id').snapshots();
   }
@@ -251,14 +253,13 @@ class Collection<T> {
 
   Future<QuerySnapshot> deleteDocumentsChildrenByQuery(
       {String fieldName, String fieldValue}) async {
-
     QuerySnapshot returnedDocuments =
         // 1) find all documents where the fieldnames value is equal to field value
         await ref.where(fieldName, isEqualTo: fieldValue).getDocuments().then(
       (documents) {
         documents.documents.forEach(
           (document) async {
-            // 2) For each returned documents Id find and delete a document 
+            // 2) For each returned documents Id find and delete a document
             await deleteById(document.documentID);
           },
         );

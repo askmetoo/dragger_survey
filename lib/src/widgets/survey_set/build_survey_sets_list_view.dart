@@ -98,13 +98,13 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                 );
               }
 
-              if (connectionStatus == ConnectivityStatus.Offline) {
-                return Text(
-                  "You are currently ${connectionStatus.toString().split('.')[1]}",
-                  style: TextStyle(
-                      fontSize: 20, color: Styles.drg_colorSecondaryDeepDark),
-                );
-              }
+              // if (connectionStatus == ConnectivityStatus.Offline) {
+              //   return Text(
+              //     "You are currently ${connectionStatus.toString().split('.')[1]}",
+              //     style: TextStyle(
+              //         fontSize: 20, color: Styles.drg_colorSecondaryDeepDark),
+              //   );
+              // }
               if (surveySetSnapshot.data.documents.isEmpty) {
                 return buildNoSurveySetsAvailableText();
               }
@@ -536,7 +536,7 @@ class BuildListOfSets extends StatelessWidget {
                             ),
                           ),
                           subtitle: Text(
-                            "Surveys: ${surveysSnapshot.data.documents.length}, Resolution: ${surveySetDokumentSnapshot.data['resolution']}, \nCreation: ${timeago.format(DateTime.now().subtract(DateTime.now().difference(surveySetDokumentSnapshot['created'].toDate())))}, last Survey: ${timeago.format(DateTime.now().subtract(DateTime.now().difference(surveysSnapshot.data.documents.last['created'].toDate())))}",
+                            "Surveys: ${surveysSnapshot.data.documents.length}, Resolution: ${surveySetDokumentSnapshot.data['resolution']}, \nCreation: ${timeago.format(DateTime.now().subtract(DateTime.now().difference(surveySetDokumentSnapshot['created'].toDate())))}, last Survey: ${surveysSnapshot.data.documents.length > 0 ? timeago.format(DateTime.now().subtract(DateTime.now().difference(surveysSnapshot.data.documents.last['created'].toDate()))) : ''}",
                             style: TextStyle(
                               fontSize: 14,
                             ),
