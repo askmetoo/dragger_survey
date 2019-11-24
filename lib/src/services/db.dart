@@ -90,6 +90,26 @@ class Collection<T> {
             print("ERROR in db.dart getDocumentsByQuerySortByCreatedDesc: $e"));
   }
 
+  Stream<QuerySnapshot> streamDocumentsByQuerySortByCreatedAsc(
+      {String fieldName, String fieldValue}) {
+    return ref
+        .where(fieldName, isEqualTo: fieldValue)
+        .orderBy('created', descending: false)
+        .snapshots()
+        .handleError((e) =>
+            log("ERROR in db.dart getDocumentsByQuerySortByCreatedDesc: $e"));
+  }
+
+  Stream<QuerySnapshot> streamDocumentsByQuerySortByCreatedDesc(
+      {String fieldName, String fieldValue}) {
+    return ref
+        .where(fieldName, isEqualTo: fieldValue)
+        .orderBy('created', descending: true)
+        .snapshots()
+        .handleError((e) =>
+            print("ERROR in db.dart getDocumentsByQuerySortByCreatedDesc: $e"));
+  }
+
   Future<QuerySnapshot> getDocumentsByQueryArray(
       {String fieldName, String arrayValue}) {
     return ref.where(fieldName, arrayContains: arrayValue).getDocuments();

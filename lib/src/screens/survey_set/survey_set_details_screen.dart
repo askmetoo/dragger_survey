@@ -62,7 +62,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
     final PrismSurveyBloc surveyBloc = Provider.of<PrismSurveyBloc>(context);
     final PrismSurveySetBloc surveySetBloc =
         Provider.of<PrismSurveySetBloc>(context);
-    Future<QuerySnapshot> _surveyList;
+    Stream<QuerySnapshot> _surveyList;
 
     if (surveySetsSnapshot.connectionState == ConnectionState.done) {
       if (!surveySetsSnapshot.hasData) {
@@ -84,17 +84,17 @@ class SurveySetDetailsScreen extends StatelessWidget {
             id: surveySetsSnapshot?.data?.documentID);
         surveySetBloc.setCurrentPrismSurveySetById(
             id: surveySetsSnapshot?.data?.documentID);
-        _surveyList = surveyBloc.getPrismSurveyQueryOrderCreatedDesc(
+        _surveyList = surveyBloc.streamPrismSurveyQueryOrderCreatedDesc(
             fieldName: 'surveySet',
             fieldValue: surveySetsSnapshot.data.documentID);
       } catch (e) {
         log("ERROR in SurveySetDetailsScreen try surveysArray: $e");
       }
 
-      return FutureBuilder<QuerySnapshot>(
-          future: _surveyList,
+      return StreamBuilder<QuerySnapshot>(
+          stream: _surveyList,
           builder: (context, AsyncSnapshot<QuerySnapshot> surveySnapshot) {
-            if (surveySnapshot.connectionState == ConnectionState.done) {
+            if (surveySnapshot.connectionState == ConnectionState.active) {
               if (surveySnapshot.data.documents == null) {
                 return Text(">>> No Surveys yet! <<<");
               }

@@ -200,6 +200,20 @@ class PrismSurveyBloc extends ChangeNotifier {
             fieldName: fieldName, fieldValue: fieldValue);
   }
 
+  Stream<QuerySnapshot> streamPrismSurveyQueryOrderCreatedAsc(
+      {String fieldName, String fieldValue}) {
+    return Collection<PrismSurvey>(path: 'surveys')
+        .streamDocumentsByQuerySortByCreatedAsc(
+            fieldName: fieldName, fieldValue: fieldValue);
+  }
+
+  Stream<QuerySnapshot> streamPrismSurveyQueryOrderCreatedDesc(
+      {String fieldName, String fieldValue}) {
+    return Collection<PrismSurvey>(path: 'surveys')
+        .streamDocumentsByQuerySortByCreatedDesc(
+            fieldName: fieldName, fieldValue: fieldValue);
+  }
+
   addPrismSurveyToDb({Map<String, dynamic> survey}) async {
     Collection(path: "surveys").createDocumentWithObject(object: survey);
     _resetPrismSurveyData();
