@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:date_format/date_format.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';
@@ -106,6 +107,24 @@ class SurveySetDetailsScreen extends StatelessWidget {
                   log("-----> In SurveySetDetailsScreen ListView index: $index");
                   DocumentSnapshot document =
                       surveySnapshot.data.documents[index];
+
+                  String displayTime = DateTime.now().toString();
+                  DateTime dateCreated = document.data['created'].toDate();
+                  DateTime now = DateTime.now();
+                  String dateCreatedString =
+                      formatDate(dateCreated, [dd, '.', mm, '.', yyyy]);
+                  String differenceTimeAgo = timeago.format(
+                    DateTime.now().subtract(
+                      DateTime.now().difference(
+                        dateCreated,
+                      ),
+                    ),
+                  );
+                  int diffenrenceInDays = now.difference(dateCreated).inDays;
+                  displayTime = diffenrenceInDays > 2
+                      ? dateCreatedString
+                      : differenceTimeAgo;
+
                   return Padding(
                     padding: const EdgeInsets.only(left: 14.0),
                     child: Slidable(
@@ -176,10 +195,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
                                       ),
                                     ),
                                     TextSpan(
-                                      text: timeago.format(DateTime.now()
-                                          .subtract(DateTime.now().difference(
-                                              document.data['created']
-                                                  .toDate()))),
+                                      text: displayTime,
                                       style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                       ),
