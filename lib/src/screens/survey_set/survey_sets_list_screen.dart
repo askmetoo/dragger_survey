@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/enums/connectivity_status.dart';
+import 'package:dragger_survey/src/shared/shared.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,7 +19,7 @@ class SurveySetsListScreen extends StatefulWidget {
 }
 
 class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
-  // TODO: "isOnline" maybe not necessary anymore, because firestor is set to "persistenceEnabled: true" in db.dart
+  // TODO: "isOnline" maybe not necessary anymore, because firestore is set to "persistenceEnabled: true" in db.dart
   bool isOnline = true;
   Stream<QuerySnapshot> streamQueryTeamsForUser(
       {TeamBloc teamBloc, FirebaseUser user}) {
@@ -38,7 +39,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
     FirebaseUser user = Provider.of<FirebaseUser>(context);
     final connectionStatus = Provider.of<ConnectivityStatus>(context);
 
-    // TODO: Maybe not necessary anymore, because firestor is set to "persistenceEnabled: true" in db.dart
+    // TODO: Maybe not necessary anymore, because firestore is set to "persistenceEnabled: true" in db.dart
     // if (connectionStatus == ConnectivityStatus.Offline) {
     //   setState(() {
     //     isOnline = true;
@@ -59,17 +60,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
         builder:
             (BuildContext context, AsyncSnapshot<QuerySnapshot> teamsSnapshot) {
           if (teamsSnapshot.connectionState != ConnectionState.active) {
-            return Center(
-              child: Container(
-                constraints: BoxConstraints(maxWidth: 50),
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 10,
-                  ),
-                ),
-              ),
-            );
+            return Loader();
           }
 
           bool teamsSnapshotDataIsNull = teamsSnapshot.data == null;
@@ -181,8 +172,6 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                       ),
                     ),
                     onPressed: () {
-                      print(
-                          "In SurveySetsListScreen 'Create new Team' button pressed");
                       teamBloc.updatingTeamData = false;
                       showDialog(
                         context: context,

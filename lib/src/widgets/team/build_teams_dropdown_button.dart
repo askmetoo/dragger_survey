@@ -27,17 +27,21 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
   Widget build(BuildContext context) {
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
     FirebaseUser _user = Provider.of<FirebaseUser>(context);
-    log("--------> In BuildTeamsDropdownButton");
 
     if (teamBloc?.getCurrentSelectedTeamId() != null) {
-      log("In BuildTeamsDropdownButton - value of teamBloc.getCurrentSelectedTeamId() IS NOT null: ${teamBloc.getCurrentSelectedTeamId()}");
       setState(() {
         _selectedTeamId = teamBloc.getCurrentSelectedTeamId();
       });
     }
 
+    if (_selectedTeamId == null && widget.teamsSnapshot?.data != null) {
+      setState(() {
+        _selectedTeamId = widget.teamsSnapshot?.data?.documents[0]?.documentID;
+        _selectedTeam = widget.teamsSnapshot?.data?.documents[0];
+      });
+    }
+
     if (teamBloc?.getCurrentSelectedTeam()?.documentID != null) {
-      log("In BuildTeamsDropdownButton - value of teamBloc.getCurrentSelectedTeamId().documentID IS NOT null: ${teamBloc.getCurrentSelectedTeam().documentID}");
       setState(() {
         _selectedTeamId = teamBloc.getCurrentSelectedTeam().documentID;
         _selectedTeam = teamBloc.getCurrentSelectedTeam();
@@ -59,7 +63,8 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
     return Column(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 0),
+          padding:
+              const EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 0),
           child: SizedBox(
             height: 66,
             child: Row(
@@ -79,7 +84,8 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                             value: _selectedTeamId,
                             onChanged: (value) {
                               String _selectedTeamId = value;
-                              teamBloc.setCurrentSelectedTeamId(_selectedTeamId);
+                              teamBloc
+                                  .setCurrentSelectedTeamId(_selectedTeamId);
                               setState(() {
                                 _selectedTeamId = _selectedTeamId;
                               });
@@ -88,7 +94,8 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                   .streamTeamById(id: _selectedTeamId)
                                   .listen((team) {
                                 teamBloc.setCurrentSelectedTeam(team);
-                                teamBloc.setCurrentSelectedTeamId(team.documentID);
+                                teamBloc
+                                    .setCurrentSelectedTeamId(team.documentID);
                                 if (this.mounted) {
                                   return;
                                 } else {
@@ -140,11 +147,13 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                             padding: EdgeInsets.only(
                                                 right: 12.0, bottom: 4),
                                             child: RoundedLetter(
-                                              text:
-                                                  buildInitials(name: team['name']),
-                                              fontColor: Styles.drg_colorSecondary,
+                                              text: buildInitials(
+                                                  name: team['name']),
+                                              fontColor:
+                                                  Styles.drg_colorSecondary,
                                               shapeType: ShapeType.circle,
-                                              shapeColor: Styles.drg_colorPrimary,
+                                              shapeColor:
+                                                  Styles.drg_colorPrimary,
                                               borderColor:
                                                   Styles.drg_colorSecondary,
                                               shapeSize: 34,
@@ -160,8 +169,9 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Container(
-                                                padding: EdgeInsetsDirectional.only(
-                                                    top: 6, bottom: 0),
+                                                padding:
+                                                    EdgeInsetsDirectional.only(
+                                                        top: 6, bottom: 0),
                                                 child: Text(
                                                   "${team['name']}",
                                                   textAlign: TextAlign.start,
@@ -183,7 +193,8 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                                     team['description'] != ''
                                                         ? "${team['description']}"
                                                         : 'Team has no description',
-                                                    overflow: TextOverflow.ellipsis,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     maxLines: 1,
                                                     softWrap: true,
                                                     textAlign: TextAlign.start,
@@ -192,7 +203,8 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                                             .drg_colorSecondaryDeepDark
                                                             .withOpacity(.8),
                                                         fontFamily: 'Bitter',
-                                                        fontWeight: FontWeight.w700,
+                                                        fontWeight:
+                                                            FontWeight.w700,
                                                         fontSize: 14,
                                                         height: 1.6),
                                                   ),
@@ -216,10 +228,10 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
           ),
         ),
         Divider(
-                height: 1,
-                thickness: 1,
-                color: Styles.drg_colorSecondary.withOpacity(.2),
-              ),
+          height: 1,
+          thickness: 1,
+          color: Styles.drg_colorSecondary.withOpacity(.2),
+        ),
       ],
     );
   }

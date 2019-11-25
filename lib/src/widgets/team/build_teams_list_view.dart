@@ -93,10 +93,8 @@ Widget buildTeamsListView({BuildContext context}) {
                               confirmText: "Yes",
                               declinedText: "No",
                             );
-                            log("-------------------> In BuildTeamsListView - teamOwner == currentUser: ${teamOwner == currentUser}");
 
                             if (deleteTeam && teamOwner == currentUser) {
-                              log("XXXXX-----> In BuildTeamsListView - ${teamDocumentSnapshot.data['name']} deleted.");
                               teamDeleted = await teamBloc
                                   .deleteTeamByIdOnlyIfUserIsOwner(
                                 id: teamDocumentSnapshot.documentID,
@@ -226,8 +224,10 @@ Widget buildTeamsListView({BuildContext context}) {
                                     onTap: () {
                                       teamBloc.setCurrentSelectedTeamId(teamId);
                                       Navigator.pushNamed(
-                                          context, '/surveysetslist',
-                                          arguments: "$teamId");
+                                        context,
+                                        '/surveysetslist',
+                                        arguments: "$teamId",
+                                      );
                                     },
                                     leading: Padding(
                                       padding: EdgeInsets.only(right: 12.0),
