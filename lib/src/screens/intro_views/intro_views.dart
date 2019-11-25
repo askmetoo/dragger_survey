@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/screens/intro_views/page_model.dart';
+import 'package:dragger_survey/src/shared/shared.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
@@ -68,25 +69,31 @@ class _IntroViewsState extends State<IntroViews> {
           child: SizedBox(
             child: Material(
               color: Styles.drg_colorPrimary.withOpacity(0),
-              child: CheckboxListTile(
-                activeColor: Styles.drg_colorPrimary,
-                controlAffinity: ListTileControlAffinity.leading,
-                title: Text(
-                  "Don't show intro slides again.",
-                  style: TextStyle(
-                      color: Styles.drg_colorSecondaryDeepDark.withOpacity(.8),
-                      fontWeight: FontWeight.w600),
-                ),
-                value: introViewsBloc.showIntroViews,
-                onChanged: (value) {
-                  log("In PageModel 1 - value of onChanged: $value");
-                  introViewsBloc.setShowIntroViews(value);
-                  // setState(() {
-                  //   _showIntroViewsAgain = value;
-                  // });
-                  log("In PageModel 1 - value of showIntroViewsAgain: ${introViewsBloc.showIntroViews}");
-                },
-              ),
+              child: FutureBuilder<dynamic>(
+                  future: introViewsBloc.getShowIntroViewsValue(),
+                  builder: (context, introViewsSnapshot) {
+                    if (introViewsSnapshot.connectionState !=
+                        ConnectionState.done) {
+                      return Loader();
+                    }
+                    return CheckboxListTile(
+                      activeColor: Styles.drg_colorPrimary,
+                      controlAffinity: ListTileControlAffinity.leading,
+                      title: Text(
+                        "Show intro slides again.",
+                        style: TextStyle(
+                            color: Styles.drg_colorSecondaryDeepDark
+                                .withOpacity(.8),
+                            fontWeight: FontWeight.w600),
+                      ),
+                      value: introViewsSnapshot?.data,
+                      onChanged: (value) {
+                        log("In PageModel 1 - value of onChanged: $value");
+                        introViewsBloc.setShowIntroViews(value);
+                        log("In PageModel 1 - value of showIntroViewsAgain: ${introViewsBloc.showIntroViews}");
+                      },
+                    );
+                  }),
             ),
           ),
         ),

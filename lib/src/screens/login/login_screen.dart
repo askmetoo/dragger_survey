@@ -84,37 +84,46 @@ class _LoginScreenState extends State<LoginScreen> {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
     final IntroViewsBloc introViewsBloc = Provider.of<IntroViewsBloc>(context);
 
-    return OutlineButton(
-      splashColor: Styles.drg_colorSecondary,
-      onPressed: () async {
-        FirebaseUser returnedUser = await signInBloc
-            .signInWithGoogle()
-            .catchError(
-                (e) => print("ERROR in LoginScreen signInwithGoogle: $e "));
-        log("In LoginScreen _singInButton - value of returnedUser.uid: ${returnedUser.uid}");
-        if (returnedUser != null) {
-          setState(() {
-            _loggedIn = true;
-          });
-          signInBloc.createUserInDbIfNotExist(account: returnedUser);
-          await Navigator.pushNamedAndRemoveUntil(
-            context,
-            introViewsBloc.showIntroViews ? '/introviews' : '/surveysetslist',
-            (_) => false,
+    return FutureBuilder<Object>(
+        future: introViewsBloc.getShowIntroViewsValue(),
+        builder: (context, introViewsValueSnapshot) {
+          return OutlineButton(
+            splashColor: Styles.drg_colorSecondary,
+            onPressed: () async {
+              FirebaseUser returnedUser = await signInBloc
+                  .signInWithGoogle()
+                  .catchError((e) =>
+                      print("ERROR in LoginScreen signInwithGoogle: $e "));
+              log("In LoginScreen _singInButton - value of returnedUser.uid: ${returnedUser.uid}");
+              if (returnedUser != null) {
+                setState(() {
+                  _loggedIn = true;
+                });
+                signInBloc.createUserInDbIfNotExist(account: returnedUser);
+                await Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  introViewsValueSnapshot.data
+                      ? '/introviews'
+                      : '/surveysetslist',
+                  // introViewsBloc.showIntroViews ? '/introviews' : '/surveysetslist',
+                  (_) => false,
+                );
+              }
+            },
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+            highlightElevation: 0,
+            borderSide: BorderSide(color: Styles.drg_colorSecondary),
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Text(
+                "Sign-In with Google",
+                style:
+                    TextStyle(fontSize: 20, color: Styles.drg_colorSecondary),
+              ),
+            ),
           );
-        }
-      },
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-      highlightElevation: 0,
-      borderSide: BorderSide(color: Styles.drg_colorSecondary),
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-        child: Text(
-          "Sign-In with Google",
-          style: TextStyle(fontSize: 20, color: Styles.drg_colorSecondary),
-        ),
-      ),
-    );
+        });
   }
 
   Widget _openSurveyListButton({BuildContext context}) {
