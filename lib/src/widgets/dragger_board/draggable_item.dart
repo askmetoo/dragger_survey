@@ -1,4 +1,3 @@
-
 import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -52,13 +51,14 @@ class _DraggableItemState extends State<DraggableItem> {
         data: _dragData,
         child: Container(
           decoration: BoxDecoration(
-            image: DecorationImage(image: AssetImage('assets/hat.png')),
+            image:
+                DecorationImage(image: AssetImage('assets/feedback-chip.png')),
             borderRadius: BorderRadius.circular(80.0),
             boxShadow: [
               BoxShadow(
-                  color: Colors.brown.shade700,
+                  color: Colors.brown.shade500,
                   blurRadius: 1.5,
-                  offset: Offset(1.0, 2.0))
+                  offset: Offset(1.0, 1.0))
             ],
           ),
           width: _draggableSize,
@@ -84,7 +84,7 @@ class _DraggableItemState extends State<DraggableItem> {
         feedback: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/hat.png'),
+              image: AssetImage('assets/feedback-chip.png'),
             ),
             borderRadius: BorderRadius.circular(120.0),
             boxShadow: [

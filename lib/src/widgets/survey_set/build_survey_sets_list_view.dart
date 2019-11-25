@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math' hide log;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
@@ -132,7 +133,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
       child: Column(
         children: <Widget>[
           Spacer(
-            flex: 8,
+            flex: 7,
           ),
           Icon(
             Icons.announcement,
@@ -222,10 +223,20 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
             ),
           ),
           Spacer(
-            flex: 8,
+            flex: 1,
+          ),
+          Transform.rotate(
+            angle: -pi * 2,
+            child: Image.asset(
+              'assets/message-arrow-down.png',
+              fit: BoxFit.contain,
+              height: 150,
+              width: 80,
+              alignment: Alignment.topLeft,
+            ),
           ),
           Spacer(
-            flex: 8,
+            flex: 3,
           ),
         ],
       ),
@@ -236,8 +247,18 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
     return Center(
       child: Column(
         children: <Widget>[
+          Transform.rotate(
+            angle: -pi / 9,
+            child: Image.asset(
+              'assets/message-arrow.png',
+              fit: BoxFit.contain,
+              height: 150,
+              width: 120,
+              alignment: Alignment.topLeft,
+            ),
+          ),
           Spacer(
-            flex: 8,
+            flex: 2,
           ),
           Icon(
             Icons.announcement,
