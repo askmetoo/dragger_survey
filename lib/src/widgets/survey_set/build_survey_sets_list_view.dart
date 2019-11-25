@@ -453,19 +453,25 @@ class BuildListOfSets extends StatelessWidget {
                     ? suveySetDateCreatedString
                     : differenceSurveySetTimeAgo;
                 String surveyDisplayTime = DateTime.now().toString();
-                DateTime surveyDateCreated =
-                    surveysSnapshot.data.documents.last['created'].toDate();
-                String suveyDateCreatedString =
-                    formatDate(surveyDateCreated, [dd, '.', mm, '.', yyyy]);
-                String differenceSurveyTimeAgo = timeago.format(
-                  DateTime.now().subtract(
-                    DateTime.now().difference(
-                      surveyDateCreated,
-                    ),
-                  ),
-                );
-                int surveyDiffenrenceInDays =
-                    now.difference(surveyDateCreated).inDays;
+                DateTime surveyDateCreated = surveysSnapshot
+                        .data.documents.isNotEmpty
+                    ? surveysSnapshot.data.documents.last['created'].toDate()
+                    : null;
+                String suveyDateCreatedString = surveyDateCreated != null
+                    ? formatDate(surveyDateCreated, [dd, '.', mm, '.', yyyy])
+                    : '';
+                String differenceSurveyTimeAgo = surveyDateCreated != null
+                    ? timeago.format(
+                        DateTime.now().subtract(
+                          DateTime.now().difference(
+                            surveyDateCreated,
+                          ),
+                        ),
+                      )
+                    : '';
+                int surveyDiffenrenceInDays = surveyDateCreated == null
+                    ? 0
+                    : now.difference(surveyDateCreated).inDays;
                 surveyDisplayTime = surveyDiffenrenceInDays > 2
                     ? suveyDateCreatedString
                     : differenceSurveyTimeAgo;
@@ -568,7 +574,9 @@ class BuildListOfSets extends StatelessWidget {
                             ),
                           ),
                           subtitle: Text(
-                            "Surveys: ${surveysSnapshot.data.documents.length}, Resolution: ${surveySetDokumentSnapshot.data['resolution']}, \nCreation: $surveySetDisplayTime, last Survey: ${surveysSnapshot.data.documents.length > 0 ? surveyDisplayTime : ''}",
+                            surveysSnapshot.data.documents.length > 0
+                                ? "Surveys: ${surveysSnapshot.data.documents.length}, Resolution: ${surveySetDokumentSnapshot.data['resolution']}, \nCreation: $surveySetDisplayTime, last Survey: $surveyDisplayTime"
+                                : "Surveys: ${surveysSnapshot.data.documents.length}, Resolution: ${surveySetDokumentSnapshot.data['resolution']}, \nCreation: $surveySetDisplayTime, No Surveys, yet.",
                             style: TextStyle(
                               fontSize: 14,
                             ),
