@@ -189,7 +189,6 @@ Widget buildTeamsListView({BuildContext context}) {
                               future: userBloc.getUsersQuery(
                                 fieldName: 'providersUID',
                                 fieldValue: teamOwner,
-                                // teamDocumentSnapshot['createdByUser'],
                               ),
                               builder: (context, userSnapshot) {
                                 if (userSnapshot.connectionState !=
@@ -229,49 +228,56 @@ Widget buildTeamsListView({BuildContext context}) {
                                         arguments: "$teamId",
                                       );
                                     },
-                                    leading: Padding(
-                                      padding: EdgeInsets.only(right: 12.0),
-                                      child: Tooltip(
-                                        message:
-                                            "Team owner: ${userSnapshot.data.documents[0]['displayName']}",
-                                        child: AvatarWithBadge(
-                                          avatar: RoundedLetter(
-                                            text: buildInitials(
-                                                name: teamDocumentSnapshot[
-                                                    'name']),
-                                            fontColor:
-                                                Styles.drg_colorSecondary,
-                                            shapeType: ShapeType.circle,
-                                            shapeColor: Styles.drg_colorPrimary,
-                                            borderColor:
-                                                Styles.drg_colorSecondary,
-                                            shapeSize: 44,
-                                            fontSize: 22,
-                                            borderWidth: 4,
+                                    leading: GestureDetector(
+                                      onTapDown:
+                                          (TapDownDetails tapDowndetails) {
+                                        openColorChooser(context: context, teamDocSnapshot: teamDocumentSnapshot);
+                                      },
+                                      child: Padding(
+                                        padding: EdgeInsets.only(right: 12.0),
+                                        child: Tooltip(
+                                          message:
+                                              "Team owner: ${userSnapshot.data.documents[0]['displayName']}",
+                                          child: AvatarWithBadge(
+                                            avatar: RoundedLetter(
+                                              text: buildInitials(
+                                                  name: teamDocumentSnapshot[
+                                                      'name']),
+                                              fontColor:
+                                                  Styles.drg_colorSecondary,
+                                              shapeType: ShapeType.circle,
+                                              shapeColor:
+                                                  Styles.drg_colorPrimary,
+                                              borderColor:
+                                                  Styles.drg_colorSecondary,
+                                              shapeSize: 44,
+                                              fontSize: 22,
+                                              borderWidth: 4,
+                                            ),
+                                            avatarSize: 56,
+                                            badge: SignedInUserCircleAvatar(
+                                              radiusSmall: 12,
+                                              letterPadding: false,
+                                              photoUrl: userSnapshot.data
+                                                  .documents[0]['photoUrl'],
+                                              // useSignedInUserPhoto: false,
+                                            ),
+                                            avatarBorderWidht: 2,
+                                            badgeBorderWidht: 2,
                                           ),
-                                          avatarSize: 56,
-                                          badge: SignedInUserCircleAvatar(
-                                            radiusSmall: 12,
-                                            letterPadding: false,
-                                            photoUrl: userSnapshot
-                                                .data.documents[0]['photoUrl'],
-                                            // useSignedInUserPhoto: false,
-                                          ),
-                                          avatarBorderWidht: 2,
-                                          badgeBorderWidht: 2,
                                         ),
+                                        // child: RoundedLetter(
+                                        //   text: buildInitials(
+                                        //       name: teamDocumentSnapshot['name']),
+                                        //   fontColor: Styles.drg_colorSecondary,
+                                        //   shapeType: ShapeType.circle,
+                                        //   shapeColor: Styles.drg_colorPrimary,
+                                        //   borderColor: Styles.drg_colorSecondary,
+                                        //   shapeSize: 44,
+                                        //   fontSize: 22,
+                                        //   borderWidth: 4,
+                                        // ),
                                       ),
-                                      // child: RoundedLetter(
-                                      //   text: buildInitials(
-                                      //       name: teamDocumentSnapshot['name']),
-                                      //   fontColor: Styles.drg_colorSecondary,
-                                      //   shapeType: ShapeType.circle,
-                                      //   shapeColor: Styles.drg_colorPrimary,
-                                      //   borderColor: Styles.drg_colorSecondary,
-                                      //   shapeSize: 44,
-                                      //   fontSize: 22,
-                                      //   borderWidth: 4,
-                                      // ),
                                     ),
                                     title: RichText(
                                       text: TextSpan(
@@ -308,6 +314,19 @@ Widget buildTeamsListView({BuildContext context}) {
           });
     },
   );
+}
+
+openColorChooser({@required context, @required teamDocSnapshot}) {
+  log("On Avatar tapped");
+  showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: EdgeInsets.fromLTRB(16, 12, 16, 24),
+          height: 200,
+          child: Text("Choose your color \nfor team ${teamDocSnapshot['name']}"),
+        );
+      });
 }
 
 Future<bool> buildAlertDialog(
