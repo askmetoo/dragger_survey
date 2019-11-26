@@ -21,12 +21,12 @@ class Styles {
   // ignore: non_constant_identifier_names
   static Color color_TextMediumLight = color_Text.withOpacity(0.8);
 
-  static const Color drg_colorGreen = Color(0xff2b580c);
-  static const Color drg_colorDarkerGreen = Color(0xff2f4a36);
+  static const Color color_Green = Color(0xff2b580c);
+  static const Color color_DarkerGreen = Color(0xff2f4a36);
 
-  static const Color drg_colorAppBackground = color_Primary;
-  static const Color drg_colorAppBackgroundMedium = Color(0xffff933b);
-  static const Color drg_colorAppBackgroundLight = Color(0xffffc46a);
-  static const Color drg_colorAppBackgroundShiny = Color(0xffffe8c1);
+  static const Color color_AppBackground = color_Primary;
+  static const Color color_AppBackgroundMedium = Color(0xffff933b);
+  static const Color color_AppBackgroundLight = Color(0xffffc46a);
+  static const Color color_AppBackgroundShiny = Color(0xffffe8c1);
 
 }

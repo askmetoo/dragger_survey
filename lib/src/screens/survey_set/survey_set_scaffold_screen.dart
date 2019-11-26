@@ -59,7 +59,7 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
           bool moreSurveyThanOne = surveyIDsSnapshot.data.documents.length > 1;
 
           return Scaffold(
-              backgroundColor: Styles.drg_colorAppBackground,
+              backgroundColor: Styles.color_AppBackground,
               endDrawer: UserDrawer(),
               appBar: AppBar(
                 actions: <Widget>[
@@ -81,7 +81,7 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
                 ),
                 icon: Icon(
                   Icons.group_add,
-                  color: Styles.drg_colorDarkerGreen,
+                  color: Styles.color_DarkerGreen,
                 ),
                 tooltip: "Add new Survey",
                 onPressed: () {
@@ -107,7 +107,7 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
                       ],
                       currentIndex: _selectedIndex,
                       backgroundColor: Styles.color_Secondary,
-                      unselectedItemColor: Styles.drg_colorAppBackground,
+                      unselectedItemColor: Styles.color_AppBackground,
                       selectedItemColor: Styles.color_Contrast,
                       onTap: (int index) =>
                           setState(() => _selectedIndex = index),

@@ -55,7 +55,7 @@ class _SurveySetBtmNavigationControllerState
     log("-----> In SurveySetBtmNavigationController _bottomNavigationBar");
     return BottomNavigationBar(
       backgroundColor: Styles.color_Secondary,
-      unselectedItemColor: Styles.drg_colorAppBackground,
+      unselectedItemColor: Styles.color_AppBackground,
       selectedItemColor: Styles.color_Contrast,
       onTap: (int index) => setState(() => _selectedIndex = index),
       currentIndex: selectedIndex,

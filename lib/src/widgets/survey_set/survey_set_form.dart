@@ -125,7 +125,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
               style: TextStyle(
                 fontSize: Styles.fontSize_FieldContentText,
                 fontWeight: FontWeight.w400,
-                color: Styles.drg_colorDarkerGreen,
+                color: Styles.color_DarkerGreen,
               ),
               decoration: InputDecoration(
                 labelStyle: TextStyle(

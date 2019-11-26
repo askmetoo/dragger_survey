@@ -96,9 +96,9 @@ class _CreateTeamFormState extends State<CreateTeamForm> {
                     isDense: true,
                     filled: true,
                     fillColor:
-                        Styles.drg_colorAppBackgroundLight.withOpacity(.5),
+                        Styles.color_AppBackgroundLight.withOpacity(.5),
                     labelStyle: TextStyle(
-                      color: Styles.drg_colorAppBackground,
+                      color: Styles.color_AppBackground,
                     ),
                     labelText: "Team Name",
                     hintStyle: TextStyle(
@@ -107,7 +107,7 @@ class _CreateTeamFormState extends State<CreateTeamForm> {
                     hintText: "Please provide a team name",
                     errorStyle: TextStyle(
                       fontSize: 14,
-                      color: Styles.drg_colorAppBackgroundShiny,
+                      color: Styles.color_AppBackgroundShiny,
                       backgroundColor: Styles.color_Attention,
                     )),
                 validator: (value) {
@@ -133,17 +133,17 @@ class _CreateTeamFormState extends State<CreateTeamForm> {
                 style: TextStyle(
                   fontSize: Styles.fontSize_FieldContentText,
                   fontWeight: FontWeight.w400,
-                  color: Styles.drg_colorDarkerGreen,
+                  color: Styles.color_DarkerGreen,
                 ),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     // borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(
                         style: BorderStyle.solid,
-                        color: Styles.drg_colorAppBackground),
+                        color: Styles.color_AppBackground),
                   ),
                   filled: true,
-                  fillColor: Styles.drg_colorAppBackgroundLight.withOpacity(.5),
+                  fillColor: Styles.color_AppBackgroundLight.withOpacity(.5),
                   labelStyle: TextStyle(
                     color: Styles.color_Text,
                   ),

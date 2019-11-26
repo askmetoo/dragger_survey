@@ -69,11 +69,11 @@ class _DraggableItemState extends State<DraggableItem> {
             borderRadius: BorderRadius.circular(80.0),
             border: Border.all(
               width: 3,
-              color: Styles.drg_colorAppBackgroundMedium.withOpacity(.7),
+              color: Styles.color_AppBackgroundMedium.withOpacity(.7),
             ),
             boxShadow: [
               BoxShadow(
-                  color: Styles.drg_colorAppBackground.withOpacity(.20),
+                  color: Styles.color_AppBackground.withOpacity(.20),
                   blurRadius: 3,
                   offset: Offset(1.0, 2.0))
             ],

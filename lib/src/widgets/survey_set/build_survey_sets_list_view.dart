@@ -442,10 +442,10 @@ class BuildListOfSets extends StatelessWidget {
                       child: Container(
                         width: double.infinity,
                         child: LinearProgressIndicator(
-                          backgroundColor: Styles.drg_colorAppBackgroundMedium
+                          backgroundColor: Styles.color_AppBackgroundMedium
                               .withOpacity(.4),
                           valueColor: AlwaysStoppedAnimation<Color>(Styles
-                              .drg_colorAppBackgroundLight
+                              .color_AppBackgroundLight
                               .withOpacity(.4)),
                         ),
                       ),
@@ -682,7 +682,7 @@ class BuildListOfSets extends StatelessWidget {
                         decoration: InputDecoration(
                           labelText: "Team name",
                           labelStyle: TextStyle(
-                              color: Styles.drg_colorAppBackgroundMedium),
+                              color: Styles.color_AppBackgroundMedium),
                         ),
                         validators: [
                           FormBuilderValidators.max(32),
@@ -703,7 +703,7 @@ class BuildListOfSets extends StatelessWidget {
                         decoration: InputDecoration(
                           labelText: "Label for x axis",
                           labelStyle: TextStyle(
-                              color: Styles.drg_colorAppBackgroundMedium),
+                              color: Styles.color_AppBackgroundMedium),
                         ),
                         validators: [
                           FormBuilderValidators.max(32),
@@ -724,7 +724,7 @@ class BuildListOfSets extends StatelessWidget {
                         decoration: InputDecoration(
                           labelText: "Label for y axis",
                           labelStyle: TextStyle(
-                              color: Styles.drg_colorAppBackgroundMedium),
+                              color: Styles.color_AppBackgroundMedium),
                         ),
                         validators: [
                           FormBuilderValidators.max(32),

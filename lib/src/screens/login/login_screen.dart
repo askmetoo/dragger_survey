@@ -21,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Container(
       child: Scaffold(
-        backgroundColor: Styles.drg_colorAppBackground,
+        backgroundColor: Styles.color_AppBackground,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

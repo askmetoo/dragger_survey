@@ -5,7 +5,7 @@ class HowToScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Styles.drg_colorAppBackground,
+      backgroundColor: Styles.color_AppBackground,
       appBar: AppBar(
         title: Text("How-To Screen"),
       ),

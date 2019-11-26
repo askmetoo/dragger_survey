@@ -37,7 +37,7 @@ class TeamsListScreen extends StatelessWidget {
               return SplashScreen();
             }
             return Scaffold(
-              backgroundColor: Styles.drg_colorAppBackground,
+              backgroundColor: Styles.color_AppBackground,
               endDrawer: UserDrawer(),
               appBar: AppBar(
                 actions: <Widget>[
@@ -60,7 +60,7 @@ class TeamsListScreen extends StatelessWidget {
                 ),
                 icon: Icon(
                   Icons.people,
-                  color: Styles.drg_colorDarkerGreen,
+                  color: Styles.color_DarkerGreen,
                 ),
                 tooltip: "Create new Team",
                 onPressed: () {

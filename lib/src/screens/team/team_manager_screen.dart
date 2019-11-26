@@ -104,7 +104,7 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
                             id: args['id'],
                           ),
                           Divider(
-                            color: Styles.drg_colorAppBackground,
+                            color: Styles.color_AppBackground,
                           ),
                           Padding(
                             padding: EdgeInsets.only(bottom: 12.0),
@@ -115,7 +115,7 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
                               scrollDirection: Axis.vertical,
                               children: userIds.map((memberId) {
                                 return Container(
-                                  color: Styles.drg_colorAppBackground
+                                  color: Styles.color_AppBackground
                                       .withOpacity(.2),
                                   margin: EdgeInsets.only(bottom: 1),
                                   child: FutureBuilder<QuerySnapshot>(

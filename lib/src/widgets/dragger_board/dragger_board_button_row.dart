@@ -40,7 +40,7 @@ class DraggerBoardButtons extends StatelessWidget {
               color: Styles.color_Secondary,
               textColor: Styles.color_Primary,
               child: Text("Save result"),
-              disabledColor: Styles.drg_colorAppBackgroundMedium.withOpacity(.4),
+              disabledColor: Styles.color_AppBackgroundMedium.withOpacity(.4),
               disabledTextColor: Styles.color_Primary,
               onPressed: draggableItemBloc.startedDragging ? () async {
                 Map<String, dynamic> survey = {

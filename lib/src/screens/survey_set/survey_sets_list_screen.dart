@@ -73,7 +73,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
               teamsSnapshot?.data?.documents[0]?.documentID != null;
 
           return Scaffold(
-            backgroundColor: Styles.drg_colorAppBackground,
+            backgroundColor: Styles.color_AppBackground,
             endDrawer: UserDrawer(),
             appBar: AppBar(
               actions: <Widget>[
@@ -116,8 +116,8 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                       Icons.library_add,
                       color:
                           isOnline // TODO: "isOnline" maybe not necessary anymore, because firestor is set to "persistenceEnabled: true" in db.dart
-                              ? Styles.drg_colorDarkerGreen
-                              : Styles.drg_colorDarkerGreen.withOpacity(.4),
+                              ? Styles.color_DarkerGreen
+                              : Styles.color_DarkerGreen.withOpacity(.4),
                     ),
                     tooltip:
                         isOnline // TODO: "isOnline" maybe not necessary anymore, because firestor is set to "persistenceEnabled: true" in db.dart

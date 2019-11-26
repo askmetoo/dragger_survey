@@ -132,7 +132,7 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                       decoration: BoxDecoration(
                                         border: Border(
                                           bottom: BorderSide(
-                                            color: Styles.drg_colorAppBackground
+                                            color: Styles.color_AppBackground
                                                 .withOpacity(.6),
                                             width: .5,
                                           ),

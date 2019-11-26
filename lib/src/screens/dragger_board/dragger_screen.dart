@@ -115,7 +115,7 @@ class BuildPortraitLayout extends StatelessWidget {
               Text(
                 "$_xName: ${prismSurveyBloc.rowIndex + 1}     |     $_yName: ${prismSurveyBloc.colIndex + 1}\nGranularity: ${matrixGranularityBloc.matrixGranularity}",
                 style: TextStyle(
-                    color: Styles.drg_colorAppBackgroundMedium.withOpacity(.8),
+                    color: Styles.color_AppBackgroundMedium.withOpacity(.8),
                     height: 1.5),
                 textAlign: TextAlign.center,
               ),
@@ -179,7 +179,7 @@ class BuildLandscapeLayout extends StatelessWidget {
                       "Granularity: ${matrixGranularityBloc.matrixGranularity} \n$_xName: ${prismSurveyBloc.rowIndex + 1} \n$_yName: ${prismSurveyBloc.colIndex + 1}",
                       style: TextStyle(
                         color:
-                            Styles.drg_colorAppBackgroundMedium.withOpacity(.8),
+                            Styles.color_AppBackgroundMedium.withOpacity(.8),
                       ),
                     ),
                   ],
@@ -392,7 +392,7 @@ class _BuildAskedRoleFormState extends State<BuildAskedRoleForm> {
                     filled: true,
                     fillColor: Colors.white60,
                     hintText: "Name or Role of asked person.",
-                    labelStyle: TextStyle(color: Styles.drg_colorAppBackground),
+                    labelStyle: TextStyle(color: Styles.color_AppBackground),
                     errorStyle: TextStyle(
                         fontSize: 14,
                         color: Colors.white60,

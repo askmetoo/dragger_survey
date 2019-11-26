@@ -57,11 +57,11 @@ class App extends StatelessWidget {
         theme: ThemeData(
           canvasColor: Styles.color_Secondary,
           fontFamily: 'Barlow',
-          bottomAppBarTheme: BottomAppBarTheme(color: Styles.drg_colorGreen),
+          bottomAppBarTheme: BottomAppBarTheme(color: Styles.color_Green),
           accentColor: Styles.color_Contrast,
           primaryColor: Styles.color_Primary,
-          primaryColorLight: Styles.drg_colorAppBackgroundLight,
-          primaryColorDark: Styles.drg_colorAppBackgroundMedium,
+          primaryColorLight: Styles.color_AppBackgroundLight,
+          primaryColorDark: Styles.color_AppBackgroundMedium,
           textTheme: TextTheme(
             body1: TextStyle(fontSize: 18, color: Styles.color_Text),
             body2: TextStyle(fontSize: 16),
