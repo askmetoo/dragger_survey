@@ -50,7 +50,7 @@ class _SignedInUserCircleAvatarState extends State<SignedInUserCircleAvatar> {
             padding: EdgeInsets.all(
                 widget.letterPadding ? widget.radiusSmall / 3 : 0),
             child: CircleAvatar(
-              backgroundColor: Styles.drg_colorSecondary,
+              backgroundColor: Styles.color_Secondary,
               radius: radiusBig,
               child: useSignedInUserPhoto
                   ? CircleAvatar(
@@ -64,7 +64,7 @@ class _SignedInUserCircleAvatarState extends State<SignedInUserCircleAvatar> {
                     )
                   : CircleAvatar(
                       radius: widget.radiusSmall,
-                      backgroundColor: Styles.drg_colorContrast,
+                      backgroundColor: Styles.color_Contrast,
                     ),
             ),
           ),

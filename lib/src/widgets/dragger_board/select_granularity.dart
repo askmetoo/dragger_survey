@@ -16,7 +16,7 @@ class SelectGranularity extends StatelessWidget {
     final _textStyle = TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.w400,
-      color: Styles.drg_colorText,
+      color: Styles.color_Text,
     );
     final _granularityArray = MatrixGranularityBloc.GRANULARITY;
 
@@ -28,7 +28,13 @@ class SelectGranularity extends StatelessWidget {
         children: <Widget>[
           Text(
             "Select granularity ",
-            style: Styles.drg_selectButton,
+            style: TextStyle(
+              color: Styles.color_Primary,
+              fontFamily: 'Barlow',
+              fontSize: Styles.fontSize_CopyText,
+              fontStyle: FontStyle.normal,
+              fontWeight: FontWeight.w700,
+            ),
           ),
           Spacer(),
           DropdownButton(

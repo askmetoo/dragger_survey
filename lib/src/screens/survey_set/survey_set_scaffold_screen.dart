@@ -72,11 +72,11 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerFloat,
               floatingActionButton: FloatingActionButton.extended(
-                backgroundColor: Styles.drg_colorSecondary,
+                backgroundColor: Styles.color_Secondary,
                 label: Text(
                   "New Survey",
                   style: TextStyle(
-                    color: Styles.drg_colorText.withOpacity(0.8),
+                    color: Styles.color_Text.withOpacity(0.8),
                   ),
                 ),
                 icon: Icon(
@@ -106,9 +106,9 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
                         ),
                       ],
                       currentIndex: _selectedIndex,
-                      backgroundColor: Styles.drg_colorSecondary,
+                      backgroundColor: Styles.color_Secondary,
                       unselectedItemColor: Styles.drg_colorAppBackground,
-                      selectedItemColor: Styles.drg_colorContrast,
+                      selectedItemColor: Styles.color_Contrast,
                       onTap: (int index) =>
                           setState(() => _selectedIndex = index),
                     ));

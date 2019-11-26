@@ -38,13 +38,13 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
       setState(() => this._scanedBarcode = barcode);
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text("Code sucessfully scanned."),
-        backgroundColor: Styles.drg_colorSuccess,
+        backgroundColor: Styles.color_Success,
       ));
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         Scaffold.of(context).showSnackBar(SnackBar(
           content: Text("You did not grant camera permission!"),
-          backgroundColor: Styles.drg_colorAttention,
+          backgroundColor: Styles.color_Attention,
         ));
         setState(() {
           this._scanedBarcode = null;
@@ -52,7 +52,7 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
       } else {
         Scaffold.of(context).showSnackBar(SnackBar(
           content: Text("An error occured: $e"),
-          backgroundColor: Styles.drg_colorAttention,
+          backgroundColor: Styles.color_Attention,
         ));
         setState(() => this._scanedBarcode = null);
       }
@@ -65,7 +65,7 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
     } catch (e) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text("Unknown error: $e."),
-        backgroundColor: Styles.drg_colorAttention,
+        backgroundColor: Styles.color_Attention,
       ));
       setState(() => this._scanedBarcode = null);
     }
@@ -80,7 +80,7 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
 
     return Scaffold(
-      backgroundColor: Styles.drg_colorSecondary,
+      backgroundColor: Styles.color_Secondary,
       appBar: AppBar(
         title: Text("Team Details"),
       ),
@@ -167,7 +167,7 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
                                                   caption: 'Delete',
                                                   icon: Icons.delete,
                                                   color:
-                                                      Styles.drg_colorAttention,
+                                                      Styles.color_Attention,
                                                   onTap: () {
                                                     List modifiableList =
                                                         new List();
@@ -237,12 +237,12 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
                   Scaffold.of(context).showSnackBar(SnackBar(
                     content: Text(
                         "The user you are trying to add is not available in Dragger database. This is strange, but maybe the user is not signed in with Dragger. The user first needs to install Dragger app and log-into it before adding to team."),
-                    backgroundColor: Styles.drg_colorAttention,
+                    backgroundColor: Styles.color_Attention,
                   ));
                 }
                 Scaffold.of(context).showSnackBar(SnackBar(
                   content: Text("User added to team!"),
-                  backgroundColor: Styles.drg_colorSuccess,
+                  backgroundColor: Styles.color_Success,
                 ));
                 return null;
               },

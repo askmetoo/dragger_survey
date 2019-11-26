@@ -110,7 +110,9 @@ class _TeamFormState extends State<TeamForm> {
               constraints: BoxConstraints(maxWidth: 50),
               child: AspectRatio(
                 aspectRatio: 1,
-                child: CircularProgressIndicator(strokeWidth: 10,),
+                child: CircularProgressIndicator(
+                  strokeWidth: 10,
+                ),
               ),
             ),
           );
@@ -143,13 +145,13 @@ class _TeamFormState extends State<TeamForm> {
                       ),
                       labelText: "Team Name",
                       hintStyle: TextStyle(
-                        fontSize: Styles.drg_fontSizeHintText,
+                        fontSize: Styles.fontSize_HintText,
                       ),
                       hintText: "Please provide a team name",
                       errorStyle: TextStyle(
                         fontSize: 14,
                         color: Styles.drg_colorAppBackgroundShiny,
-                        backgroundColor: Styles.drg_colorAttention,
+                        backgroundColor: Styles.color_Attention,
                       )),
                   validator: (value) {
                     if (value.isEmpty) {
@@ -174,7 +176,11 @@ class _TeamFormState extends State<TeamForm> {
                       FocusScope.of(context).requestFocus(thirdFocus),
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.text,
-                  style: Styles.drg_textFieldContent,
+                  style: TextStyle(
+                    fontSize: Styles.fontSize_FieldContentText,
+                    fontWeight: FontWeight.w400,
+                    color: Styles.drg_colorDarkerGreen,
+                  ),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       // borderRadius: BorderRadius.circular(8),
@@ -186,7 +192,7 @@ class _TeamFormState extends State<TeamForm> {
                     fillColor:
                         Styles.drg_colorAppBackgroundLight.withOpacity(.5),
                     labelStyle: TextStyle(
-                      color: Styles.drg_colorText,
+                      color: Styles.color_Text,
                     ),
                     labelText: "Team description",
                     hintText: "How would you like to describe your team",
@@ -245,7 +251,7 @@ class _TeamFormState extends State<TeamForm> {
       child: FlatButton(
         disabledColor: Colors.orange.shade50.withOpacity(0.4),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        color: Styles.drg_colorPrimary,
+        color: Styles.color_Primary,
         textColor: Colors.white,
         onPressed: _formHasChanged
             ? () {
@@ -265,7 +271,7 @@ class _TeamFormState extends State<TeamForm> {
     return SizedBox(
       width: double.infinity,
       child: FlatButton(
-        textColor: Styles.drg_colorPrimary,
+        textColor: Styles.color_Primary,
         onPressed: () {
           print("Cancel button presssed");
           Navigator.of(context).pop();

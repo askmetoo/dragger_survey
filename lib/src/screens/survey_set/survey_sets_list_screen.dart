@@ -101,15 +101,15 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                     elevation: 12,
                     backgroundColor:
                         isOnline // TODO: "isOnline" maybe not necessary anymore, because firestor is set to "persistenceEnabled: true" in db.dart
-                            ? Styles.drg_colorSecondary
-                            : Styles.drg_colorPrimary.withOpacity(.4),
+                            ? Styles.color_Secondary
+                            : Styles.color_Primary.withOpacity(.4),
                     label: Text(
                       "Create new survey set",
                       style: TextStyle(
                         color:
                             isOnline // TODO: "isOnline" maybe not necessary anymore, because firestor is set to "persistenceEnabled: true" in db.dart
-                                ? Styles.drg_colorText.withOpacity(0.8)
-                                : Styles.drg_colorText.withOpacity(0.3),
+                                ? Styles.color_Text.withOpacity(0.8)
+                                : Styles.color_Text.withOpacity(0.3),
                       ),
                     ),
                     icon: Icon(
@@ -133,7 +133,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                                   fontFamily: 'Bitter',
                                   fontSize: 20,
                                   fontWeight: FontWeight.w600,
-                                  color: Styles.drg_colorText.withOpacity(.8),
+                                  color: Styles.color_Text.withOpacity(.8),
                                 ),
                                 titlePadding: EdgeInsets.symmetric(
                                     horizontal: 12, vertical: 8),
@@ -149,9 +149,9 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                                   ),
                                 ),
                                 title: Text("New survey set"),
-                                backgroundColor: Styles.drg_colorSecondary,
+                                backgroundColor: Styles.color_Secondary,
                                 contentTextStyle:
-                                    TextStyle(color: Styles.drg_colorText),
+                                    TextStyle(color: Styles.color_Text),
                                 content: SurveySetForm(),
                               );
                             });
@@ -160,15 +160,15 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                 :
                 // CREATE A NEW TEAM
                 FloatingActionButton.extended(
-                    backgroundColor: Styles.drg_colorSecondary,
+                    backgroundColor: Styles.color_Secondary,
                     icon: Icon(
                       Icons.people,
-                      color: Styles.drg_colorText.withOpacity(.8),
+                      color: Styles.color_Text.withOpacity(.8),
                     ),
                     label: Text(
                       'Create new Team',
                       style: TextStyle(
-                        color: Styles.drg_colorText.withOpacity(0.8),
+                        color: Styles.color_Text.withOpacity(0.8),
                       ),
                     ),
                     onPressed: () {
@@ -194,9 +194,9 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                                 bottomRight: Radius.circular(20),
                               ),
                             ),
-                            backgroundColor: Styles.drg_colorSecondary,
+                            backgroundColor: Styles.color_Secondary,
                             contentTextStyle:
-                                TextStyle(color: Styles.drg_colorText),
+                                TextStyle(color: Styles.color_Text),
                           );
                         },
                       );

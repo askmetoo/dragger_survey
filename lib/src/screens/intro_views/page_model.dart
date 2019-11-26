@@ -7,7 +7,7 @@ import 'package:intro_views_flutter/Models/page_view_model.dart';
 import 'package:provider/provider.dart';
 
 final PageViewModel teamPage = PageViewModel(
-  pageColor: Styles.drg_colorSecondary,
+  pageColor: Styles.color_Secondary,
   bubble: Icon(
     Icons.people,
     color: Styles.drg_colorAppBackgroundLight,
@@ -25,7 +25,7 @@ final PageViewModel teamPage = PageViewModel(
     width: double.infinity,
     alignment: Alignment.topCenter,
     colorBlendMode: BlendMode.modulate,
-    color: Styles.drg_colorSecondary,
+    color: Styles.color_Secondary,
   ),
   titleTextStyle: TextStyle(
     fontFamily: 'SonsieOne',
@@ -35,14 +35,14 @@ final PageViewModel teamPage = PageViewModel(
   ),
   bodyTextStyle: TextStyle(
     fontFamily: 'Barlow',
-    color: Styles.drg_colorPrimary,
+    color: Styles.color_Primary,
     fontSize: 18,
     fontWeight: FontWeight.w500,
   ),
 );
 
 final PageViewModel invitePage = PageViewModel(
-  pageColor: Styles.drg_colorContrast,
+  pageColor: Styles.color_Contrast,
   bubble: Icon(
     Icons.person_add,
     color: Styles.drg_colorAppBackgroundLight,
@@ -60,7 +60,7 @@ final PageViewModel invitePage = PageViewModel(
     width: double.infinity,
     alignment: Alignment.topCenter,
     colorBlendMode: BlendMode.modulate,
-    color: Styles.drg_colorContrast,
+    color: Styles.color_Contrast,
   ),
   titleTextStyle: TextStyle(
     fontFamily: 'SonsieOne',
@@ -105,7 +105,7 @@ final PageViewModel setPage = PageViewModel(
   ),
   bodyTextStyle: TextStyle(
     fontFamily: 'Barlow',
-    color: Styles.drg_colorPrimary,
+    color: Styles.color_Primary,
     fontSize: 18,
     fontWeight: FontWeight.w500,
   ),
@@ -140,7 +140,7 @@ final PageViewModel surveyPage = PageViewModel(
   ),
   bodyTextStyle: TextStyle(
     fontFamily: 'Barlow',
-    color: Styles.drg_colorPrimary,
+    color: Styles.color_Primary,
     fontSize: 18,
     fontWeight: FontWeight.w500,
   ),
@@ -169,20 +169,20 @@ final PageViewModel insightsPage = PageViewModel(
   ),
   titleTextStyle: TextStyle(
     fontFamily: 'SonsieOne',
-    color: Styles.drg_colorPrimary,
+    color: Styles.color_Primary,
     fontSize: 32,
     height: 1.1,
   ),
   bodyTextStyle: TextStyle(
     fontFamily: 'Barlow',
-    color: Styles.drg_colorPrimary,
+    color: Styles.color_Primary,
     fontSize: 18,
     fontWeight: FontWeight.w500,
   ),
 );
 
 final PageViewModel readyPage = PageViewModel(
-  pageColor: Styles.drg_colorSecondary,
+  pageColor: Styles.color_Secondary,
   bubble: Icon(
     Icons.people,
     color: Styles.drg_colorAppBackgroundLight,
@@ -200,7 +200,7 @@ final PageViewModel readyPage = PageViewModel(
     width: double.infinity,
     alignment: Alignment.topCenter,
     colorBlendMode: BlendMode.modulate,
-    color: Styles.drg_colorSecondary,
+    color: Styles.color_Secondary,
   ),
   titleTextStyle: TextStyle(
     fontFamily: 'SonsieOne',
@@ -210,7 +210,7 @@ final PageViewModel readyPage = PageViewModel(
   ),
   bodyTextStyle: TextStyle(
     fontFamily: 'Barlow',
-    color: Styles.drg_colorPrimary,
+    color: Styles.color_Primary,
     fontSize: 18,
     fontWeight: FontWeight.w500,
   ),

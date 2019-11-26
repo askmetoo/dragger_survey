@@ -122,16 +122,20 @@ class _SurveySetFormState extends State<SurveySetForm> {
                   FocusScope.of(context).requestFocus(secondFocus),
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.text,
-              style: Styles.drg_textFieldContent,
+              style: TextStyle(
+                fontSize: Styles.fontSize_FieldContentText,
+                fontWeight: FontWeight.w400,
+                color: Styles.drg_colorDarkerGreen,
+              ),
               decoration: InputDecoration(
                 labelStyle: TextStyle(
-                  color: Styles.drg_colorPrimary,
-                  fontSize: Styles.drg_fontSizeFloatingLabel,
+                  color: Styles.color_Primary,
+                  fontSize: Styles.fontSize_FloatingLabel,
                   fontWeight: FontWeight.w700,
                 ),
                 isDense: true,
                 labelText: "Survey Name",
-                hintStyle: TextStyle(fontSize: Styles.drg_fontSizeHintText),
+                hintStyle: TextStyle(fontSize: Styles.fontSize_HintText),
                 hintText: "A meaningful name",
               ),
               validator: (value) {
@@ -153,8 +157,8 @@ class _SurveySetFormState extends State<SurveySetForm> {
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 labelStyle: TextStyle(
-                  fontSize: Styles.drg_fontSizeFloatingLabel,
-                  color: Styles.drg_colorPrimary,
+                  fontSize: Styles.fontSize_FloatingLabel,
+                  color: Styles.color_Primary,
                   fontWeight: FontWeight.w700,
                 ),
                 isDense: true,
@@ -181,8 +185,8 @@ class _SurveySetFormState extends State<SurveySetForm> {
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 labelStyle: TextStyle(
-                  fontSize: Styles.drg_fontSizeFloatingLabel,
-                  color: Styles.drg_colorPrimary,
+                  fontSize: Styles.fontSize_FloatingLabel,
+                  color: Styles.color_Primary,
                   fontWeight: FontWeight.w700,
                 ),
                 isDense: true,
@@ -253,7 +257,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
     return SizedBox(
       width: double.infinity,
       child: FlatButton(
-        textColor: Styles.drg_colorPrimary,
+        textColor: Styles.color_Primary,
         onPressed: () {
           print("Cancel button presssed");
           Navigator.of(context).pop();
@@ -408,7 +412,7 @@ class _BuildAnimatedTextFieldsColumnState
                               angle: _angle,
                               child: Icon(
                                 Icons.keyboard_arrow_right,
-                                color: Styles.drg_colorText,
+                                color: Styles.color_Text,
                               ),
                             ),
                           ),
@@ -417,9 +421,9 @@ class _BuildAnimatedTextFieldsColumnState
                             child: Text(
                               "Add further descriptions",
                               style: TextStyle(
-                                fontSize: Styles.drg_fontSizeFloatingLabel,
+                                fontSize: Styles.fontSize_FloatingLabel,
                                 fontWeight: FontWeight.w600,
-                                color: Styles.drg_colorPrimary,
+                                color: Styles.color_Primary,
                                 height: 1.5,
                               ),
                             ),
@@ -442,14 +446,13 @@ class _BuildAnimatedTextFieldsColumnState
                       decoration: InputDecoration(
                         isDense: true,
                         labelStyle: TextStyle(
-                          fontSize: Styles.drg_fontSizeFloatingLabel,
-                          color: Styles.drg_colorPrimary,
+                          fontSize: Styles.fontSize_FloatingLabel,
+                          color: Styles.color_Primary,
                           fontWeight: FontWeight.w700,
                         ),
                         labelText: "Survey set description",
                         hintText: "The description of the prism survey",
                       ),
-
                       onChanged: (value) {
                         prismSurveySetBloc.setDescription(value);
                       },
@@ -465,8 +468,8 @@ class _BuildAnimatedTextFieldsColumnState
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         labelStyle: TextStyle(
-                          fontSize: Styles.drg_fontSizeFloatingLabel,
-                          color: Styles.drg_colorPrimary,
+                          fontSize: Styles.fontSize_FloatingLabel,
+                          color: Styles.color_Primary,
                           fontWeight: FontWeight.w700,
                         ),
                         isDense: true,
@@ -487,8 +490,8 @@ class _BuildAnimatedTextFieldsColumnState
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         labelStyle: TextStyle(
-                            fontSize: Styles.drg_fontSizeFloatingLabel,
-                            color: Styles.drg_colorPrimary,
+                            fontSize: Styles.fontSize_FloatingLabel,
+                            color: Styles.color_Primary,
                             fontWeight: FontWeight.w700),
                         isDense: true,
                         labelText: "Y-axis desciption",

@@ -114,7 +114,7 @@ class _UserDrawerState extends State<UserDrawer> {
                   ),
                 ),
                 decoration: BoxDecoration(
-                  color: Styles.drg_colorPrimary.withAlpha(100),
+                  color: Styles.color_Primary.withAlpha(100),
                 ),
               ),
               SizedBox(

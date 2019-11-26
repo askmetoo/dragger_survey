@@ -47,7 +47,7 @@ class _IntroViewsState extends State<IntroViews> {
       doneText: Text(
         "Done",
         style: TextStyle(
-          color: Styles.drg_colorText,
+          color: Styles.color_Text,
           fontSize: 12.0,
           fontFamily: "Barlow",
         ),
@@ -68,7 +68,7 @@ class _IntroViewsState extends State<IntroViews> {
           bottom: 70,
           child: SizedBox(
             child: Material(
-              color: Styles.drg_colorPrimary.withOpacity(0),
+              color: Styles.color_Primary.withOpacity(0),
               child: FutureBuilder<dynamic>(
                   future: introViewsBloc.getShowIntroViewsValue(),
                   builder: (context, introViewsSnapshot) {
@@ -77,12 +77,12 @@ class _IntroViewsState extends State<IntroViews> {
                       return Loader();
                     }
                     return CheckboxListTile(
-                      activeColor: Styles.drg_colorPrimary,
+                      activeColor: Styles.color_Primary,
                       controlAffinity: ListTileControlAffinity.leading,
                       title: Text(
                         "Show intro slides again.",
                         style: TextStyle(
-                            color: Styles.drg_colorSecondaryDeepDark
+                            color: Styles.color_SecondaryDeepDark
                                 .withOpacity(.8),
                             fontWeight: FontWeight.w600),
                       ),
