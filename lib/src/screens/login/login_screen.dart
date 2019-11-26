@@ -94,7 +94,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   .signInWithGoogle()
                   .catchError((e) =>
                       print("ERROR in LoginScreen signInwithGoogle: $e "));
-              log("In LoginScreen _singInButton - value of returnedUser.uid: ${returnedUser.uid}");
               if (returnedUser != null) {
                 setState(() {
                   _loggedIn = true;
@@ -105,7 +104,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   introViewsValueSnapshot.data
                       ? '/introviews'
                       : '/surveysetslist',
-                  // introViewsBloc.showIntroViews ? '/introviews' : '/surveysetslist',
                   (_) => false,
                 );
               }
