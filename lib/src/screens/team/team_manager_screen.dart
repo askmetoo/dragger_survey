@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 
@@ -148,14 +149,11 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
                                             actionExtentRatio: 0.2,
                                             child: ListTile(
                                               leading: CircleAvatar(
-                                                backgroundImage: NetworkImage(
-                                                  userSnapshot?.data?.documents
-                                                      ?.first['photoUrl'],
+                                                backgroundImage: 
+                                                CachedNetworkImageProvider(
+                                                userSnapshot?.data?.documents
+                                                    ?.first['photoUrl'],
                                                 ),
-                                                //   CachedNetworkImageProvider(
-                                                // userSnapshot?.data?.documents
-                                                //     ?.first['photoUrl'],
-                                                // ),
                                               ),
                                               dense: true,
                                               title: Text(
