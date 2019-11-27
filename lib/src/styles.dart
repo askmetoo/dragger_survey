@@ -90,22 +90,23 @@ class Styles {
     color_Secondary = newColor;
   }
 
-  static const Color _tClr1_primary = Color(0xffaeea00);
+  static const Color tClr1_primary = Color(0xffaeea00);
   static const Color _tClr1_primaryLight = Color(0xffe4ff54);
   static const Color _tClr1_primaryDark = Color(0xff79b700);
   static const Color _tClr1_secondary = Color(0xff18ffff);
 
-  static colorAppStandard() {
+  static setColorsToAppStandard() {
     color_Primary = _clrPrimary;
     color_Secondary = _clrSecondary;
+    color_AppBackground = _clrPrimary;
     color_AppBackgroundLight = _clrAppBackgroundLight;
     color_SecondaryDeepDark = _clrSecondaryDeepDark;
   }
-  static colorSetTeam1() {
-    color_Primary = _tClr1_primary;
+  static setColorsToTeam1() {
+    color_Primary = tClr1_primary;
     color_Secondary = _tClr1_secondary;
+    color_AppBackground = tClr1_primary;
     color_AppBackgroundLight = _tClr1_primaryLight;
     color_SecondaryDeepDark = _tClr1_primaryDark;
   }
-
 }

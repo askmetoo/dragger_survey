@@ -49,6 +49,9 @@ class App extends StatelessWidget {
         ChangeNotifierProvider<IntroViewsBloc>.value(
           value: IntroViewsBloc(),
         ),
+        ChangeNotifierProvider<ColorsBloc>.value(
+          value: ColorsBloc(),
+        ),
       ],
       child: MaterialApp(
         title: 'Dragger Survey',

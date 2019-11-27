@@ -8,3 +8,4 @@ export 'sign_in_bloc.dart';
 export 'team_bloc.dart';
 export 'user_bloc.dart';
 export 'intro_views_bloc.dart';
+export 'colors_bloc.dart';

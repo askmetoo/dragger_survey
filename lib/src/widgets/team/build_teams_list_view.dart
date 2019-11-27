@@ -337,6 +337,7 @@ openColorChooser({@required context, @required teamDocSnapshot}) {
   showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
+        ColorsBloc colorsBloc = Provider.of<ColorsBloc>(context);
         return Container(
           padding: EdgeInsets.fromLTRB(16, 12, 16, 24),
           height: 200,
@@ -351,9 +352,12 @@ openColorChooser({@required context, @required teamDocSnapshot}) {
                 alignment: WrapAlignment.spaceBetween,
                 children: <Widget>[
                   FlatButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      colorsBloc.setColorToTeam1Theme();
+                      Navigator.of(context).pop();
+                    },
                     shape: CircleBorder(),
-                    color: Colors.green,
+                    color: Styles.tClr1_primary,
                     child: null,
                   )
                 ],
