@@ -101,7 +101,9 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                     elevation: 12,
                     backgroundColor:
                         isOnline // TODO: "isOnline" maybe not necessary anymore, because firestor is set to "persistenceEnabled: true" in db.dart
+                            // ? Styles.teamColor1_secondary // TODO:
                             ? Styles.color_Secondary
+                            // : Styles.teamColor1_primary.withOpacity(.4), // TODO:
                             : Styles.color_Primary.withOpacity(.4),
                     label: Text(
                       "Create new survey set",
@@ -116,8 +118,8 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                       Icons.library_add,
                       color:
                           isOnline // TODO: "isOnline" maybe not necessary anymore, because firestor is set to "persistenceEnabled: true" in db.dart
-                              ? Styles.color_DarkerGreen
-                              : Styles.color_DarkerGreen.withOpacity(.4),
+                              ? Styles.color_SecondaryDeepDark
+                              : Styles.color_SecondaryDeepDark.withOpacity(.4),
                     ),
                     tooltip:
                         isOnline // TODO: "isOnline" maybe not necessary anymore, because firestor is set to "persistenceEnabled: true" in db.dart

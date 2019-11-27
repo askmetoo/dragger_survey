@@ -60,7 +60,7 @@ class TeamsListScreen extends StatelessWidget {
                 ),
                 icon: Icon(
                   Icons.people,
-                  color: Styles.color_DarkerGreen,
+                  color: Styles.color_SecondaryDeepDark,
                 ),
                 tooltip: "Create new Team",
                 onPressed: () {

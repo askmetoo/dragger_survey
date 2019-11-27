@@ -57,7 +57,6 @@ class App extends StatelessWidget {
         theme: ThemeData(
           canvasColor: Styles.color_Secondary,
           fontFamily: 'Barlow',
-          bottomAppBarTheme: BottomAppBarTheme(color: Styles.color_Green),
           accentColor: Styles.color_Contrast,
           primaryColor: Styles.color_Primary,
           primaryColorLight: Styles.color_AppBackgroundLight,

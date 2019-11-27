@@ -588,7 +588,7 @@ class BuildListOfSets extends StatelessWidget {
                           title: Text(
                             "${surveySetDokumentSnapshot.data['name']} ",
                             style: TextStyle(
-                              color: Styles.color_TextMediumLight,
+                              color: Styles.color_Text.withOpacity(0.8),
                               fontFamily: 'Bitter',
                               fontSize: Styles.fontSize_MediumHeadline,
                               fontWeight: FontWeight.w600,

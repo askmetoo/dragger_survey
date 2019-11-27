@@ -292,6 +292,7 @@ class BuildOwnersTeamsList extends StatelessWidget {
                       color: Styles.color_Primary.withOpacity(.4),
                     ),
                     child: ListTile(
+                      contentPadding: EdgeInsets.all(0),
                       dense: true,
                       title: Text(
                         "${doc.data['name']}",

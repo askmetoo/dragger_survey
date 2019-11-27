@@ -179,7 +179,7 @@ class _TeamFormState extends State<TeamForm> {
                   style: TextStyle(
                     fontSize: Styles.fontSize_FieldContentText,
                     fontWeight: FontWeight.w400,
-                    color: Styles.color_DarkerGreen,
+                    color: Styles.color_SecondaryDeepDark,
                   ),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(

@@ -81,7 +81,7 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
                 ),
                 icon: Icon(
                   Icons.group_add,
-                  color: Styles.color_DarkerGreen,
+                  color: Styles.color_SecondaryDeepDark,
                 ),
                 tooltip: "Add new Survey",
                 onPressed: () {
