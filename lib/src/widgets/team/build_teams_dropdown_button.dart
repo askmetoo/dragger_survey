@@ -46,8 +46,8 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
         _selectedTeamId = widget.teamsSnapshot?.data?.documents[0]?.documentID;
         _selectedTeam = widget.teamsSnapshot?.data?.documents[0];
       });
-      teamBloc.setCurrentSelectedTeamId(_selectedTeamId);
-      teamBloc.setCurrentSelectedTeam(_selectedTeam);
+      teamBloc.currentSelectedTeamId = _selectedTeamId;
+      teamBloc.currentSelectedTeam = _selectedTeam;
     }
 
     Stream<QuerySnapshot> streamTeamsQuery = teamBloc
@@ -88,8 +88,7 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                               String _selectedTeamId = value;
                               print(
                                   "In BuildTeamsDropdownButton onChanged - value of _selectedTeamId: $_selectedTeamId");
-                              teamBloc
-                                  .setCurrentSelectedTeamId(_selectedTeamId);
+                              teamBloc.currentSelectedTeamId = _selectedTeamId;
                               setState(() {
                                 _selectedTeamId = _selectedTeamId;
                               });
@@ -97,9 +96,9 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                               teamBloc
                                   .streamTeamById(id: _selectedTeamId)
                                   .listen((team) {
-                                teamBloc.setCurrentSelectedTeam(team);
-                                teamBloc
-                                    .setCurrentSelectedTeamId(team.documentID);
+                                teamBloc.currentSelectedTeam = team;
+                                teamBloc.currentSelectedTeamId =
+                                    team.documentID;
                                 if (this.mounted) {
                                   return;
                                 } else {
@@ -153,11 +152,9 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                             child: RoundedLetter(
                                               text: buildInitials(
                                                   name: team['name']),
-                                              fontColor:
-                                                  Styles.color_Secondary,
+                                              fontColor: Styles.color_Secondary,
                                               shapeType: ShapeType.circle,
-                                              shapeColor:
-                                                  Styles.color_Primary,
+                                              shapeColor: Styles.color_Primary,
                                               borderColor:
                                                   Styles.color_Secondary,
                                               shapeSize: 34,

@@ -220,7 +220,7 @@ Widget buildTeamsListView({BuildContext context}) {
                                       },
                                     ),
                                     onTap: () {
-                                      teamBloc.setCurrentSelectedTeamId(teamId);
+                                      teamBloc.currentSelectedTeamId = teamId;
                                       log("In BuildTeamsListView onTap - value of teamId: $teamId");
                                       Navigator.of(context).pop();
                                     },

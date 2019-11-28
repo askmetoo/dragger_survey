@@ -9,16 +9,23 @@ class TeamBloc extends ChangeNotifier {
   bool updatingTeamData = false;
   String _orderField = 'created';
   bool _descendingOrder = true;
-
-  DocumentSnapshot currentSelectedTeam;
-  String currentSelectedTeamId;
+  DocumentSnapshot _currentSelectedTeam;
+  String _currentSelectedTeamId;
 
   DocumentSnapshot getCurrentSelectedTeam() {
     return currentSelectedTeam;
   }
 
+  DocumentSnapshot get currentSelectedTeam {
+    return _currentSelectedTeam;
+  }
+
   String getCurrentSelectedTeamId() {
     return currentSelectedTeamId;
+  }
+
+  String get currentSelectedTeamId {
+    return _currentSelectedTeamId;
   }
 
   get orderField => _orderField;
@@ -34,13 +41,22 @@ class TeamBloc extends ChangeNotifier {
     notifyListeners();
   }
 
-  setCurrentSelectedTeam(DocumentSnapshot selectedTeam) async {
-    currentSelectedTeam = selectedTeam;
+  set currentSelectedTeam(DocumentSnapshot selectedTeam) {
+    _currentSelectedTeam = selectedTeam;
+    //// This call for notifyListeners produces an assertion:
+    ///    setState() or markNeedsBuild() called during build.
+    ///  But leaving it out won't update the SurveySets list after
+    ///  selecting a team from the teams dropdown.
+    notifyListeners();
   }
 
-  setCurrentSelectedTeamId(String selectedTeamId) {
-    log("In TeamBloc setCurrentSelectedTeamId value of selectedTeamId: $selectedTeamId");
-    currentSelectedTeamId = selectedTeamId;
+  set currentSelectedTeamId(String selectedTeamId) {
+    _currentSelectedTeamId = selectedTeamId;
+    //// This call for notifyListeners produces an assertion exeption:
+    ///    setState() or markNeedsBuild() called during build.
+    ///  But leaving it out won't update the SurveySets list after
+    ///  selecting a team from the teams dropdown.
+    notifyListeners();
   }
 
   Stream<QuerySnapshot> get streamTeams {
