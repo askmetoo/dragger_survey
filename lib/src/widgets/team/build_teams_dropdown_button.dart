@@ -90,7 +90,7 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                   "In BuildTeamsDropdownButton onChanged - value of _selectedTeamId: $_selectedTeamId");
                               print(
                                   "In BuildTeamsDropdownButton onChanged - value of value: $value");
-                              teamBloc.currentSelectedTeamId = value;
+                              teamBloc.setCurrentSelectedTeamId(value);
                               setState(() {
                                 _selectedTeamId = value;
                               });
