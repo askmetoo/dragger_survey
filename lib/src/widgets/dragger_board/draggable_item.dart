@@ -1,4 +1,5 @@
-import 'package:dragger_survey/src/styles.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../blocs/draggable_item_bloc.dart';
@@ -21,8 +22,9 @@ class _DraggableItemState extends State<DraggableItem> {
   double _left;
 
   final String _dragData = "Meine Meinung";
-  final double _draggableSize = 70.0;
-  final double _draggableFeedbackSize = 80.0;
+
+  final double _draggableSize = 90.0;
+  final double _draggableFeedbackSize = 100.0;
   double _mqWidth;
   Orientation _mqOrientation;
 
@@ -44,6 +46,9 @@ class _DraggableItemState extends State<DraggableItem> {
     _mqWidth = MediaQuery.of(context).size.width;
     _mqOrientation = MediaQuery.of(context).orientation;
 
+    log("In DraggableItem MQ - _mqOrientation = $_mqOrientation");
+    log("In DraggableItem MQ - _mqWidth = $_mqWidth");
+
     return Positioned(
       left: draggableBloc.draggableItemPositon.dx,
       top: draggableBloc.draggableItemPositon.dy,
@@ -51,32 +56,18 @@ class _DraggableItemState extends State<DraggableItem> {
         data: _dragData,
         child: Container(
           decoration: BoxDecoration(
-            image:
-                DecorationImage(image: AssetImage('assets/feedback-chip.png')),
+            image: DecorationImage(
+                image: AssetImage('assets/feedback-chip--down.png')),
             borderRadius: BorderRadius.circular(80.0),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.brown.shade500,
-                  blurRadius: 1.5,
-                  offset: Offset(1.0, 1.0))
-            ],
           ),
           width: _draggableSize,
           height: _draggableSize,
         ),
         childWhenDragging: Container(
           decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/feedback-chip--leftbehind.png')),
             borderRadius: BorderRadius.circular(80.0),
-            border: Border.all(
-              width: 3,
-              color: Styles.color_AppBackgroundMedium.withOpacity(.7),
-            ),
-            boxShadow: [
-              BoxShadow(
-                  color: Styles.color_AppBackground.withOpacity(.20),
-                  blurRadius: 3,
-                  offset: Offset(1.0, 2.0))
-            ],
           ),
           width: _draggableSize,
           height: _draggableSize,
@@ -84,15 +75,15 @@ class _DraggableItemState extends State<DraggableItem> {
         feedback: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/feedback-chip.png'),
+              image: AssetImage('assets/feedback-chip--up.png'),
             ),
             borderRadius: BorderRadius.circular(120.0),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.brown.shade400,
-                  blurRadius: 12.0,
-                  offset: Offset(20.0, 22.0))
-            ],
+            // boxShadow: [
+            //   BoxShadow(
+            //       color: Colors.brown.shade400,
+            //       blurRadius: 12.0,
+            //       offset: Offset(20.0, 22.0))
+            // ],
           ),
           width: _draggableFeedbackSize,
           height: _draggableFeedbackSize,
@@ -104,37 +95,43 @@ class _DraggableItemState extends State<DraggableItem> {
         onDragCompleted: () {},
         onDragEnd: (drag) {
           if (_mqWidth >= 768.0 && _mqOrientation == Orientation.landscape) {
-            draggableBloc.setNewDraggableItemPositon(
-              position: Offset(
-                  drag.offset.dx +
-                      widget.matrixBoardPositon.dx -
-                      (_draggableSize / 3) +
-                      10,
-                  drag.offset.dy - (_draggableSize / .87)),
+            log("xxxxxxxxxxxxx ------> 1) I am here <-------- xxxxxxxxxxx");
+
+            draggableBloc.draggableItemPositon = Offset(
+              drag.offset.dx,
+              drag.offset.dy - (_draggableSize * .6) - 16,
             );
           } else if (_mqWidth >= 710.0 &&
               _mqOrientation == Orientation.portrait) {
-            draggableBloc.setNewDraggableItemPositon(
-              position: Offset(
-                  drag.offset.dx +
-                      widget.matrixBoardPositon.dx -
-                      (_draggableSize / 7) +
-                      10,
-                  drag.offset.dy - (_draggableSize / .5)),
+            draggableBloc.draggableItemPositon = Offset(
+              drag.offset.dx,
+              drag.offset.dy - (_draggableSize * .6) - 16,
             );
           } else {
-            draggableBloc.setNewDraggableItemPositon(
-              position: Offset(
-                  drag.offset.dx +
-                      widget.matrixBoardPositon.dx -
-                      (_draggableSize / 7) +
-                      10,
-                  drag.offset.dy - (_draggableSize / .5)),
+            draggableBloc.draggableItemPositon = Offset(
+              drag.offset.dx,
+              drag.offset.dy - (_draggableSize * 1.4) - 20,
             );
           }
         },
         onDraggableCanceled: (Velocity velocity, Offset offset) {
-          draggableBloc.setNewDraggableItemPositon(position: offset);
+          if (_mqWidth >= 768.0 && _mqOrientation == Orientation.landscape) {
+            draggableBloc.draggableItemPositon = Offset(
+              offset.dx,
+              offset.dy - (_draggableSize * .6) - 16,
+            );
+          } else if (_mqWidth >= 710.0 &&
+              _mqOrientation == Orientation.portrait) {
+            draggableBloc.draggableItemPositon = Offset(
+              offset.dx,
+              offset.dy - (_draggableSize * .6) - 16,
+            );
+          } else {
+            draggableBloc.draggableItemPositon = Offset(
+              offset.dx,
+              offset.dy - (_draggableSize * 1.4) - 20,
+            );
+          }
         },
       ),
     );

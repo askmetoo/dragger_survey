@@ -104,8 +104,8 @@ class BuildRotatingArrows extends StatelessWidget {
         Provider.of<DraggableItemBloc>(context);
 
     return Positioned(
-      left: draggableBloc.initialPosition.dx - 24,
-      top: draggableBloc.initialPosition.dy - 24,
+      left: draggableBloc.initialPosition.dx - 20,
+      top: draggableBloc.initialPosition.dy - 20,
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
         radius: 60,
@@ -139,13 +139,23 @@ class BuildMatrixBoard extends StatefulWidget {
 }
 
 class _BuildMatrixBoardState extends State<BuildMatrixBoard> {
+  double _mqWidth;
+  Orientation _mqOrientation;
+
   @override
   Widget build(BuildContext context) {
     final DraggableItemBloc draggableBloc =
         Provider.of<DraggableItemBloc>(context);
+    _mqWidth = MediaQuery.of(context).size.width;
+    _mqOrientation = MediaQuery.of(context).orientation;
+
+    bool isPhoneLandscape =
+        _mqWidth >= 768.0 && _mqOrientation == Orientation.landscape;
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+      padding: isPhoneLandscape
+          ? const EdgeInsets.fromLTRB(56, 16, 16, 16)
+          : const EdgeInsets.fromLTRB(16, 16, 16, 16),
       child: RotatedBox(
         quarterTurns: 3,
         child: AspectRatio(

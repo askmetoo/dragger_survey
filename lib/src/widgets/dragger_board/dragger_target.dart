@@ -49,8 +49,7 @@ class _DraggerTagetState extends State<DraggerTaget> {
         setState(() {
           position = Offset(rowIdx().toDouble(), colIdx().toDouble());
         });
-        widget.draggableItemBloc
-            .setNewDraggableItemPositon(position: widget.position);
+        widget.draggableItemBloc.draggableItemPositon = widget.position;
         widget.prismSurveyBloc.setRowIndex(rowIndex: rowIdx().toInt());
         widget.prismSurveyBloc.setColIndex(colIndex: colIdx().toInt());
       },
