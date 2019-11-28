@@ -7,12 +7,12 @@ import 'package:intro_views_flutter/Models/page_view_model.dart';
 import 'package:provider/provider.dart';
 
 final PageViewModel teamPage = PageViewModel(
-  pageColor: Styles.drg_colorSecondary,
+  pageColor: Styles.color_Secondary,
   bubble: Icon(
     Icons.people,
-    color: Styles.drg_colorAppBackgroundLight,
+    color: Styles.color_AppBackgroundLight,
   ),
-  bubbleBackgroundColor: Styles.drg_colorAppBackground,
+  bubbleBackgroundColor: Styles.color_AppBackground,
   body: Text(
     'Before your first survey, prepare your set-up with building a team - even if you start as the only member of the team. Later on, it is easy to invite others.',
   ),
@@ -25,7 +25,7 @@ final PageViewModel teamPage = PageViewModel(
     width: double.infinity,
     alignment: Alignment.topCenter,
     colorBlendMode: BlendMode.modulate,
-    color: Styles.drg_colorSecondary,
+    color: Styles.color_Secondary,
   ),
   titleTextStyle: TextStyle(
     fontFamily: 'SonsieOne',
@@ -35,19 +35,19 @@ final PageViewModel teamPage = PageViewModel(
   ),
   bodyTextStyle: TextStyle(
     fontFamily: 'Barlow',
-    color: Styles.drg_colorPrimary,
+    color: Styles.color_Primary,
     fontSize: 18,
     fontWeight: FontWeight.w500,
   ),
 );
 
 final PageViewModel invitePage = PageViewModel(
-  pageColor: Styles.drg_colorContrast,
+  pageColor: Styles.color_Contrast,
   bubble: Icon(
     Icons.person_add,
-    color: Styles.drg_colorAppBackgroundLight,
+    color: Styles.color_AppBackgroundLight,
   ),
-  bubbleBackgroundColor: Styles.drg_colorAppBackground,
+  bubbleBackgroundColor: Styles.color_AppBackground,
   body: Text(
     'After the a team is provided with name and description, you can invite others as members by scanning a QR code in their profile page.',
   ),
@@ -60,7 +60,7 @@ final PageViewModel invitePage = PageViewModel(
     width: double.infinity,
     alignment: Alignment.topCenter,
     colorBlendMode: BlendMode.modulate,
-    color: Styles.drg_colorContrast,
+    color: Styles.color_Contrast,
   ),
   titleTextStyle: TextStyle(
     fontFamily: 'SonsieOne',
@@ -77,12 +77,12 @@ final PageViewModel invitePage = PageViewModel(
 );
 
 final PageViewModel setPage = PageViewModel(
-  pageColor: Styles.drg_colorAppBackgroundLight,
+  pageColor: Styles.color_AppBackgroundLight,
   bubble: Icon(
     Icons.storage,
-    color: Styles.drg_colorAppBackgroundLight,
+    color: Styles.color_AppBackgroundLight,
   ),
-  bubbleBackgroundColor: Styles.drg_colorAppBackground,
+  bubbleBackgroundColor: Styles.color_AppBackground,
   body: Text(
     'Collect a buch of quick surveys in a set of surveys - a Survey Set - to get quick insights to two specific metrics with the granularity you think is the best.',
   ),
@@ -95,7 +95,7 @@ final PageViewModel setPage = PageViewModel(
     width: double.infinity,
     alignment: Alignment.topCenter,
     colorBlendMode: BlendMode.modulate,
-    color: Styles.drg_colorAppBackgroundLight,
+    color: Styles.color_AppBackgroundLight,
   ),
   titleTextStyle: TextStyle(
     fontFamily: 'SonsieOne',
@@ -105,19 +105,19 @@ final PageViewModel setPage = PageViewModel(
   ),
   bodyTextStyle: TextStyle(
     fontFamily: 'Barlow',
-    color: Styles.drg_colorPrimary,
+    color: Styles.color_Primary,
     fontSize: 18,
     fontWeight: FontWeight.w500,
   ),
 );
 
 final PageViewModel surveyPage = PageViewModel(
-  pageColor: Styles.drg_colorAppBackgroundMedium,
+  pageColor: Styles.color_AppBackgroundMedium,
   bubble: Icon(
     Icons.question_answer,
-    color: Styles.drg_colorAppBackgroundLight,
+    color: Styles.color_AppBackgroundLight,
   ),
-  bubbleBackgroundColor: Styles.drg_colorAppBackground,
+  bubbleBackgroundColor: Styles.color_AppBackground,
   body: Text(
     'Once the Survey Set is created, you can survey people at a finger tip. \nThe asked person then only drags a chip to his desired position on the Dragger Board.',
   ),
@@ -130,7 +130,7 @@ final PageViewModel surveyPage = PageViewModel(
     width: double.infinity,
     alignment: Alignment.topCenter,
     colorBlendMode: BlendMode.modulate,
-    color: Styles.drg_colorAppBackgroundMedium,
+    color: Styles.color_AppBackgroundMedium,
   ),
   titleTextStyle: TextStyle(
     fontFamily: 'SonsieOne',
@@ -140,19 +140,19 @@ final PageViewModel surveyPage = PageViewModel(
   ),
   bodyTextStyle: TextStyle(
     fontFamily: 'Barlow',
-    color: Styles.drg_colorPrimary,
+    color: Styles.color_Primary,
     fontSize: 18,
     fontWeight: FontWeight.w500,
   ),
 );
 
 final PageViewModel insightsPage = PageViewModel(
-  pageColor: Styles.drg_colorAppBackgroundShiny,
+  pageColor: Styles.color_AppBackgroundShiny,
   bubble: Icon(
     Icons.people,
-    color: Styles.drg_colorAppBackgroundLight,
+    color: Styles.color_AppBackgroundLight,
   ),
-  bubbleBackgroundColor: Styles.drg_colorAppBackground,
+  bubbleBackgroundColor: Styles.color_AppBackground,
   body: Text(
     'Eventally after several surveys made you can get the resulst displayed as a scattered plot chart or as graph over time',
   ),
@@ -165,29 +165,29 @@ final PageViewModel insightsPage = PageViewModel(
     width: double.infinity,
     alignment: Alignment.topCenter,
     colorBlendMode: BlendMode.modulate,
-    color: Styles.drg_colorAppBackgroundShiny,
+    color: Styles.color_AppBackgroundShiny,
   ),
   titleTextStyle: TextStyle(
     fontFamily: 'SonsieOne',
-    color: Styles.drg_colorPrimary,
+    color: Styles.color_Primary,
     fontSize: 32,
     height: 1.1,
   ),
   bodyTextStyle: TextStyle(
     fontFamily: 'Barlow',
-    color: Styles.drg_colorPrimary,
+    color: Styles.color_Primary,
     fontSize: 18,
     fontWeight: FontWeight.w500,
   ),
 );
 
 final PageViewModel readyPage = PageViewModel(
-  pageColor: Styles.drg_colorSecondary,
+  pageColor: Styles.color_Secondary,
   bubble: Icon(
     Icons.people,
-    color: Styles.drg_colorAppBackgroundLight,
+    color: Styles.color_AppBackgroundLight,
   ),
-  bubbleBackgroundColor: Styles.drg_colorAppBackground,
+  bubbleBackgroundColor: Styles.color_AppBackground,
   body: Text(
     "Ready! Now it's time to explore the feedback of the people. Go out and listen!",
   ),
@@ -200,7 +200,7 @@ final PageViewModel readyPage = PageViewModel(
     width: double.infinity,
     alignment: Alignment.topCenter,
     colorBlendMode: BlendMode.modulate,
-    color: Styles.drg_colorSecondary,
+    color: Styles.color_Secondary,
   ),
   titleTextStyle: TextStyle(
     fontFamily: 'SonsieOne',
@@ -210,7 +210,7 @@ final PageViewModel readyPage = PageViewModel(
   ),
   bodyTextStyle: TextStyle(
     fontFamily: 'Barlow',
-    color: Styles.drg_colorPrimary,
+    color: Styles.color_Primary,
     fontSize: 18,
     fontWeight: FontWeight.w500,
   ),

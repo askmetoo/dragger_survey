@@ -59,7 +59,7 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
           bool moreSurveyThanOne = surveyIDsSnapshot.data.documents.length > 1;
 
           return Scaffold(
-              backgroundColor: Styles.drg_colorAppBackground,
+              backgroundColor: Styles.color_AppBackground,
               endDrawer: UserDrawer(),
               appBar: AppBar(
                 actions: <Widget>[
@@ -72,16 +72,16 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerFloat,
               floatingActionButton: FloatingActionButton.extended(
-                backgroundColor: Styles.drg_colorSecondary,
+                backgroundColor: Styles.color_Secondary,
                 label: Text(
                   "New Survey",
                   style: TextStyle(
-                    color: Styles.drg_colorText.withOpacity(0.8),
+                    color: Styles.color_Text.withOpacity(0.8),
                   ),
                 ),
                 icon: Icon(
                   Icons.group_add,
-                  color: Styles.drg_colorDarkerGreen,
+                  color: Styles.color_SecondaryDeepDark,
                 ),
                 tooltip: "Add new Survey",
                 onPressed: () {
@@ -106,9 +106,9 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
                         ),
                       ],
                       currentIndex: _selectedIndex,
-                      backgroundColor: Styles.drg_colorSecondary,
-                      unselectedItemColor: Styles.drg_colorAppBackground,
-                      selectedItemColor: Styles.drg_colorContrast,
+                      backgroundColor: Styles.color_Secondary,
+                      unselectedItemColor: Styles.color_AppBackground,
+                      selectedItemColor: Styles.color_Contrast,
                       onTap: (int index) =>
                           setState(() => _selectedIndex = index),
                     ));

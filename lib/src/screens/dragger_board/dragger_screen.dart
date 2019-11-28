@@ -115,7 +115,7 @@ class BuildPortraitLayout extends StatelessWidget {
               Text(
                 "$_xName: ${prismSurveyBloc.rowIndex + 1}     |     $_yName: ${prismSurveyBloc.colIndex + 1}\nGranularity: ${matrixGranularityBloc.matrixGranularity}",
                 style: TextStyle(
-                    color: Styles.drg_colorAppBackgroundMedium.withOpacity(.8),
+                    color: Styles.color_AppBackgroundMedium.withOpacity(.8),
                     height: 1.5),
                 textAlign: TextAlign.center,
               ),
@@ -179,7 +179,7 @@ class BuildLandscapeLayout extends StatelessWidget {
                       "Granularity: ${matrixGranularityBloc.matrixGranularity} \n$_xName: ${prismSurveyBloc.rowIndex + 1} \n$_yName: ${prismSurveyBloc.colIndex + 1}",
                       style: TextStyle(
                         color:
-                            Styles.drg_colorAppBackgroundMedium.withOpacity(.8),
+                            Styles.color_AppBackgroundMedium.withOpacity(.8),
                       ),
                     ),
                   ],
@@ -217,10 +217,10 @@ class BuildAskedPersonDropdown extends StatelessWidget {
                     child: IconShadowWidget(
                       Icon(
                         Icons.person,
-                        color: Styles.drg_colorSuccess,
+                        color: Styles.color_Success,
                         size: 30,
                       ),
-                      shadowColor: Styles.drg_colorText,
+                      shadowColor: Styles.color_Text,
                     ),
                   ),
                 ),
@@ -236,7 +236,7 @@ class BuildAskedPersonDropdown extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w700,
-                      color: Styles.drg_colorSecondary,
+                      color: Styles.color_Secondary,
                     ),
                   ),
                 ),
@@ -250,7 +250,7 @@ class BuildAskedPersonDropdown extends StatelessWidget {
                   prismSurveyBloc: prismSurveyBloc,
                 );
               },
-              color: Styles.drg_colorSecondary.withOpacity(.6),
+              color: Styles.color_Secondary.withOpacity(.6),
               iconSize: 20,
             ),
           ],
@@ -271,12 +271,12 @@ class BuildAskedPersonDropdown extends StatelessWidget {
         context: context,
         builder: (context) {
           return SimpleDialog(
-            backgroundColor: Styles.drg_colorSecondaryDeepDark,
+            backgroundColor: Styles.color_SecondaryDeepDark,
             title: Text(
               "Whom will you ask?",
               style: TextStyle(
                 fontFamily: 'Bitter',
-                color: Styles.drg_colorSecondary,
+                color: Styles.color_Secondary,
               ),
             ),
             children: <Widget>[
@@ -298,20 +298,21 @@ class BuildAskedPersonDropdown extends StatelessWidget {
                           _askedPersonController.text = value;
                         },
                         style: TextStyle(
-                          color: Styles.drg_colorYellowGreen,
+                          color: Styles.color_Secondary,
+                          fontWeight: FontWeight.w700
                         ),
                         decoration: InputDecoration(
                             isDense: true,
                             labelText: "Role or name",
                             labelStyle:
-                                TextStyle(color: Styles.drg_colorSuccess)),
+                                TextStyle(color: Styles.color_Secondary.withOpacity(.7))),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 12.0),
                       child: FlatButton(
                         child: Text("Speichern"),
-                        color: Styles.drg_colorSecondary,
+                        color: Styles.color_Secondary,
                         onPressed: () {
                           log("_askedPersonController.text: ${_askedPersonController.text}");
                           prismSurveyBloc.currentAskedPerson =
@@ -391,14 +392,14 @@ class _BuildAskedRoleFormState extends State<BuildAskedRoleForm> {
                     filled: true,
                     fillColor: Colors.white60,
                     hintText: "Name or Role of asked person.",
-                    labelStyle: TextStyle(color: Styles.drg_colorAppBackground),
+                    labelStyle: TextStyle(color: Styles.color_AppBackground),
                     errorStyle: TextStyle(
                         fontSize: 14,
                         color: Colors.white60,
-                        backgroundColor: Styles.drg_colorAttention,
+                        backgroundColor: Styles.color_Attention,
                         fontWeight: FontWeight.w700),
                     counterStyle: TextStyle(
-                      color: Styles.drg_colorText,
+                      color: Styles.color_Text,
                     ),
                     errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),

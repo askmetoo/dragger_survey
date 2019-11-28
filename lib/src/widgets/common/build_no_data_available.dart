@@ -13,14 +13,14 @@ buildNoDataAvailable() {
           fontFamily: 'SonsieOne',
           fontSize: 26,
           letterSpacing: -2,
-          color: Styles.drg_colorSecondary,
+          color: Styles.color_Secondary,
           shadows: [
             Shadow(
-              color: Styles.drg_colorText.withOpacity(.3),
+              color: Styles.color_Text.withOpacity(.3),
               blurRadius: 8,
             ),
             Shadow(
-                color: Styles.drg_colorText.withOpacity(.1),
+                color: Styles.color_Text.withOpacity(.1),
                 blurRadius: 3,
                 offset: Offset(5, 6)),
           ],
@@ -32,14 +32,14 @@ buildNoDataAvailable() {
           fontFamily: 'SonsieOne',
           fontSize: 34,
           letterSpacing: -2,
-          color: Styles.drg_colorText.withOpacity(0.7),
+          color: Styles.color_Text.withOpacity(0.7),
           shadows: [
             Shadow(
-              color: Styles.drg_colorText.withOpacity(.2),
+              color: Styles.color_Text.withOpacity(.2),
               blurRadius: 5,
             ),
             Shadow(
-                color: Styles.drg_colorText.withOpacity(.2),
+                color: Styles.color_Text.withOpacity(.2),
                 blurRadius: 3,
                 offset: Offset(2, 3)),
           ],
@@ -51,14 +51,14 @@ buildNoDataAvailable() {
           fontFamily: 'SonsieOne',
           fontSize: 24,
           fontWeight: FontWeight.w700,
-          color: Styles.drg_colorSecondary,
+          color: Styles.color_Secondary,
           shadows: [
             Shadow(
-              color: Styles.drg_colorText.withOpacity(.3),
+              color: Styles.color_Text.withOpacity(.3),
               blurRadius: 8,
             ),
             Shadow(
-                color: Styles.drg_colorText.withOpacity(.1),
+                color: Styles.color_Text.withOpacity(.1),
                 blurRadius: 3,
                 offset: Offset(5, 6)),
           ],
@@ -72,7 +72,7 @@ buildNoDataAvailable() {
         style: TextStyle(
           fontFamily: 'Bitter',
           fontWeight: FontWeight.w700,
-          color: Styles.drg_colorText.withOpacity(.7),
+          color: Styles.color_Text.withOpacity(.7),
         ),
       ),
       Spacer(

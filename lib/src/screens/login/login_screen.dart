@@ -21,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Container(
       child: Scaffold(
-        backgroundColor: Styles.drg_colorAppBackground,
+        backgroundColor: Styles.color_AppBackground,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -88,13 +88,12 @@ class _LoginScreenState extends State<LoginScreen> {
         future: introViewsBloc.getShowIntroViewsValue(),
         builder: (context, introViewsValueSnapshot) {
           return OutlineButton(
-            splashColor: Styles.drg_colorSecondary,
+            splashColor: Styles.color_Secondary,
             onPressed: () async {
               FirebaseUser returnedUser = await signInBloc
                   .signInWithGoogle()
                   .catchError((e) =>
                       print("ERROR in LoginScreen signInwithGoogle: $e "));
-              log("In LoginScreen _singInButton - value of returnedUser.uid: ${returnedUser.uid}");
               if (returnedUser != null) {
                 setState(() {
                   _loggedIn = true;
@@ -105,7 +104,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   introViewsValueSnapshot.data
                       ? '/introviews'
                       : '/surveysetslist',
-                  // introViewsBloc.showIntroViews ? '/introviews' : '/surveysetslist',
                   (_) => false,
                 );
               }
@@ -113,13 +111,13 @@ class _LoginScreenState extends State<LoginScreen> {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
             highlightElevation: 0,
-            borderSide: BorderSide(color: Styles.drg_colorSecondary),
+            borderSide: BorderSide(color: Styles.color_Secondary),
             child: Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Text(
                 "Sign-In with Google",
                 style:
-                    TextStyle(fontSize: 20, color: Styles.drg_colorSecondary),
+                    TextStyle(fontSize: 20, color: Styles.color_Secondary),
               ),
             ),
           );
@@ -128,13 +126,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _openSurveyListButton({BuildContext context}) {
     return OutlineButton(
-      splashColor: Styles.drg_colorSecondary,
+      splashColor: Styles.color_Secondary,
       onPressed: () {
         Navigator.pushNamed(context, '/surveysetslist');
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,
-      borderSide: BorderSide(color: Styles.drg_colorSecondary),
+      borderSide: BorderSide(color: Styles.color_Secondary),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: Row(
@@ -143,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
           children: <Widget>[
             Text(
               "Open Survey Sets List",
-              style: TextStyle(fontSize: 20, color: Styles.drg_colorSecondary),
+              style: TextStyle(fontSize: 20, color: Styles.color_Secondary),
             )
           ],
         ),
@@ -155,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
 
     return FlatButton(
-      splashColor: Styles.drg_colorSecondary,
+      splashColor: Styles.color_Secondary,
       onPressed: () {
         setState(() {
           _loggedIn = false;
@@ -172,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
           children: <Widget>[
             Text(
               "Sign-Out",
-              style: TextStyle(fontSize: 20, color: Styles.drg_colorSecondary),
+              style: TextStyle(fontSize: 20, color: Styles.color_Secondary),
             )
           ],
         ),

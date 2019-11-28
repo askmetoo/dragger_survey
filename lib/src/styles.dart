@@ -3,76 +3,110 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class Styles {
-  static const drg_fontSizeCopyText = 14.0;
-  static const drg_fontSizeFieldContentText = 16.0;
-  static const drg_fontSizeBigHeadline = 30.0;
-  static const drg_fontSizeMediumHeadline = 19.0;
-  static const drg_fontSizesubHeadline = 16.0;
-  static const drg_fontSizeFloatingLabel = 14.0;
-  static const drg_fontSizeHintText = 14.0;
+  static const fontSize_CopyText = 14.0;
+  static const fontSize_FieldContentText = 16.0;
+  static const fontSize_BigHeadline = 30.0;
+  static const fontSize_MediumHeadline = 19.0;
+  static const fontSize_SubHeadline = 16.0;
+  static const fontSize_FloatingLabel = 14.0;
+  static const fontSize_HintText = 14.0;
 
-  static const drg_textHeadline = TextStyle(
-      color: Color.fromRGBO(0, 0, 0, 0.8),
-      fontFamily: 'Bitter',
-      fontSize: Styles.drg_fontSizeBigHeadline,
-      fontStyle: FontStyle.normal,
-      fontWeight: FontWeight.w600);
-  static const drg_textSecondHeadline = TextStyle(
-    color: Color.fromRGBO(0, 0, 0, 0.8),
-    fontFamily: 'Bitter',
-    fontSize: Styles.drg_fontSizeMediumHeadline,
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w400,
-  );
-  static const drg_textListTitle = TextStyle(
-    color: Styles.drg_colorText,
-    fontFamily: 'Bitter',
-    fontSize: Styles.drg_fontSizeMediumHeadline,
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w600,
-  );
-  static const drg_textListContent = TextStyle(
-    color: Color.fromRGBO(0, 0, 0, 0.8),
-    fontFamily: 'Barlow',
-    fontSize: Styles.drg_fontSizeCopyText,
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w400,
-  );
-  static const drg_selectButton = TextStyle(
-    color: Styles.drg_colorPrimary,
-    fontFamily: 'Barlow',
-    fontSize: Styles.drg_fontSizeCopyText,
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w700,
-  );
-  static const drg_textFieldContent = TextStyle(
-    fontSize: Styles.drg_fontSizeFieldContentText,
-    fontWeight: FontWeight.w400,
-    color: Styles.drg_colorDarkerGreen,
-  );
+  ///***
+  ///* COLORS section
+  ///*/
+  static const Color _clrPrimary = Color(0xffc66400);
+  static const Color _clrSecondary = Color(0xfff7b71d);
+  static const Color _clrContrast = Color(0xff119da4);
+  static const Color _clrAttention = Color(0xffff0200);
+  static const Color _clrSuccess = Color(0xffafa939);
+  static const Color _clrSecondaryDeepDark = Color(0xff583c00);
+  static const Color _clrText = Color(0xff0e2431);
+  static const Color _clrAppBackgroundMedium = Color(0xffff933b);
+  static const Color _clrAppBackgroundLight = Color(0xffffc46a);
+  static const Color _clrAppBackgroundShiny = Color(0xffffe8c1);
+  static const Color _clrWhite = Color(0xffffffff);
+  static const Color _clrBlack = Color(0xff000000);
 
-  static const Color drg_colorContrast = Color(0xff119da4);
-  static const Color drg_colorPrimary = Color(0xffc66400);
-  static const Color drg_colorSecondary = Color(0xfff7b71d);
-  static const Color drg_colorAttention = Color(0xffff0200);
-  static const Color drg_colorSuccess = Color(0xffafa939);
-  static const Color drg_colorSecondaryDeepDark = Color(0xff583c00);
-  static const Color drg_colorText = Color(0xff0e2431);
-  static const Color drg_colorTextMediumDark = Color(0xff465761);
-  static const Color drg_matrixBackgound = Color(0xffFFCA79);
-  static Color drgColorTextMediumLight = drg_colorText.withOpacity(0.8);
+  // ignore: non_constant_identifier_names
+  static Color color_Primary = _clrPrimary;
+  set colorPrimary(newColor) {
+    color_Primary = newColor;
+  }
+  // ignore: non_constant_identifier_names
+  static Color color_Text = _clrText;
+  set colorText(newColor) {
+    color_Primary = newColor;
+  }
+  // ignore: non_constant_identifier_names
+  static Color color_Secondary = _clrSecondary;
+  set colorSecondary(newColor) {
+    color_Secondary = newColor;
+  }
+  // ignore: non_constant_identifier_names
+  static Color color_Contrast = _clrContrast;
+  set colorContrast(newColor) {
+    color_Secondary = newColor;
+  }
+  // ignore: non_constant_identifier_names
+  static Color color_Attention = _clrAttention;
+  set colorAttentionContrast(newColor) {
+    color_Secondary = newColor;
+  }
+  // ignore: non_constant_identifier_names
+  static Color color_Success = _clrSuccess;
+  set colorSuccess(newColor) {
+    color_Secondary = newColor;
+  }
+  // ignore: non_constant_identifier_names
+  static Color color_SecondaryDeepDark = _clrSecondaryDeepDark;
+  set colorSecondaryDeepDark(newColor) {
+    color_Secondary = newColor;
+  }
+  // ignore: non_constant_identifier_names
+  static Color color_AppBackground = color_Primary;
+  // ignore: non_constant_identifier_names
+  static Color color_AppBackgroundMedium = _clrAppBackgroundMedium;
+  set colorAppBackgroundMedium(newColor) {
+    color_Secondary = newColor;
+  }
+  // ignore: non_constant_identifier_names
+  static Color color_AppBackgroundLight = _clrAppBackgroundLight;
+  set colorAppBackgroundLight(newColor) {
+    color_Secondary = newColor;
+  }
+  // ignore: non_constant_identifier_names
+  static Color color_AppBackgroundShiny = _clrAppBackgroundShiny;
+  set colorAppBackgroundShiny(newColor) {
+    color_Secondary = newColor;
+  }
+  // ignore: non_constant_identifier_names
+  static Color color_White = _clrWhite;
+  set colorWhite(newColor) {
+    color_Secondary = newColor;
+  }
+  // ignore: non_constant_identifier_names
+  static Color color_Black = _clrBlack;
+  set colorBlack(newColor) {
+    color_Secondary = newColor;
+  }
 
-  static const Color drg_colorYellowGreen = Color(0xffffff7f);
-  static const Color drg_colorGreen = Color(0xff2b580c);
-  static const Color drg_colorDarkerGreen = Color(0xff2f4a36);
+  static const Color tClr1_primary = Color(0xffaeea00);
+  static const Color _tClr1_primaryLight = Color(0xffe4ff54);
+  static const Color _tClr1_primaryDark = Color(0xff79b700);
+  static const Color _tClr1_secondary = Color(0xff18ffff);
 
-  static const Color orangeColorDonNotUse = Color(0xfff9b248);
-  static const Color redColorDonNotUse = Color(0xfffc3a52);
-
-  static const Color drg_colorAppBackground = drg_colorPrimary;
-  static const Color drg_colorAppBackgroundMedium = Color(0xffff933b);
-  static const Color drg_colorAppBackgroundLight = Color(0xffffc46a);
-  static const Color drg_colorAppBackgroundShiny = Color(0xffffe8c1);
-
-  static const Color drg_scaffoldBackground = Color(0xfff0f0f0);
+  static setColorsToAppStandard() {
+    color_Primary = _clrPrimary;
+    color_Secondary = _clrSecondary;
+    color_AppBackground = _clrPrimary;
+    color_AppBackgroundLight = _clrAppBackgroundLight;
+    color_SecondaryDeepDark = _clrSecondaryDeepDark;
+  }
+  static setColorsToTeam1() {
+    color_Primary = tClr1_primary;
+    color_Secondary = _tClr1_secondary;
+    color_AppBackground = tClr1_primary;
+    color_AppBackgroundLight = _tClr1_primaryLight;
+    color_SecondaryDeepDark = _tClr1_primaryDark;
+  }
 }

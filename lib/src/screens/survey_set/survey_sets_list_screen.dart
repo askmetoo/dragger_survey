@@ -54,7 +54,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
               teamsSnapshot?.data?.documents[0]?.documentID != null;
 
           return Scaffold(
-            backgroundColor: Styles.drg_colorAppBackground,
+            backgroundColor: Styles.color_AppBackground,
             endDrawer: UserDrawer(),
             appBar: AppBar(
               actions: <Widget>[
@@ -80,16 +80,16 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                 // CREATE A NEW SURVEY
                 ? FloatingActionButton.extended(
                     elevation: 12,
-                    backgroundColor: Styles.drg_colorSecondary,
+                    backgroundColor: Styles.color_Secondary,
                     label: Text(
                       "Create new survey set",
                       style: TextStyle(
-                        color: Styles.drg_colorText.withOpacity(0.8),
+                        color: Styles.color_Text.withOpacity(0.8),
                       ),
                     ),
                     icon: Icon(
                       Icons.library_add,
-                      color: Styles.drg_colorDarkerGreen,
+                      color: Styles.color_SecondaryDeepDark,
                     ),
                     tooltip: "Add new Survey Set",
                     onPressed: () {
@@ -101,7 +101,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                                 fontFamily: 'Bitter',
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
-                                color: Styles.drg_colorText.withOpacity(.8),
+                                color: Styles.color_Text.withOpacity(.8),
                               ),
                               titlePadding: EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 8),
@@ -117,9 +117,9 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                                 ),
                               ),
                               title: Text("New survey set"),
-                              backgroundColor: Styles.drg_colorSecondary,
+                              backgroundColor: Styles.color_Secondary,
                               contentTextStyle:
-                                  TextStyle(color: Styles.drg_colorText),
+                                  TextStyle(color: Styles.color_Text),
                               content: SurveySetForm(),
                             );
                           });
@@ -128,15 +128,15 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                 :
                 // CREATE A NEW TEAM
                 FloatingActionButton.extended(
-                    backgroundColor: Styles.drg_colorSecondary,
+                    backgroundColor: Styles.color_Secondary,
                     icon: Icon(
                       Icons.people,
-                      color: Styles.drg_colorText.withOpacity(.8),
+                      color: Styles.color_Text.withOpacity(.8),
                     ),
                     label: Text(
                       'Create new Team',
                       style: TextStyle(
-                        color: Styles.drg_colorText.withOpacity(0.8),
+                        color: Styles.color_Text.withOpacity(0.8),
                       ),
                     ),
                     onPressed: () {
@@ -162,9 +162,9 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                                 bottomRight: Radius.circular(20),
                               ),
                             ),
-                            backgroundColor: Styles.drg_colorSecondary,
+                            backgroundColor: Styles.color_Secondary,
                             contentTextStyle:
-                                TextStyle(color: Styles.drg_colorText),
+                                TextStyle(color: Styles.color_Text),
                           );
                         },
                       );

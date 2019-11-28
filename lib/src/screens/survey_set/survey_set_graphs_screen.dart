@@ -172,7 +172,7 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
                                       "Survey title",
                                   style: TextStyle(
                                     fontFamily: 'Bitter',
-                                    fontSize: Styles.drg_fontSizeMediumHeadline,
+                                    fontSize: Styles.fontSize_MediumHeadline,
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
@@ -184,37 +184,48 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
                                   data, _xLabel, _yLabel, _granulariy),
                             ),
                             Text("Surveys in total: $_sum"),
-                            OutlineButton.icon(
-                              icon: Icon(
-                                Icons.share,
-                                color: Styles.drg_colorTextMediumDark,
+                            Padding(
+                              padding: const EdgeInsets.only(top: 16.0),
+                              child: RaisedButton.icon(
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(12),
+                                  topRight: Radius.circular(4),
+                                  bottomLeft: Radius.circular(12),
+                                  bottomRight: Radius.circular(12),
+                                  )),
+                                color: Styles.color_Secondary.withOpacity(.7),
+                                elevation: .6,
+                                icon: Icon(
+                                  Icons.share,
+                                  color: Styles.color_Contrast,
+                                ),
+                                label: Text(
+                                  'Share as string in CSV format',
+                                  style: TextStyle(
+                                      color: Styles.color_Contrast),
+                                ),
+                                onPressed: () {
+                                  List<List<dynamic>> list = [[]];
+                                  list.add([
+                                    surveySetSnapshot.data.data['xName'],
+                                    surveySetSnapshot.data.data['yName']
+                                  ]);
+                                  surveySnapshot.data.documents.forEach((doc) {
+                                    list.add(
+                                        [doc.data['xValue'], doc.data['yValue']]);
+                                  });
+                                  var result = ListToCsvConverter()
+                                      .convert(list,
+                                          fieldDelimiter: ';',
+                                          textDelimiter: ',',
+                                          eol: '\n')
+                                      .toString();
+                                  print("-----\/\/\/");
+                                  print(result);
+                                  Share.share(result);
+                                  _writeToFile(surveyString: result);
+                                },
                               ),
-                              label: Text(
-                                'Share as string in CSV format',
-                                style: TextStyle(
-                                    color: Styles.drg_colorTextMediumDark),
-                              ),
-                              onPressed: () {
-                                List<List<dynamic>> list = [[]];
-                                list.add([
-                                  surveySetSnapshot.data.data['xName'],
-                                  surveySetSnapshot.data.data['yName']
-                                ]);
-                                surveySnapshot.data.documents.forEach((doc) {
-                                  list.add(
-                                      [doc.data['xValue'], doc.data['yValue']]);
-                                });
-                                var result = ListToCsvConverter()
-                                    .convert(list,
-                                        fieldDelimiter: ';',
-                                        textDelimiter: ',',
-                                        eol: '\n')
-                                    .toString();
-                                print("-----\/\/\/");
-                                print(result);
-                                Share.share(result);
-                                _writeToFile(surveyString: result);
-                              },
                             )
                           ],
                         ),
@@ -291,7 +302,7 @@ class SurveyScatterPlotChart extends StatelessWidget {
       charts.Series<SurveyResult, int>(
         id: 'Surveys',
         colorFn: (SurveyResult survey, _) {
-          return charts.ColorUtil.fromDartColor(Styles.drg_colorContrast);
+          return charts.ColorUtil.fromDartColor(Styles.color_Contrast);
         },
         domainFn: (SurveyResult survey, _) => survey.xValue,
         domainLowerBoundFn: (SurveyResult survey, _) => 0,

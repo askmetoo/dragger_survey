@@ -37,11 +37,11 @@ class DraggerBoardButtons extends StatelessWidget {
             child: FlatButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
-              color: Styles.drg_colorSecondary,
-              textColor: Styles.drg_colorPrimary,
+              color: Styles.color_Secondary,
+              textColor: Styles.color_Primary,
               child: Text("Save result"),
-              disabledColor: Styles.drg_colorAppBackgroundMedium.withOpacity(.4),
-              disabledTextColor: Styles.drg_colorPrimary,
+              disabledColor: Styles.color_AppBackgroundMedium.withOpacity(.4),
+              disabledTextColor: Styles.color_Primary,
               onPressed: draggableItemBloc.startedDragging ? () async {
                 Map<String, dynamic> survey = {
                   "created": prismSurveyBloc.created,
@@ -57,7 +57,7 @@ class DraggerBoardButtons extends StatelessWidget {
                   Scaffold.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Your answer has been sucessfully saved:'),
-                        backgroundColor: Styles.drg_colorSuccess,
+                        backgroundColor: Styles.color_Success,
                       ),
                   );
                 await Future.delayed(const Duration(milliseconds: 800), () {});
@@ -73,7 +73,7 @@ class DraggerBoardButtons extends StatelessWidget {
             child: FlatButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
-              textColor: Styles.drg_colorSecondaryDeepDark.withOpacity(.8),
+              textColor: Styles.color_SecondaryDeepDark.withOpacity(.8),
               child: Text("Cancel"),
               onPressed: () {
                 Navigator.of(context).pop();

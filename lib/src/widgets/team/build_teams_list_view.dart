@@ -82,7 +82,7 @@ Widget buildTeamsListView({BuildContext context}) {
                       if (teamOwner == currentUser)
                         IconSlideAction(
                           caption: 'Delete',
-                          color: Styles.drg_colorAttention,
+                          color: Styles.color_Attention,
                           icon: Icons.delete,
                           onTap: () async {
                             bool teamDeleted = false;
@@ -107,8 +107,8 @@ Widget buildTeamsListView({BuildContext context}) {
                             Scaffold.of(context).showSnackBar(
                               SnackBar(
                                 backgroundColor: teamDeleted
-                                    ? Styles.drg_colorSuccess
-                                    : Styles.drg_colorAttention,
+                                    ? Styles.color_Success
+                                    : Styles.color_Attention,
                                 elevation: 20,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(40)),
@@ -124,8 +124,7 @@ Widget buildTeamsListView({BuildContext context}) {
                       if (teamOwner != currentUser)
                         IconSlideAction(
                           caption: 'Quit',
-                          color:
-                              Styles.drg_colorSecondaryDeepDark.withOpacity(.2),
+                          color: Styles.color_SecondaryDeepDark.withOpacity(.2),
                           icon: FontAwesomeIcons.walking,
                           onTap: () async {
                             List<dynamic> userList;
@@ -157,8 +156,8 @@ Widget buildTeamsListView({BuildContext context}) {
                             Scaffold.of(context).showSnackBar(
                               SnackBar(
                                 backgroundColor: membershipQuitted
-                                    ? Styles.drg_colorSuccess
-                                    : Styles.drg_colorAttention,
+                                    ? Styles.color_Success
+                                    : Styles.color_Attention,
                                 elevation: 20,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(40)),
@@ -174,7 +173,7 @@ Widget buildTeamsListView({BuildContext context}) {
                     ],
                     child: Container(
                       margin: EdgeInsets.only(left: 16, bottom: 1, top: 1),
-                      color: Styles.drg_colorSecondary.withOpacity(0),
+                      color: Styles.color_Secondary.withOpacity(0),
                       child: ClipRRect(
                         clipBehavior: Clip.antiAlias,
                         borderRadius: BorderRadius.only(
@@ -183,7 +182,7 @@ Widget buildTeamsListView({BuildContext context}) {
                         ),
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Styles.drg_colorSecondary.withOpacity(.7),
+                            color: Styles.color_Secondary.withOpacity(.7),
                           ),
                           child: FutureBuilder<QuerySnapshot>(
                               future: userBloc.getUsersQuery(
@@ -243,13 +242,11 @@ Widget buildTeamsListView({BuildContext context}) {
                                               text: buildInitials(
                                                   name: teamDocumentSnapshot[
                                                       'name']),
-                                              fontColor:
-                                                  Styles.drg_colorSecondary,
+                                              fontColor: Styles.color_Secondary,
                                               shapeType: ShapeType.circle,
-                                              shapeColor:
-                                                  Styles.drg_colorPrimary,
+                                              shapeColor: Styles.color_Primary,
                                               borderColor:
-                                                  Styles.drg_colorSecondary,
+                                                  Styles.color_Secondary,
                                               shapeSize: 44,
                                               fontSize: 22,
                                               borderWidth: 4,
@@ -283,7 +280,14 @@ Widget buildTeamsListView({BuildContext context}) {
                                       text: TextSpan(
                                           text:
                                               "${teamDocumentSnapshot['name']} ",
-                                          style: Styles.drg_textListTitle,
+                                          style: TextStyle(
+                                            color: Styles.color_Text,
+                                            fontFamily: 'Bitter',
+                                            fontSize:
+                                                Styles.fontSize_MediumHeadline,
+                                            fontStyle: FontStyle.normal,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                           children: [
                                             TextSpan(
                                                 text:
@@ -301,7 +305,13 @@ Widget buildTeamsListView({BuildContext context}) {
                                           ' ',
                                           yyyy,
                                         ]) : 'Not yet.'} \nOwner: ${signInSnapshot.data.displayName}""",
-                                      style: Styles.drg_textListContent,
+                                      style: TextStyle(
+                                        color: Color.fromRGBO(0, 0, 0, 0.8),
+                                        fontFamily: 'Barlow',
+                                        fontSize: Styles.fontSize_CopyText,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                     ),
                                   ),
                                 );
@@ -321,6 +331,7 @@ openColorChooser({@required context, @required teamDocSnapshot}) {
   showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
+        ColorsBloc colorsBloc = Provider.of<ColorsBloc>(context);
         return Container(
           padding: EdgeInsets.fromLTRB(16, 12, 16, 24),
           height: 200,
@@ -355,7 +366,7 @@ Future<bool> buildAlertDialog(
                     topRight: Radius.circular(4),
                     bottomRight: Radius.circular(12),
                     bottomLeft: Radius.circular(12))),
-            color: Styles.drg_colorAttention,
+            color: Styles.color_Attention,
             onPressed: () {
               Navigator.of(context).pop(true);
             },
@@ -371,8 +382,8 @@ Future<bool> buildAlertDialog(
             bottomRight: Radius.circular(20),
           ),
         ),
-        backgroundColor: Styles.drg_colorSecondary,
-        contentTextStyle: TextStyle(color: Styles.drg_colorText),
+        backgroundColor: Styles.color_Secondary,
+        contentTextStyle: TextStyle(color: Styles.color_Text),
       );
     },
   );
@@ -400,10 +411,10 @@ class AvatarWithBadge extends StatelessWidget {
     Widget defaultBadge = SizedBox(
       child: RoundedLetter(
         text: buildInitials(name: "John Doe"),
-        fontColor: Styles.drg_colorPrimary,
+        fontColor: Styles.color_Primary,
         shapeType: ShapeType.circle,
-        shapeColor: Styles.drg_colorSecondary,
-        borderColor: Styles.drg_colorPrimary,
+        shapeColor: Styles.color_Secondary,
+        borderColor: Styles.color_Primary,
         shapeSize: badgeSize - (badgeBorderWidht * 2),
         fontSize: (badgeSize / 2) - badgeBorderWidht,
         borderWidth: badgeBorderWidht,
@@ -413,10 +424,10 @@ class AvatarWithBadge extends StatelessWidget {
     Widget defaultAvatar = SizedBox(
       child: RoundedLetter(
         text: buildInitials(name: "Dragger"),
-        fontColor: Styles.drg_colorPrimary,
+        fontColor: Styles.color_Primary,
         shapeType: ShapeType.circle,
-        shapeColor: Styles.drg_colorSecondary,
-        borderColor: Styles.drg_colorPrimary,
+        shapeColor: Styles.color_Secondary,
+        borderColor: Styles.color_Primary,
         shapeSize: avatarSize - (avatarBorderWidht * 2),
         fontSize: (avatarSize / 2) - avatarBorderWidht,
         borderWidth: avatarBorderWidht,

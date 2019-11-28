@@ -112,13 +112,13 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                             iconSize: 28,
                             icon: Icon(
                               Icons.arrow_drop_down,
-                              color: Styles.drg_colorSecondary,
+                              color: Styles.color_Secondary,
                             ),
                             elevation: 12,
                             hint: Text(
                               "Please Select a Team",
                               style: TextStyle(
-                                  color: Styles.drg_colorText.withOpacity(.8),
+                                  color: Styles.color_Text.withOpacity(.8),
                                   fontFamily: 'Bitter',
                                   fontWeight: FontWeight.w700,
                                   height: 2.4),
@@ -136,7 +136,7 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                       decoration: BoxDecoration(
                                         border: Border(
                                           bottom: BorderSide(
-                                            color: Styles.drg_colorAppBackground
+                                            color: Styles.color_AppBackground
                                                 .withOpacity(.6),
                                             width: .5,
                                           ),
@@ -154,12 +154,12 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                               text: buildInitials(
                                                   name: team['name']),
                                               fontColor:
-                                                  Styles.drg_colorSecondary,
+                                                  Styles.color_Secondary,
                                               shapeType: ShapeType.circle,
                                               shapeColor:
-                                                  Styles.drg_colorPrimary,
+                                                  Styles.color_Primary,
                                               borderColor:
-                                                  Styles.drg_colorSecondary,
+                                                  Styles.color_Secondary,
                                               shapeSize: 34,
                                               fontSize: 15,
                                               borderWidth: 2,
@@ -180,7 +180,7 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                                   "${team['name']}",
                                                   textAlign: TextAlign.start,
                                                   style: TextStyle(
-                                                    color: Styles.drg_colorText
+                                                    color: Styles.color_Text
                                                         .withOpacity(0.8),
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.w900,
@@ -204,7 +204,7 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                                     textAlign: TextAlign.start,
                                                     style: TextStyle(
                                                         color: Styles
-                                                            .drg_colorSecondaryDeepDark
+                                                            .color_SecondaryDeepDark
                                                             .withOpacity(.8),
                                                         fontFamily: 'Bitter',
                                                         fontWeight:
@@ -234,7 +234,7 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
         Divider(
           height: 1,
           thickness: 1,
-          color: Styles.drg_colorSecondary.withOpacity(.2),
+          color: Styles.color_Secondary.withOpacity(.2),
         ),
       ],
     );
@@ -280,12 +280,12 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
         maxLines: 2,
         text: TextSpan(
           text: "Your Team: ",
-          style: TextStyle(color: Styles.drg_colorText, fontSize: 20),
+          style: TextStyle(color: Styles.color_Text, fontSize: 20),
           children: [
             TextSpan(
               text: "${teamDoc['name']}",
               style: TextStyle(
-                  color: Styles.drg_colorText,
+                  color: Styles.color_Text,
                   fontSize: 22,
                   fontWeight: FontWeight.w600),
             ),
@@ -294,7 +294,7 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                   ? "\n${teamDoc['description']}"
                   : "\nTeam has no description",
               style: TextStyle(
-                color: Styles.drg_colorText,
+                color: Styles.color_Text,
                 fontSize: 14,
               ),
             ),

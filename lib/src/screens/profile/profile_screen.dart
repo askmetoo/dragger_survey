@@ -36,15 +36,15 @@ class ProfileScreen extends StatelessWidget {
               FlatButton(
                 child: Text(
                   "No, cancel action",
-                  style: TextStyle(color: Styles.drg_colorTextMediumDark),
+                  style: TextStyle(color: Styles.color_Text.withOpacity(.7)),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               MaterialButton(
-                child: Text("Yes, please"),
-                color: Styles.drg_colorAttention,
+                child: Text("Yes, please", style: TextStyle(color: Colors.white),),
+                color: Styles.color_Attention,
                 elevation: 4,
                 onPressed: () async {
 
@@ -144,7 +144,7 @@ class ProfileScreen extends StatelessWidget {
                 );
               }
               return Scaffold(
-                backgroundColor: Styles.drg_colorSecondary,
+                backgroundColor: Styles.color_Secondary,
                 appBar: AppBar(
                   title: Text(
                     "Your Profile",
@@ -205,7 +205,7 @@ class ProfileScreen extends StatelessWidget {
                                 Colors.orange.shade50.withOpacity(0.4),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20)),
-                            color: Styles.drg_colorPrimary,
+                            color: Styles.color_Primary,
                             textColor: Colors.white,
                             onPressed: () {
                               log("!!!-----> In ProfileScreen button 'Delete Account' pressed with signinSnapshot.data.uid: ${signinSnapshot.data.uid}");
@@ -279,7 +279,7 @@ class BuildOwnersTeamsList extends StatelessWidget {
             children: teamsSnapshot.data.documents.map((DocumentSnapshot doc) {
               return Container(
                 margin: EdgeInsets.only(left: 24, bottom: 1, top: 1),
-                color: Styles.drg_colorSecondary.withOpacity(0),
+                color: Styles.color_Secondary.withOpacity(0),
                 child: ClipRRect(
                   clipBehavior: Clip.antiAlias,
                   borderRadius: BorderRadius.only(
@@ -289,9 +289,10 @@ class BuildOwnersTeamsList extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.only(left: 24, bottom: 4),
                     decoration: BoxDecoration(
-                      color: Styles.drg_colorPrimary.withOpacity(.4),
+                      color: Styles.color_Primary.withOpacity(.4),
                     ),
                     child: ListTile(
+                      contentPadding: EdgeInsets.all(0),
                       dense: true,
                       title: Text(
                         "${doc.data['name']}",

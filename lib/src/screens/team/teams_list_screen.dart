@@ -37,7 +37,7 @@ class TeamsListScreen extends StatelessWidget {
               return SplashScreen();
             }
             return Scaffold(
-              backgroundColor: Styles.drg_colorAppBackground,
+              backgroundColor: Styles.color_AppBackground,
               endDrawer: UserDrawer(),
               appBar: AppBar(
                 actions: <Widget>[
@@ -51,16 +51,16 @@ class TeamsListScreen extends StatelessWidget {
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerFloat,
               floatingActionButton: FloatingActionButton.extended(
-                backgroundColor: Styles.drg_colorSecondary,
+                backgroundColor: Styles.color_Secondary,
                 label: Text(
                   "Create new Team",
                   style: TextStyle(
-                    color: Styles.drg_colorText.withOpacity(0.8),
+                    color: Styles.color_Text.withOpacity(0.8),
                   ),
                 ),
                 icon: Icon(
                   Icons.people,
-                  color: Styles.drg_colorDarkerGreen,
+                  color: Styles.color_SecondaryDeepDark,
                 ),
                 tooltip: "Create new Team",
                 onPressed: () {
@@ -81,9 +81,9 @@ class TeamsListScreen extends StatelessWidget {
                             bottomRight: Radius.circular(20),
                           ),
                         ),
-                        backgroundColor: Styles.drg_colorSecondary,
+                        backgroundColor: Styles.color_Secondary,
                         contentTextStyle:
-                            TextStyle(color: Styles.drg_colorText),
+                            TextStyle(color: Styles.color_Text),
                       );
                     },
                   );

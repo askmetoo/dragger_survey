@@ -174,7 +174,7 @@ class _BuildMatrixBoardState extends State<BuildMatrixBoard> {
                       offset: Offset(4, 4),
                       color: Colors.brown.shade900.withOpacity(.3))
                 ],
-                color: Styles.drg_colorAppBackgroundLight,
+                color: Styles.color_AppBackgroundLight,
               ),
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

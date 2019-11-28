@@ -107,7 +107,7 @@ class _BuildFilterSortState extends State<BuildFilterSort> {
                 icon: Icon(
                   Icons.sort,
                   size: 32,
-                  color: Styles.drg_colorSecondary,
+                  color: Styles.color_Secondary,
                 ),
               )
               // child: DropdownButton(

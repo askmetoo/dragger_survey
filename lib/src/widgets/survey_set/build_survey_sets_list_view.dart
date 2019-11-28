@@ -129,7 +129,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
           Icon(
             Icons.announcement,
             size: 80,
-            color: Styles.drg_colorSecondary,
+            color: Styles.color_Secondary,
           ),
           Container(
             height: 24,
@@ -140,14 +140,14 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                 fontFamily: 'SonsieOne',
                 fontSize: 18,
                 letterSpacing: -2,
-                color: Styles.drg_colorSecondaryDeepDark,
+                color: Styles.color_SecondaryDeepDark,
                 shadows: [
                   Shadow(
-                    color: Styles.drg_colorText.withOpacity(.2),
+                    color: Styles.color_Text.withOpacity(.2),
                     blurRadius: 5,
                   ),
                   Shadow(
-                      color: Styles.drg_colorText.withOpacity(.2),
+                      color: Styles.color_Text.withOpacity(.2),
                       blurRadius: 3,
                       offset: Offset(2, 3)),
                 ],
@@ -161,14 +161,14 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
               fontFamily: 'SonsieOne',
               fontSize: 32,
               letterSpacing: -2,
-              color: Styles.drg_colorSecondary,
+              color: Styles.color_Secondary,
               shadows: [
                 Shadow(
-                  color: Styles.drg_colorText.withOpacity(.3),
+                  color: Styles.color_Text.withOpacity(.3),
                   blurRadius: 8,
                 ),
                 Shadow(
-                    color: Styles.drg_colorText.withOpacity(.1),
+                    color: Styles.color_Text.withOpacity(.1),
                     blurRadius: 3,
                     offset: Offset(5, 6)),
               ],
@@ -181,14 +181,14 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
               fontFamily: 'SonsieOne',
               fontSize: 24,
               letterSpacing: -2,
-              color: Styles.drg_colorSecondaryDeepDark,
+              color: Styles.color_SecondaryDeepDark,
               shadows: [
                 Shadow(
-                  color: Styles.drg_colorText.withOpacity(.2),
+                  color: Styles.color_Text.withOpacity(.2),
                   blurRadius: 5,
                 ),
                 Shadow(
-                    color: Styles.drg_colorText.withOpacity(.2),
+                    color: Styles.color_Text.withOpacity(.2),
                     blurRadius: 3,
                     offset: Offset(2, 3)),
               ],
@@ -201,7 +201,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
             style: TextStyle(
               fontFamily: 'Bitter',
               fontWeight: FontWeight.w700,
-              color: Styles.drg_colorText.withOpacity(.7),
+              color: Styles.color_Text.withOpacity(.7),
             ),
           ),
           Text(
@@ -210,7 +210,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
             style: TextStyle(
               fontFamily: 'Bitter',
               fontWeight: FontWeight.w700,
-              color: Styles.drg_colorText.withOpacity(.7),
+              color: Styles.color_Text.withOpacity(.7),
             ),
           ),
           Spacer(
@@ -254,7 +254,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
           Icon(
             Icons.announcement,
             size: 80,
-            color: Styles.drg_colorSecondary,
+            color: Styles.color_Secondary,
           ),
           Text(
             "Before you      ",
@@ -262,14 +262,14 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
               fontFamily: 'SonsieOne',
               fontSize: 34,
               letterSpacing: -2,
-              color: Styles.drg_colorSecondary,
+              color: Styles.color_Secondary,
               shadows: [
                 Shadow(
-                  color: Styles.drg_colorText.withOpacity(.3),
+                  color: Styles.color_Text.withOpacity(.3),
                   blurRadius: 8,
                 ),
                 Shadow(
-                    color: Styles.drg_colorText.withOpacity(.1),
+                    color: Styles.color_Text.withOpacity(.1),
                     blurRadius: 3,
                     offset: Offset(5, 6)),
               ],
@@ -281,14 +281,14 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
               fontFamily: 'SonsieOne',
               fontSize: 28,
               letterSpacing: -2,
-              color: Styles.drg_colorText.withOpacity(0.7),
+              color: Styles.color_Text.withOpacity(0.7),
               shadows: [
                 Shadow(
-                  color: Styles.drg_colorText.withOpacity(.2),
+                  color: Styles.color_Text.withOpacity(.2),
                   blurRadius: 5,
                 ),
                 Shadow(
-                    color: Styles.drg_colorText.withOpacity(.2),
+                    color: Styles.color_Text.withOpacity(.2),
                     blurRadius: 3,
                     offset: Offset(2, 3)),
               ],
@@ -300,7 +300,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
             style: TextStyle(
               fontFamily: 'Bitter',
               fontWeight: FontWeight.w700,
-              color: Styles.drg_colorText.withOpacity(.7),
+              color: Styles.color_Text.withOpacity(.7),
             ),
           ),
           Text(
@@ -308,7 +308,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
             style: TextStyle(
               fontFamily: 'Bitter',
               fontWeight: FontWeight.w700,
-              color: Styles.drg_colorText.withOpacity(.7),
+              color: Styles.color_Text.withOpacity(.7),
             ),
           ),
           Spacer(
@@ -332,7 +332,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
           Icon(
             Icons.announcement,
             size: 80,
-            color: Styles.drg_colorSecondary,
+            color: Styles.color_Secondary,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -342,14 +342,14 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                 fontFamily: 'SonsieOne',
                 fontSize: 34,
                 letterSpacing: -2,
-                color: Styles.drg_colorSecondary,
+                color: Styles.color_Secondary,
                 shadows: [
                   Shadow(
-                    color: Styles.drg_colorText.withOpacity(.3),
+                    color: Styles.color_Text.withOpacity(.3),
                     blurRadius: 8,
                   ),
                   Shadow(
-                      color: Styles.drg_colorText.withOpacity(.1),
+                      color: Styles.color_Text.withOpacity(.1),
                       blurRadius: 3,
                       offset: Offset(5, 6)),
                 ],
@@ -362,14 +362,14 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
               fontFamily: 'SonsieOne',
               fontSize: 28,
               letterSpacing: -2,
-              color: Styles.drg_colorText.withOpacity(0.7),
+              color: Styles.color_Text.withOpacity(0.7),
               shadows: [
                 Shadow(
-                  color: Styles.drg_colorText.withOpacity(.2),
+                  color: Styles.color_Text.withOpacity(.2),
                   blurRadius: 5,
                 ),
                 Shadow(
-                    color: Styles.drg_colorText.withOpacity(.2),
+                    color: Styles.color_Text.withOpacity(.2),
                     blurRadius: 3,
                     offset: Offset(2, 3)),
               ],
@@ -433,10 +433,10 @@ class BuildListOfSets extends StatelessWidget {
                       child: Container(
                         width: double.infinity,
                         child: LinearProgressIndicator(
-                          backgroundColor: Styles.drg_colorAppBackgroundMedium
+                          backgroundColor: Styles.color_AppBackgroundMedium
                               .withOpacity(.4),
                           valueColor: AlwaysStoppedAnimation<Color>(Styles
-                              .drg_colorAppBackgroundLight
+                              .color_AppBackgroundLight
                               .withOpacity(.4)),
                         ),
                       ),
@@ -511,7 +511,7 @@ class BuildListOfSets extends StatelessWidget {
                     // ),
                     IconSlideAction(
                       caption: 'Edit',
-                      color: Styles.drg_colorSuccess,
+                      color: Styles.color_Success,
                       icon: Icons.edit,
                       onTap: () {
                         _buildSurveySetEditDialog(
@@ -525,7 +525,7 @@ class BuildListOfSets extends StatelessWidget {
                     ),
                     IconSlideAction(
                       caption: 'Delete',
-                      color: Styles.drg_colorAttention,
+                      color: Styles.color_Attention,
                       icon: Icons.delete,
                       onTap: () {
                         log("In BuildSurveySesListView ListView Dismissible Item name: ${surveySetDokumentSnapshot.data['name']}, id: ${surveySetDokumentSnapshot.documentID} is dismissed'");
@@ -538,7 +538,7 @@ class BuildListOfSets extends StatelessWidget {
 
                         Scaffold.of(context).showSnackBar(
                           SnackBar(
-                            backgroundColor: Styles.drg_colorAttention,
+                            backgroundColor: Styles.color_Attention,
                             elevation: 20,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(40)),
@@ -555,7 +555,7 @@ class BuildListOfSets extends StatelessWidget {
                   // },
                   child: Container(
                     margin: EdgeInsets.only(left: 14, bottom: 1, top: 1),
-                    color: Styles.drg_colorSecondary.withOpacity(0),
+                    color: Styles.color_Secondary.withOpacity(0),
                     child: ClipRRect(
                       clipBehavior: Clip.antiAlias,
                       borderRadius: BorderRadius.only(
@@ -565,7 +565,7 @@ class BuildListOfSets extends StatelessWidget {
                       child: Container(
                         padding: EdgeInsets.only(left: 16, bottom: 4),
                         decoration: BoxDecoration(
-                          color: Styles.drg_colorSecondary.withOpacity(.7),
+                          color: Styles.color_Secondary.withOpacity(.7),
                         ),
                         child: ListTile(
                           onTap: () {
@@ -579,9 +579,9 @@ class BuildListOfSets extends StatelessWidget {
                           title: Text(
                             "${surveySetDokumentSnapshot.data['name']} ",
                             style: TextStyle(
-                              color: Styles.drgColorTextMediumLight,
+                              color: Styles.color_Text.withOpacity(0.8),
                               fontFamily: 'Bitter',
-                              fontSize: Styles.drg_fontSizeMediumHeadline,
+                              fontSize: Styles.fontSize_MediumHeadline,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -637,12 +637,12 @@ class BuildListOfSets extends StatelessWidget {
                 bottomRight: Radius.circular(20),
               ),
             ),
-            backgroundColor: Styles.drg_colorSecondaryDeepDark,
+            backgroundColor: Styles.color_SecondaryDeepDark,
             title: Text(
               "Edit Survey Set Metadata",
               style: TextStyle(
                 fontFamily: 'Bitter',
-                color: Styles.drg_colorSecondary,
+                color: Styles.color_Secondary,
               ),
             ),
             children: <Widget>[
@@ -667,13 +667,13 @@ class BuildListOfSets extends StatelessWidget {
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.text,
                         style: TextStyle(
-                            color: Styles.drg_colorSecondary,
+                            color: Styles.color_Secondary,
                             fontWeight: FontWeight.w600),
                         attribute: "name",
                         decoration: InputDecoration(
                           labelText: "Team name",
                           labelStyle: TextStyle(
-                              color: Styles.drg_colorAppBackgroundMedium),
+                              color: Styles.color_AppBackgroundMedium),
                         ),
                         validators: [
                           FormBuilderValidators.max(32),
@@ -688,13 +688,13 @@ class BuildListOfSets extends StatelessWidget {
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.text,
                         style: TextStyle(
-                            color: Styles.drg_colorSecondary,
+                            color: Styles.color_Secondary,
                             fontWeight: FontWeight.w600),
                         attribute: "xName",
                         decoration: InputDecoration(
                           labelText: "Label for x axis",
                           labelStyle: TextStyle(
-                              color: Styles.drg_colorAppBackgroundMedium),
+                              color: Styles.color_AppBackgroundMedium),
                         ),
                         validators: [
                           FormBuilderValidators.max(32),
@@ -709,13 +709,13 @@ class BuildListOfSets extends StatelessWidget {
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.text,
                         style: TextStyle(
-                            color: Styles.drg_colorSecondary,
+                            color: Styles.color_Secondary,
                             fontWeight: FontWeight.w600),
                         attribute: "yName",
                         decoration: InputDecoration(
                           labelText: "Label for y axis",
                           labelStyle: TextStyle(
-                              color: Styles.drg_colorAppBackgroundMedium),
+                              color: Styles.color_AppBackgroundMedium),
                         ),
                         validators: [
                           FormBuilderValidators.max(32),
@@ -726,7 +726,7 @@ class BuildListOfSets extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 12.0),
                         child: FlatButton(
                           child: Text("Speichern"),
-                          color: Styles.drg_colorSecondary,
+                          color: Styles.color_Secondary,
                           onPressed: () {
                             log("In _buildSurveySetEditDialog - onPressed 'Speichern'");
                             if (_formSurveySetEditKey.currentState

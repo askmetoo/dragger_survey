@@ -32,7 +32,7 @@ class DraggerScaffoldScreen extends StatelessWidget {
             );
           }
           return Scaffold(
-            backgroundColor: Styles.drg_colorAppBackground,
+            backgroundColor: Styles.color_AppBackground,
             appBar: AppBar(
               title: currentSurveySnapshot.data != null
                   ? Text("${currentSurveySnapshot?.data['name']}")

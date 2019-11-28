@@ -134,7 +134,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
                       secondaryActions: <Widget>[
                         IconSlideAction(
                           caption: 'Edit',
-                          color: Styles.drg_colorSuccess,
+                          color: Styles.color_Success,
                           icon: Icons.edit,
                           onTap: () {
                             _buildSurveyEditDialog(
@@ -147,7 +147,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
                         ),
                         IconSlideAction(
                           caption: 'Delete',
-                          color: Styles.drg_colorAttention,
+                          color: Styles.color_Attention,
                           icon: Icons.delete,
                           onTap: () {
                             surveyBloc.deletePrismSurveyById(
@@ -158,7 +158,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
                       ],
                       child: Container(
                         margin: EdgeInsets.only(left: 14, bottom: 1, top: 1),
-                        color: Styles.drg_colorSecondary.withOpacity(0),
+                        color: Styles.color_Secondary.withOpacity(0),
                         child: ClipRRect(
                           clipBehavior: Clip.antiAlias,
                           borderRadius: BorderRadius.only(
@@ -168,13 +168,13 @@ class SurveySetDetailsScreen extends StatelessWidget {
                           child: Container(
                             padding: EdgeInsets.only(left: 16, bottom: 4),
                             decoration: BoxDecoration(
-                              color: Styles.drg_colorSecondary.withOpacity(.4),
+                              color: Styles.color_Secondary.withOpacity(.4),
                             ),
                             child: ListTile(
                               dense: true,
                               leading: Icon(
                                 Icons.person,
-                                color: Styles.drg_colorSecondary,
+                                color: Styles.color_Secondary,
                                 size: 36,
                               ),
                               title: RichText(
@@ -182,7 +182,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
                                   text: ("${document.data['askedPerson']} ")
                                       .toUpperCase(),
                                   style: TextStyle(
-                                    color: Styles.drg_colorText,
+                                    color: Styles.color_Text,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w700,
                                     letterSpacing: .7,
@@ -251,7 +251,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
                   child: Text(
                     "${surveySetsSnapshot?.data['name']}",
                     style: TextStyle(
-                        fontSize: Styles.drg_fontSizeMediumHeadline,
+                        fontSize: Styles.fontSize_MediumHeadline,
                         fontFamily: 'Bitter',
                         fontWeight: FontWeight.w700),
                   ),
@@ -260,14 +260,14 @@ class SurveySetDetailsScreen extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text("${surveySetsSnapshot.data['description']}",
                       style: TextStyle(
-                          fontSize: Styles.drg_fontSizesubHeadline,
+                          fontSize: Styles.fontSize_SubHeadline,
                           fontWeight: FontWeight.w500)),
                 ),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     "Granularity: ${surveySetsSnapshot.data['resolution']} \nThis set was created by ${userSnapshot?.data?.documents[0].data['displayName']}",
-                    style: TextStyle(fontSize: Styles.drg_fontSizeCopyText),
+                    style: TextStyle(fontSize: Styles.fontSize_CopyText),
                   ),
                 ),
               ],
@@ -298,12 +298,12 @@ class SurveySetDetailsScreen extends StatelessWidget {
                 bottomRight: Radius.circular(20),
               ),
             ),
-            backgroundColor: Styles.drg_colorSecondaryDeepDark,
+            backgroundColor: Styles.color_SecondaryDeepDark,
             title: Text(
               "Edit Survey Metadata",
               style: TextStyle(
                 fontFamily: 'Bitter',
-                color: Styles.drg_colorSecondary,
+                color: Styles.color_Secondary,
               ),
             ),
             children: <Widget>[
@@ -319,7 +319,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
                       FormBuilderTextField(
                         autofocus: true,
                         style: TextStyle(
-                          color: Styles.drg_colorSecondary,
+                          color: Styles.color_Secondary,
                         ),
                         attribute: "askedPerson",
                         decoration: InputDecoration(
@@ -333,7 +333,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 12.0),
                         child: FlatButton(
                           child: Text("Speichern"),
-                          color: Styles.drg_colorSecondary,
+                          color: Styles.color_Secondary,
                           onPressed: () {
                             if (_formSurveyEditKey.currentState
                                 .saveAndValidate()) {
