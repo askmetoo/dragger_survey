@@ -222,16 +222,16 @@ Widget buildTeamsListView({BuildContext context}) {
                                     ),
                                     onTap: () {
                                       teamBloc.setCurrentSelectedTeamId(teamId);
-                                      Navigator.pushNamed(
-                                        context,
-                                        '/surveysetslist',
-                                        arguments: "$teamId",
-                                      );
+                                      log("In BuildTeamsListView onTap - value of teamId: $teamId");
+                                      Navigator.of(context).pop();
                                     },
                                     leading: GestureDetector(
                                       onTapDown:
                                           (TapDownDetails tapDowndetails) {
-                                        openColorChooser(context: context, teamDocSnapshot: teamDocumentSnapshot);
+                                        openColorChooser(
+                                            context: context,
+                                            teamDocSnapshot:
+                                                teamDocumentSnapshot);
                                       },
                                       child: Padding(
                                         padding: EdgeInsets.only(right: 12.0),
@@ -324,7 +324,8 @@ openColorChooser({@required context, @required teamDocSnapshot}) {
         return Container(
           padding: EdgeInsets.fromLTRB(16, 12, 16, 24),
           height: 200,
-          child: Text("Choose your color \nfor team ${teamDocSnapshot['name']}"),
+          child:
+              Text("Choose your color \nfor team ${teamDocSnapshot['name']}"),
         );
       });
 }

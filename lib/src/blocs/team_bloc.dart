@@ -36,13 +36,11 @@ class TeamBloc extends ChangeNotifier {
 
   setCurrentSelectedTeam(DocumentSnapshot selectedTeam) async {
     currentSelectedTeam = selectedTeam;
-    notifyListeners();
   }
 
   setCurrentSelectedTeamId(String selectedTeamId) {
     log("In TeamBloc setCurrentSelectedTeamId value of selectedTeamId: $selectedTeamId");
     currentSelectedTeamId = selectedTeamId;
-    notifyListeners();
   }
 
   Stream<QuerySnapshot> get streamTeams {
@@ -94,8 +92,9 @@ class TeamBloc extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<QuerySnapshot> deleteUserFromTeamsArrayById({id}) async{
-    QuerySnapshot returnedValue = await Collection(path: "teams").deleteItemsFromDocumentsArrayById(fieldName: 'users', id: id);
+  Future<QuerySnapshot> deleteUserFromTeamsArrayById({id}) async {
+    QuerySnapshot returnedValue = await Collection(path: "teams")
+        .deleteItemsFromDocumentsArrayById(fieldName: 'users', id: id);
     notifyListeners();
     return returnedValue;
   }
@@ -108,19 +107,19 @@ class TeamBloc extends ChangeNotifier {
     return Collection<Team>(path: 'teams').streamDocumentById(id);
   }
 
-  Future<bool> deleteTeamByIdOnlyIfUserIsOwner({@required id, @required currentUserId}) async {
-
-    DocumentSnapshot _team = await Collection<Team>(path: 'teams').getDocument(id);
+  Future<bool> deleteTeamByIdOnlyIfUserIsOwner(
+      {@required id, @required currentUserId}) async {
+    DocumentSnapshot _team =
+        await Collection<Team>(path: 'teams').getDocument(id);
 
     String ownerId = _team.data['createdByUser'];
-
 
     if (currentUserId != ownerId) {
       log("In TeamBloc - deleteTeamByIdOnlyIfUserIsOwner - currentUserId is not equal to ownerId");
       log("In TeamBloc - deleteTeamByIdOnlyIfUserIsOwner - team not deleted!");
       return false;
-    } 
-    if(currentUserId == null || currentUserId == '') {
+    }
+    if (currentUserId == null || currentUserId == '') {
       log("In TeamBloc - deleteTeamByIdOnlyIfUserIsOwner - currentUserId is: $currentUserId");
       log("In TeamBloc - deleteTeamByIdOnlyIfUserIsOwner - team not deleted!");
       return false;

@@ -28,24 +28,26 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
     FirebaseUser _user = Provider.of<FirebaseUser>(context);
 
-    if (teamBloc?.getCurrentSelectedTeamId() != null) {
+    //// Check if there's a current selected team in the bloc (selected via dropdown or teams list)
+    if (teamBloc.currentSelectedTeamId == null &&
+        teamBloc?.getCurrentSelectedTeamId() != null) {
       setState(() {
         _selectedTeamId = teamBloc.getCurrentSelectedTeamId();
       });
+    } else {
+      setState(() {
+        _selectedTeamId = teamBloc.currentSelectedTeamId;
+      });
     }
 
+    //// Check wether there's already a current selected from the last session
     if (_selectedTeamId == null && widget.teamsSnapshot?.data != null) {
       setState(() {
         _selectedTeamId = widget.teamsSnapshot?.data?.documents[0]?.documentID;
         _selectedTeam = widget.teamsSnapshot?.data?.documents[0];
       });
-    }
-
-    if (teamBloc?.getCurrentSelectedTeam()?.documentID != null) {
-      setState(() {
-        _selectedTeamId = teamBloc.getCurrentSelectedTeam().documentID;
-        _selectedTeam = teamBloc.getCurrentSelectedTeam();
-      });
+      teamBloc.setCurrentSelectedTeamId(_selectedTeamId);
+      teamBloc.setCurrentSelectedTeam(_selectedTeam);
     }
 
     Stream<QuerySnapshot> streamTeamsQuery = teamBloc
@@ -84,6 +86,8 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                             value: _selectedTeamId,
                             onChanged: (value) {
                               String _selectedTeamId = value;
+                              print(
+                                  "In BuildTeamsDropdownButton onChanged - value of _selectedTeamId: $_selectedTeamId");
                               teamBloc
                                   .setCurrentSelectedTeamId(_selectedTeamId);
                               setState(() {

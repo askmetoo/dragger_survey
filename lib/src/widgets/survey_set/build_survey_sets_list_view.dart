@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/enums/connectivity_status.dart';
+import 'package:dragger_survey/src/shared/shared.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -21,13 +22,13 @@ class BuildSurveySetsListView extends StatefulWidget {
 }
 
 class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
-  Future<QuerySnapshot> queryTeamsForUser({teamBloc, user}) async {
-    QuerySnapshot teamsQuery = await teamBloc
-        .getTeamsQueryByArray(
+  Stream<QuerySnapshot> streamQueryTeamsForUser({TeamBloc teamBloc, user}) {
+    Stream<QuerySnapshot> teamsQuery = teamBloc
+        .streamTeamsQueryByArray(
           fieldName: 'users',
           arrayValue: user?.uid,
         )
-        .catchError((err) =>
+        .handleError((err) =>
             log("ERROR in BuildSurveySetsListView queryTeamsForUser: $err"));
     return teamsQuery;
   }
@@ -39,11 +40,11 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
     FirebaseUser _user = Provider.of<FirebaseUser>(context);
 
-    return FutureBuilder(
-      future: queryTeamsForUser(teamBloc: teamBloc, user: _user),
+    return StreamBuilder(
+      stream: streamQueryTeamsForUser(teamBloc: teamBloc, user: _user),
       builder:
           (BuildContext context, AsyncSnapshot<QuerySnapshot> teamsSnapshot) {
-        if (teamsSnapshot.connectionState != ConnectionState.done) {
+        if (teamsSnapshot.connectionState != ConnectionState.active) {
           return Center(
             child: Container(
               constraints: BoxConstraints(maxWidth: 50),
@@ -85,17 +86,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
               AsyncSnapshot<QuerySnapshot> surveySetSnapshot) {
             if (surveySetSnapshot.connectionState == ConnectionState.done) {
               if (!surveySetSnapshot.hasData) {
-                return Center(
-                  child: Container(
-                    constraints: BoxConstraints(maxWidth: 50),
-                    child: AspectRatio(
-                      aspectRatio: 1,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 10,
-                      ),
-                    ),
-                  ),
-                );
+                return Loader();
               }
 
               if (surveySetSnapshot.data.documents.isEmpty) {
