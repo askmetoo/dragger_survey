@@ -92,12 +92,10 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                   "In BuildTeamsDropdownButton onChanged - value of value: $value");
                               teamBloc.currentSelectedTeamId = value;
                               setState(() {
-                                _selectedTeamId = _selectedTeamId;
+                                _selectedTeamId = value;
                               });
 
-                              teamBloc
-                                  .streamTeamById(id: _selectedTeamId)
-                                  .listen((team) {
+                              teamBloc.streamTeamById(id: value).listen((team) {
                                 teamBloc.currentSelectedTeam = team;
                                 teamBloc.currentSelectedTeamId =
                                     team.documentID;
