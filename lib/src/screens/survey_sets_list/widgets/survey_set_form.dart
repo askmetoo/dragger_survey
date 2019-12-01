@@ -81,7 +81,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
     FirebaseUser _user = Provider.of<FirebaseUser>(context);
     bool loggedIn = _user != null;
     _createdByTeam = teamBloc.currentSelectedTeam;
-    _createdByTeamId = teamBloc.currentSelectedTeamId ??
+    _createdByTeamId = teamBloc.setCurrentSelectedTeamId ??
         teamBloc?.currentSelectedTeam?.documentID;
 
     log("In SurveySetForm - value of teamBloc.currentSelectedTeam == null: ${teamBloc.currentSelectedTeam == null}");
@@ -322,7 +322,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
     if (formKey.currentState.validate()) {
       log("1b) ----> In SurveySetForm _submitButtonOnPressed - has been validated.");
 
-      log("1b-b ----> teamBloc.currentSelectedTeamId: ${teamBloc.currentSelectedTeamId}");
+      log("1b-b ----> teamBloc.currentSelectedTeamId: ${teamBloc.setCurrentSelectedTeamId}");
 
       _description = prismSurveySetBloc.description;
       _xDescription = prismSurveySetBloc.xDescription;

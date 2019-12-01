@@ -95,8 +95,7 @@ class _CreateTeamFormState extends State<CreateTeamForm> {
                 decoration: InputDecoration(
                     isDense: true,
                     filled: true,
-                    fillColor:
-                        Styles.color_AppBackgroundLight.withOpacity(.5),
+                    fillColor: Styles.color_AppBackgroundLight.withOpacity(.5),
                     labelStyle: TextStyle(
                       color: Styles.color_AppBackground,
                     ),
@@ -262,7 +261,8 @@ class _CreateTeamFormState extends State<CreateTeamForm> {
     print("================================");
 
     if (teamBloc.updatingTeamData) {
-      teamBloc.updateTeamById(object: team, id: teamBloc.currentSelectedTeamId);
+      teamBloc.updateTeamById(
+          object: team, id: teamBloc.setCurrentSelectedTeamId);
     } else {
       teamBloc.addTeamToDb(team: team);
     }
