@@ -3,7 +3,6 @@ import 'dart:math' hide log;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
-import 'package:dragger_survey/src/enums/connectivity_status.dart';
 import 'package:dragger_survey/src/shared/shared.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -411,6 +410,7 @@ class BuildListOfSets extends StatelessWidget {
       physics: BouncingScrollPhysics(),
       children: surveySetSnapshot.data.documents.map(
         (DocumentSnapshot surveySetDokumentSnapshot) {
+
           if (!(surveySetSnapshot.connectionState == ConnectionState.done)) {
             return Center(
                 child: CircularProgressIndicator(
@@ -421,7 +421,12 @@ class BuildListOfSets extends StatelessWidget {
             Text("surveySetDokumentSnapshot does not exist");
           }
 
+          String _surveyId = surveySetDokumentSnapshot.documentID;
+          ValueKey _valueKey = ValueKey(_surveyId);
+          log("In BuildSurveySetsListView - FutureBuilder value of valueKey: $_valueKey");
+
           return FutureBuilder<QuerySnapshot>(
+            key: ValueKey(_valueKey),
               future: surveyBloc.getPrismSurveyQuery(
                   fieldName: 'surveySet',
                   fieldValue: surveySetDokumentSnapshot.documentID),

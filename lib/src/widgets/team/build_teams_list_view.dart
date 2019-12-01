@@ -51,15 +51,18 @@ Widget buildTeamsListView({BuildContext context}) {
                 scrollDirection: Axis.vertical,
                 children: teamsListSnapshot.data.documents
                     .map((teamDocumentSnapshot) {
-                  String teamId = teamDocumentSnapshot.documentID;
-                  String teamOwner = teamDocumentSnapshot['createdByUser'];
-                  String currentUser = signInSnapshot?.data?.uid;
+                  String _teamId = teamDocumentSnapshot.documentID;
+                  String _teamOwner = teamDocumentSnapshot['createdByUser'];
+                  String _currentUser = signInSnapshot?.data?.uid;
+                  ValueKey _valueKey = ValueKey(_teamId);
+
+                  log("In BuildTeamsListView - ListView value of valueKey: $_valueKey ");
 
                   if (teamDocumentSnapshot.data == null) {
                     return Container();
                   }
                   return Slidable(
-                    key: ValueKey(teamDocumentSnapshot.hashCode),
+                    key: _valueKey,
                     actionPane: SlidableDrawerActionPane(),
                     actionExtentRatio: .20,
                     // actions: <Widget>[
@@ -79,7 +82,7 @@ Widget buildTeamsListView({BuildContext context}) {
                       //     log("In SurveySetDetailsScreen Slidable 'More..'");
                       //   },
                       // ),
-                      if (teamOwner == currentUser)
+                      if (_teamOwner == _currentUser)
                         IconSlideAction(
                           caption: 'Delete',
                           color: Styles.color_Attention,
@@ -94,7 +97,7 @@ Widget buildTeamsListView({BuildContext context}) {
                               declinedText: "No",
                             );
 
-                            if (deleteTeam && teamOwner == currentUser) {
+                            if (deleteTeam && _teamOwner == _currentUser) {
                               teamDeleted = await teamBloc
                                   .deleteTeamByIdOnlyIfUserIsOwner(
                                 id: teamDocumentSnapshot.documentID,
@@ -121,7 +124,7 @@ Widget buildTeamsListView({BuildContext context}) {
                             );
                           },
                         ),
-                      if (teamOwner != currentUser)
+                      if (_teamOwner != _currentUser)
                         IconSlideAction(
                           caption: 'Quit',
                           color: Styles.color_SecondaryDeepDark.withOpacity(.2),
@@ -139,7 +142,7 @@ Widget buildTeamsListView({BuildContext context}) {
                             userList =
                                 teamDocumentSnapshot.data['users'].toList();
                             userList.removeWhere(
-                                (user) => user.toString() == currentUser);
+                                (user) => user.toString() == _currentUser);
                             team.data['users'] = userList;
 
                             if (quitMembership) {
@@ -187,7 +190,7 @@ Widget buildTeamsListView({BuildContext context}) {
                           child: FutureBuilder<QuerySnapshot>(
                               future: userBloc.getUsersQuery(
                                 fieldName: 'providersUID',
-                                fieldValue: teamOwner,
+                                fieldValue: _teamOwner,
                               ),
                               builder: (context, userSnapshot) {
                                 if (userSnapshot.connectionState !=
@@ -207,21 +210,21 @@ Widget buildTeamsListView({BuildContext context}) {
                                     contentPadding: EdgeInsets.only(
                                         left: 10, right: 10, bottom: 2),
                                     trailing: IconButton(
-                                      key: Key(teamId),
+                                      key: Key(_teamId),
                                       icon: Icon(Icons.edit),
                                       onPressed: () async {
-                                        teamBloc.currentSelectedTeamId = teamId;
+                                        teamBloc.currentSelectedTeamId = _teamId;
 
                                         Navigator.pushNamed(
                                           context,
                                           '/teammanager',
-                                          arguments: {"id": "$teamId"},
+                                          arguments: {"id": "$_teamId"},
                                         );
                                       },
                                     ),
                                     onTap: () {
-                                      teamBloc.currentSelectedTeamId = teamId;
-                                      log("In BuildTeamsListView onTap - value of teamId: $teamId");
+                                      teamBloc.currentSelectedTeamId = _teamId;
+                                      log("In BuildTeamsListView onTap - value of teamId: $_teamId");
                                       Navigator.of(context).pop();
                                     },
                                     leading: GestureDetector(

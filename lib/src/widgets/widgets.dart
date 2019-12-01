@@ -10,7 +10,6 @@ export '../screens/survey_sets_list/widgets/survey_set_form.dart';
 export 'team/team_form.dart';
 export '../screens/survey_sets_list/widgets/create_team_form.dart';
 export 'profile/user_drawer.dart';
-export 'survey_set/build_survey_sets_list_view.dart';
 export 'team/build_teams_dropdown_button.dart';
 export 'common/build_no_data_available.dart';
 export 'common/build_filter_sort.dart';
