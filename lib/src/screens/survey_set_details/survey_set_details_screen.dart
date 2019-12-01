@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
+import 'package:dragger_survey/src/shared/shared.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -20,10 +21,12 @@ class SurveySetDetailsScreen extends StatelessWidget {
         Provider.of<PrismSurveySetBloc>(context);
 
     return FutureBuilder<DocumentSnapshot>(
-      future: surveySetsBloc.getPrismSurveySetById(id: surveySetId),
-      builder: (BuildContext context,
-          AsyncSnapshot<DocumentSnapshot> surveySetsSnapshot) {
-        if (surveySetsSnapshot.connectionState == ConnectionState.done) {
+        future: surveySetsBloc.getPrismSurveySetById(id: surveySetId),
+        builder: (BuildContext context,
+            AsyncSnapshot<DocumentSnapshot> surveySetsSnapshot) {
+          if (surveySetsSnapshot.connectionState != ConnectionState.done) {
+            return Loader();
+          }
           if (surveySetsSnapshot.data.documentID == null) {
             log("In survey_set_details_screen - Snapshot has no data.");
             return Center(
@@ -50,10 +53,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
               ),
             ),
           );
-        }
-        return Text("Nothing here");
-      },
-    );
+        });
   }
 
   buildSurveyList({

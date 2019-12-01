@@ -42,30 +42,34 @@ class DraggerBoardButtons extends StatelessWidget {
               child: Text("Save result"),
               disabledColor: Styles.color_AppBackgroundMedium.withOpacity(.4),
               disabledTextColor: Styles.color_Primary,
-              onPressed: draggableItemBloc.startedDragging ? () async {
-                Map<String, dynamic> survey = {
-                  "created": prismSurveyBloc.created,
-                  "askedPerson": prismSurveyBloc.currentAskedPerson,
-                  "team": teamBloc.currentSelectedTeam?.documentID,
-                  "surveySet": currentSurveySet,
-                  "edited": DateTime.now(),
-                  "users": user.uid,
-                  "xValue": prismSurveyBloc.rowIndex,
-                  "yValue": prismSurveyBloc.colIndex,
-                };
-                prismSurveyBloc.addPrismSurveyToDb(survey: survey);
-                  Scaffold.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Your answer has been sucessfully saved:'),
-                        backgroundColor: Styles.color_Success,
-                      ),
-                  );
-                await Future.delayed(const Duration(milliseconds: 800), () {});
-                Navigator.of(context).pop();
-                Future.delayed(const Duration(milliseconds: 800), () {
-                  draggableItemBloc.resetDraggableItemPositon();
-                });
-              } : null,
+              onPressed: draggableItemBloc.startedDragging
+                  ? () async {
+                      Map<String, dynamic> survey = {
+                        "created": prismSurveyBloc.created,
+                        "askedPerson": prismSurveyBloc.currentAskedPerson,
+                        "team": teamBloc.currentSelectedTeam?.documentID,
+                        "surveySet": currentSurveySet,
+                        "edited": DateTime.now(),
+                        "users": user.uid,
+                        "xValue": prismSurveyBloc.rowIndex,
+                        "yValue": prismSurveyBloc.colIndex,
+                      };
+                      prismSurveyBloc.addPrismSurveyToDb(survey: survey);
+                      Scaffold.of(context).showSnackBar(
+                        SnackBar(
+                          content:
+                              Text('Your answer has been sucessfully saved:'),
+                          backgroundColor: Styles.color_Success,
+                        ),
+                      );
+                      await Future.delayed(
+                          const Duration(milliseconds: 800), () {});
+                      Navigator.of(context).pop();
+                      Future.delayed(const Duration(milliseconds: 800), () {
+                        draggableItemBloc.resetDraggableItemPositon();
+                      });
+                    }
+                  : null,
             ),
           ),
           SizedBox(

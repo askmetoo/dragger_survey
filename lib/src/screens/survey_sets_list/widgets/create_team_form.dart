@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dragger_survey/src/screens/survey_sets_list/widgets/widgets.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -164,21 +165,10 @@ class _CreateTeamFormState extends State<CreateTeamForm> {
   }
 
   String getInitialValue(TeamBloc bloc, AsyncSnapshot snapshot) {
-    print("----------========>>> snapshot ::: $snapshot");
-    print("----------========>>> snapshot?.data ::: ${snapshot?.data}");
-    // print("----------========>>> snapshot?.data['name'] ::: ${snapshot?.data['name']}");
-    // print("----------========>>> snapshot?.data['description'] ::: ${snapshot?.data['description']}");
     if (!bloc.updatingTeamData) {
       return '';
     }
     return snapshot?.data['name'];
-    // print("----------========>>> snapshot?.data['desciption'] ::: ${snapshot?.data['name']}");
-    // if(bloc.updatingTeamData == null) {
-    //   return '';
-    // } else if (snapshot?.data['name'] == null) {
-    //   return '';
-    // }
-    // return '${snapshot?.data['name']}';
   }
 
   Widget _buildFormButton(
@@ -188,13 +178,14 @@ class _CreateTeamFormState extends State<CreateTeamForm> {
       child: Column(
         children: <Widget>[
           _buildSubmitButton(formKey, context),
-          _buildCancelButton(context)
+          new BuildCancelButton(context: context),
         ],
       ),
     );
   }
 
   SizedBox _buildSubmitButton(formKey, context) {
+    
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
 
     return SizedBox(
@@ -205,25 +196,11 @@ class _CreateTeamFormState extends State<CreateTeamForm> {
         color: Styles.color_Primary,
         textColor: Colors.white,
         onPressed: () {
-          _buttonOnPressed(context: context, formKey: formKey);
+          _submitButtonOnPressed(context: context, formKey: formKey);
           log("In TeamForm Submit button presssed - form has changed");
           Navigator.of(context).pop();
         },
         child: teamBloc.updatingTeamData ? Text('Update') : Text('Submit'),
-      ),
-    );
-  }
-
-  SizedBox _buildCancelButton(context) {
-    return SizedBox(
-      width: double.infinity,
-      child: FlatButton(
-        textColor: Styles.color_Primary,
-        onPressed: () {
-          print("Cancel button presssed");
-          Navigator.of(context).pop();
-        },
-        child: Text('Cancel'),
       ),
     );
   }
@@ -266,10 +243,9 @@ class _CreateTeamFormState extends State<CreateTeamForm> {
     } else {
       teamBloc.addTeamToDb(team: team);
     }
-    print("2 team) ----> Form values have been sent to bloc");
   }
 
-  void _buttonOnPressed({formKey, @required BuildContext context}) {
+  void _submitButtonOnPressed({formKey, @required BuildContext context}) {
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
     FirebaseUser user = Provider.of<FirebaseUser>(context);
 
@@ -298,3 +274,5 @@ class _CreateTeamFormState extends State<CreateTeamForm> {
     }
   }
 }
+
+

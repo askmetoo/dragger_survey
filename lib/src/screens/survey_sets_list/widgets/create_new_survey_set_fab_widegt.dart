@@ -1,59 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/styles.dart';
 
 import 'package:dragger_survey/src/screens/survey_sets_list/widgets/widgets.dart';
 
-class CreateNewTeamFAB extends StatelessWidget {
-  const CreateNewTeamFAB({
+class CreateNewSurveySetFAB extends StatelessWidget {
+  const CreateNewSurveySetFAB({
     Key key,
-    @required this.teamBloc,
   }) : super(key: key);
-
-  final TeamBloc teamBloc;
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
+      elevation: 12,
       backgroundColor: Styles.color_Secondary,
-      icon: Icon(
-        Icons.people,
-        color: Styles.color_Text.withOpacity(.8),
-      ),
       label: Text(
-        'Create new Team',
+        "Create new survey set",
         style: TextStyle(
           color: Styles.color_Text.withOpacity(0.8),
         ),
       ),
+      icon: Icon(
+        Icons.library_add,
+        color: Styles.color_SecondaryDeepDark,
+      ),
+      tooltip: "Add new Survey Set",
       onPressed: () {
-        teamBloc.updatingTeamData = false;
         showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text(
-                "Create new Team",
-                style: TextStyle(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                titleTextStyle: TextStyle(
                   fontFamily: 'Bitter',
-                  fontWeight: FontWeight.w200,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: Styles.color_Text.withOpacity(.8),
                 ),
-              ),
-              content: CreateTeamForm(),
-              elevation: 10,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(3),
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
+                titlePadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                elevation: 10,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(3),
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  ),
                 ),
-              ),
-              backgroundColor: Styles.color_Secondary,
-              contentTextStyle: TextStyle(color: Styles.color_Text),
-            );
-          },
-        );
+                title: Text("New survey set"),
+                backgroundColor: Styles.color_Secondary,
+                contentTextStyle: TextStyle(color: Styles.color_Text),
+                content: SurveySetForm(),
+              );
+            });
       },
     );
   }

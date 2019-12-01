@@ -30,9 +30,9 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
 
     //// Check if there's a current selected team in the bloc (selected via dropdown or teams list)
     if (teamBloc.currentSelectedTeamId == null &&
-        teamBloc?.getCurrentSelectedTeamId() != null) {
+        teamBloc?.currentSelectedTeamId != null) {
       setState(() {
-        _selectedTeamId = teamBloc.getCurrentSelectedTeamId();
+        _selectedTeamId = teamBloc.currentSelectedTeamId;
       });
     } else {
       setState(() {

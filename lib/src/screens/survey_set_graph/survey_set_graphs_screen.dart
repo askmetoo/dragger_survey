@@ -78,7 +78,6 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
       // Read the file
       return await file.readAsString();
     } catch (e) {
-      // Return null if we encounter an error
       return null;
     }
   }
@@ -187,12 +186,13 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
                             Padding(
                               padding: const EdgeInsets.only(top: 16.0),
                               child: RaisedButton.icon(
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(12),
                                   topRight: Radius.circular(4),
                                   bottomLeft: Radius.circular(12),
                                   bottomRight: Radius.circular(12),
-                                  )),
+                                )),
                                 color: Styles.color_Secondary.withOpacity(.7),
                                 elevation: .6,
                                 icon: Icon(
@@ -201,8 +201,8 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
                                 ),
                                 label: Text(
                                   'Share as string in CSV format',
-                                  style: TextStyle(
-                                      color: Styles.color_Contrast),
+                                  style:
+                                      TextStyle(color: Styles.color_Contrast),
                                 ),
                                 onPressed: () {
                                   List<List<dynamic>> list = [[]];
@@ -211,8 +211,10 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
                                     surveySetSnapshot.data.data['yName']
                                   ]);
                                   surveySnapshot.data.documents.forEach((doc) {
-                                    list.add(
-                                        [doc.data['xValue'], doc.data['yValue']]);
+                                    list.add([
+                                      doc.data['xValue'],
+                                      doc.data['yValue']
+                                    ]);
                                   });
                                   var result = ListToCsvConverter()
                                       .convert(list,

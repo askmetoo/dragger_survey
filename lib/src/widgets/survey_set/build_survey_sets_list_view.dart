@@ -433,11 +433,10 @@ class BuildListOfSets extends StatelessWidget {
                       child: Container(
                         width: double.infinity,
                         child: LinearProgressIndicator(
-                          backgroundColor: Styles.color_AppBackgroundMedium
-                              .withOpacity(.4),
-                          valueColor: AlwaysStoppedAnimation<Color>(Styles
-                              .color_AppBackgroundLight
-                              .withOpacity(.4)),
+                          backgroundColor:
+                              Styles.color_AppBackgroundMedium.withOpacity(.4),
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              Styles.color_AppBackgroundLight.withOpacity(.4)),
                         ),
                       ),
                     ),

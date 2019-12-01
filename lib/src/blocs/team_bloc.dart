@@ -13,7 +13,7 @@ class TeamBloc extends ChangeNotifier {
   String _currentSelectedTeamId;
 
   DocumentSnapshot getCurrentSelectedTeam() {
-    return currentSelectedTeam;
+    return _currentSelectedTeam;
   }
 
   DocumentSnapshot get currentSelectedTeam {
@@ -21,7 +21,7 @@ class TeamBloc extends ChangeNotifier {
   }
 
   String getCurrentSelectedTeamId() {
-    return currentSelectedTeamId;
+    return _currentSelectedTeamId;
   }
 
   String get currentSelectedTeamId {
@@ -41,7 +41,17 @@ class TeamBloc extends ChangeNotifier {
     notifyListeners();
   }
 
-  set currentSelectedTeam(DocumentSnapshot selectedTeam) {
+  set currentSelectedTeam(selectedTeam) {
+    _currentSelectedTeam = selectedTeam;
+    notifyListeners();
+  }
+
+  set currentSelectedTeamId(selectedTeamId) {
+    _currentSelectedTeamId = selectedTeamId;
+    notifyListeners();
+  }
+
+  setCurrentSelectedTeam(DocumentSnapshot selectedTeam) {
     _currentSelectedTeam = selectedTeam;
     //// This call for notifyListeners produces an assertion:
     ///    setState() or markNeedsBuild() called during build.
@@ -50,7 +60,7 @@ class TeamBloc extends ChangeNotifier {
     notifyListeners();
   }
 
-  set currentSelectedTeamId(String selectedTeamId) {
+  setCurrentSelectedTeamId(String selectedTeamId) {
     _currentSelectedTeamId = selectedTeamId;
     //// This call for notifyListeners produces an assertion exeption:
     ///    setState() or markNeedsBuild() called during build.
