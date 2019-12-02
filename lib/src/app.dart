@@ -19,8 +19,10 @@ class App extends StatelessWidget {
         StreamProvider<FirebaseUser>.value(
             value: FirebaseAuth.instance.onAuthStateChanged),
         StreamProvider<ConnectivityStatus>(
-          builder: (context) =>
+          create: (context) =>
               ConnectivityService().connectionStatusController.stream,
+          // builder: (context) =>
+          //     ConnectivityService().connectionStatusController.stream,
         ),
         ChangeNotifierProvider<SignInBloc>.value(
           value: SignInBloc(),
