@@ -185,7 +185,6 @@ class _CreateTeamFormState extends State<CreateTeamForm> {
   }
 
   SizedBox _buildSubmitButton(formKey, context) {
-    
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
 
     return SizedBox(
@@ -238,8 +237,7 @@ class _CreateTeamFormState extends State<CreateTeamForm> {
     print("================================");
 
     if (teamBloc.updatingTeamData) {
-      teamBloc.updateTeamById(
-          object: team, id: teamBloc.setCurrentSelectedTeamId);
+      teamBloc.updateTeamById(object: team, id: teamBloc.currentSelectedTeamId);
     } else {
       teamBloc.addTeamToDb(team: team);
     }
@@ -274,5 +272,3 @@ class _CreateTeamFormState extends State<CreateTeamForm> {
     }
   }
 }
-
-

@@ -12,24 +12,12 @@ class TeamBloc extends ChangeNotifier {
   DocumentSnapshot _currentSelectedTeam;
   String _currentSelectedTeamId;
 
-  DocumentSnapshot getCurrentSelectedTeam() {
-    return _currentSelectedTeam;
-  }
-
-  DocumentSnapshot get currentSelectedTeam {
-    return _currentSelectedTeam;
-  }
-
-  String getCurrentSelectedTeamId() {
-    return _currentSelectedTeamId;
-  }
-
-  String get currentSelectedTeamId {
-    return _currentSelectedTeamId;
-  }
-
+  DocumentSnapshot get currentSelectedTeam => _currentSelectedTeam;
+  DocumentSnapshot getCurrentSelectedTeam() => _currentSelectedTeam;
+  String get currentSelectedTeamId => _currentSelectedTeamId;
   get orderField => _orderField;
   get descendingOrder => _descendingOrder;
+  String getCurrentSelectedTeamId() => _currentSelectedTeamId;
 
   set orderField(orderField) {
     _orderField = orderField;
@@ -51,23 +39,23 @@ class TeamBloc extends ChangeNotifier {
     notifyListeners();
   }
 
-  setCurrentSelectedTeam(DocumentSnapshot selectedTeam) {
-    _currentSelectedTeam = selectedTeam;
-    //// This call for notifyListeners produces an assertion:
-    ///    setState() or markNeedsBuild() called during build.
-    ///  But leaving it out won't update the SurveySets list after
-    ///  selecting a team from the teams dropdown.
-    notifyListeners();
-  }
+  // setCurrentSelectedTeam(DocumentSnapshot selectedTeam) {
+  //   _currentSelectedTeam = selectedTeam;
+  //   //// This call for notifyListeners produces an assertion:
+  //   ///    setState() or markNeedsBuild() called during build.
+  //   ///  But leaving it out won't update the SurveySets list after
+  //   ///  selecting a team from the teams dropdown.
+  //   notifyListeners();
+  // }
 
-  setCurrentSelectedTeamId(String selectedTeamId) {
-    _currentSelectedTeamId = selectedTeamId;
-    //// This call for notifyListeners produces an assertion exeption:
-    ///    setState() or markNeedsBuild() called during build.
-    ///  But leaving it out won't update the SurveySets list after
-    ///  selecting a team from the teams dropdown.
-    notifyListeners();
-  }
+  // setCurrentSelectedTeamId(String selectedTeamId) {
+  //   _currentSelectedTeamId = selectedTeamId;
+  //   //// This call for notifyListeners produces an assertion exeption:
+  //   ///    setState() or markNeedsBuild() called during build.
+  //   ///  But leaving it out won't update the SurveySets list after
+  //   ///  selecting a team from the teams dropdown.
+  //   notifyListeners();
+  // }
 
   Stream<QuerySnapshot> get streamTeams {
     return Collection<Team>(path: 'teams').streamDocuments();

@@ -10,7 +10,6 @@ import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/widgets/dragger_board/select_granularity.dart';
 
 class SurveySetForm extends StatefulWidget {
-
   @override
   _SurveySetFormState createState() => _SurveySetFormState();
 }
@@ -108,7 +107,6 @@ class _SurveySetFormState extends State<SurveySetForm> {
   }
 
   Widget _buildForm({@required context, @required formKey}) {
-
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -322,7 +320,7 @@ class _SurveySetFormState extends State<SurveySetForm> {
     if (formKey.currentState.validate()) {
       log("1b) ----> In SurveySetForm _submitButtonOnPressed - has been validated.");
 
-      log("1b-b ----> teamBloc.currentSelectedTeamId: ${teamBloc.setCurrentSelectedTeamId}");
+      log("1b-b ----> teamBloc.currentSelectedTeamId: ${teamBloc.currentSelectedTeamId}");
 
       _description = prismSurveySetBloc.description;
       _xDescription = prismSurveySetBloc.xDescription;
@@ -358,5 +356,3 @@ class _SurveySetFormState extends State<SurveySetForm> {
     }
   }
 }
-
-

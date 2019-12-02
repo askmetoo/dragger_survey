@@ -21,7 +21,7 @@ class BuildTeamsDropdownButtonRow extends StatefulWidget {
 
 class _BuildTeamsDropdownButtonRowState
     extends State<BuildTeamsDropdownButtonRow> {
-  // String _selectedTeamId;
+  String _selectedTeamId;
   // DocumentSnapshot _selectedTeam;
 
   @override
@@ -87,16 +87,22 @@ class _BuildTeamsDropdownButtonRowState
                             underline: Container(),
                             isExpanded: true,
                             isDense: false,
+                            // value: _selectedTeamId,
                             value: teamBloc.currentSelectedTeamId,
                             onChanged: (value) {
-                              log("In BuildTeamsDropdownButton onChanged - value of _selectedTeamId old: $teamBloc.currentSelectedTeamId");
-                              log("In BuildTeamsDropdownButton onChanged - value of value: $value");
-                              teamBloc.currentSelectedTeamId = value;
-                              // teamBloc.setCurrentSelectedTeamId(value);
                               // setState(() {
                               //   _selectedTeamId = value;
                               // });
-                              log("In BuildTeamsDropdownButton onChanged - value of _selectedTeamId new: $teamBloc.currentSelectedTeamId");
+                              teamBloc.currentSelectedTeamId = value;
+
+                              showDialog(
+                                  context: context,
+                                  child: AlertDialog(
+                                    title: Text("Current Team: $value"),
+                                    content: Text(
+                                        "...in bloc: ${teamBloc.currentSelectedTeamId}"),
+                                  ));
+                              // teamBloc.setCurrentSelectedTeamId(value);
 
                               // teamBloc
                               //     .streamTeamById(id: value)
@@ -128,104 +134,110 @@ class _BuildTeamsDropdownButtonRowState
                                   height: 2.4),
                               maxLines: 1,
                             ),
-                            items: widget.teamsSnapshot.data.documents
-                                .map<DropdownMenuItem>(
-                              (team) {
-                                return DropdownMenuItem(
-                                  key: ValueKey(team.documentID),
-                                  value: team.documentID,
-                                  child: SingleChildScrollView(
-                                    child: Container(
-                                      height: 54,
-                                      padding: const EdgeInsets.only(bottom: 0),
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                            color: Styles.color_AppBackground
-                                                .withOpacity(.6),
-                                            width: .5,
-                                          ),
-                                        ),
-                                      ),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 12.0, bottom: 4),
-                                            child: RoundedLetter(
-                                              text: buildInitials(
-                                                  name: team['name']),
-                                              fontColor: Styles.color_Secondary,
-                                              shapeType: ShapeType.circle,
-                                              shapeColor: Styles.color_Primary,
-                                              borderColor:
-                                                  Styles.color_Secondary,
-                                              shapeSize: 34,
-                                              fontSize: 15,
-                                              borderWidth: 2,
+                            items: <DropdownMenuItem<dynamic>>[
+                              ...widget.teamsSnapshot.data.documents
+                                  .map<DropdownMenuItem>(
+                                (team) {
+                                  return DropdownMenuItem(
+                                    key: ValueKey(team.documentID),
+                                    value: team.documentID,
+                                    child: SingleChildScrollView(
+                                      child: Container(
+                                        height: 54,
+                                        padding:
+                                            const EdgeInsets.only(bottom: 0),
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            bottom: BorderSide(
+                                              color: Styles.color_AppBackground
+                                                  .withOpacity(.6),
+                                              width: .5,
                                             ),
                                           ),
-                                          Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                padding:
-                                                    EdgeInsetsDirectional.only(
-                                                        top: 6, bottom: 0),
-                                                child: Text(
-                                                  "${team['name']}",
-                                                  textAlign: TextAlign.start,
-                                                  style: TextStyle(
-                                                    color: Styles.color_Text
-                                                        .withOpacity(0.8),
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w900,
-                                                    fontFamily: 'Bitter',
-                                                    height: .7,
-                                                  ),
-                                                ),
+                                        ),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 12.0, bottom: 4),
+                                              child: RoundedLetter(
+                                                text: buildInitials(
+                                                    name: team['name']),
+                                                fontColor:
+                                                    Styles.color_Secondary,
+                                                shapeType: ShapeType.circle,
+                                                shapeColor:
+                                                    Styles.color_Primary,
+                                                borderColor:
+                                                    Styles.color_Secondary,
+                                                shapeSize: 34,
+                                                fontSize: 15,
+                                                borderWidth: 2,
                                               ),
-                                              Container(
-                                                width: mqWidth * .55,
-                                                child: Padding(
-                                                  padding:
-                                                      EdgeInsets.only(right: 4),
+                                            ),
+                                            Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsetsDirectional
+                                                      .only(top: 6, bottom: 0),
                                                   child: Text(
-                                                    team['description'] != ''
-                                                        ? "${team['description']}"
-                                                        : 'Team has no description',
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    maxLines: 1,
-                                                    softWrap: true,
+                                                    "${team['name']}",
                                                     textAlign: TextAlign.start,
                                                     style: TextStyle(
-                                                        color: Styles
-                                                            .color_SecondaryDeepDark
-                                                            .withOpacity(.8),
-                                                        fontFamily: 'Bitter',
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        fontSize: 14,
-                                                        height: 1.6),
+                                                      color: Styles.color_Text
+                                                          .withOpacity(0.8),
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                      fontFamily: 'Bitter',
+                                                      height: .7,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                                Container(
+                                                  width: mqWidth * .55,
+                                                  child: Padding(
+                                                    padding: EdgeInsets.only(
+                                                        right: 4),
+                                                    child: Text(
+                                                      team['description'] != ''
+                                                          ? "${team['description']}"
+                                                          : 'Team has no description',
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      maxLines: 1,
+                                                      softWrap: true,
+                                                      textAlign:
+                                                          TextAlign.start,
+                                                      style: TextStyle(
+                                                          color: Styles
+                                                              .color_SecondaryDeepDark
+                                                              .withOpacity(.8),
+                                                          fontFamily: 'Bitter',
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          fontSize: 14,
+                                                          height: 1.6),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
-                            ).toList(),
+                                  );
+                                },
+                              ).toList()
+                            ],
                           ),
                   ),
                 ),

@@ -1,13 +1,14 @@
 import 'dart:developer';
-import 'package:dragger_survey/src/screens/survey_sets_list/widgets/widgets.dart';
+import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:dragger_survey/src/screens/survey_sets_list/widgets/widgets.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
-import 'package:provider/provider.dart';
 
 class SurveySetsListScreen extends StatefulWidget {
   final String teamId;
@@ -87,4 +88,3 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
         });
   }
 }
-
