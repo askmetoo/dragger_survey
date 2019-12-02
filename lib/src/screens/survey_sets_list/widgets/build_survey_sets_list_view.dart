@@ -3,7 +3,6 @@ import 'dart:math' hide log;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
-import 'package:dragger_survey/src/enums/connectivity_status.dart';
 import 'package:dragger_survey/src/shared/shared.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -45,17 +44,7 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
       builder:
           (BuildContext context, AsyncSnapshot<QuerySnapshot> teamsSnapshot) {
         if (teamsSnapshot.connectionState != ConnectionState.active) {
-          return Center(
-            child: Container(
-              constraints: BoxConstraints(maxWidth: 50),
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: CircularProgressIndicator(
-                  strokeWidth: 10,
-                ),
-              ),
-            ),
-          );
+          return Loader();
         }
 
         if (teamsSnapshot.data.documents.isEmpty) {
@@ -73,18 +62,15 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
           return buildChooseATeamBeforeYouStartText();
         }
 
-        return FutureBuilder<QuerySnapshot>(
-          future: surveySetsBloc
-              .getPrismSurveySetQueryOrderByField(
-                  fieldName: 'createdByTeam',
-                  fieldValue: teamBloc?.currentSelectedTeamId,
-                  orderField: surveySetsBloc.orderField,
-                  descending: surveySetsBloc.descendingOrder)
-              .catchError((err) => log(
-                  "ERROR in BuildSurveySetsListView getPrismSurveySetQuery: $err")),
+        return StreamBuilder<QuerySnapshot>(
+          stream: surveySetsBloc.streamPrismSurveySetQueryOrderByField(
+              fieldName: 'createdByTeam',
+              fieldValue: teamBloc?.currentSelectedTeamId,
+              orderField: surveySetsBloc.orderField,
+              descending: surveySetsBloc.descendingOrder),
           builder: (BuildContext context,
               AsyncSnapshot<QuerySnapshot> surveySetSnapshot) {
-            if (surveySetSnapshot.connectionState == ConnectionState.done) {
+            if (surveySetSnapshot.connectionState == ConnectionState.active) {
               if (!surveySetSnapshot.hasData) {
                 return Loader();
               }
@@ -103,6 +89,9 @@ class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
                       textAlign: TextAlign.start,
                     ),
                   ),
+                  Text("Current Team: ${teamBloc?.currentSelectedTeamId}"),
+                  Text(
+                      "Current Survey Set: ${surveySetSnapshot.data.documents.first.documentID}"),
                   Expanded(
                       child: BuildListOfSets(
                     surveySetsBloc: surveySetsBloc,
@@ -411,7 +400,7 @@ class BuildListOfSets extends StatelessWidget {
       physics: BouncingScrollPhysics(),
       children: surveySetSnapshot.data.documents.map(
         (DocumentSnapshot surveySetDokumentSnapshot) {
-          if (!(surveySetSnapshot.connectionState == ConnectionState.done)) {
+          if (!(surveySetSnapshot.connectionState == ConnectionState.active)) {
             return Center(
                 child: CircularProgressIndicator(
               strokeWidth: 10,
@@ -421,7 +410,12 @@ class BuildListOfSets extends StatelessWidget {
             Text("surveySetDokumentSnapshot does not exist");
           }
 
+          String _surveyId = surveySetDokumentSnapshot.documentID;
+          ValueKey _valueKey = ValueKey(_surveyId);
+          log("In BuildSurveySetsListView - FutureBuilder value of valueKey: $_valueKey");
+
           return FutureBuilder<QuerySnapshot>(
+              key: ValueKey(_valueKey),
               future: surveyBloc.getPrismSurveyQuery(
                   fieldName: 'surveySet',
                   fieldValue: surveySetDokumentSnapshot.documentID),
@@ -433,11 +427,10 @@ class BuildListOfSets extends StatelessWidget {
                       child: Container(
                         width: double.infinity,
                         child: LinearProgressIndicator(
-                          backgroundColor: Styles.color_AppBackgroundMedium
-                              .withOpacity(.4),
-                          valueColor: AlwaysStoppedAnimation<Color>(Styles
-                              .color_AppBackgroundLight
-                              .withOpacity(.4)),
+                          backgroundColor:
+                              Styles.color_AppBackgroundMedium.withOpacity(.4),
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              Styles.color_AppBackgroundLight.withOpacity(.4)),
                         ),
                       ),
                     ),

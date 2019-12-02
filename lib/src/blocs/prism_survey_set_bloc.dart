@@ -107,12 +107,30 @@ class PrismSurveySetBloc extends ChangeNotifier {
             descending: descending);
   }
 
+  Stream<QuerySnapshot> streamPrismSurveySetQueryOrderByField(
+      {@required String fieldName,
+      @required String fieldValue,
+      @required String orderField,
+      bool descending = false}) {
+    return Collection<PrismSurveySet>(path: 'surveySets')
+        .streamDocumentsByQueryOrderByField(
+      fieldName: fieldName,
+      fieldValue: fieldValue,
+      orderField: orderField,
+      descending: descending,
+    );
+  }
+
   Future<DocumentSnapshot> getPrismSurveySetById({id}) async {
     DocumentSnapshot returnValue;
     returnValue =
         await Collection<PrismSurveySet>(path: 'surveySets').getDocument(id);
     // notifyListeners();
     return returnValue;
+  }
+
+  Stream<QuerySnapshot> get streamPrismSurveySets {
+    return Collection<PrismSurveySet>(path: 'surveySets').streamDocuments();
   }
 
   updatePrismSurveySetById({id, field, value}) async {
@@ -125,6 +143,11 @@ class PrismSurveySetBloc extends ChangeNotifier {
     }
   }
 
+  addPrismSurveySetToDb({Map<String, dynamic> surveySet}) {
+    Collection(path: "surveySets").createDocumentWithObject(object: surveySet);
+    notifyListeners();
+  }
+
   Future<DocumentSnapshot> deletePrismSurveySetById({surveySetId}) {
     var returnValue =
         Collection<PrismSurveySet>(path: 'surveySets').deleteById(surveySetId);
@@ -133,21 +156,10 @@ class PrismSurveySetBloc extends ChangeNotifier {
   }
 
   Future<QuerySnapshot> deleteAllSurveysFromSurveySetById({surveySetId}) async {
-    QuerySnapshot returnedValue = await Collection<PrismSurvey>(path: 'surveys').deleteDocumentsChildrenByQuery(fieldName: 'surveySet', fieldValue: surveySetId);
+    QuerySnapshot returnedValue = await Collection<PrismSurvey>(path: 'surveys')
+        .deleteDocumentsChildrenByQuery(
+            fieldName: 'surveySet', fieldValue: surveySetId);
     notifyListeners();
     return returnedValue;
-  }
-
-  Future<PrismSurveySet> getPrismSurveySetByUser({userId}) {
-    return null;
-  }
-
-  Stream<QuerySnapshot> get streamPrismSurveySets {
-    return Collection<PrismSurveySet>(path: 'surveySets').streamDocuments();
-  }
-
-  addPrismSurveySetToDb({Map<String, dynamic> surveySet}) {
-    Collection(path: "surveySets").createDocumentWithObject(object: surveySet);
-    notifyListeners();
   }
 }

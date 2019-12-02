@@ -1,54 +1,57 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
+import 'package:dragger_survey/src/screens/survey_sets_list/widgets/widgets.dart';
 import 'package:dragger_survey/src/shared/shared.dart';
 import 'package:dragger_survey/src/styles.dart';
-import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_letter/rounded_letter.dart';
 import 'package:rounded_letter/shape_type.dart';
 
-class BuildTeamsDropdownButton extends StatefulWidget {
+class BuildTeamsDropdownButtonRow extends StatefulWidget {
   final AsyncSnapshot<QuerySnapshot> teamsSnapshot;
 
-  BuildTeamsDropdownButton({this.teamsSnapshot}) : super();
+  BuildTeamsDropdownButtonRow({this.teamsSnapshot}) : super();
   @override
-  _BuildTeamsDropdownButtonState createState() =>
-      _BuildTeamsDropdownButtonState();
+  _BuildTeamsDropdownButtonRowState createState() =>
+      _BuildTeamsDropdownButtonRowState();
 }
 
-class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
-  String _selectedTeamId;
-  DocumentSnapshot _selectedTeam;
+class _BuildTeamsDropdownButtonRowState
+    extends State<BuildTeamsDropdownButtonRow> {
+  // String _selectedTeamId;
+  // DocumentSnapshot _selectedTeam;
 
   @override
   Widget build(BuildContext context) {
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
     FirebaseUser _user = Provider.of<FirebaseUser>(context);
+    MediaQueryData mq = MediaQuery.of(context);
+    double mqWidth = mq.size.width;
 
     //// Check if there's a current selected team in the bloc (selected via dropdown or teams list)
-    if (teamBloc.currentSelectedTeamId == null &&
-        teamBloc?.getCurrentSelectedTeamId() != null) {
-      setState(() {
-        _selectedTeamId = teamBloc.getCurrentSelectedTeamId();
-      });
-    } else {
-      setState(() {
-        _selectedTeamId = teamBloc.currentSelectedTeamId;
-      });
-    }
+    // if (teamBloc?.currentSelectedTeamId != null) {
+    //   setState(() {
+    //     _selectedTeamId = teamBloc.currentSelectedTeamId;
+    //   });
+    // }
 
-    //// Check wether there's already a current selected from the last session
-    if (_selectedTeamId == null && widget.teamsSnapshot?.data != null) {
-      setState(() {
-        _selectedTeamId = widget.teamsSnapshot?.data?.documents[0]?.documentID;
-        _selectedTeam = widget.teamsSnapshot?.data?.documents[0];
-      });
-      teamBloc.currentSelectedTeamId = _selectedTeamId;
-      teamBloc.currentSelectedTeam = _selectedTeam;
+    if (teamBloc.currentSelectedTeamId == null &&
+        widget.teamsSnapshot?.data != null) {
+      teamBloc.currentSelectedTeamId =
+          widget.teamsSnapshot?.data?.documents[0]?.documentID;
+      teamBloc.currentSelectedTeam = widget.teamsSnapshot?.data?.documents[0];
     }
+    // if (_selectedTeamId == null && widget.teamsSnapshot?.data != null) {
+    //   setState(() {
+    //     _selectedTeamId = widget.teamsSnapshot?.data?.documents[0]?.documentID;
+    //     _selectedTeam = widget.teamsSnapshot?.data?.documents[0];
+    //   });
+    //   teamBloc.currentSelectedTeamId = _selectedTeamId;
+    //   teamBloc.currentSelectedTeam = _selectedTeam;
+    // }
 
     Stream<QuerySnapshot> streamTeamsQuery = teamBloc
         .streamTeamsQueryByArray(
@@ -74,6 +77,7 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Container(
+                  /// DROPDOWN BUTTON
                   child: Flexible(
                     flex: 1,
                     // Check if more than 2 teams in db for this user build dropdown button to select a team
@@ -83,30 +87,31 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                             underline: Container(),
                             isExpanded: true,
                             isDense: false,
-                            value: _selectedTeamId,
+                            value: teamBloc.currentSelectedTeamId,
                             onChanged: (value) {
-                              String _selectedTeamId = value;
-                              print(
-                                  "In BuildTeamsDropdownButton onChanged - value of _selectedTeamId: $_selectedTeamId");
-                              print(
-                                  "In BuildTeamsDropdownButton onChanged - value of value: $value");
-                              teamBloc.setCurrentSelectedTeamId(value);
-                              setState(() {
-                                _selectedTeamId = value;
-                              });
+                              log("In BuildTeamsDropdownButton onChanged - value of _selectedTeamId old: $teamBloc.currentSelectedTeamId");
+                              log("In BuildTeamsDropdownButton onChanged - value of value: $value");
+                              teamBloc.currentSelectedTeamId = value;
+                              // teamBloc.setCurrentSelectedTeamId(value);
+                              // setState(() {
+                              //   _selectedTeamId = value;
+                              // });
+                              log("In BuildTeamsDropdownButton onChanged - value of _selectedTeamId new: $teamBloc.currentSelectedTeamId");
 
-                              teamBloc.streamTeamById(id: value).listen((team) {
-                                teamBloc.currentSelectedTeam = team;
-                                teamBloc.currentSelectedTeamId =
-                                    team.documentID;
-                                if (this.mounted) {
-                                  return;
-                                } else {
-                                  setState(() {
-                                    _selectedTeam = team;
-                                  });
-                                }
-                              });
+                              // teamBloc
+                              //     .streamTeamById(id: value)
+                              //     .listen((team) {
+                              //   teamBloc.currentSelectedTeam = team;
+                              //   teamBloc.currentSelectedTeamId =
+                              //       team.documentID;
+                              //   if (this.mounted) {
+                              //     return;
+                              //   } else {
+                              //     setState(() {
+                              //       _selectedTeam = team;
+                              //     });
+                              //   }
+                              // });
                             },
                             iconSize: 28,
                             icon: Icon(
@@ -127,11 +132,12 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                 .map<DropdownMenuItem>(
                               (team) {
                                 return DropdownMenuItem(
+                                  key: ValueKey(team.documentID),
                                   value: team.documentID,
                                   child: SingleChildScrollView(
                                     child: Container(
                                       height: 54,
-                                      padding: EdgeInsets.only(bottom: 0),
+                                      padding: const EdgeInsets.only(bottom: 0),
                                       decoration: BoxDecoration(
                                         border: Border(
                                           bottom: BorderSide(
@@ -141,13 +147,12 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                           ),
                                         ),
                                       ),
-                                      width: double.infinity,
                                       child: Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Padding(
-                                            padding: EdgeInsets.only(
+                                            padding: const EdgeInsets.only(
                                                 right: 12.0, bottom: 4),
                                             child: RoundedLetter(
                                               text: buildInitials(
@@ -187,6 +192,7 @@ class _BuildTeamsDropdownButtonState extends State<BuildTeamsDropdownButton> {
                                                 ),
                                               ),
                                               Container(
+                                                width: mqWidth * .55,
                                                 child: Padding(
                                                   padding:
                                                       EdgeInsets.only(right: 4),

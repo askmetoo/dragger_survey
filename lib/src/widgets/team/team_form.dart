@@ -189,8 +189,7 @@ class _TeamFormState extends State<TeamForm> {
                           color: Styles.color_AppBackground),
                     ),
                     filled: true,
-                    fillColor:
-                        Styles.color_AppBackgroundLight.withOpacity(.5),
+                    fillColor: Styles.color_AppBackgroundLight.withOpacity(.5),
                     labelStyle: TextStyle(
                       color: Styles.color_Text,
                     ),
@@ -314,7 +313,8 @@ class _TeamFormState extends State<TeamForm> {
     print("================================");
 
     if (teamBloc.updatingTeamData) {
-      teamBloc.updateTeamById(object: team, id: teamBloc.currentSelectedTeamId);
+      teamBloc.updateTeamById(
+          object: team, id: teamBloc.setCurrentSelectedTeamId);
     } else {
       teamBloc.addTeamToDb(team: team);
     }

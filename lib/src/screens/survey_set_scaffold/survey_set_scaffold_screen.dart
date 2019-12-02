@@ -24,7 +24,6 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
   List<String> _titleOptions = [
     "Survey Set Details",
     "Survey Results",
-    "Survey Set Graphs"
   ];
 
   @override
@@ -125,7 +124,6 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
       SurveySetGraphsScreen(
         surveySetId: _id,
       ),
-      DraggerScreen(),
     ];
   }
 }
