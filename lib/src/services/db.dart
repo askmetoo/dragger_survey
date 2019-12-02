@@ -90,6 +90,18 @@ class Collection<T> {
             print("ERROR in db.dart getDocumentsByQuerySortByCreatedDesc: $e"));
   }
 
+  Stream<QuerySnapshot> streamDocumentsByQueryOrderByField(
+      {@required String fieldName,
+      @required String fieldValue,
+      @required String orderField,
+      bool descending}) {
+    return ref
+        .where(fieldName, isEqualTo: fieldValue)
+        .orderBy(orderField, descending: descending)
+        .snapshots()
+        .handleError((e) => log("ERROR in db.dart getDocumentsByQueryOrderByField: $e"));
+  }
+
   Stream<QuerySnapshot> streamDocumentsByQuerySortByCreatedAsc(
       {String fieldName, String fieldValue}) {
     return ref

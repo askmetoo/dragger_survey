@@ -110,61 +110,6 @@ class _BuildFilterSortState extends State<BuildFilterSort> {
                   color: Styles.color_Secondary,
                 ),
               )
-              // child: DropdownButton(
-              //   underline: Container(),
-              //   icon: Icon(
-              //     Icons.sort,
-              //     size: 18,
-              //   ),
-              //   isDense: true,
-              //   isExpanded: false,
-              //   // value: _sortBy,
-              //   onChanged: (newValue) {
-              //     log("In BuildFilterSort newValue: $newValue");
-              //     switch (newValue) {
-              //       case 1:
-              //         surveySetBloc.orderField = 'created';
-              //         surveySetBloc.descendingOrder = true;
-              //         break;
-              //       case 2:
-              //         surveySetBloc.orderField = 'created';
-              //         surveySetBloc.descendingOrder = false;
-              //         break;
-              //       case 3:
-              //         surveySetBloc.orderField = 'name';
-              //         surveySetBloc.descendingOrder = true;
-              //         break;
-              //       case 4:
-              //         surveySetBloc.orderField = 'name';
-              //         surveySetBloc.descendingOrder = false;
-              //         break;
-              //       default:
-              //         surveySetBloc.orderField = 'created';
-              //         surveySetBloc.descendingOrder = true;
-              //     }
-              //     setState(() {
-              //       _sortBy = newValue;
-              //     });
-              //   },
-              //   items: [
-              //     DropdownMenuItem(
-              //       value: 1,
-              //       child: Text('By date, descending'),
-              //     ),
-              //     DropdownMenuItem(
-              //       value: 2,
-              //       child: Text('By date, ascending'),
-              //     ),
-              //     DropdownMenuItem(
-              //       value: 3,
-              //       child: Text('By name, descending'),
-              //     ),
-              //     DropdownMenuItem(
-              //       value: 4,
-              //       child: Text('By name, ascending'),
-              //     ),
-              //   ],
-              // ),
               );
         });
   }

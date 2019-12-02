@@ -67,7 +67,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
               children: <Widget>[
                 teamsSnapshotDataIsNull || teamDocsIsEmpty
                     ? Container()
-                    : BuildTeamsDropdownButton(
+                    : BuildTeamsDropdownButtonRow(
                         teamsSnapshot: teamsSnapshot,
                       ),
                 Expanded(
