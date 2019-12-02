@@ -69,15 +69,6 @@ class TeamBloc extends ChangeNotifier {
     notifyListeners();
   }
 
-  setCurrentSelectedTeamId(String selectedTeamId) {
-    _currentSelectedTeamId = selectedTeamId;
-    //// This call for notifyListeners produces an assertion exeption:
-    ///    setState() or markNeedsBuild() called during build.
-    ///  But leaving it out won't update the SurveySets list after
-    ///  selecting a team from the teams dropdown.
-    notifyListeners();
-  }
-
   Stream<QuerySnapshot> get streamTeams {
     return Collection<Team>(path: 'teams').streamDocuments();
   }
