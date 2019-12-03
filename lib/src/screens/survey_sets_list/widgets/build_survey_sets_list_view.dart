@@ -9,15 +9,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class BuildSurveySetsListView extends StatefulWidget {
+class BuildSurveySetsListView extends StatelessWidget {
   BuildSurveySetsListView({Key key}) : super(key: key);
 
-  @override
-  _BuildSurveySetsListViewState createState() =>
-      _BuildSurveySetsListViewState();
-}
-
-class _BuildSurveySetsListViewState extends State<BuildSurveySetsListView> {
   Stream<QuerySnapshot> streamQueryTeamsForUser({TeamBloc teamBloc, user}) {
     Stream<QuerySnapshot> teamsQuery = teamBloc
         .streamTeamsQueryByArray(
