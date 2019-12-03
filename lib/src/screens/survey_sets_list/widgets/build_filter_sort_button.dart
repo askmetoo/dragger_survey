@@ -7,12 +7,12 @@ import 'package:provider/provider.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class BuildFilterSort extends StatefulWidget {
+class BuildFilterSortButton extends StatefulWidget {
   @override
-  _BuildFilterSortState createState() => _BuildFilterSortState();
+  _BuildFilterSortButtonState createState() => _BuildFilterSortButtonState();
 }
 
-class _BuildFilterSortState extends State<BuildFilterSort> {
+class _BuildFilterSortButtonState extends State<BuildFilterSortButton> {
   // ignore: unused_field
   String _selectedTeamId;
   // ignore: unused_field
