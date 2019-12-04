@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 
@@ -149,10 +148,9 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
                                             actionExtentRatio: 0.2,
                                             child: ListTile(
                                               leading: CircleAvatar(
-                                                backgroundImage: 
-                                                CachedNetworkImageProvider(
-                                                userSnapshot?.data?.documents
-                                                    ?.first['photoUrl'],
+                                                backgroundImage: NetworkImage(
+                                                  userSnapshot?.data?.documents
+                                                      ?.first['photoUrl'],
                                                 ),
                                               ),
                                               dense: true,
@@ -166,8 +164,7 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
                                                 IconSlideAction(
                                                   caption: 'Delete',
                                                   icon: Icons.delete,
-                                                  color:
-                                                      Styles.color_Attention,
+                                                  color: Styles.color_Attention,
                                                   onTap: () {
                                                     List modifiableList =
                                                         new List();
