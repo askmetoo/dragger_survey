@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/shared/shared.dart';
+import 'package:dragger_survey/src/styles.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +13,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_letter/rounded_letter.dart';
 import 'package:rounded_letter/shape_type.dart';
-
-import '../../styles.dart';
 
 Widget buildTeamsListView({BuildContext context}) {
   final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
@@ -213,7 +212,8 @@ Widget buildTeamsListView({BuildContext context}) {
                                       key: Key(_teamId),
                                       icon: Icon(Icons.edit),
                                       onPressed: () async {
-                                        teamBloc.currentSelectedTeamId = _teamId;
+                                        teamBloc.currentSelectedTeamId =
+                                            _teamId;
 
                                         Navigator.pushNamed(
                                           context,
