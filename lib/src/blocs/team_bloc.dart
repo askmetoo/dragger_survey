@@ -15,29 +15,35 @@ class TeamBloc extends ChangeNotifier {
   DocumentSnapshot get currentSelectedTeam => _currentSelectedTeam;
   DocumentSnapshot getCurrentSelectedTeam() => _currentSelectedTeam;
   String get currentSelectedTeamId => _currentSelectedTeamId;
+  String getCurrentSelectedTeamId() => _currentSelectedTeamId;
   get orderField => _orderField;
   get descendingOrder => _descendingOrder;
-  String getCurrentSelectedTeamId() => _currentSelectedTeamId;
 
   set orderField(orderField) {
     _orderField = orderField;
-    notifyListeners();
+    // notifyListeners();
   }
 
   set descendingOrder(descendingOrder) {
     _descendingOrder = descendingOrder;
-    notifyListeners();
-  }
-
-  set currentSelectedTeam(selectedTeam) {
-    _currentSelectedTeam = selectedTeam;
-    notifyListeners();
+    // notifyListeners();
   }
 
   set currentSelectedTeamId(selectedTeamId) {
     _currentSelectedTeamId = selectedTeamId;
+    // notifyListeners();
+  }
+  setCurrentSelectedTeamId(selectedTeamId) {
+    _currentSelectedTeamId = selectedTeamId;
     notifyListeners();
   }
+  
+  set currentSelectedTeam(selectedTeam) {
+    _currentSelectedTeam = selectedTeam;
+    // notifyListeners();
+  }
+
+  
 
   // setCurrentSelectedTeam(DocumentSnapshot selectedTeam) {
   //   _currentSelectedTeam = selectedTeam;

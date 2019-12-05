@@ -2,29 +2,15 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/screens/survey_sets_list/widgets/widgets.dart';
-import 'package:dragger_survey/src/shared/shared.dart';
 import 'package:dragger_survey/src/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rounded_letter/rounded_letter.dart';
-import 'package:rounded_letter/shape_type.dart';
 
-class BuildTeamsDropdownButtonRow extends StatefulWidget {
-  AsyncSnapshot<QuerySnapshot> teamsSnapshot;
+class BuildTeamsDropdownButtonRow extends StatelessWidget {
+  final QuerySnapshot teamSnapshotData;
 
-  BuildTeamsDropdownButtonRow({this.teamsSnapshot}) : super();
-  @override
-  _BuildTeamsDropdownButtonRowState createState() =>
-      _BuildTeamsDropdownButtonRowState(teamsSnapshot);
-}
-
-class _BuildTeamsDropdownButtonRowState
-    extends State<BuildTeamsDropdownButtonRow> {
-  AsyncSnapshot<QuerySnapshot> _teamsSnapshot;
-  _BuildTeamsDropdownButtonRowState(this._teamsSnapshot);
-  String _selectedTeamId;
-  // DocumentSnapshot _selectedTeam;
+  BuildTeamsDropdownButtonRow({this.teamSnapshotData}) : super();
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +27,10 @@ class _BuildTeamsDropdownButtonRowState
     // }
 
     if (teamBloc.currentSelectedTeamId == null &&
-        widget.teamsSnapshot?.data != null) {
+        teamSnapshotData != null) {
       teamBloc.currentSelectedTeamId =
-          widget.teamsSnapshot?.data?.documents[0]?.documentID;
-      teamBloc.currentSelectedTeam = widget.teamsSnapshot?.data?.documents[0];
+          teamSnapshotData.documents[0]?.documentID;
+      teamBloc.currentSelectedTeam = teamSnapshotData.documents[0];
     }
     // if (_selectedTeamId == null && widget.teamsSnapshot?.data != null) {
     //   setState(() {
@@ -79,8 +65,8 @@ class _BuildTeamsDropdownButtonRowState
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 // BuildTeamsDropdownButton(teamsSnapshot: _teamsSnapshot,),
-                BuildDropdownButtonWidget(
-                    teamsSnapshot: _teamsSnapshot,
+                BuildTeamsDropdownButtonWidget(
+                    teamSnapshotData: teamSnapshotData,
                     teamBloc: teamBloc,
                     mqWidth: mqWidth),
 

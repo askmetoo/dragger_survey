@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class BuildSurveySetsListView extends StatelessWidget {
-  BuildSurveySetsListView({Key key}) : super(key: key);
+  BuildSurveySetsListView() : super();
 
   Stream<QuerySnapshot> streamQueryTeamsForUser({TeamBloc teamBloc, user}) {
     Stream<QuerySnapshot> teamsQuery = teamBloc
@@ -28,7 +28,7 @@ class BuildSurveySetsListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final SurveySetBloc surveySetsBloc =
         Provider.of<SurveySetBloc>(context);
-    final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
+    final TeamBloc teamBloc = Provider.of<TeamBloc>(context, listen: false);
     FirebaseUser _user = Provider.of<FirebaseUser>(context);
 
     return StreamBuilder(

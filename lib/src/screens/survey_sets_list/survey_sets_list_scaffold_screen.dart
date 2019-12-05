@@ -33,7 +33,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
+    final TeamBloc teamBloc = Provider.of<TeamBloc>(context, listen: true);
     FirebaseUser user = Provider.of<FirebaseUser>(context);
 
     bool loggedIn = user != null;
@@ -48,12 +48,12 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
           if (teamsSnapshot.connectionState != ConnectionState.active) {
             return CircularProgressIndicator();
           }
-
-          bool teamsSnapshotDataIsNull = teamsSnapshot.data == null;
-          bool teamDocsLengthNotZero = teamsSnapshot.data.documents.length > 0;
-          bool teamDocsIsEmpty = teamsSnapshot.data.documents.isEmpty;
+          QuerySnapshot teamSnapshotData = teamsSnapshot?.data;
+          bool teamsSnapshotDataIsNull = teamSnapshotData == null;
+          bool teamDocsLengthNotZero = teamSnapshotData.documents.length > 0;
+          bool teamDocsIsEmpty = teamSnapshotData.documents.isEmpty;
           bool currSelectedTeamIdIsNotNull = teamDocsLengthNotZero &&
-              teamsSnapshot?.data?.documents[0]?.documentID != null;
+              teamSnapshotData.documents[0]?.documentID != null;
 
           return Scaffold(
             backgroundColor: Styles.color_AppBackground,
@@ -69,7 +69,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
                 teamsSnapshotDataIsNull || teamDocsIsEmpty
                     ? Container()
                     : BuildTeamsDropdownButtonRow(
-                        teamsSnapshot: teamsSnapshot,
+                        teamSnapshotData: teamSnapshotData,
                       ),
                 Expanded(
                   child: BuildSurveySetsListView(),

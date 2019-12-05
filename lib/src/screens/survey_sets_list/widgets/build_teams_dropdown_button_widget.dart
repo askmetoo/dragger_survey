@@ -7,16 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:rounded_letter/rounded_letter.dart';
 import 'package:rounded_letter/shape_type.dart';
 
-class BuildDropdownButtonWidget extends StatelessWidget {
-  const BuildDropdownButtonWidget({
+class BuildTeamsDropdownButtonWidget extends StatelessWidget {
+  const BuildTeamsDropdownButtonWidget({
     Key key,
-    @required AsyncSnapshot<QuerySnapshot> teamsSnapshot,
+    @required QuerySnapshot teamSnapshotData,
     @required this.teamBloc,
     @required this.mqWidth,
-  })  : _teamsSnapshot = teamsSnapshot,
+  })  : _teamSnapshotData = teamSnapshotData,
         super(key: key);
 
-  final AsyncSnapshot<QuerySnapshot> _teamsSnapshot;
+  final QuerySnapshot _teamSnapshotData;
   final TeamBloc teamBloc;
   final double mqWidth;
 
@@ -28,19 +28,15 @@ class BuildDropdownButtonWidget extends StatelessWidget {
       child: Flexible(
         flex: 1,
         // Check if more than 2 teams in db for this user build dropdown button to select a team
-        child: _teamsSnapshot.data.documents.length < 2
-            ? BuildTeamTextWidget(teamsListSnapshot: _teamsSnapshot)
+        child: _teamSnapshotData.documents.length < 2
+            ? BuildTeamTextWidget(teamSnapshotData: _teamSnapshotData)
             : DropdownButton(
                 underline: Container(),
                 isExpanded: true,
                 isDense: false,
-                // value: _selectedTeamId,
                 value: teamBloc.currentSelectedTeamId,
                 onChanged: (value) {
-                  // setState(() {
-                  //   _selectedTeamId = value;
-                  // });
-                  teamBloc.currentSelectedTeamId = value;
+                  teamBloc.setCurrentSelectedTeamId(value);
 
                   // showDialog(
                   //     context: context,
@@ -85,7 +81,7 @@ class BuildDropdownButtonWidget extends StatelessWidget {
                   maxLines: 1,
                 ),
                 items: <DropdownMenuItem<dynamic>>[
-                  ..._teamsSnapshot.data.documents.map<DropdownMenuItem>(
+                  ..._teamSnapshotData.documents.map<DropdownMenuItem>(
                     (team) {
                       return DropdownMenuItem(
                         key: ValueKey(team.documentID),

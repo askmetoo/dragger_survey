@@ -9,6 +9,5 @@ export 'build_filter_sort_button.dart';
 export 'build_cancel_button_widget.dart';
 export 'build_teams_dropdown_button_row.dart';
 export 'build_list_of_sets.dart';
-export 'build_teams_dropdown_button.dart';
 export 'build_team_text_widget.dart';
-export 'build_dropdown_button_widget.dart';
+export 'build_teams_dropdown_button_widget.dart';
