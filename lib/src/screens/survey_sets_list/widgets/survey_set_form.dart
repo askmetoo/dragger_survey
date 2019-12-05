@@ -267,8 +267,8 @@ class _SurveySetFormState extends State<SurveySetForm> {
 
   void _sendFormValuesToBloc() {
     log("1e-1) ----> In SurveySetForm _sendFormValuesToBloc()");
-    final PrismSurveySetBloc prismSurveySetBloc =
-        Provider.of<PrismSurveySetBloc>(context);
+    final SurveySetBloc prismSurveySetBloc =
+        Provider.of<SurveySetBloc>(context);
     final MatrixGranularityBloc granularityBloc =
         Provider.of<MatrixGranularityBloc>(context);
 
@@ -314,8 +314,8 @@ class _SurveySetFormState extends State<SurveySetForm> {
   void _submitButtonOnPressed({formKey}) {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
-    final PrismSurveySetBloc prismSurveySetBloc =
-        Provider.of<PrismSurveySetBloc>(context);
+    final SurveySetBloc prismSurveySetBloc =
+        Provider.of<SurveySetBloc>(context);
 
     if (formKey.currentState.validate()) {
       log("1b) ----> In SurveySetForm _submitButtonOnPressed - has been validated.");

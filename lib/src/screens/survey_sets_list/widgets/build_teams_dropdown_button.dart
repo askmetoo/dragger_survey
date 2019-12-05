@@ -21,7 +21,7 @@ class BuildTeamsDropdownButton extends StatelessWidget {
       child: teamsSnapshot.data.documents.length < 2
           ? Text("Only one Team")
           : PopupMenuButton<dynamic>(
-              initialValue: teamBloc.currentSelectedTeamId,
+              // initialValue: teamBloc.currentSelectedTeamId,
               onSelected: (value) {
                 teamBloc.currentSelectedTeamId = value;
               },

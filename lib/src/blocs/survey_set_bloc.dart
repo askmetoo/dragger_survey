@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/services/services.dart';
 import 'package:flutter/material.dart';
 
-class PrismSurveySetBloc extends ChangeNotifier {
+class SurveySetBloc extends ChangeNotifier {
   Future<DocumentSnapshot> _currentPrismSurveySetFuture;
   String _description = '';
   String _xDescription = '';

@@ -21,8 +21,8 @@ class _BuildFilterSortButtonState extends State<BuildFilterSortButton> {
   @override
   Widget build(BuildContext context) {
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
-    final PrismSurveySetBloc surveySetBloc =
-        Provider.of<PrismSurveySetBloc>(context);
+    final SurveySetBloc surveySetBloc =
+        Provider.of<SurveySetBloc>(context);
     FirebaseUser _user = Provider.of<FirebaseUser>(context);
 
     return FutureBuilder<QuerySnapshot>(

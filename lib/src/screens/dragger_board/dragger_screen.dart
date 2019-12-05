@@ -22,8 +22,8 @@ class _DraggerScreenState extends State<DraggerScreen> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    final PrismSurveySetBloc prismSurveySetBloc =
-        Provider.of<PrismSurveySetBloc>(context);
+    final SurveySetBloc prismSurveySetBloc =
+        Provider.of<SurveySetBloc>(context);
     surveySet = await prismSurveySetBloc?.currentPrismSurveySet;
     try {
       setState(() {
@@ -39,10 +39,10 @@ class _DraggerScreenState extends State<DraggerScreen> {
   Widget build(BuildContext context) {
     final MatrixGranularityBloc matrixGranularityBloc =
         Provider.of<MatrixGranularityBloc>(context);
-    final PrismSurveyBloc prismSurveyBloc =
-        Provider.of<PrismSurveyBloc>(context);
-    final PrismSurveySetBloc prismSurveySetBloc =
-        Provider.of<PrismSurveySetBloc>(context);
+    final SurveyBloc prismSurveyBloc =
+        Provider.of<SurveyBloc>(context);
+    final SurveySetBloc prismSurveySetBloc =
+        Provider.of<SurveySetBloc>(context);
 
     if (prismSurveySetBloc.currentPrismSurveySet == null) {
       log("In Dragger Screen prismSurveySetBloc.currentPrismSurveySet == null: ${prismSurveySetBloc.currentPrismSurveySet == null}");
@@ -87,7 +87,7 @@ class BuildPortraitLayout extends StatelessWidget {
   final GlobalKey<FormState> _formKey;
   final DocumentSnapshot surveySet;
   final MatrixGranularityBloc matrixGranularityBloc;
-  final PrismSurveyBloc prismSurveyBloc;
+  final SurveyBloc prismSurveyBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +145,7 @@ class BuildLandscapeLayout extends StatelessWidget {
   final GlobalKey<FormState> _formKey;
   final DocumentSnapshot surveySet;
   final MatrixGranularityBloc matrixGranularityBloc;
-  final PrismSurveyBloc prismSurveyBloc;
+  final SurveyBloc prismSurveyBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -196,8 +196,8 @@ class BuildLandscapeLayout extends StatelessWidget {
 class BuildAskedPersonDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final PrismSurveyBloc prismSurveyBloc =
-        Provider.of<PrismSurveyBloc>(context);
+    final SurveyBloc prismSurveyBloc =
+        Provider.of<SurveyBloc>(context);
 
     return Padding(
       padding: EdgeInsets.only(left: 12.0),
@@ -260,7 +260,7 @@ class BuildAskedPersonDropdown extends StatelessWidget {
   }
 
   _builduildAskedPersonDialog(
-      {context, PrismSurveyBloc prismSurveyBloc}) async {
+      {context, SurveyBloc prismSurveyBloc}) async {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     TextEditingController _askedPersonController = TextEditingController();
 
@@ -349,8 +349,8 @@ class _BuildAskedRoleFormState extends State<BuildAskedRoleForm> {
 
   @override
   Widget build(BuildContext context) {
-    final PrismSurveyBloc prismSurveyBloc =
-        Provider.of<PrismSurveyBloc>(context);
+    final SurveyBloc prismSurveyBloc =
+        Provider.of<SurveyBloc>(context);
 
     return Form(
         key: widget.formKey,

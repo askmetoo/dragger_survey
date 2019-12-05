@@ -26,8 +26,8 @@ class BuildSurveySetsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PrismSurveySetBloc surveySetsBloc =
-        Provider.of<PrismSurveySetBloc>(context);
+    final SurveySetBloc surveySetsBloc =
+        Provider.of<SurveySetBloc>(context);
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
     FirebaseUser _user = Provider.of<FirebaseUser>(context);
 

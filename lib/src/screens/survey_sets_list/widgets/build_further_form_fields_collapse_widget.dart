@@ -27,8 +27,8 @@ class _BuildFurtherFormFieldsCollapseState
 
   @override
   Widget build(BuildContext context) {
-    final PrismSurveySetBloc prismSurveySetBloc =
-        Provider.of<PrismSurveySetBloc>(context);
+    final SurveySetBloc prismSurveySetBloc =
+        Provider.of<SurveySetBloc>(context);
 
     return GestureDetector(
       onTap: () {

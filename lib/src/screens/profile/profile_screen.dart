@@ -17,7 +17,7 @@ class ProfileScreen extends StatelessWidget {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
     final UserBloc userBloc = Provider.of<UserBloc>(context);
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
-    final PrismSurveySetBloc surveySetBloc = Provider.of<PrismSurveySetBloc>(context);
+    final SurveySetBloc surveySetBloc = Provider.of<SurveySetBloc>(context);
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;

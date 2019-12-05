@@ -21,14 +21,14 @@ class BuildListOfSets extends StatelessWidget {
   }) : super(key: key);
 
   final FirebaseUser user;
-  final PrismSurveySetBloc surveySetsBloc;
+  final SurveySetBloc surveySetsBloc;
   final AsyncSnapshot<QuerySnapshot> surveySetSnapshot;
 
   @override
   Widget build(BuildContext context) {
-    final PrismSurveyBloc surveyBloc = Provider.of<PrismSurveyBloc>(context);
-    final PrismSurveySetBloc surveySetBloc =
-        Provider.of<PrismSurveySetBloc>(context);
+    final SurveyBloc surveyBloc = Provider.of<SurveyBloc>(context);
+    final SurveySetBloc surveySetBloc =
+        Provider.of<SurveySetBloc>(context);
 
     return ListView(
       scrollDirection: Axis.vertical,
@@ -234,7 +234,7 @@ class BuildListOfSets extends StatelessWidget {
   void _buildSurveySetEditDialog(
     BuildContext context, {
     @required String documentID,
-    @required PrismSurveySetBloc surveySetBloc,
+    @required SurveySetBloc surveySetBloc,
     @required DocumentSnapshot surveySetsSnapshot,
     @required FirebaseUser user,
   }) async {

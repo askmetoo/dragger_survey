@@ -193,8 +193,8 @@ class _BuildMatrixBoardState extends State<BuildMatrixBoard> {
                 itemBuilder: (BuildContext context, int index) {
                   final DraggableItemBloc draggableItemBloc =
                       Provider.of<DraggableItemBloc>(context);
-                  final PrismSurveyBloc prismSurveyBloc =
-                      Provider.of<PrismSurveyBloc>(context);
+                  final SurveyBloc prismSurveyBloc =
+                      Provider.of<SurveyBloc>(context);
 
                   return Container(
                     child: DraggerTaget(

@@ -17,8 +17,8 @@ class SurveySetDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PrismSurveySetBloc surveySetsBloc =
-        Provider.of<PrismSurveySetBloc>(context);
+    final SurveySetBloc surveySetsBloc =
+        Provider.of<SurveySetBloc>(context);
 
     return FutureBuilder<DocumentSnapshot>(
         future: surveySetsBloc.getPrismSurveySetById(id: surveySetId),
@@ -60,9 +60,9 @@ class SurveySetDetailsScreen extends StatelessWidget {
     BuildContext context,
     AsyncSnapshot<DocumentSnapshot> surveySetsSnapshot,
   }) {
-    final PrismSurveyBloc surveyBloc = Provider.of<PrismSurveyBloc>(context);
-    final PrismSurveySetBloc surveySetBloc =
-        Provider.of<PrismSurveySetBloc>(context);
+    final SurveyBloc surveyBloc = Provider.of<SurveyBloc>(context);
+    final SurveySetBloc surveySetBloc =
+        Provider.of<SurveySetBloc>(context);
     Stream<QuerySnapshot> _surveyList;
 
     if (surveySetsSnapshot.connectionState == ConnectionState.done) {
@@ -279,7 +279,7 @@ class SurveySetDetailsScreen extends StatelessWidget {
   void _buildSurveyEditDialog(
     context, {
     @required documentID,
-    @required PrismSurveyBloc surveyBloc,
+    @required SurveyBloc surveyBloc,
     @required String askedPerson,
   }) async {
     log("In SurveySetDetailsScreen _buildSurveyEditDialog 'Edit': $documentID");

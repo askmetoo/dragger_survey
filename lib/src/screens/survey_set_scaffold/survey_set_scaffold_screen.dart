@@ -28,9 +28,9 @@ class _SurveySetScaffoldScreenState extends State<SurveySetScaffoldScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final PrismSurveyBloc surveyBloc = Provider.of<PrismSurveyBloc>(context);
-    final PrismSurveySetBloc surveySetBloc =
-        Provider.of<PrismSurveySetBloc>(context);
+    final SurveyBloc surveyBloc = Provider.of<SurveyBloc>(context);
+    final SurveySetBloc surveySetBloc =
+        Provider.of<SurveySetBloc>(context);
 
     surveySetBloc.currentPrismSurveySet.then((val) =>
         print("ooooooo===============> val.data.length: ${val?.data?.length}"));

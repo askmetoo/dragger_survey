@@ -33,11 +33,11 @@ class App extends StatelessWidget {
         ChangeNotifierProvider<DraggableItemBloc>.value(
           value: DraggableItemBloc(),
         ),
-        ChangeNotifierProvider<PrismSurveyBloc>.value(
-          value: PrismSurveyBloc(),
+        ChangeNotifierProvider<SurveyBloc>.value(
+          value: SurveyBloc(),
         ),
-        ChangeNotifierProvider<PrismSurveySetBloc>.value(
-          value: PrismSurveySetBloc(),
+        ChangeNotifierProvider<SurveySetBloc>.value(
+          value: SurveySetBloc(),
         ),
         ChangeNotifierProvider<TeamBloc>.value(
           value: TeamBloc(),

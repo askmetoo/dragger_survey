@@ -19,8 +19,8 @@ class DraggerBoardButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PrismSurveyBloc prismSurveyBloc =
-        Provider.of<PrismSurveyBloc>(context);
+    final SurveyBloc prismSurveyBloc =
+        Provider.of<SurveyBloc>(context);
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context);
     final DraggableItemBloc draggableItemBloc =
         Provider.of<DraggableItemBloc>(context);

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dragger_survey/src/blocs/prism_survey_set_bloc.dart';
+import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/screens/screens.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +10,8 @@ import '../../styles.dart';
 class DraggerScaffoldScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final PrismSurveySetBloc surveySetBloc =
-        Provider.of<PrismSurveySetBloc>(context);
+    final SurveySetBloc surveySetBloc =
+        Provider.of<SurveySetBloc>(context);
 
     return FutureBuilder<DocumentSnapshot>(
         future: surveySetBloc.getPrismSurveySetById(

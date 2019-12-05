@@ -5,7 +5,7 @@ import 'package:dragger_survey/src/services/models.dart';
 import 'package:dragger_survey/src/services/services.dart';
 import 'package:flutter/material.dart';
 
-class PrismSurveyBloc extends ChangeNotifier {
+class SurveyBloc extends ChangeNotifier {
   DateTime _created = DateTime.now().toLocal();
   DateTime _edited = DateTime.now().toLocal();
   String _askedPerson = 'Anonymous';

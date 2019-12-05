@@ -90,9 +90,9 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final PrismSurveySetBloc surveySetsBloc =
-        Provider.of<PrismSurveySetBloc>(context);
-    final PrismSurveyBloc surveyBloc = Provider.of<PrismSurveyBloc>(context);
+    final SurveySetBloc surveySetsBloc =
+        Provider.of<SurveySetBloc>(context);
+    final SurveyBloc surveyBloc = Provider.of<SurveyBloc>(context);
 
     int _granulariy = 0;
     final double dotRadius = 3;
