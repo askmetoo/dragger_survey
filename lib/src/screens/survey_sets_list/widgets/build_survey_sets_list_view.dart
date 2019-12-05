@@ -26,10 +26,11 @@ class BuildSurveySetsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SurveySetBloc surveySetsBloc =
-        Provider.of<SurveySetBloc>(context);
+    final SurveySetBloc surveySetsBloc = Provider.of<SurveySetBloc>(context);
     final TeamBloc teamBloc = Provider.of<TeamBloc>(context, listen: false);
     FirebaseUser _user = Provider.of<FirebaseUser>(context);
+
+    double mqHeight = MediaQuery.of(context).size.height;
 
     return StreamBuilder(
       stream: streamQueryTeamsForUser(teamBloc: teamBloc, user: _user)
@@ -41,7 +42,7 @@ class BuildSurveySetsListView extends StatelessWidget {
         }
 
         if (teamsSnapshot.data.documents.isEmpty) {
-          return buildNotMemberOfATeamBText();
+          return buildNotMemberOfATeamBText(mqHeight);
         }
 
         if (teamsSnapshot.data.documents.length == 1) {
@@ -53,7 +54,7 @@ class BuildSurveySetsListView extends StatelessWidget {
         if (teamBloc.currentSelectedTeam.documentID == null &&
             teamBloc.currentSelectedTeamId == null &&
             teamsSnapshot.data.documents.length > 1) {
-          return buildChooseATeamBeforeYouStartText();
+          return buildChooseATeamBeforeYouStartText(mqHeight);
         }
 
         return StreamBuilder<QuerySnapshot>(
@@ -69,7 +70,7 @@ class BuildSurveySetsListView extends StatelessWidget {
             }
 
             if (surveySetSnapshot.data.documents.isEmpty) {
-              return buildNoSurveySetsAvailableText();
+              return buildNoSurveySetsAvailableText(mqHeight);
             }
 
             return Column(
@@ -82,9 +83,6 @@ class BuildSurveySetsListView extends StatelessWidget {
                     textAlign: TextAlign.start,
                   ),
                 ),
-                Text("Current Team: ${teamBloc?.currentSelectedTeamId}"),
-                Text(
-                    "Current Survey Set: ${surveySetSnapshot.data.documents.first.documentID}"),
                 Expanded(
                     child: BuildListOfSets(
                   surveySetsBloc: surveySetsBloc,
@@ -99,12 +97,15 @@ class BuildSurveySetsListView extends StatelessWidget {
     );
   }
 
-  Widget buildNoSurveySetsAvailableText() {
+  Widget buildNoSurveySetsAvailableText(mqHeight) {
+    log("mqHeight: $mqHeight");
+    bool largeHeight = mqHeight > 740;
+
     return Center(
       child: Column(
         children: <Widget>[
           Spacer(
-            flex: 7,
+            flex: largeHeight ? 7 : 2,
           ),
           Icon(
             Icons.announcement,
@@ -201,8 +202,9 @@ class BuildSurveySetsListView extends StatelessWidget {
             child: Image.asset(
               'assets/message-arrow-down.png',
               fit: BoxFit.contain,
-              height: 150,
-              width: 80,
+              height: mqHeight * .17,
+              // height: 150,
+              // width: 80,
               alignment: Alignment.topLeft,
             ),
           ),
@@ -214,7 +216,7 @@ class BuildSurveySetsListView extends StatelessWidget {
     );
   }
 
-  Center buildChooseATeamBeforeYouStartText() {
+  Center buildChooseATeamBeforeYouStartText(mqHeight) {
     return Center(
       child: Column(
         children: <Widget>[
@@ -295,14 +297,14 @@ class BuildSurveySetsListView extends StatelessWidget {
             flex: 8,
           ),
           Spacer(
-            flex: 8,
+            flex: mqHeight ? 8 : 4,
           ),
         ],
       ),
     );
   }
 
-  Center buildNotMemberOfATeamBText() {
+  Center buildNotMemberOfATeamBText(mqHeight) {
     return Center(
       child: Column(
         children: <Widget>[
@@ -359,7 +361,7 @@ class BuildSurveySetsListView extends StatelessWidget {
             flex: 8,
           ),
           Spacer(
-            flex: 8,
+            flex: mqHeight ? 8 : 4,
           ),
         ],
       ),
