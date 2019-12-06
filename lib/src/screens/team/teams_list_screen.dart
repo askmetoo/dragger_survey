@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dragger_survey/src/screens/team/widgets/widgets.dart';
 import 'package:dragger_survey/src/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -82,8 +83,7 @@ class TeamsListScreen extends StatelessWidget {
                           ),
                         ),
                         backgroundColor: Styles.color_Secondary,
-                        contentTextStyle:
-                            TextStyle(color: Styles.color_Text),
+                        contentTextStyle: TextStyle(color: Styles.color_Text),
                       );
                     },
                   );
