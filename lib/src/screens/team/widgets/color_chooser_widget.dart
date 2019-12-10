@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dragger_survey/src/blocs/blocs.dart';
 import 'package:dragger_survey/src/styles.dart';
@@ -14,11 +16,13 @@ class ColorChooserWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ColorsBloc colorsBloc = Provider.of<ColorsBloc>(context);
+    ThemeBloc themeBloc = Provider.of<ThemeBloc>(context);
 
     List<Color> colors = [
       Styles.color_Primary,
       Styles.tClr1_primary,
     ];
+
 
     return Container(
       padding: EdgeInsets.fromLTRB(16, 12, 16, 24),
@@ -33,13 +37,31 @@ class ColorChooserWidget extends StatelessWidget {
               children: <Widget>[
                 ...colors.map((color) {
                   return Padding(
+                    key: ValueKey(color.toString()),
                     padding: const EdgeInsets.only(right: 8.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(40),
-                      child: Container(
-                        width: 50,
-                        height: 50,
-                        color: color,
+                    child: GestureDetector(
+                      onTapDown: (TapDownDetails tabDownDetails) {
+                        
+                        int index = colors.indexOf(color);
+                        log("Choosen color theme index: $index");
+                        if (index == 0) {
+                          themeBloc.setColorTheme(ThemeType.Standard);
+                          log("Choosen color theme: ${ThemeType.Standard}");
+                          log("Choosen color: $color");
+                        } else if (index == 1) {
+                          log("Choosen color theme: ${ThemeType.Team1}");
+                          log("Choosen color: $color");
+                          themeBloc.setColorTheme(ThemeType.Team1);
+                        }
+                        Navigator.of(context).pop();
+                      },
+                                          child: ClipRRect(
+                        borderRadius: BorderRadius.circular(40),
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          color: color,
+                        ),
                       ),
                     ),
                   );

@@ -9,3 +9,4 @@ export 'team_bloc.dart';
 export 'user_bloc.dart';
 export 'intro_views_bloc.dart';
 export 'colors_bloc.dart';
+export 'theme_bloc.dart';

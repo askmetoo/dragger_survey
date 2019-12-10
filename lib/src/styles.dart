@@ -91,9 +91,9 @@ class Styles {
   }
 
   static const Color tClr1_primary = Color(0xffaeea00);
-  static const Color _tClr1_primaryLight = Color(0xffe4ff54);
-  static const Color _tClr1_primaryDark = Color(0xff79b700);
-  static const Color _tClr1_secondary = Color(0xff18ffff);
+  static const Color tClr1_primaryLight = Color(0xffe4ff54);
+  static const Color tClr1_primaryDark = Color(0xff79b700);
+  static const Color tClr1_secondary = Color(0xff18ffff);
 
   static setColorsToAppStandard() {
     color_Primary = _clrPrimary;
@@ -104,9 +104,9 @@ class Styles {
   }
   static setColorsToTeam1() {
     color_Primary = tClr1_primary;
-    color_Secondary = _tClr1_secondary;
+    color_Secondary = tClr1_secondary;
     color_AppBackground = tClr1_primary;
-    color_AppBackgroundLight = _tClr1_primaryLight;
-    color_SecondaryDeepDark = _tClr1_primaryDark;
+    color_AppBackgroundLight = tClr1_primaryLight;
+    color_SecondaryDeepDark = tClr1_primaryDark;
   }
 }
