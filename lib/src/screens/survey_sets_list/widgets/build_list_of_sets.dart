@@ -182,7 +182,7 @@ class BuildListOfSets extends StatelessWidget {
                   // },
                   child: Container(
                     margin: EdgeInsets.only(left: 14, bottom: 1, top: 1),
-                    color: Styles.color_Secondary.withOpacity(0),
+                    color: Theme.of(context).dialogBackgroundColor.withOpacity(0),
                     child: ClipRRect(
                       clipBehavior: Clip.antiAlias,
                       borderRadius: BorderRadius.only(
@@ -192,7 +192,7 @@ class BuildListOfSets extends StatelessWidget {
                       child: Container(
                         padding: EdgeInsets.only(left: 16, bottom: 4),
                         decoration: BoxDecoration(
-                          color: Styles.color_Secondary.withOpacity(.7),
+                          color: Theme.of(context).dialogBackgroundColor.withOpacity(.7),
                         ),
                         child: ListTile(
                           onTap: () {

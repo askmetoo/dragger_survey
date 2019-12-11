@@ -56,7 +56,7 @@ class _SurveySetsListScreenState extends State<SurveySetsListScreen> {
               teamSnapshotData.documents[0]?.documentID != null;
 
           return Scaffold(
-            backgroundColor: Styles.color_AppBackground,
+            // backgroundColor: Styles.color_AppBackground,
             endDrawer: UserDrawer(),
             appBar: AppBar(
               actions: <Widget>[

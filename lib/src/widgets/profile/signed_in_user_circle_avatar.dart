@@ -64,7 +64,7 @@ class _SignedInUserCircleAvatarState extends State<SignedInUserCircleAvatar> {
                     )
                   : CircleAvatar(
                       radius: widget.radiusSmall,
-                      backgroundColor: Styles.color_Contrast,
+                      backgroundColor: Styles.color_Complementary,
                     ),
             ),
           ),

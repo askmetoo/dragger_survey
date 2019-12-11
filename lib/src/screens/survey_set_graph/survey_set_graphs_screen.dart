@@ -197,12 +197,12 @@ class _SurveySetGraphsScreenState extends State<SurveySetGraphsScreen> {
                                 elevation: .6,
                                 icon: Icon(
                                   Icons.share,
-                                  color: Styles.color_Contrast,
+                                  color: Styles.color_Complementary,
                                 ),
                                 label: Text(
                                   'Share as string in CSV format',
                                   style:
-                                      TextStyle(color: Styles.color_Contrast),
+                                      TextStyle(color: Styles.color_Complementary),
                                 ),
                                 onPressed: () {
                                   List<List<dynamic>> list = [[]];
@@ -304,7 +304,7 @@ class SurveyScatterPlotChart extends StatelessWidget {
       charts.Series<SurveyResult, int>(
         id: 'Surveys',
         colorFn: (SurveyResult survey, _) {
-          return charts.ColorUtil.fromDartColor(Styles.color_Contrast);
+          return charts.ColorUtil.fromDartColor(Styles.color_Complementary);
         },
         domainFn: (SurveyResult survey, _) => survey.xValue,
         domainLowerBoundFn: (SurveyResult survey, _) => 0,

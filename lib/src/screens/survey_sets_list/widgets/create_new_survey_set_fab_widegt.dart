@@ -12,16 +12,19 @@ class CreateNewSurveySetFAB extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
       elevation: 12,
-      backgroundColor: Styles.color_Secondary,
+      backgroundColor: Theme.of(context).dialogBackgroundColor,
+      // backgroundColor: Styles.color_Secondary,
       label: Text(
         "Create new survey set",
         style: TextStyle(
-          color: Styles.color_Text.withOpacity(0.8),
+          color: Theme.of(context).cursorColor.withOpacity(0.8),
+          // color: Styles.color_Text.withOpacity(0.8),
         ),
       ),
       icon: Icon(
         Icons.library_add,
-        color: Styles.color_SecondaryDeepDark,
+        color: Theme.of(context).cursorColor.withOpacity(0.8),
+        // color: Styles.color_SecondaryDeepDark,
       ),
       tooltip: "Add new Survey Set",
       onPressed: () {
@@ -48,8 +51,10 @@ class CreateNewSurveySetFAB extends StatelessWidget {
                   ),
                 ),
                 title: Text("New survey set"),
-                backgroundColor: Styles.color_Secondary,
-                contentTextStyle: TextStyle(color: Styles.color_Text),
+                backgroundColor: Theme.of(context).dialogBackgroundColor,
+                // backgroundColor: Styles.color_Secondary,
+                contentTextStyle: TextStyle(color: Theme.of(context).cursorColor),
+                // contentTextStyle: TextStyle(color: Styles.color_Text),
                 content: SurveySetForm(),
               );
             });

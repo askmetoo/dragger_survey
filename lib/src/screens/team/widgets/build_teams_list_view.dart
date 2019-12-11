@@ -176,7 +176,8 @@ Widget buildTeamsListView({BuildContext context}) {
                     ],
                     child: Container(
                       margin: EdgeInsets.only(left: 16, bottom: 1, top: 1),
-                      color: Styles.color_Secondary.withOpacity(0),
+                      color: Theme.of(context).dialogBackgroundColor.withOpacity(0),
+                      // color: Styles.color_Secondary.withOpacity(0),
                       child: ClipRRect(
                         clipBehavior: Clip.antiAlias,
                         borderRadius: BorderRadius.only(
@@ -185,7 +186,8 @@ Widget buildTeamsListView({BuildContext context}) {
                         ),
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Styles.color_Secondary.withOpacity(.7),
+                            color: Theme.of(context).dialogBackgroundColor.withOpacity(.7),
+                            // color: Styles.color_Secondary.withOpacity(.7),
                           ),
                           child: FutureBuilder<QuerySnapshot>(
                               future: userBloc.getUsersQuery(

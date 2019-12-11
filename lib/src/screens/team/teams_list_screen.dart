@@ -38,7 +38,7 @@ class TeamsListScreen extends StatelessWidget {
               return SplashScreen();
             }
             return Scaffold(
-              backgroundColor: Styles.color_AppBackground,
+              // backgroundColor: Styles.color_AppBackground,
               endDrawer: UserDrawer(),
               appBar: AppBar(
                 actions: <Widget>[
@@ -52,16 +52,19 @@ class TeamsListScreen extends StatelessWidget {
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerFloat,
               floatingActionButton: FloatingActionButton.extended(
-                backgroundColor: Styles.color_Secondary,
+                backgroundColor: Theme.of(context).dialogBackgroundColor,
+                // backgroundColor: Styles.color_Secondary,
                 label: Text(
                   "Create new Team",
                   style: TextStyle(
-                    color: Styles.color_Text.withOpacity(0.8),
+                    color: Theme.of(context).cursorColor.withOpacity(0.8),
+                    // color: Styles.color_Text.withOpacity(0.8),
                   ),
                 ),
                 icon: Icon(
                   Icons.people,
-                  color: Styles.color_SecondaryDeepDark,
+                  color: Theme.of(context).cursorColor,
+                  // color: Styles.color_SecondaryDeepDark,
                 ),
                 tooltip: "Create new Team",
                 onPressed: () {
@@ -82,8 +85,10 @@ class TeamsListScreen extends StatelessWidget {
                             bottomRight: Radius.circular(20),
                           ),
                         ),
-                        backgroundColor: Styles.color_Secondary,
-                        contentTextStyle: TextStyle(color: Styles.color_Text),
+                        backgroundColor: Theme.of(context).dialogBackgroundColor,
+                        // backgroundColor: Styles.color_Secondary,
+                        contentTextStyle: TextStyle(color: Theme.of(context).cursorColor),
+                        // contentTextStyle: TextStyle(color: Styles.color_Text),
                       );
                     },
                   );

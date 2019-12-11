@@ -42,7 +42,7 @@ final PageViewModel teamPage = PageViewModel(
 );
 
 final PageViewModel invitePage = PageViewModel(
-  pageColor: Styles.color_Contrast,
+  pageColor: Styles.color_Complementary,
   bubble: Icon(
     Icons.person_add,
     color: Styles.color_AppBackgroundLight,
@@ -60,7 +60,7 @@ final PageViewModel invitePage = PageViewModel(
     width: double.infinity,
     alignment: Alignment.topCenter,
     colorBlendMode: BlendMode.modulate,
-    color: Styles.color_Contrast,
+    color: Styles.color_Complementary,
   ),
   titleTextStyle: TextStyle(
     fontFamily: 'SonsieOne',

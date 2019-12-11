@@ -79,7 +79,7 @@ class _TeamManagerScreenState extends State<TeamManagerScreen> {
     final SignInBloc signInBloc = Provider.of<SignInBloc>(context);
 
     return Scaffold(
-      backgroundColor: Styles.color_Secondary,
+      // backgroundColor: Styles.color_Secondary,
       appBar: AppBar(
         title: Text("Team Details"),
       ),
